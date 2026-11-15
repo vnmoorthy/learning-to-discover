@@ -296,7 +296,7 @@ unstable orbits. Initial conditions: [`problems/three-body-periodic-orbits/candi
 ## Gallery
 
 Rendered in Blender from real artifacts of the run, by `bpy` scripts that GPT-6 Astra wrote and revised
-(`viz/scripts/`, every prompt and reply is kept). The banner is drawn from real run data.
+(`viz/scripts/`, every prompt and reply is kept). The banner black hole is ray-traced on an A100 (viz/blackhole/raytrace.py).
 
 | | | |
 |---|---|---|
