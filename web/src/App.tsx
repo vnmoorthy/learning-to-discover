@@ -16,6 +16,7 @@ const MemoryPage = lazy(() => import('./pages/Memory'))
 const LiteraturePage = lazy(() => import('./pages/Literature'))
 const LearningPage = lazy(() => import('./pages/Learning'))
 const GalleryPage = lazy(() => import('./pages/Gallery'))
+const PhysicsPage = lazy(() => import('./pages/Physics'))
 
 const NAV = [
   { to: '/', label: 'Mission Control', icon: IconMission, end: true },
@@ -23,6 +24,7 @@ const NAV = [
   { to: '/memory', label: 'Memory', icon: IconMemory },
   { to: '/literature', label: 'Literature', icon: IconBook },
   { to: '/learning', label: 'Self-improvement', icon: IconLearn },
+  { to: '/physics', label: 'Physics', icon: IconBook },
   { to: '/gallery', label: 'Gallery', icon: IconGallery },
 ]
 
@@ -197,6 +199,7 @@ function AnimatedRoutes() {
             <Route path="/memory" element={<MemoryPage />} />
             <Route path="/literature" element={<LiteraturePage />} />
             <Route path="/learning" element={<LearningPage />} />
+            <Route path="/physics" element={<PhysicsPage />} />
             <Route path="/gallery" element={<GalleryPage />} />
             <Route
               path="*"

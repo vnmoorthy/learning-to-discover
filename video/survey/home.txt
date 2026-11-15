@@ -1,0 +1,608 @@
+Learning to Discover
+autonomous math lab
+Mission Control
+Decisions
+Memory
+Literature
+Self-improvement
+Gallery
+PROBLEMS
+no-three-in-line-75
+two-deletion-code-16
+first-autocorrelation-inequality
+kakeya-needle-128
+kissing-number-d12-842
+kissing-number-d11-605
+three-body-periodic-orbits
+spencer-discrepancy
+hadamard-det-51
+sidon-45-set
+snake-in-the-box-13
+ring-loading-15
+An AI lab that gets better at discovering mathematics by doing it.
+mode: live
+LOOP RUNNING
+|
+CYCLE 17
+SSE LIVE
+BOX ONLINE
+MISSION CONTROL
+/
+12 OPEN PROBLEMS
+An AI lab that gets better at discovering mathematics by doing it.
+
+A closed loop of planner, proposer and critic agents runs searches on 8 A100s and 124 cores, reads the literature with Exa, remembers across agents with past.dev, spawns Modal sandboxes and trains itself with Tinker. Every decision below is logged and auditable.
+
+RECORDS
+0
+CYCLES
+17
+DECISIONS
+349
+EXPERIMENTS
+339
+SANDBOXES
+22
+FACTS
+142
+SOURCES
+155
+Pause
+Run cycle now
+no-three-in-line-75
+150 points
+116 violated lines
+rot180-150 round 63
+record 148
+AUTONOMOUS LOOP
+
+Phases animate live as the server publishes them
+
+1
+Telemetry
+GPUs, cores, search logs
+2
+Critic
+verify artifacts, score predictions
+3
+Memory
+recall facts (past.dev)
+4
+Literature
+Exa search
+5
+Propose
+GPT-6 Astra proposes actions
+6
+Referee
+Claude Fable 5.2 approves / vetoes
+7
+Plan
+validate, budget, prioritize
+8
+Execute
+launch / stop on the box + Modal
+next cycle in
+2m 44s
+interval 3m 00s
+proposer gpt-6-astra
+running since Nov 15, 08:51 PST
+COMPUTE MAP
+
+8 x A100 40GB and 124 CPU cores, colored by the problem that owns them
+
+box online, read 19s ago
+GPUS
+GPU 0
+99
+free
+--
+36.9 / 40 GB
+GPU 1
+0
+kissing-number-d11-605
+polish_k12-s1000
+1.8 / 40 GB
+GPU 2
+65
+No-three-in-line 75
+adopt-nothree_gpu-8408
+19.4 / 40 GB
+GPU 3
+100
+first-autocorrelation-inequality
+autocorr1_polish-p0.0-s1000
+0.6 / 40 GB
+GPU 4
+58
+No-three-in-line 75
+nothree_gpu-s1001
+19.4 / 40 GB
+GPU 5
+94
+kissing-number-d11-605
+polish_kakeya-s1000
+3.3 / 40 GB
+GPU 6
+75
+three-body-periodic-orbits
+threebody_gpu-s1000
+0.7 / 40 GB
+GPU 7
+72
+No-three-in-line 75
+nothree_gpu-s1003
+19.4 / 40 GB
+CPU CORES
+Two-deletion code 16
+43
+No-three-in-line 75
+37
+kissing-number-d11-605
+2
+first-autocorrelation-inequality
+1
+three-body-periodic-orbits
+1
+idle
+40
+load1
+310
+/ 124
+MODAL FLEET (ELASTIC, PLANNER-CONTROLLED)
+113/140 containers
+no-three-in-line-75
+60
+two-deletion-code-16
+38
+sidon-45-set
+10
+snake-in-the-box-13
+5
+PROBLEM PORTFOLIO
+
+Best-known record vs our best verified score, with the live progress metric
+
+no-three-in-line-75
+No-Three-in-Line (75 × 75 grid)
+STALLED
+RECORD
+148
+Thomas-Prellberg
+OURS
+--
+no valid solution yet
+min_violated_lines
+116 / 0
+3 GPU 37 cores | 97 strategies
+44%
+two-deletion-code-16
+Two-Deletion-Correcting Code (length 16)
+STALLED
+RECORD
+226
+kgrey
+OURS
+214
+verified 13m 00s ago (-12)
+best_size
+226 / 227
+43 cores | 81 strategies
+51%
+first-autocorrelation-inequality
+First Autocorrelation Inequality (Upper Bound)
+SEARCHING
+RECORD
+1.50274348671
+Atris
+OURS
+--
+no valid solution yet
+best_C
+1.50274348638 / 1.50274348671
+1 GPU 1 cores | 1 strategies
+1%
+kakeya-needle-128
+Discretized Kakeya Needle (n = 128)
+IDLE
+RECORD
+0.106751389952
+kgrey
+OURS
+--
+no valid solution yet
+best_score
+0.106751389952 / 0.106751389952
+no compute | 0 strategies
+0%
+kissing-number-d12-842
+Kissing Number in Dimension 12 (n=842)
+IDLE
+RECORD
+0.530963495028
+kgrey
+OURS
+--
+no valid solution yet
+best_penalty
+0.530963495028 / 0.530963495028
+no compute | 0 strategies
+0%
+kissing-number-d11-605
+Kissing Number in Dimension 11 (n=605)
+SEARCHING
+RECORD
+1.7102381208
+kgrey
+OURS
+--
+no valid solution yet
+best_penalty
+-- / 1.7102381208
+2 GPU 2 cores | 2 strategies
+2%
+three-body-periodic-orbits
+New periodic orbits of the planar Newtonian three-body problem
+SEARCHING
+RECORD
+0
+published catalogs
+OURS
+--
+no valid solution yet
+verified_families
+-- / 0
+1 GPU 1 cores | 1 strategies
+1%
+spencer-discrepancy
+Spencer Discrepancy Constant
+IDLE
+RECORD
+1.69774937525
+Youhua-Li
+OURS
+1.3416407865
+verified 2h 07m ago (-0.356109)
+bad_vectors
+2,592 / 0
+no compute | 0 strategies
+0%
+hadamard-det-51
+Hadamard Maximal Determinant (order 51)
+IDLE
+RECORD
+43.3374559619
+kgrey
+OURS
+--
+no valid solution yet
+best_log10
+43.3374559619 / 43.3374559619
+no compute | 0 strategies
+0%
+sidon-45-set
+Sidon Subsets of (4,5)-Sets
+PROVED NEGATIVE
+RECORD
+0.571428571429
+Ma-Tang
+OURS
+--
+no valid solution yet
+best_score
+-- / 0.571428571429
+no compute | 10 strategies
+0%
+snake-in-the-box-13
+Snake-in-the-Box (13-dimensional hypercube)
+IDLE
+RECORD
+2,950
+kgrey
+OURS
+--
+no valid solution yet
+best_length
+-- / 2,950
+no compute | 5 strategies
+0%
+ring-loading-15
+Ring Loading Problem (15 pairs)
+IDLE
+RECORD
+1.125
+JSAgent-Ring15
+OURS
+--
+no valid solution yet
+best_score
+-- / 1.125
+no compute | 0 strategies
+0%
+LIVE DECISIONS
+
+streaming over SSE
+
+Full audit log
+TOOLSMITH
+commission
+21s ago
+no-three-in-line-75
+
+Commissioned a new search strategy from Devin for no-three-in-line-75: Build a CPU exact large-neighborhood repair template consuming saved nothree_gpu configurations. Independently enumerate collinear lines using canonical integer line equations. Start from the best 150-point artifacts, choose a deletion yielding a 149-point candidate, and construct adaptive neighborh
+
+EXECUTOR
+launch
+22s ago
+three-body-periodic-orbits
+
+Executed proposer decision #332: launched 1/1 (threebody_gpu-s1000@gpu6).
+
+EXECUTOR
+stop
+34s ago
+no-three-in-line-75
+
+Executed proposer decision #331: stopped 1/1 strategies (nothree_gpu-s1000).
+
+EXECUTOR
+stop
+35s ago
+two-deletion-code-16
+
+Executed proposer decision #330: stopped 8/8 strategies (twodel_lns-s1008, twodel_lns-s1009, twodel_lns-s1010, twodel_lns-s1011, twodel_lns-s1012, twodel_lns-s1013...).
+
+EXECUTOR
+stop
+37s ago
+no-three-in-line-75
+
+Executed proposer decision #329: stopped 16/16 strategies (adopt-nothree_sat-6014, adopt-nothree_sat-6018, adopt-nothree_sat-6020, adopt-nothree_sat-6022, adopt-nothree_sat-6006, adopt-nothree_sat-6008...).
+
+REFEREE
+approve
+38s ago
+no-three-in-line-75
+
+claude-fable-5-2 on proposer decision #335 (commission): SAT is stalled at 116 violated lines for 139.8 min with rate 0, while the GPU artifacts sit at 17 triples (14 after deletion). Feeding those into exact local repair is a genuinely new method rather than another restart or symmetry variant.
+
+REFEREE
+approve
+38s ago
+kissing-number-d11-605
+
+claude-fable-5-2 on proposer decision #334 (note): The state supports the anomaly: kissing-d11 shows 2 procs/2 GPUs with a null metric, while the idle d12 and Kakeya problems show fresh best ages of 3.2 and 2.9 min at exactly their baseline values. Flagging likely mislabelled output costs nothing and protects integrity.
+
+REFEREE
+approve
+38s ago
+first-autocorrelation-inequality
+
+claude-fable-5-2 on proposer decision #333 (keep): This is the only run still improving (best_age 0.3 min, single proc/GPU), so it should not be stopped. The prediction is calibrated to the measured 3.4e-12/h rate and correctly treats the ~3.25e-10 margin as short of the 1e-8 threshold.
+
+REFEREE
+approve
+38s ago
+three-body-periodic-orbits
+
+claude-fable-5-2 on proposer decision #332 (launch): three-body-periodic-orbits has zero workers and no measured result, so one default-scale pilot on the GPU freed by index 2 is informative and cheap. It is valid only if that stop actually releases the GPU, since free_gpus is currently empty, and it must not take additional cores.
+
+REFEREE
+approve
+38s ago
+no-three-in-line-75
+
+claude-fable-5-2 on proposer decision #331 (stop): The restart-40000 GPU worker is 58.2 min without improvement, past the 25-min GPU stop threshold, and it is not the 17-triple incumbent. No GPUs are free, so releasing one has real value.
+
+REFEREE
+approve
+38s ago
+two-deletion-code-16
+
+claude-fable-5-2 on proposer decision #330 (stop): two-deletion-code-16 is stalled at 226 with rate_1h 0 and 51 procs while the lab is far over its CPU target. Trimming eight of twelve identical stalled LNS workers keeps controls and the newer weighted experiment, and stays within the 24-stop allowance.
+
+REFEREE
+approve
+38s ago
+no-three-in-line-75
+
+claude-fable-5-2 on proposer decision #329 (stop): Cores are at 257 against a target of 118, and mirror-149 is the weaker class (current min 166, 52 rounds/15 min) versus rot180-150 (135, 247 rounds). Keeping four mirror workers preserves diversity without stopping the better class.
+
+TOOLSMITH
+rejected
+1m 18s ago
+kakeya-needle-128
+
+Devin's strategy search/devin/devin_strategy.py failed the Modal sandbox smoke test: no JSON solution on stdout (rc=0):
+
+TOOLSMITH
+rejected
+1m 18s ago
+kissing-number-d11-605
+
+Devin's strategy search/devin/devin_strategy.py failed the Modal sandbox smoke test: InvalidError: Total length of CMD arguments cannot exceed 65536 bytes (ARG_MAX). Got 194986 bytes.
+
+PROPOSER
+commission
+1m 24s ago
+no-three-in-line-75
+
+The GPU incumbent has 17 triples and 14 after deletion, whereas the global SAT best remains 116 violated lines after 139.8 minutes without improvement. Existing templates cannot feed the substantially cleaner GPU artifacts into exact local repair, making this a methodological change rather than another restart or symmetry variant.
+
+PROPOSER
+note
+1m 24s ago
+kissing-number-d11-605
+
+The two purported dimension-11 workers report 0.5309634950279605 and 0.1067513899516814, exactly the dimension-12 and Kakeya baselines, while dimension 11 has no measured best. Their ages are only 3.2 and 2.9 minutes; neither their labels nor the inconsistent 257-core total justify treating them as mature dimension-11 experiments.
+
+PROPOSER
+keep
+PENDING
+1m 24s ago
+first-autocorrelation-inequality
+
+The new worker improved 0.3 minutes ago to 1.5027434863847, but its approximately 3.25e-10 advantage over the record is below the required 1e-8 improvement. Retain it and revise expectations toward the measured hourly progress of 3.4e-12 rather than repeat the earlier record-sized forecast.
+
+PROPOSER
+launch
+1m 24s ago
+three-body-periodic-orbits
+
+Use only the GPU and core released by the grid worker. Three-body search has zero workers and no measured verified families; a single default-scale pilot provides method diversity, with the official return-error threshold of 1e-8 and catalog check preventing near-returns or known orbits from being counted as discoveries.
+
+PROPOSER
+stop
+1m 24s ago
+no-three-in-line-75
+
+The restart-40000 worker remains at 18 triples after 58.2 minutes without improvement, exceeding the 25-minute stop threshold. Preserve the 17-triple incumbent and both restart-80000 workers, whose improvement ages are substantially shorter, and release GPU 6 for a different problem.
+
+PROPOSER
+stop
+1m 24s ago
+two-deletion-code-16
+
+All 12 matching LNS workers remain at 226 after 33.6 minutes without improvement. Remove eight, completing the 24-CPU-stop allowance while retaining four controls, the seven weighted workers only 2.7–2.9 minutes into their experiment, and the larger-neighborhood searches.
+
+PROPOSER
+stop
+1m 24s ago
+no-three-in-line-75
+
+Reported usage is 257 cores against a target of 118. Remove the worst 16 of 20 mirror workers: this class has current minimum 166 violations and only 52 rounds in 15 minutes, versus 135 violations and 247 rounds for rot180; retain four mirror workers for diversity.
+
+MEMORY
+recall
+2m 16s ago
+
+Problem agents wrote 8 observations and read 66 facts from the shared past.dev space (identity ltd-lab) before proposing.
+
+EXECUTOR
+launch
+5m 19s ago
+two-deletion-code-16
+
+Executed proposer decision #313: launched 7/7 (twodel_weighted-s1000, twodel_weighted-s1001, twodel_weighted-s1002, twodel_weighted-s1003, twodel_weighted-s1004, twodel_weighted-s1005...).
+
+EXECUTOR
+launch
+5m 23s ago
+kakeya-needle-128
+
+Executed proposer decision #312: launched 1/1 (polish_kakeya-s1000@gpu5).
+
+EXECUTOR
+launch
+5m 35s ago
+first-autocorrelation-inequality
+
+Executed proposer decision #311: launched 1/1 (autocorr1_polish-p0.0-s1000@gpu3).
+
+EXECUTOR
+launch
+5m 47s ago
+kissing-number-d12-842
+
+Executed proposer decision #310: launched 1/1 (polish_k12-s1000@gpu1).
+
+EXECUTOR
+stop
+5m 59s ago
+hadamard-det-51
+
+Executed proposer decision #309: stopped 1/1 strategies (hd-p240-s1000).
+
+EXECUTOR
+stop
+6m 00s ago
+no-three-in-line-75
+
+Executed proposer decision #308: stopped 2/2 strategies (adopt-nothree_gpu-8406, adopt-nothree_gpu-8410).
+
+EXECUTOR
+stop
+6m 01s ago
+two-deletion-code-16
+
+Executed proposer decision #307: stopped 10/10 strategies (twodel_ils-p1-s1001, twodel_ils-p1-s1002, twodel_ils-p1-s1003, twodel_ils-p1-s1004, twodel_ils-p1-s1005, twodel_ils-p1-s1006...).
+
+REFEREE
+abstain
+6m 03s ago
+two-deletion-code-16
+
+claude-fable-5-2 on proposer decision #313 (launch): referee CLI not available
+
+REFEREE
+abstain
+6m 03s ago
+kakeya-needle-128
+
+claude-fable-5-2 on proposer decision #312 (launch): referee CLI not available
+
+REFEREE
+abstain
+6m 03s ago
+first-autocorrelation-inequality
+
+claude-fable-5-2 on proposer decision #311 (launch): referee CLI not available
+
+REFEREE
+abstain
+6m 03s ago
+kissing-number-d12-842
+
+claude-fable-5-2 on proposer decision #310 (launch): referee CLI not available
+
+REFEREE
+abstain
+6m 03s ago
+hadamard-det-51
+
+claude-fable-5-2 on proposer decision #309 (stop): referee CLI not available
+
+REFEREE
+abstain
+6m 03s ago
+no-three-in-line-75
+
+claude-fable-5-2 on proposer decision #308 (stop): referee CLI not available
+
+REFEREE
+abstain
+6m 03s ago
+two-deletion-code-16
+
+claude-fable-5-2 on proposer decision #307 (stop): referee CLI not available
+
+PROPOSER
+launch
+6m 03s ago
+two-deletion-code-16
+
+The 54-worker portfolio has stalled at 226 for 96.7 minutes and currently contains no weighted-search workers. Test seven fixed-227 dynamic-weight searches with exact repair instead of the ten stopped ILS replicas, retaining the young 60–100-word LNS experiments; there is not yet evidence to forecast 227 within 30 minutes.
+
+PROPOSER
+launch
+PENDING
+6m 03s ago
+kakeya-needle-128
+
+Kakeya has zero workers against area 0.10675138995168142, and the new exact-area objective reportedly matches the Fraction verifier to 1e-17 on public starts. Test the default perturb-and-polish portfolio on the third released GPU, targeting an improvement larger than the required 1e-9.
+
+PROPOSER
+launch
+PENDING
+6m 03s ago
+first-autocorrelation-inequality
+
+Autocorrelation has zero workers and no measured best against 1.502743486709583. Use one released GPU for prox-linear polishing at twice the starting resolution: repetition preserves the initial objective while introducing additional optimization variables, with a qualifying improvement requiring at least 1e-8.
+
+PROPOSER
+launch
+PENDING
+6m 03s ago
+kissing-number-d12-842
+
+Dimension 12 has zero workers against penalty 0.5309634950279605, and its new template combines exact-hinge block LP with official-verifier rescoring. Allocate one released GPU to test small genuine improvements; a positive improved penalty would be a leaderboard gain, not a solved kissing configuration.

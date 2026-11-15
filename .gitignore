@@ -18,3 +18,10 @@ ltd/tests_labs/__pycache__/
 *.log
 web/dist-static/
 viz/logs/
+video/clips/
+video/frames/
+video/audio/
+video/.venv/
+video/survey/
+video/build/
+video/*.wav

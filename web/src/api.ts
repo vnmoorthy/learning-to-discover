@@ -2,6 +2,7 @@
 // live: fetch /api/*; static: read ./data/*.json under base; fixtures: in-browser simulated backend.
 import { BASE, FIXTURES, STATIC } from './mode'
 import type {
+  PhysicsResponse,
   Decision,
   GalleryItem,
   LearningResponse,
@@ -158,6 +159,9 @@ export const api = {
       return limit ? all.slice(0, limit) : all
     }
     return get(`/api/sandboxes${qs({ limit })}`)
+  },
+  physics(): Promise<PhysicsResponse> {
+    return STATIC ? staticJson<PhysicsResponse>('physics.json') : get('/api/physics')
   },
   async gallery(): Promise<GalleryItem[]> {
     if (STATIC) {

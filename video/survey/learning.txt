@@ -1,0 +1,205 @@
+Learning to Discover
+autonomous math lab
+Mission Control
+Decisions
+Memory
+Literature
+Self-improvement
+Gallery
+PROBLEMS
+no-three-in-line-75
+two-deletion-code-16
+first-autocorrelation-inequality
+kakeya-needle-128
+kissing-number-d12-842
+kissing-number-d11-605
+three-body-periodic-orbits
+spencer-discrepancy
+hadamard-det-51
+sidon-45-set
+snake-in-the-box-13
+ring-loading-15
+An AI lab that gets better at discovering mathematics by doing it.
+mode: live
+LOOP RUNNING
+|
+CYCLE 17
+SSE LIVE
+BOX ONLINE
+Self-improvement
+
+The lab trains its own model with Tinker: RL on a cheap verifiable problem with the official verifier as reward, then checks whether the skill transfers to a held-out problem. Modal sandboxes let the proposer test many small search programs in parallel.
+
+TINKER RL SELF-TRAINING
+
+Qwen/Qwen3-8B LoRA, GRPO on sidon-45-set (reward from the official verifier)
+
+DONE
+steps
+Start training
+STEPS
+40
+REWARD MEAN
+1.059
+REWARD BEST
+1.189
+VALID RATE
+100%
+REWARD PER STEP
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+24
+26
+28
+30
+31
+32
+34
+36
+38
+40
+0
+0.4
+0.8
+1.2
+1.6
+meanbest
+VALID-CONSTRUCTION RATE
+1
+2
+3
+4
+5
+6
+7
+8
+9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+24
+26
+28
+30
+31
+32
+34
+36
+38
+40
+0%
+25%
+50%
+75%
+100%
+GEN-0 VS GEN-N
+
+transfer eval on held-out 16-element (4,5)-set prompts with unseen size and phrasing (training used 12/14/15/18): one in the training vocabulary, one fully rephrased without the words Sidon or (4,5)-set, same sampling budget
+
+SCORE
++265%
+gen-0
+0.144
+gen-N
+0.525
+VALID RATE
++50 pts
+gen-0
+0%
+gen-N
+50%
+BEST CONSTRUCTION FROM THE TRAINED MODEL
+
+score 0.666666666667 (official verifier)
+
+|A| 12
+score h/|A| 0.666666666667
+distinct differences 57 (9 repeated)
+span [2, 377]
+50
+100
+150
+200
+250
+300
+350
+2
+3
+5
+8
+13
+21
+34
+55
+89
+144
+233
+377
+MODAL AGENT SANDBOXES
+
+Parallel search programs written by the proposer
+
+sidon-45-set
+spencer-discrepancy
+ring-loading-15
+N
+Run 8 sandboxes
+22 runs
+22 ok
+0 invalid
+0 timeout
+0 error
+RUN	PROBLEM	STATUS	SCORE	SECONDS	WHEN	CODE
+#22	sidon-45-set	OK	0.583333333333	83.4	1h 54m ago	view
+#21	sidon-45-set	OK	0.571428571429	81.6	1h 53m ago	view
+#20	spencer-discrepancy	OK	1.38675049056	83.3	2h 05m ago	view
+#19	spencer-discrepancy	OK	1.69774937525	82.0	2h 05m ago	view
+#18	ring-loading-15	OK	1.125	83.4	2h 08m ago	view
+#17	ring-loading-15	OK	1.125	83.1	2h 08m ago	view
+#16	sidon-45-set	OK	0.611111111111	81.8	2h 12m ago	view
+#15	sidon-45-set	OK	0.571428571429	81.4	2h 12m ago	view
+#14	sidon-45-set	OK	0.588235294118	81.8	2h 12m ago	view
+#13	sidon-45-set	OK	0.6	79.8	2h 12m ago	view
+#12	sidon-45-set	OK	0.588235294118	80.4	2h 11m ago	view
+#11	sidon-45-set	OK	0.666666666667	80.5	2h 12m ago	view
+#10	sidon-45-set	OK	0.583333333333	82.0	2h 13m ago	view
+#9	sidon-45-set	OK	0.571428571429	80.0	2h 13m ago	view
+#8	sidon-45-set	OK	0.571428571429	81.8	2h 24m ago	view
+#7	sidon-45-set	OK	0.571428571429	82.2	2h 24m ago	view
+#6	sidon-45-set	OK	0.571428571429	84.5	2h 23m ago	view
+#5	sidon-45-set	OK	0.571428571429	80.1	2h 23m ago	view
+#4	sidon-45-set	OK	0.571428571429	82.3	2h 23m ago	view
+#3	sidon-45-set	OK	0.571428571429	82.1	2h 24m ago	view
+#2	sidon-45-set	OK	0.571428571429	81.3	2h 24m ago	view
+#1	sidon-45-set	OK	0.571428571429	82.1	2h 23m ago	view
+0%

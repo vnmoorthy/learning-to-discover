@@ -146,3 +146,32 @@ def gallery():
 
 def memory_view():
     return memory.api_view()
+
+
+def physics():
+    """The lab's science domains beyond EinsteinArena: three-body periodic orbits and EVENT HORIZON."""
+    out = {"threebody": None, "event_horizon": None}
+    slug = "three-body-periodic-orbits"
+    meta = config.load_meta(slug)
+    b = ledger.get_best(slug) or {}
+    orbits = ((b.get("solution") or {}).get("orbits")) or []
+    try:
+        cat = json.load(open(os.path.join(config.PROBLEMS_DIR, slug, "catalog.json")))
+        n_cat = len(cat.get("orbits") or cat.get("entries") or []) if isinstance(cat, dict) else len(cat)
+        not_checked = cat.get("not_included") if isinstance(cat, dict) else None
+    except (OSError, ValueError):
+        n_cat, not_checked = 2060, None
+    out["threebody"] = {"title": meta.get("title"), "score": b.get("score"), "verified": bool(b.get("verified")),
+                        "time": b.get("time"), "orbits": orbits, "catalog_entries": n_cat or 2060,
+                        "not_checked": not_checked, "image": "/gallery/threebody_candidates.png",
+                        "verification": meta.get("verification"), "novelty": meta.get("novelty"),
+                        "caveats": meta.get("caveats")}
+    p = os.path.join(config.ROOT, "domains", "event-horizon", "results", "dashboard.json")
+    try:
+        eh = json.load(open(p))
+        for f in eh.get("figures") or []:
+            f["src"] = "/gallery/event-horizon/" + os.path.basename(f.get("path") or "")
+        out["event_horizon"] = eh
+    except (OSError, ValueError):
+        out["event_horizon"] = None
+    return out

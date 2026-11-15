@@ -1,0 +1,109 @@
+Learning to Discover
+autonomous math lab
+Mission Control
+Decisions
+Memory
+Literature
+Self-improvement
+Gallery
+PROBLEMS
+no-three-in-line-75
+two-deletion-code-16
+first-autocorrelation-inequality
+kakeya-needle-128
+kissing-number-d12-842
+kissing-number-d11-605
+three-body-periodic-orbits
+spencer-discrepancy
+hadamard-det-51
+sidon-45-set
+snake-in-the-box-13
+ring-loading-15
+An AI lab that gets better at discovering mathematics by doing it.
+mode: live
+LOOP RUNNING
+|
+CYCLE 17
+SSE LIVE
+BOX ONLINE
+Gallery
+
+Renders made from the lab's real artifacts: Blender scenes scripted by GPT-6 Astra and hero art from gpt-image-2.
+
+The Lattice: 150 points, 116 lines to go
+IMAGE
+Blender 5.2 EEVEE (script by GPT-6 Astra)
+
+Snapshot of our live no-three-in-line search on the 75x75 grid (SAT model rot180-150, seed 11, round 63, taken 06:32 PT, Nov 15). The 150 chosen points glow as pillars; red threads join chosen points that are still collinear (116 violated lines). Amber pillars sit on 4 or more violated lines: the solver's hot spots. Record to beat: 148 (Thomas-Prellberg).
+
+Lattice orbit
+VIDEO
+Blender 5.2 EEVEE (script by GPT-6 Astra), FFMPEG H.264
+
+8-second seamless camera orbit around the same live SAT snapshot (SAT model rot180-150, seed 11, round 63, taken 06:32 PT, Nov 15): 150 points, 116 violated lines. The model is 180-degree symmetric, so the view repeats every half turn.
+
+Hadamard City
+IMAGE
+Blender 5.2 EEVEE (script by GPT-6 Astra)
+
+The record 51x51 +-1 matrix (log10|det| = 43.3375, kgrey) extruded as a city: the 1296 +1 entries are cyan-roofed towers, the 1305 -1 entries low amber plinths (mostly hidden between towers at this angle); tower height follows the mean sign of each 5x5 neighbourhood.
+
+Snake in the 13-cube
+IMAGE
+Blender 5.2 EEVEE (script by GPT-6 Astra)
+
+The record 2950-edge snake-in-the-box (kgrey), verified and linearly projected from 13 dimensions to 3: rarely flipped coordinates become long bridges, frequent ones local wiggles. Colour runs amber (start) to cyan (end); faint dust marks all 8192 cube vertices.
+
+Snake turntable
+VIDEO
+Blender 5.2 EEVEE (script by GPT-6 Astra), FFMPEG H.264
+
+The same 2950-edge snake rotating once about its vertical axis.
+
+Social banner
+IMAGE
+gpt-image-2 backdrop + Blender 5.2 render (script by GPT-6 Astra) + PIL type
+
+1280x640 GitHub social preview. The backdrop is AI-generated art (illustrative, not data); the lattice on the right is the Blender render of our real SAT snapshot.
+
+gpt-image-2 backdrop
+IMAGE
+gpt-image-2 (OpenAI images API)
+
+Illustrative backdrop painted by gpt-image-2 for the banner (art direction only; not real data).
+
+Three-body: the figure-eight, rediscovered
+IMAGE
+threebody_gpu + matplotlib
+
+Correctness check for the new astrophysics problem (periodic orbits of the Newtonian three-body problem). Our GPU search (300,000 random initial velocities, batched Levenberg-Marquardt) converged on Moore's figure-eight: vx=0.3471168902, vy=0.5327249445, T=6.3259139921, return error 7.0e-10 in the official float64 verifier. Rediscovery of a known orbit (Moore 1993; Chenciner-Montgomery 2000).
+
+Three-body: Moth II
+IMAGE
+threebody_gpu + matplotlib
+
+Rediscovery of the 'moth II' orbit of Suvakov and Dmitrasinovic (2013): equal masses, T=28.6693, return error 1.6e-11. Found by the same GPU test run (seed 0, 300,000 seeds, periods 5 to 30) and matched to the literature catalog by initial condition and period.
+
+Three-body: a k=5 satellite of the figure-eight
+IMAGE
+threebody_gpu + matplotlib
+
+Equal masses, vx=0.1388980233, vy=0.5375024150, T=23.3346, return error 9.6e-12. Its topological word is the fifth power of the figure-eight word, so the verifier files it under the figure-eight family (a 'topological-power satellite', a known phenomenon: Suvakov 2014), not as a new family.
+
+Three-body: candidate orbit at m3 = 1.5 (not in our catalog)
+IMAGE
+threebody_gpu + matplotlib
+
+Unequal masses (m1=m2=1, m3=1.5): vx=0.3971945789, vy=0.8898238352, T=22.50016117, return error 4.7e-12 (confirmed independently with scipy DOP853: 8.8e-12). Its topological word matches none of the 2060 literature orbits we checked (Suvakov-Dmitrasinovic 2013, Li-Liao 2017, Li-Jing-Liao 2018). CANDIDATE only: the later catalogs (Li-Li-Liao 2021, Hristov et al. 2021-2024) were not checked and no multi-precision confirmation was run.
+
+Three-body: second candidate at m3 = 1.5
+IMAGE
+threebody_gpu + matplotlib
+
+m1=m2=1, m3=1.5: vx=0.0448250, vy=0.8108540, T=13.4697, return error 4.9e-11 in the official verifier. Passes within 0.012 of a two-body collision. Not in our 2060-orbit catalog; candidate only, same caveats as the previous image.
+
+Three-body: the 7 families of the first GPU test
+IMAGE
+threebody_gpu + matplotlib
+
+One orbit per topological family verified in the first test run (equal masses, periods 5 to 30, 300,000 seeds, about 4 minutes on one A100), ordered by period: butterfly I, figure-eight, yin-yang I, moth I, dragonfly, Li-Liao I.A-4 and moth II. All 7 are known families; the run found 0 new ones, as expected in the region Li and Liao scanned exhaustively.

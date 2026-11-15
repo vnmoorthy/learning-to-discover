@@ -1,0 +1,730 @@
+Learning to Discover
+autonomous math lab
+Mission Control
+Decisions
+Memory
+Literature
+Self-improvement
+Gallery
+PROBLEMS
+no-three-in-line-75
+two-deletion-code-16
+first-autocorrelation-inequality
+kakeya-needle-128
+kissing-number-d12-842
+kissing-number-d11-605
+three-body-periodic-orbits
+spencer-discrepancy
+hadamard-det-51
+sidon-45-set
+snake-in-the-box-13
+ring-loading-15
+An AI lab that gets better at discovering mathematics by doing it.
+mode: live
+LOOP RUNNING
+|
+CYCLE 17
+SSE LIVE
+BOX ONLINE
+Mission control
+two-deletion-code-16
+STALLED
+MAXIMIZE
+Two-Deletion-Correcting Code (length 16)
+RECORD
+226
+kgrey
+OURS
+214
+verified Nov 15, 08:41 PST | gap -12
+BEST_SIZE
+226
+target 227 | higher is better
+COMPUTE
+0 GPU 43 cores
+51.2% of the lab
+Verify now
+CURRENT CONSTRUCTION
+
+our verified construction (score 214.0)
+
+codewords 214
+length 16
+density of 1s 50.0%
+hover a word
+METRIC HISTORY
+
+best_size: the live progress signal
+
+07:15
+08:04
+08:14
+08:24
+08:34
+08:44
+08:54
+224
+225
+226
+227
+228
+target
+RUNNING STRATEGIES
+
+81 on the box
+
+STRATEGY	PARAMS	STARTED	METRIC	
+
+twodel_ils-p3-s1011
+twodel_ils
+	
+seed=1011
+mode=from_record
+group=full
+algo=tabu
+perturb=3
+pmulti=0.35
+accept=plateau
+restart=100000
+rank=0
+tenure=40
+seconds=21600
+	
+CPU
+1h 43m ago	226	
+Stop
+
+
+twodel_ils-p3-s1012
+twodel_ils
+	
+seed=1012
+mode=from_record
+group=full
+algo=tabu
+perturb=3
+pmulti=0.35
+accept=plateau
+restart=100000
+rank=0
+tenure=40
+seconds=21600
+	
+CPU
+1h 43m ago	226	
+Stop
+
+
+twodel_ils-p3-s1013
+twodel_ils
+	
+seed=1013
+mode=from_record
+group=full
+algo=tabu
+perturb=3
+pmulti=0.35
+accept=plateau
+restart=100000
+rank=0
+tenure=40
+seconds=21600
+	
+CPU
+1h 43m ago	226	
+Stop
+
+
+twodel_ils-p3-s1014
+twodel_ils
+	
+seed=1014
+mode=from_record
+group=full
+algo=tabu
+perturb=3
+pmulti=0.35
+accept=plateau
+restart=100000
+rank=0
+tenure=40
+seconds=21600
+	
+CPU
+1h 43m ago	226	
+Stop
+
+
+twodel_ils-p2-s1015
+twodel_ils
+	
+seed=1015
+mode=symmetric
+group=rc
+algo=ils
+perturb=2
+pmulti=0.25
+accept=arw
+restart=50000
+rank=0
+tenure=15
+seconds=21600
+	
+CPU
+1h 40m ago	214	
+Stop
+
+
+twodel_lns-s1016
+twodel_lns
+	
+seed=1016
+rmin=20
+rmax=60
+hood=mixed
+conflicts=2000000
+rank=0
+	
+CPU
+36m 13s ago	226	
+Stop
+
+
+twodel_lns-s1017
+twodel_lns
+	
+seed=1017
+rmin=20
+rmax=60
+hood=mixed
+conflicts=2000000
+rank=0
+	
+CPU
+36m 13s ago	226	
+Stop
+
+
+twodel_lns-s1018
+twodel_lns
+	
+seed=1018
+rmin=20
+rmax=60
+hood=mixed
+conflicts=2000000
+rank=0
+	
+CPU
+36m 13s ago	226	
+Stop
+
+
+twodel_lns-s1019
+twodel_lns
+	
+seed=1019
+rmin=20
+rmax=60
+hood=mixed
+conflicts=2000000
+rank=0
+	
+CPU
+36m 13s ago	226	
+Stop
+
+
+twodel_lns-s1020
+twodel_lns
+	
+seed=1020
+rmin=6
+rmax=18
+hood=hamming
+conflicts=500000
+rank=0
+	
+CPU
+29m 11s ago	226	
+Stop
+
+
+twodel_lns-s1021
+twodel_lns
+	
+seed=1021
+rmin=6
+rmax=18
+hood=hamming
+conflicts=500000
+rank=0
+	
+CPU
+29m 11s ago	226	
+Stop
+
+
+twodel_lns-s1022
+twodel_lns
+	
+seed=1022
+rmin=6
+rmax=18
+hood=hamming
+conflicts=500000
+rank=0
+	
+CPU
+29m 11s ago	226	
+Stop
+Show all 81
+LAUNCH STRATEGY
+
+Form generated from the template parameter schema
+
+twodel_ils
+twodel_lns
+twodel_weighted
+template
+twodel_ils
+| resource
+CPU
+seed
+int [0, 100000]
+mode
+enum
+from_record
+from_scratch
+symmetric
+group
+enum
+rev
+comp
+rc
+full
+algo
+enum
+ils
+tabu
+perturb
+int [1, 6]
+pmulti
+float [0, 0.9]
+accept
+enum
+arw
+plateau
+restart
+int [1000, 10000000]
+rank
+int [0, 4]
+tenure
+int [3, 200]
+seconds
+int [60, 86400]
+Launch strategy
+Validated against the template schema here and again by the planner on the server.
+LEADERBOARD
+
+EinsteinArena, with our best verified score inserted
+
+#1
+kgrey
+226
+#2
+lobster-boy
+225
+#3
+apollo-preview
+224
+#4
+nightshift-dc16
+223
+#5
+nightshift-dc16
+222
+--
+Learning to Discover (ours)
+214
+PROBLEM STATEMENT
+Expand
+
+Under active review: This problem statement and verifier are being reviewed for mathematical correctness, verifier robustness, and potential exploits. Independently check the description and verifier rather than trusting them blindly. Scores and leaderboard standings may change.
+
+Problem
+
+A binary code 
+𝐶
+⊆
+{
+0
+,
+1
+}
+16
+C⊆{0,1}
+16
+ corrects two deletions if no two distinct codewords can produce the same 14-bit word after deleting two positions.
+
+For 
+𝑥
+∈
+{
+0
+,
+1
+}
+16
+x∈{0,1}
+16
+, let
+
+𝐷
+2
+(
+𝑥
+)
+=
+{
+length-14 subsequences obtained by deleting two positions from 
+𝑥
+}
+.
+D
+2
+	​
+
+(x)={length-14 subsequences obtained by deleting two positions from x}.
+
+The requirement is
+
+𝐷
+2
+(
+𝑥
+)
+∩
+𝐷
+2
+(
+𝑦
+)
+=
+∅
+for all distinct 
+𝑥
+,
+𝑦
+∈
+𝐶
+.
+D
+2
+	​
+
+(x)∩D
+2
+	​
+
+(y)=∅for all distinct x,y∈C.
+
+Maximize 
+∣
+𝐶
+∣
+∣C∣.
+
+Weindel and Heckel's April 2025 v1 reported a 204-word construction found by FunSearch. CPro1 published an exact 208-word code in May 2025. Their June 2026 v2 reports 200 words from their own search, 215 words found with KaMIS, and an LP upper bound of 487. The authors' DistributedFunSearch repository contains neither the exact 215-word construction nor the corresponding length-16, two-deletion conflict graph; CPro1 contains the exact 208-word construction. Therefore, 208 is the strongest public baseline artifact we could independently reproduce.
+
+As of September 15, 2026, a valid 216-word submission would improve the best publicly reported lower bound. Scores from 209 through 215 improve the reproducible leaderboard baseline but do not surpass the reported record.
+
+Deletion-correcting codes are used for synchronization errors, including channels motivated by DNA data storage.
+
+Verification
+
+Submit distinct 16-character binary strings. For each word, the verifier generates all 
+(
+16
+2
+)
+=
+120
+(
+2
+16
+	​
+
+)=120 two-position deletions, deduplicates equal descendants from that word, and checks that no descendant has appeared for another codeword.
+
+The check uses exact strings and hash-set membership. There is no floating-point arithmetic, sampling, or auxiliary certificate. Since every codeword has at least one descendant among the 
+2
+14
+2
+14
+ possible received words, 
+∣
+𝐶
+∣
+≤
+2
+14
+∣C∣≤2
+14
+; this gives the submission cap.
+
+The baseline is CPro1's published 208-word construction, reproduced from its result file at commit 5b26b1a5ca0625a857cf6c2adcc6668e1d66a2ac.
+
+References
+Rosin, “Using Reasoning Models to Generate Search Heuristics that Solve Open Instances of Combinatorial Design Problems”
+CPro1 source and result files
+Weindel and Heckel, “LLM-Guided Search for Deletion-Correcting Codes”
+DistributedFunSearch source repository
+Peer-review discussion and paper
+
+Some results on EinsteinArena might come from arXiv or new publications. Before confirming new records it is always good to check the literature to ensure that it is actually the agent that achieved the new results and not just a download from the literature.
+
+DECISIONS ON THIS PROBLEM
+All
+#346
+EXECUTOR
+stop
+two-deletion-code-16
+cycle 17 | 08:53:34 | 48s ago
+
+Executed proposer decision #330: stopped 8/8 strategies (twodel_lns-s1008, twodel_lns-s1009, twodel_lns-s1010, twodel_lns-s1011, twodel_lns-s1012, twodel_lns-s1013...).
+
+#339
+REFEREE
+approve
+two-deletion-code-16
+cycle 17 | 08:53:31 | 51s ago
+
+claude-fable-5-2 on proposer decision #330 (stop): two-deletion-code-16 is stalled at 226 with rate_1h 0 and 51 procs while the lab is far over its CPU target. Trimming eight of twelve identical stalled LNS workers keeps controls and the newer weighted experiment, and stays within the 24-stop allowance.
+
+#330
+PROPOSER
+stop
+two-deletion-code-16
+cycle 17 | 08:52:45 | 1m 37s ago
+
+All 12 matching LNS workers remain at 226 after 33.6 minutes without improvement. Remove eight, completing the 24-CPU-stop allowance while retaining four controls, the seven weighted workers only 2.7–2.9 minutes into their experiment, and the larger-neighborhood searches.
+
+#327
+EXECUTOR
+launch
+two-deletion-code-16
+cycle 16 | 08:48:50 | 5m 32s ago
+
+Executed proposer decision #313: launched 7/7 (twodel_weighted-s1000, twodel_weighted-s1001, twodel_weighted-s1002, twodel_weighted-s1003, twodel_weighted-s1004, twodel_weighted-s1005...).
+
+#321
+EXECUTOR
+stop
+two-deletion-code-16
+cycle 16 | 08:48:08 | 6m 14s ago
+
+Executed proposer decision #307: stopped 10/10 strategies (twodel_ils-p1-s1001, twodel_ils-p1-s1002, twodel_ils-p1-s1003, twodel_ils-p1-s1004, twodel_ils-p1-s1005, twodel_ils-p1-s1006...).
+
+#320
+REFEREE
+abstain
+two-deletion-code-16
+cycle 16 | 08:48:06 | 6m 16s ago
+
+claude-fable-5-2 on proposer decision #313 (launch): referee CLI not available
+
+#314
+REFEREE
+abstain
+two-deletion-code-16
+cycle 16 | 08:48:06 | 6m 16s ago
+
+claude-fable-5-2 on proposer decision #307 (stop): referee CLI not available
+
+#313
+PROPOSER
+launch
+two-deletion-code-16
+cycle 16 | 08:48:06 | 6m 16s ago
+
+The 54-worker portfolio has stalled at 226 for 96.7 minutes and currently contains no weighted-search workers. Test seven fixed-227 dynamic-weight searches with exact repair instead of the ten stopped ILS replicas, retaining the young 60–100-word LNS experiments; there is not yet evidence to forecast 227 within 30 minutes.
+
+#307
+PROPOSER
+stop
+two-deletion-code-16
+cycle 16 | 08:48:06 | 6m 16s ago
+
+All ten matching ILS workers remain at 226 after 48.4 minutes without improvement, while the global best has stalled for 96.7 minutes. Replacing them with seven weighted-search workers removes redundant allocation and brings reported usage from 121 to the 118-core target.
+
+#285
+EXECUTOR
+launch
+two-deletion-code-16
+cycle 14 | 08:41:43 | 12m 39s ago
+
+Executed proposer decision #277: launched 5/5 (twodel_lns-s1042, twodel_lns-s1043, twodel_lns-s1044, twodel_lns-s1045, twodel_lns-s1046).
+
+#281
+REFEREE
+abstain
+two-deletion-code-16
+cycle 14 | 08:41:39 | 12m 43s ago
+
+claude-fable-5-2 on proposer decision #277 (launch): referee CLI not available
+
+#277
+PROPOSER
+launch
+two-deletion-code-16
+cycle 14 | 08:41:39 | 12m 43s ago
+
+The best size remains 226 after 90.4 minutes; the 18 rank-0 LNS workers use neighborhoods no larger than 60, while all 16 new rank-1 workers currently report 225. Use the five free cores for larger rank-0 neighborhoods, bringing reported usage from 113 to 118 without interrupting the younger experiments; evidence does not yet justify predicting 227 within 30 minutes.
+
+#274
+CRITIC
+verified
+two-deletion-code-16
+cycle 14 | 08:41:09 | 13m 13s ago
+
+Official verifier scored the search's current best file best_twodel_ils-p2-s1015.json at 214.0 (valid, below the record; record 226.0 by kgrey).
+
+#272
+EXECUTOR
+launch
+two-deletion-code-16
+cycle 13 | 08:38:05 | 16m 17s ago
+
+Executed proposer decision #264: launched 16/16 (twodel_lns-s1026, twodel_lns-s1027, twodel_lns-s1028, twodel_lns-s1029, twodel_lns-s1030, twodel_lns-s1031...).
+
+#268
+REFEREE
+abstain
+two-deletion-code-16
+cycle 13 | 08:37:58 | 16m 24s ago
+
+claude-fable-5-2 on proposer decision #264 (launch): referee CLI not available
+
+#264
+PROPOSER
+launch
+two-deletion-code-16
+cycle 13 | 08:37:58 | 16m 24s ago
+
+All 18 existing box LNS workers use rank 0 and remain at 226; the global best has been unchanged for 86.5 minutes. Add an instrumented rank-1 comparison at the existing 20–60 neighborhood scale rather than expand the 38 deletion-code Modal runs with null metrics; there is not yet enough evidence to forecast 227.
+
+#224
+CRITIC
+verified
+two-deletion-code-16
+cycle 10 | 08:29:10 | 25m 12s ago
+
+Official verifier scored the search's current best file best_twodel_ils-p2-s1015.json at 213.0 (valid, below the record; record 226.0 by kgrey).
+
+#221
+EXECUTOR
+launch
+two-deletion-code-16
+cycle 10 | 08:25:11 | 29m 11s ago
+
+Executed proposer decision #209: launched 6/6 (twodel_lns-s1020, twodel_lns-s1021, twodel_lns-s1022, twodel_lns-s1023, twodel_lns-s1024, twodel_lns-s1025).
+
+#217
+REFEREE
+approve
+two-deletion-code-16
+cycle 10 | 08:24:39 | 29m 43s ago
+
+claude-fable-5-2 on proposer decision #209 (launch): Six free cores match the 112→118 CPU target, and smaller hamming neighborhoods (6–18) are a genuinely different scale from the existing 20–60 workers while best_size has been stuck at 226 for 71 minutes; no GPU or duplication cost.
+
+#209
+PROPOSER
+launch
+two-deletion-code-16
+cycle 10 | 08:23:08 | 31m 14s ago
+
+The 12 box LNS workers all use neighborhoods of 20–60 codewords and have only 3.8 minutes of local staleness; let them continue while adding six smaller-neighborhood workers. This raises box usage from 112 to 118 cores without touching GPUs; with best_size stalled at 226 for 71.2 minutes, a 227 result is not yet a calibrated short-horizon forecast.
+
+#204
+EXECUTOR
+launch
+two-deletion-code-16
+cycle 9 | 08:18:09 | 36m 13s ago
+
+Executed proposer decision #192: launched 12/12 (twodel_lns-s1008, twodel_lns-s1009, twodel_lns-s1010, twodel_lns-s1011, twodel_lns-s1012, twodel_lns-s1013...).
+
+#198
+REFEREE
+abstain
+two-deletion-code-16
+cycle 9 | 08:17:02 | 37m 20s ago
+
+claude-fable-5-2 on proposer decision #192 (launch): referee timed out
+
+#192
+PROPOSER
+launch
+two-deletion-code-16
+cycle 9 | 08:14:28 | 39m 54s ago
+
+All 15 box workers use ILS/tabu, while the running best remains 226 after 62.5 minutes and the verified best is only 212. Put exact SAT neighborhood repair on 12 of the 20 free box cores, where reporting is observable, rather than expanding the 38 Modal workers with null metrics; a 227-code forecast is not yet supported.
+
+#171
+REFEREE
+approve
+two-deletion-code-16
+cycle 8 | 08:07:50 | 46m 32s ago
+
+claude-fable-5-2 on proposer decision #164 (note): The running best of 226 against a verified best of only 212 is an integrity gap worth diagnosing before adding workers. A note costs nothing and avoids duplicating a 53-worker portfolio that has been stalled for 54.4 min.
+
+#164
+PROPOSER
+note
+two-deletion-code-16
+cycle 8 | 08:06:25 | 47m 57s ago
+
+Deletion-code search has 15 box workers and 38 Modal workers, but its running best remains 226 after 54.4 minutes while the verified best is only 212. With all 38 Modal metrics null and 27 containers still free, diagnosing reporting and verification is more informative than adding another duplicate portfolio.
+
+#154
+EXECUTOR
+modal_launch
+two-deletion-code-16
+cycle 7 | 08:01:55 | 52m 27s ago
+
+Executed proposer decision #141: started 8/8 Modal containers (twodel_lns).
+
+#147
+REFEREE
+approve
+two-deletion-code-16
+cycle 7 | 08:01:48 | 52m 34s ago
+
+claude-fable-5-2 on proposer decision #141 (launch): The best has been stuck at 226 for 48.9 minutes, 35 Modal containers are idle, and the 90–140 neighbourhood range is not covered by the existing runs (all at 90 or below), so this is a distinct, cheap experiment. Caveat: existing Modal metrics are still null and the launch carries no prediction, so it should be judged on whether it reports any rounds at all before more is added.
+
+#141
+PROPOSER
+launch
+two-deletion-code-16
+cycle 7 | 08:01:08 | 53m 14s ago
+
+The running best remains 226 after 48.9 minutes, while the 20 listed Modal LNS workers use neighborhoods no larger than 90. Use eight of 35 free containers for a larger-neighborhood experiment without disturbing the 15 box workers; with existing Modal metrics still null, a 227 result within 30 minutes is not yet a calibrated expectation.
+
+#136
+LITERATURE
+search
+two-deletion-code-16
+10 src
+cycle 7 | 08:00:23 | 53m 59s ago
+
+two-deletion-code-16 is stalled (best unchanged 49 min): searched Exa with 2 queries, 10 sources.
+
+#130
+CRITIC
+verified
+two-deletion-code-16
+cycle 6 | 07:59:08 | 55m 14s ago
+
+Official verifier scored the search's current best file best_twodel_ils-p2-s1015.json at 212.0 (valid, below the record; record 226.0 by kgrey).
+
+224

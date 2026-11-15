@@ -118,6 +118,11 @@ def get_gallery():
     return views.gallery()
 
 
+@app.get("/api/physics")
+def get_physics():
+    return views.physics()
+
+
 @app.get("/api/events")
 async def sse(request: Request):
     qu = events.subscribe()

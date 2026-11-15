@@ -306,3 +306,46 @@ export interface LogEvent {
   level: string
   msg: string
 }
+
+
+export interface ThreeBodyOrbit { vx: number; vy: number; T: number; m3?: number }
+export interface EHFigure { title: string; path?: string; src?: string; caption?: string; classification?: number | string }
+export interface EHCycle {
+  id?: string | number
+  question?: string
+  hypothesis?: string
+  derivation_summary?: string
+  prediction?: string
+  experiment?: unknown
+  result?: string
+  verification?: string
+  critic_objections?: string | string[]
+  revised_hypothesis?: string
+  conclusion?: string
+  classification?: number | string
+}
+export interface PhysicsResponse {
+  threebody: {
+    title?: string
+    score?: number | null
+    verified?: boolean
+    time?: string | null
+    orbits: ThreeBodyOrbit[]
+    catalog_entries: number
+    not_checked?: unknown
+    image: string
+    verification?: string
+    novelty?: string
+    caveats?: string
+  } | null
+  event_horizon: {
+    title?: string
+    question?: string
+    summary?: string
+    cycles?: EHCycle[]
+    figures?: EHFigure[]
+    tests?: { passed?: number; failed?: number; total?: number }
+    verification?: unknown
+    hardware?: string
+  } | null
+}

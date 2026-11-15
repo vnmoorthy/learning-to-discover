@@ -50,6 +50,7 @@ def main():
     write(os.path.join(out, "learning.json"), views.learning())
     write(os.path.join(out, "sandboxes.json"), views.sandboxes(1000))
     write(os.path.join(out, "gallery.json"), views.gallery())
+    write(os.path.join(out, "physics.json"), views.physics())
     # copy of the memory benchmark for the repo (data/snapshot is the only tracked part of data/)
     bench = views.memory_view().get("benchmark")
     if bench and os.path.realpath(out) == os.path.realpath(config.SNAPSHOT_OUT):   # a test export (--out) leaves it alone
