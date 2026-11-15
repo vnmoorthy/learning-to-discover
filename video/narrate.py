@@ -35,8 +35,8 @@ S = [
       caption=f"{N['gpus']} x A100  |  {N['cpus']} CPU cores  |  Modal fleet {N['fleet']}/{N['fleet_max']} containers",
       text=f"It runs on {N['gpus']} A100 GPUs and {N['cpus']} CPU cores, coloured by the problem that owns them, plus an elastic Modal fleet: {N['fleet']} containers right now."),
  dict(id="s4_problem", shot="/problems/no-three-in-line-75: header (record vs ours), then the 75x75 construction canvas with red violated lines; hover two points to isolate their lines.",
-      caption=f"No-three-in-line 75x75  |  record {N['rec']}  |  ours: 150 points, {N['viol']} violated lines (not valid yet)",
-      text=f"The flagship problem: no three in line, on a 75 by 75 grid. The record is {N['rec']} points. Our best candidate places 150, but {N['viol']} lines, in red, still cross three or more. Zero would be a new record. We are not there yet."),
+      caption=f"No-three-in-line 75x75  |  record {N['rec']}  |  ours: 150 points, {floor(N['viol'],100)}+ violated lines (not valid yet)",
+      text=f"The flagship problem: no three in line, on a 75 by 75 grid. The record is {N['rec']} points. Our best candidate places 150, but over {floor(N['viol'],100)} lines, in red, still cross three or more. Zero would be a new record. We are not there yet."),
  dict(id="s5_decisions", shot="/decisions filtered to proposer, decision #211 expanded (rationale, queries, 3 Exa sources); cut to referee filter, #219 expanded (Claude Fable approve); cut to #191 expanded (prediction vs outcome, REFUTED).",
       caption="Decision #211: GPT-6 Astra proposes, 3 Exa sources  |  #219: Claude Fable 5.2 approves  |  #191: prediction refuted",
       text="Every action is a card in the audit log. Here GPT-6 Astra asks for research, citing three Exa sources. Claude Fable reviews and approves it, with its own reasoning. Launches carry a falsifiable prediction: this one expected 16 collinear triples in 30 minutes. The critic observed 17, and marked it refuted."),
@@ -50,8 +50,8 @@ S = [
       caption="Three-body domain: known families rediscovered  |  candidate orbits not found in the catalogs we checked",
       text="The same loop now runs astrophysics: periodic three-body orbits. Our GPU search rediscovered the figure-eight and other known families, and reports candidate orbits not found in the catalogs we checked."),
  dict(id="s9_close", shot="B-roll: lattice_orbit.mp4 again, closing card with the replay URL.",
-      caption="No math record beaten yet  |  replay: vnmoorthy.github.io/learning-to-discover",
-      text="On the math problems, no record is beaten yet, and the app says so. Every decision, source and prediction is logged and replayable. Learning to Discover."),
+      caption="No math record beaten yet; three-body orbits are candidates  |  replay: vnmoorthy.github.io/learning-to-discover",
+      text="No math record is beaten yet, and the three-body orbits are candidates, not discoveries. Every decision, source and prediction is logged and replayable. Learning to Discover."),
 ]
 words = sum(len(x["text"].split()) for x in S); print("words", words)
 json.dump(dict(numbers=N, read_at=s["now"], sections=S), open(f"{HERE}/sections.json", "w"), indent=1)

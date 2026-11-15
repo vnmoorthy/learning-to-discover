@@ -28,7 +28,7 @@ def card(title, lines, out):
     im.save(out)
 CY, AM, GR = (61, 245, 255, 255), (255, 181, 71, 255), (200, 206, 216, 255)
 card("Learning to Discover", [("An autonomous AI lab for open math problems", CY), ("Iterate AI Research Hackathon  |  Track 1  |  live run, Nov 15", GR)], f"{HERE}/build/card_s1.png")
-card("Learning to Discover", [("No math record beaten yet. Every decision is logged and replayable.", AM), ("vnmoorthy.github.io/learning-to-discover", CY)], f"{HERE}/build/card_s9.png")
+card("Learning to Discover", [("No math record beaten yet. Three-body orbits are candidates. Every decision is logged.", AM), ("vnmoorthy.github.io/learning-to-discover", CY)], f"{HERE}/build/card_s9.png")
 ENC = ["-c:v", "libx264", "-preset", "medium", "-crf", "17", "-pix_fmt", "yuv420p", "-r", "30"]
 segs = []
 for x in S:

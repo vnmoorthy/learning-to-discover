@@ -30,7 +30,7 @@ class Shot:
         await self.page.mouse.move(self.mx, self.my); await asyncio.sleep(0.4); self.t0 = time.time()
     def now(self): return time.time() - self.t0
     async def until(self, t):
-        d = t - self.now()
+        d = min(t, self.dur + 0.4) - self.now()
         if d > 0: await asyncio.sleep(d)
     async def glide(self, x, y, ms=900):
         x0, y0 = self.mx, self.my; st = time.time()

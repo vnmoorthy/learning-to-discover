@@ -1,16 +1,16 @@
 {
  "numbers": {
-  "cycles": 36,
-  "decisions": 864,
-  "dec_floor": 850,
+  "cycles": 39,
+  "decisions": 914,
+  "dec_floor": 900,
   "gpus": 8,
   "cpus": 124,
   "fleet": 140,
   "fleet_max": 140,
-  "viol": 107,
+  "viol": 109,
   "rec": 148,
-  "facts": 362,
-  "facts_floor": 360,
+  "facts": 397,
+  "facts_floor": 390,
   "past": 74,
   "md": 100,
   "rag": 97,
@@ -19,14 +19,14 @@
   "vN": 50,
   "steps": 40,
   "sandboxes": 28,
-  "comm": 16,
-  "rej": 22,
+  "comm": 18,
+  "rej": 25,
   "adopted": 0,
   "ref_ok": 35,
   "interval": 3,
   "problems": 12
  },
- "read_at": "2026-11-15T18:37:24Z",
+ "read_at": "2026-11-15T18:48:51Z",
  "sections": [
   {
    "id": "s1_intro",
@@ -35,20 +35,20 @@
    "text": "This is Learning to Discover: an autonomous AI lab that hunts for records on open math problems, and improves by doing it.",
    "dur": 7.92,
    "tts_model": "gpt-4o-mini-tts",
-   "adur": 6.535938,
-   "vdur": 7.09,
+   "adur": 6.449625,
+   "vdur": 7.0,
    "start": 0
   },
   {
    "id": "s2_loop",
    "shot": "Mission Control /: hero and totals counters, then slow scroll so the Autonomous Loop phase stepper is centred; cursor sweeps the eight phases left to right.",
-   "caption": "One loop every 3 min  |  35+ cycles, 850+ logged decisions, all auditable",
-   "text": "This is the live lab. Every 3 minutes, with no human in the loop, it reads telemetry, re-verifies every claim, recalls memory, searches papers with Exa, proposes experiments with GPT-6 Astra, has Claude Fable referee them, then executes. Over 35 cycles and 850 logged decisions so far.",
+   "caption": "One loop every 3 min  |  35+ cycles, 900+ logged decisions, all auditable",
+   "text": "This is the live lab. Every 3 minutes, with no human in the loop, it reads telemetry, re-verifies every claim, recalls memory, searches papers with Exa, proposes experiments with GPT-6 Astra, has Claude Fable referee them, then executes. Over 35 cycles and 900 logged decisions so far.",
    "dur": 21.912,
    "tts_model": "gpt-4o-mini-tts",
-   "adur": 18.809417,
-   "vdur": 19.36,
-   "start": 7.09
+   "adur": 18.601521,
+   "vdur": 19.15,
+   "start": 7.0
   },
   {
    "id": "s3_compute",
@@ -57,20 +57,20 @@
    "text": "It runs on 8 A100 GPUs and 124 CPU cores, coloured by the problem that owns them, plus an elastic Modal fleet: 140 containers right now.",
    "dur": 13.2,
    "tts_model": "gpt-4o-mini-tts",
-   "adur": 10.749083,
-   "vdur": 11.3,
-   "start": 26.45
+   "adur": 10.622354,
+   "vdur": 11.17,
+   "start": 26.15
   },
   {
    "id": "s4_problem",
    "shot": "/problems/no-three-in-line-75: header (record vs ours), then the 75x75 construction canvas with red violated lines; hover two points to isolate their lines.",
-   "caption": "No-three-in-line 75x75  |  record 148  |  ours: 150 points, 107 violated lines (not valid yet)",
-   "text": "The flagship problem: no three in line, on a 75 by 75 grid. The record is 148 points. Our best candidate places 150, but 107 lines, in red, still cross three or more. Zero would be a new record. We are not there yet.",
-   "dur": 18.72,
+   "caption": "No-three-in-line 75x75  |  record 148  |  ours: 150 points, 100+ violated lines (not valid yet)",
+   "text": "The flagship problem: no three in line, on a 75 by 75 grid. The record is 148 points. Our best candidate places 150, but over 100 lines, in red, still cross three or more. Zero would be a new record. We are not there yet.",
+   "dur": 18.048,
    "tts_model": "gpt-4o-mini-tts",
-   "adur": 15.990979,
-   "vdur": 16.54,
-   "start": 37.75
+   "adur": 15.082604,
+   "vdur": 15.63,
+   "start": 37.32
   },
   {
    "id": "s5_decisions",
@@ -79,20 +79,20 @@
    "text": "Every action is a card in the audit log. Here GPT-6 Astra asks for research, citing three Exa sources. Claude Fable reviews and approves it, with its own reasoning. Launches carry a falsifiable prediction: this one expected 16 collinear triples in 30 minutes. The critic observed 17, and marked it refuted.",
    "dur": 21.816,
    "tts_model": "gpt-4o-mini-tts",
-   "adur": 18.794292,
-   "vdur": 19.34,
-   "start": 54.29
+   "adur": 18.577375,
+   "vdur": 19.13,
+   "start": 52.95
   },
   {
    "id": "s6_memory",
    "shot": "/memory: agent graph (hover the proposer node), then scroll to the Memory Benchmark bars and table.",
-   "caption": "past.dev shared memory: 360+ facts  |  benchmark on 31 questions: past.dev 74%, markdown 100%, RAG 97%",
-   "text": "Agents share memory through past.dev: over 360 facts. Benchmarked honestly, it scores 74 percent, against 100 for plain markdown and 97 for RAG.",
+   "caption": "past.dev shared memory: 390+ facts  |  benchmark on 31 questions: past.dev 74%, markdown 100%, RAG 97%",
+   "text": "Agents share memory through past.dev: over 390 facts. Benchmarked honestly, it scores 74 percent, against 100 for plain markdown and 97 for RAG.",
    "dur": 13.968,
    "tts_model": "gpt-4o-mini-tts",
-   "adur": 11.858688,
-   "vdur": 12.41,
-   "start": 73.63
+   "adur": 11.726708,
+   "vdur": 12.28,
+   "start": 72.08
   },
   {
    "id": "s7_learning",
@@ -101,9 +101,9 @@
    "text": "The lab also trains itself. Tinker fine-tunes an open Qwen model with the verifier as reward: valid constructions on held-out prompts went from 0 to 50 percent in 40 steps. Devin writes new search programs, tested in Modal sandboxes; so far none has passed.",
    "dur": 19.512,
    "tts_model": "gpt-4o-mini-tts",
-   "adur": 16.518667,
-   "vdur": 17.07,
-   "start": 86.04
+   "adur": 16.327063,
+   "vdur": 16.88,
+   "start": 84.36
   },
   {
    "id": "s8_gallery",
@@ -112,23 +112,23 @@
    "text": "The same loop now runs astrophysics: periodic three-body orbits. Our GPU search rediscovered the figure-eight and other known families, and reports candidate orbits not found in the catalogs we checked.",
    "dur": 12.96,
    "tts_model": "gpt-4o-mini-tts",
-   "adur": 10.62,
-   "vdur": 11.17,
-   "start": 103.11
+   "adur": 10.488958,
+   "vdur": 11.04,
+   "start": 101.24
   },
   {
    "id": "s9_close",
    "shot": "B-roll: lattice_orbit.mp4 again, closing card with the replay URL.",
-   "caption": "No math record beaten yet  |  replay: vnmoorthy.github.io/learning-to-discover",
-   "text": "On the math problems, no record is beaten yet, and the app says so. Every decision, source and prediction is logged and replayable. Learning to Discover.",
-   "dur": 8.016,
+   "caption": "No math record beaten yet; three-body orbits are candidates  |  replay: vnmoorthy.github.io/learning-to-discover",
+   "text": "No math record is beaten yet, and the three-body orbits are candidates, not discoveries. Every decision, source and prediction is logged and replayable. Learning to Discover.",
+   "dur": 10.248,
    "tts_model": "gpt-4o-mini-tts",
-   "adur": 6.164438,
-   "vdur": 7.71,
-   "start": 114.28
+   "adur": 8.154979,
+   "vdur": 9.7,
+   "start": 112.28
   }
  ],
- "tempo": 1.1568261551724135,
- "total": 121.98999999999998,
+ "tempo": 1.1702853965517241,
+ "total": 121.98,
  "pad_in": 0.25
 }
