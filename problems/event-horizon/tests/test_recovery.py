@@ -185,3 +185,21 @@ def test_yoshida_kitaev_otoc_identity(gate):
         P = hp.yoshida_kitaev(U, k, nB, m)["P_EPR"]
         O = ot.pauli_averaged_otoc(U, n, list(range(k)), list(range(n - m, n)))
         assert abs(P - O) < 1e-12
+
+
+def test_otoc_fast_matches_dense():
+    U = haar_unitary(16, rng(600))
+    for w in ({3: "Z"}, {2: "Y"}, {1: "X", 3: "Y"}):
+        vs = [{0: "X"}, {0: "Y"}, {0: "Z"}, {0: "Y", 1: "Y"}]
+        fast = ot.otoc_fast(U, 4, w, vs)
+        for v, f in zip(vs, fast):
+            assert abs(f - ot.otoc(U, ot.pauli_string(4, w), ot.pauli_string(4, v))) < 1e-12
+
+
+def test_clifford_petz_fidelity_is_discrete():
+    """Stabilizer states: F_Petz takes values in {1/4, 1/2, 1} for k = 1."""
+    for s in range(6):
+        U = brickwork_unitary(4, 12, rng(700 + s), gate="clifford")
+        for m in range(5):
+            F = rc.petz_fidelity_pure(rc.hp_tensor(U, 1, 3, m, True))
+            assert min(abs(F - x) for x in (0.25, 0.5, 1.0)) < 1e-9

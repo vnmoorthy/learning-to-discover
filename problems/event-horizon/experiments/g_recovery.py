@@ -418,7 +418,9 @@ def part_plot():
     merged = {"description": "Tracks C+D: explicit HP recovery (Petz decoder), scrambling quality, noise, OTOCs",
               "decoder": "Petz recovery map (transpose channel), sigma = 1/d_M; Yoshida-Kitaev P_EPR/F_EPR alongside",
               "g1": g1, "g2_noise_D": g2, "g2_noise_DR": g2r, "g3": g3,
-              "g2_used_n": g2["k"] + g2["n_B"], "g2_n4_runs": small,
+              "g2_used_n": g2["k"] + g2["n_B"],
+              "g2_clifford_purity": json.load(open(os.path.join(PARTS, "g2_clifford_purity.json")))
+              if os.path.exists(os.path.join(PARTS, "g2_clifford_purity.json")) else None, "g2_n4_runs": small,
               "extra_larger_runs_if_finished": extra}
     with open(os.path.join(ROOT, "results", "g_recovery.json"), "w") as f:
         json.dump(merged, f, indent=1)
@@ -455,6 +457,36 @@ def part_g3long():
     dump("g3_long.json", out)
 
 
+def part_g2cliff():
+    """H-G3 with adequate statistics: purity tr rho_QB'^2 for depth-30 Clifford
+    brickwork (n = 5, k = 1) vs the exact Haar second-moment formula; 400 seeds."""
+    k, nB, S = 1, 4, 400
+    n = k + nB
+    seeds = [SEED + 6000 + s for s in range(S)]
+    pur = {True: np.zeros((n + 1, S)), False: np.zeros((n + 1, S))}
+    Fp = {True: np.zeros((n + 1, S)), False: np.zeros((n + 1, S))}
+    for j, sd in enumerate(seeds):
+        U = brickwork_unitary(n, 30, np.random.default_rng(sd), gate="clifford")
+        for old in (True, False):
+            for m in range(n + 1):
+                Psi = rc.hp_tensor(U, k, nB, m, old)
+                pur[old][m, j] = rc.decoupling(Psi)["purity_QBp"]
+                Fp[old][m, j] = rc.petz_fidelity_pure(Psi)
+    out = {"k": k, "n_B": nB, "depth": 30, "seeds": seeds, "rows": []}
+    for old in (True, False):
+        f = hp.haar_mean_purity_RBp_old if old else hp.haar_mean_purity_RBp_young
+        for m in range(n + 1):
+            s_ = stats(pur[old][m])
+            h = f(k, nB, m)
+            z = (s_["mean"] - h) / s_["sem"] if s_["sem"] > 0 else (0.0 if abs(s_["mean"] - h) < 1e-12 else float("inf"))
+            vals, cnts = np.unique(np.round(Fp[old][m], 6), return_counts=True)
+            out["rows"].append({"old": old, "m": m, "purity": s_, "haar_exact": h, "z": z,
+                                "F_petz": stats(Fp[old][m]),
+                                "F_petz_values": vals.tolist(), "F_petz_counts": cnts.tolist()})
+            log(f"cliff old={old} m={m} purity {s_['mean']:.4f}+-{s_['sem']:.4f} haar {h:.4f} z={z:.2f} F vals {vals.tolist()}")
+    dump("g2_clifford_purity.json", out)
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1]
     t0 = time.time()
@@ -462,5 +494,5 @@ if __name__ == "__main__":
      "g3": part_g3, "plot": part_plot,
      "g2fast": lambda: (part_g2("D", 3, SCRAMBLERS_G2_N4, "g2_D_n4.json"),
                         part_g2("DR", 3, ["haar", "haar:8", "clifford:24"], "g2_DR_n4.json")),
-     "g3fast": lambda: part_g3(True), "g3long": part_g3long}[cmd]()
+     "g3fast": lambda: part_g3(True), "g3long": part_g3long, "g2cliff": part_g2cliff}[cmd]()
     log(f"{cmd} done in {time.time() - t0:.1f}s")

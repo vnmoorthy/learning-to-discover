@@ -562,6 +562,16 @@ def plot():
                     yerr=[blkN["brick"][str(d)]["stats"]["S2_minus_Sinf"]["sem"][hh] for d in bdd],
                     fmt="o-", ms=3.5, color=PALETTE[i], label=f"brickwork, {nm}")
         a6.axhline(blkN["haar"]["stats"]["S2_minus_Sinf"]["mean"][hh], color=PALETTE[i], ls="--", lw=0.8, label=f"Haar, {nm}")
+    if os.path.exists(Ep):
+        for i, nm in ((2, "N10"), (1, "N12")):
+            eb = Ee[nm]["brick"]
+            hh = int(nm[1:]) // 2
+            de = sorted(int(d) for d in eb)
+            a6.errorbar(de, [eb[str(d)]["stats"]["S2_minus_Sinf"]["mean"][hh] for d in de],
+                        yerr=[eb[str(d)]["stats"]["S2_minus_Sinf"]["sem"][hh] for d in de], fmt="^--", ms=4, lw=0.7,
+                        mfc="none", color=PALETTE[i], label=f"brickwork, {nm[0]}={nm[1:]} (part E, indep. seeds)")
+            if nm == "N10":
+                a6.axhline(np.mean(Ee[nm]["haar_stats"]["S2_minus_Sinf"]["mean"][hh]), color=PALETTE[i], ls=":", lw=0.8, label="Haar, N=10")
     a6.axhline(0, color=MAGENTA, lw=1.0, label="stabilizer (exactly 0)")
     a6.set_xlabel("brickwork depth D")
     a6.set_ylabel("⟨S_2 − S_∞⟩ at half cut (nats)")

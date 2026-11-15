@@ -1,6 +1,6 @@
 {
  "experiment": "f_spectra (upgrade tracks A, B, direction 6)",
- "time_utc": "2026-11-15T21:07:39Z",
+ "time_utc": "2026-11-15T21:08:25Z",
  "backend": "numpy (local CPU), complex128",
  "A_renyi": {
   "seed_base": 202611151,
