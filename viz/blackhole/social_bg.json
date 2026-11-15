@@ -22,11 +22,13 @@
  "resc": 50.0,
  "max_steps": 6000,
  "chunk": 4000000,
+ "taper": 2.5,
  "seed": 11,
+ "star_seed": 13,
  "out": "viz/blackhole/out/social_bg.png",
  "device": "NVIDIA A100-SXM4-40GB",
  "rays": 7372800,
  "disk_hits": 1490446,
  "max_steps_used": 384,
- "seconds": 5.5
+ "seconds": 6.4
 }

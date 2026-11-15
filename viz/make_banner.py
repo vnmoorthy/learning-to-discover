@@ -4,19 +4,27 @@ The black holes are real renders, not drawings. viz/blackhole/raytrace.py traces
 along Schwarzschild null geodesics on an A100 (thin Keplerian disk, Doppler beaming, gravitational redshift, lensed
 star field). The two backgrounds are committed next to it and were made on GPU 0 of the Lambda box with:
 
-  CUDA_VISIBLE_DEVICES=0 python3 viz/blackhole/raytrace.py --w 2400 --h 900 --ss 3 --fov 60 --yaw -13 --rout 13 --tpeak 4800 --elev 5 --sat 1.2 --out viz/blackhole/out/banner_bg.png
-      -> viz/blackhole/banner_bg.png   (19.4M rays, 10.6 s; metadata in viz/blackhole/banner_bg.json)
-  CUDA_VISIBLE_DEVICES=0 python3 viz/blackhole/raytrace.py --w 1280 --h 640 --ss 3 --fov 56 --yaw -13 --rout 13 --tpeak 4800 --elev 5 --sat 1.2 --out viz/blackhole/out/social_bg.png
-      -> viz/blackhole/social_bg.png   (7.4M rays, 5.5 s; metadata in viz/blackhole/social_bg.json)
+  CUDA_VISIBLE_DEVICES=0 python3 viz/blackhole/raytrace.py --w 2400 --h 900 --ss 3 --fov 60 --yaw -13 --rout 13 --taper 2.5 --tpeak 4800 --elev 5 --sat 1.2 --star_seed 13 --out viz/blackhole/out/banner_bg.png
+      -> viz/blackhole/banner_bg.png   (19.4M rays, 12.2 s; metadata in viz/blackhole/banner_bg.json)
+  CUDA_VISIBLE_DEVICES=0 python3 viz/blackhole/raytrace.py --w 1280 --h 640 --ss 3 --fov 56 --yaw -13 --rout 13 --taper 2.5 --tpeak 4800 --elev 5 --sat 1.2 --star_seed 13 --out viz/blackhole/out/social_bg.png
+      -> viz/blackhole/social_bg.png   (7.4M rays, 6.4 s; metadata in viz/blackhole/social_bg.json)
 
 A negative --yaw turns the camera left, so the hole sits right of centre and the text gets the dark sky on the left.
-This script only (1) dims the far, receding tail of the disk behind the text with a soft horizontal gradient,
-(2) lifts pure black to the palette background, and (3) sets the type. The live stats line reads
-web/public/data/state.json (read only); if the totals are missing the line is left out, never invented.
+--taper 2.5 lets the outer 2.5 r_s of the disk thin out to transparent, so the near rim no longer cuts a hard straight
+edge (with a notch) across the lower lensed image. --star_seed 13 is a sky with no star near the line of sight through
+the hole; the default sky (seed 12) has one ~0.2 deg off it, and its Einstein ring draws a faint full circle that ran
+through the type. The disk itself is the approved look (disk texture seed 11, as in blackhole_rt.png).
 
-The shadow position and size are computed from the same camera (critical impact parameter b = 3*sqrt(3) M), and the
-script refuses to write an image in which any text touches the shadow or photon ring, or any main-column text runs
-onto the lensed disk arc, or (social preview) any text sits closer than 48 px to an edge.
+This script only (1) dims the far, receding tail of the disk behind the text with a soft horizontal gradient,
+(2) fades the last columns on the right so the Doppler-bright approaching side of the disk tapers off instead of
+hitting the frame edge at full brightness, (3) lifts pure black to the palette background, and (4) sets the type.
+The live stats line reads web/public/data/state.json (read only); if the totals are missing the line is left out,
+never invented.
+
+The shadow position and size are computed from the same camera (critical impact parameter b = 3*sqrt(3) M; the camera
+is checked against each background's .json metadata), and the script refuses to write an image in which any text
+touches the shadow or photon ring, or any main-column text runs onto the lensed disk arc, or (social preview) any text
+sits closer than 48 px to an edge.
 
   /opt/anaconda3/bin/python3 viz/make_banner.py
       -> docs/assets/banner.png (2400x900) and docs/assets/social-preview.png (1280x640)
@@ -36,10 +44,10 @@ TAGLINE = "An AI lab that gets better at discovering mathematics and physics by 
 INFRA = "8x A100  ·  Modal fleet  ·  GPT-6 Astra + Claude Fable 5.2"
 FOOT = "Black hole ray-traced on an A100 · Schwarzschild null geodesics"
 
-# Camera of each committed background (must match the command lines above; dist 30, pitch 0 are raytrace defaults).
+# Camera of each committed background (dist 30, pitch 0 are raytrace defaults; hole() assumes pitch 0).
 CAM = {
-    "banner": dict(w=2400, h=900, fov=60.0, yaw=-13.0, elev=5.0, dist=30.0),
-    "social": dict(w=1280, h=640, fov=56.0, yaw=-13.0, elev=5.0, dist=30.0),
+    "banner": dict(w=2400, h=900, fov=60.0, yaw=-13.0, elev=5.0, dist=30.0, pitch=0.0),
+    "social": dict(w=1280, h=640, fov=56.0, yaw=-13.0, elev=5.0, dist=30.0, pitch=0.0),
 }
 
 LAYOUT = {
@@ -50,16 +58,16 @@ LAYOUT = {
             "An AI lab that gets better at discovering",
             "mathematics and physics by doing it.",
             "Every claim verified."], 444, 46, 1.36),
-        stats=(694, 31), infra=(748, 31), foot=(22, 36, 34),
-        dim_lo=0.16, dim_from=0.20),
+        stats=(694, 31), infra=(748, 31), foot=(27, 36, 34),
+        dim_lo=0.16, dim_from=0.20, edge=(180, 0.5)),
     "social": dict(
         bg="viz/blackhole/social_bg.png", out="docs/assets/social-preview.png", margin=48,
         x0=72, label=(150, 21), word=(258, 98), tag=([
             "An AI lab that gets better at",
             "discovering mathematics and physics",
             "by doing it. Every claim verified."], 322, 31, 1.38),
-        stats=None, infra=(526, 18), foot=(15, 48, 48),
-        dim_lo=0.22, dim_from=0.12),
+        stats=None, infra=(526, 18), foot=(15, 56, 56),
+        dim_lo=0.22, dim_from=0.12, edge=(110, 0.45)),
 }
 
 
@@ -148,14 +156,20 @@ def compose(name):
     W, H = cam["w"], cam["h"]
     src = Image.open(os.path.join(ROOT, L["bg"])).convert("RGB")
     assert src.size == (W, H), f"{L['bg']} is {src.size}, expected {(W, H)}"
+    with open(os.path.join(ROOT, os.path.splitext(L["bg"])[0] + ".json")) as fh:
+        meta = json.load(fh)
+    for k, v in cam.items():      # the keep-out geometry is only right for the camera the background was traced with
+        assert abs(meta[k] - v) < 1e-6, f"{L['bg']} was rendered with {k}={meta[k]}, CAM says {v}"
     cx, cy, rs = hole(cam)
     keep_out = 1.30 * rs          # shadow + photon ring (+ the dark gap around it)
     arc_edge = cx - 1.95 * rs     # left edge of the lensed upper disk image
 
-    # 1) dim the receding disk tail behind the text, 2) lift black to the palette background
+    # 1) dim the receding disk tail behind the text, 2) fade the right edge, 3) lift black to the palette background
     img = np.asarray(src).astype(np.float32) / 255
     xs = (np.arange(W) + 0.5)
     dim = L["dim_lo"] + (1 - L["dim_lo"]) * smoothstep(L["dim_from"] * W, arc_edge - 0.02 * W, xs)
+    ew, elo = L["edge"]
+    dim = dim * (1 - (1 - elo) * smoothstep(W - ew, W, xs))
     img = img * dim[None, :, None]
     bgc = np.array(hexrgb(BG)[:3], np.float32) / 255
     img = 1 - (1 - img) * (1 - bgc)
