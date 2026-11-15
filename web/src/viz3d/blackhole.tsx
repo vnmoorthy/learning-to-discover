@@ -227,6 +227,7 @@ const R_MAG = 8
 function BlackHoleScene({ opts, onFail, readout, maxDpr, dpr, onDpr }: {
   opts: BlackHoleOptions; onFail: () => void; readout?: React.RefObject<HTMLSpanElement>; maxDpr: number; dpr: number; onDpr: (d: number) => void
 }) {
+  const minDpr = coarse() ? 0.35 : 0.55
   const mat = useRef<THREE.ShaderMaterial>(null)
   const gl = useThree((s) => s.gl)
   const invalidate = useThree((s) => s.invalidate)
@@ -300,16 +301,16 @@ function BlackHoleScene({ opts, onFail, readout, maxDpr, dpr, onDpr }: {
     p.frame++
     if (!p.init && size.width > 0) {   // start from a ray budget instead of a fixed pixel ratio
       p.init = true
-      const start = THREE.MathUtils.clamp(Math.sqrt(420000 / (size.width * size.height)), 0.35, maxDpr)
+      const start = THREE.MathUtils.clamp(Math.sqrt(420000 / (size.width * size.height)), minDpr, maxDpr)
       if (Math.abs(start - dpr) > 0.02) onDpr(start)
     } else if (state.frameloop === 'always') {
       if (p.skip > 0) p.skip--
-      else {
-        p.acc += Math.min(delta, 1)
+      else if (delta < 0.2) {   // longer gaps are window throttling (occluded/background), not GPU cost
+        p.acc += delta
         p.n++
-        if (p.acc >= 0.4 && p.n >= 3) {
+        if (p.acc >= 0.5 && p.n >= 4) {
           const avg = p.acc / p.n
-          const next = THREE.MathUtils.clamp(dpr * THREE.MathUtils.clamp(Math.sqrt(0.02 / avg), 0.5, 1.1), 0.35, maxDpr)
+          const next = THREE.MathUtils.clamp(dpr * THREE.MathUtils.clamp(Math.sqrt(1 / 30 / avg), 0.7, 1.1), minDpr, maxDpr)
           if (Math.abs(next - dpr) > 0.03) onDpr(next)
           p.acc = 0
           p.n = 0

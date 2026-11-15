@@ -12,6 +12,7 @@ Run (local CPU, numpy only; three independent parts can run in parallel):
     python experiments/f_spectra.py B      # MP spectra, finite-size corrections, level spacing
     python experiments/f_spectra.py C      # direction 6: Haar vs stabilizer vs brickwork
     python experiments/f_spectra.py E      # deeper brickwork grid, N = 10, 12
+    python experiments/f_spectra.py F6|F8  # high-statistics stabilizer 4th-moment test
     python experiments/f_spectra.py D      # exact stabilizer ensemble by complete enumeration (N<=4)
     python experiments/f_spectra.py plot   # merge results/f_parts/*.json -> results/f_spectra.json + figures
 """
@@ -316,6 +317,40 @@ def part_E():
     print("E done", flush=True)
 
 
+# ============================================================================ part F
+SEED_F = 20261115_6
+
+
+def part_F(N, ns):
+    """High-statistics deep-Clifford sampling (N = 6, 8): is the 4th moment E Tr rho^4 of random
+    stabilizer states resolvably different from Haar while k = 2, 3 agree (3-design)?"""
+    t0 = time.time()
+    rng = np.random.default_rng(np.random.SeedSequence([SEED_F, N]))
+    depths = [4 * N, 6 * N]
+    rows = {D: {q: [] for q in ("purity", "tr3", "tr4", "S_1")} for D in depths}
+    for _ in range(ns):
+        st = brickwork_states(N, depths, "clifford", rng)
+        for D in depths:
+            per = [spectrum_stats(C.schmidt_probs(st[D], k)[None, :]) for k in range(1, N)]
+            for q in rows[D]:
+                rows[D][q].append([float(x[q][0]) for x in per])
+    ex = exact_curves(N)
+    out = {"seed": [SEED_F, N], "n_samples": ns, "N": N, "cuts": list(range(1, N)), "by_depth": {}}
+    for D in depths:
+        blk = {}
+        for q, exk in (("purity", "lubkin_purity"), ("tr3", "haar_tr3"), ("tr4", "haar_tr4"), ("S_1", "page_S1")):
+            a = np.array(rows[D][q])
+            m, se = a.mean(0), sem(a)
+            e = np.array(ex[exk][1:N])
+            z = [None if sd <= 1e-12 else float((mm - ee) / sd) for mm, ee, sd in zip(m, e, se)]
+            blk[q] = {"mean": m.tolist(), "sem": se.tolist(), "haar_exact": e.tolist(), "z": z,
+                      "rel_diff": ((m - e) / e).tolist()}
+        out["by_depth"][D] = blk
+    out["runtime_s"] = time.time() - t0
+    json.dump(out, open(os.path.join(PARTS, f"F{N}.json"), "w"), indent=1)
+    print(f"F N={N} done {out['runtime_s']:.1f}s", flush=True)
+
+
 # ============================================================================ part D
 def part_D():
     """Exact uniform stabilizer ensemble (complete enumeration, N = 2, 3, 4): exact averages of
@@ -586,6 +621,8 @@ def plot():
               "time_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
               "backend": "numpy (local CPU), complex128", "A_renyi": A, "B_rmt": B, "C_ensembles": Cc,
               "D_stabilizer_exact": Dd,
+              "F_stabilizer_highstat": {f"N{n}": json.load(open(os.path.join(PARTS, f"F{n}.json")))
+                                        for n in (6, 8) if os.path.exists(os.path.join(PARTS, f"F{n}.json"))},
               "E_brick_deep": json.load(open(os.path.join(PARTS, "E.json"))) if os.path.exists(os.path.join(PARTS, "E.json")) else None}
     json.dump(merged, open(os.path.join(RESULTS, "f_spectra.json"), "w"), indent=1, default=float)
     print("wrote results/f_spectra.json and figures f1-f3")
@@ -593,4 +630,5 @@ def plot():
 
 if __name__ == "__main__":
     which = sys.argv[1] if len(sys.argv) > 1 else "plot"
-    {"A": part_A, "B": part_B, "C": part_C, "D": part_D, "E": part_E, "plot": plot}[which]()
+    {"A": part_A, "B": part_B, "C": part_C, "D": part_D, "E": part_E, "plot": plot,
+     "F6": lambda: part_F(6, 30000), "F8": lambda: part_F(8, 12000)}[which]()
