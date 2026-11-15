@@ -48,7 +48,7 @@
 <g><rect x="499.0" y="485.0" width="132" height="50" rx="25" fill="#0A1A20" stroke="#3DF5FF" stroke-width="1.6"/><circle cx="521.0" cy="510.0" r="11" fill="#3DF5FF"/><text x="521.0" y="514.5" fill="#07080B" font-size="12.5" font-weight="700" text-anchor="middle">7</text><text x="577.0" y="515.5" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">plan</text></g>
 <g><rect x="567.8" y="318.8" width="132" height="50" rx="25" fill="#0A1A20" stroke="#3DF5FF" stroke-width="1.6"/><circle cx="589.8" cy="343.8" r="11" fill="#3DF5FF"/><text x="589.8" y="348.3" fill="#07080B" font-size="12.5" font-weight="700" text-anchor="middle">8</text><text x="645.8" y="349.3" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">execute</text></g>
 <text x="800" y="452" fill="#3DF5FF" font-size="13" text-anchor="middle" font-weight="700" letter-spacing="2">THE LOOP</text>
-<text x="800" y="484" fill="#E8EDF2" font-size="19" text-anchor="middle" font-weight="650">one cycle every 300 s</text>
+<text x="800" y="484" fill="#E8EDF2" font-size="19" text-anchor="middle" font-weight="650">one cycle every 180 s</text>
 <text x="800" y="514" fill="#8B96A5" font-size="14" text-anchor="middle" >every step is one ledger row:</text>
 <text x="800" y="536" fill="#8B96A5" font-size="14" text-anchor="middle" >rationale, prediction, outcome,</text>
 <text x="800" y="558" fill="#8B96A5" font-size="14" text-anchor="middle" >sources, memory reads</text>

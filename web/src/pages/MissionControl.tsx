@@ -27,11 +27,11 @@ function Totals() {
     { label: 'sources', value: t?.sources },
   ]
   return (
-    <div className="grid grid-cols-3 gap-x-4 gap-y-3 sm:grid-cols-4 2xl:grid-cols-7">
+    <div className="grid grid-cols-3 gap-x-6 gap-y-4 sm:grid-cols-4 2xl:grid-cols-7">
       {items.map((it) => (
         <div key={it.label} className="min-w-0">
-          <div className="truncate text-[9.5px] font-semibold text-fg-dim">{it.label}</div>
-          <div className={`mt-0.5 font-mono text-lg font-semibold sm:text-xl ${it.accent && (it.value ?? 0) > 0 ? 'text-amber glow-amber' : 'text-fg'}`}>
+          <div className="label truncate capitalize">{it.label}</div>
+          <div className={`mt-1 font-mono text-[20px] font-medium leading-6 tracking-tight ${it.accent && (it.value ?? 0) > 0 ? 'text-amber' : 'text-fg'}`}>
             {it.value === undefined ? <span className="text-fg-dim">--</span> : <Counter value={it.value} />}
           </div>
         </div>
@@ -54,17 +54,17 @@ function Hero() {
   return (
     <section className="panel relative overflow-hidden rounded-xl">
       <div className="grid lg:grid-cols-[1.05fr_1fr]">
-        <div className="relative z-10 flex flex-col justify-between gap-6 p-5 sm:p-7">
+        <div className="relative z-10 flex flex-col justify-between gap-8 p-5 sm:p-8">
           <div>
-            <div className="flex flex-wrap items-center gap-2 font-mono text-[10.5px] text-cyan/80">
-              <span>Mission control</span>
-              <span className="text-fg-dim">/</span>
+            <div className="flex flex-wrap items-center gap-2 text-[12.5px] font-medium text-fg-muted">
+              <span className="text-cyan">Mission Control</span>
+              <span className="text-ink-400">/</span>
               <span className="text-fg-dim">{state ? `${state.problems.length} open problems` : 'connecting'}</span>
             </div>
-            <h1 className="mt-3 max-w-[560px] font-display text-[26px] font-semibold leading-[1.12] tracking-tight text-fg sm:text-[34px]">
-              An AI lab that gets better at <span className="text-cyan glow-text">discovering mathematics</span> by doing it.
+            <h1 className="mt-3 max-w-[540px] text-[24px] font-semibold leading-[1.18] tracking-[-0.025em] text-fg sm:text-[30px]">
+              An AI lab that gets better at <span className="text-cyan">discovering mathematics</span> by doing it.
             </h1>
-            <p className="mt-3 max-w-[520px] text-[13.5px] leading-relaxed text-fg-muted">
+            <p className="mt-4 max-w-[520px] text-[14px] leading-6 text-fg-muted">
               A closed loop of planner, proposer and critic agents runs searches on 8 A100s and 124 cores, reads the literature with Exa, remembers across agents with past.dev, spawns
               Modal sandboxes and trains itself with Tinker. Every decision below is logged and auditable.
             </p>
@@ -73,12 +73,14 @@ function Hero() {
           <div className="flex flex-wrap items-center gap-3">
             <LoopControls />
             {recordCount > 0 && (
-              <span className="rounded-full border border-amber/50 bg-amber/10 px-3 py-1 font-mono text-[11px] text-amber">{recordCount} record(s) beaten</span>
+              <span className="inline-flex h-7 items-center gap-2 rounded-full border border-amber/30 bg-amber/[0.08] px-2.5 text-[12px] font-medium text-amber">
+                <span className="h-1.5 w-1.5 rounded-full bg-amber" />
+                {recordCount} {recordCount === 1 ? 'record' : 'records'} beaten
+              </span>
             )}
           </div>
         </div>
-        <div className="relative min-h-[260px] border-t border-white/[0.05] sm:min-h-[320px] lg:border-l lg:border-t-0">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(79,209,224,0.08),transparent_65%)]" />
+        <div className="relative min-h-[260px] border-t border-white/[0.07] bg-ink-850 sm:min-h-[320px] lg:border-l lg:border-t-0">
           <ErrorBoundary fallback={<div className="flex h-full items-center justify-center text-xs text-fg-dim">3D view unavailable (WebGL disabled)</div>}>
             <Suspense fallback={<div className="absolute inset-0 skeleton" />}>
               <LatticeHero art={art} />
@@ -86,9 +88,9 @@ function Hero() {
           </ErrorBoundary>
           <Link
             to="/problems/no-three-in-line-75"
-            className="absolute bottom-3 left-3 right-3 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-xl border border-white/[0.07] bg-ink-900/75 px-3 py-2 font-mono text-[10.5px] text-fg-muted backdrop-blur hover:border-cyan/30"
+            className="absolute bottom-3 left-3 right-3 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-white/[0.08] bg-ink-800/90 px-3 py-2 font-mono text-[11px] text-fg-muted backdrop-blur transition-colors hover:border-white/20"
           >
-            <span className="text-cyan">no-three-in-line-75</span>
+            <span className="text-fg">no-three-in-line-75</span>
             {art ? (
               <>
                 <span>
@@ -106,7 +108,7 @@ function Hero() {
             )}
             {nt && (
               <span className="ml-auto">
-                record <span className="text-amber">{fmtScore(nt.record.score)}</span>
+                record <span className="text-fg">{fmtScore(nt.record.score)}</span>
               </span>
             )}
           </Link>
@@ -123,7 +125,7 @@ function Feed() {
       title="Live decisions"
       subtitle={STATIC ? 'recorded decision log' : stream === 'live' ? 'streaming over SSE' : 'polling every 5 s'}
       right={
-        <Link to="/decisions" className="text-xs text-cyan hover:underline">
+        <Link to="/decisions" className="text-[12.5px] font-medium text-fg-muted transition-colors hover:text-fg">
           Full audit log
         </Link>
       }
@@ -136,7 +138,7 @@ function Feed() {
         ) : (
           <AnimatePresence initial={false}>
             {feed.slice(0, 40).map((d) => (
-              <motion.div key={d.id} layout initial={{ opacity: 0, y: -12, scale: 0.98 }} animate={{ opacity: 1, y: 0, scale: 1 }} exit={{ opacity: 0 }} transition={{ duration: 0.3 }}>
+              <motion.div key={d.id} layout initial={{ opacity: 0, y: -6 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0 }} transition={{ duration: 0.2 }}>
                 <FeedItem d={d} />
               </motion.div>
             ))}
@@ -150,14 +152,14 @@ function Feed() {
 export default function MissionControl() {
   const { state, error, series, refresh } = useLive()
   return (
-    <div className="space-y-5">
+    <div className="space-y-6">
       {error && !state && <ErrorNote error={error} onRetry={refresh} />}
       <Hero />
       <Panel title="Autonomous loop" subtitle={STATIC ? 'The seven phases of every cycle (recorded run; live, they animate as the server publishes them)' : 'Phases animate live as the server publishes them'}>
         <PhaseStepper />
       </Panel>
-      <div className="grid gap-5 xl:grid-cols-[minmax(0,1fr)_380px]">
-        <div className="min-w-0 space-y-5">
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_380px]">
+        <div className="min-w-0 space-y-6">
 
           <Panel
             title="Compute map"
@@ -173,7 +175,7 @@ export default function MissionControl() {
             }
           >
             {state ? (
-              <div className="grid gap-5 2xl:grid-cols-[1.1fr_1fr]">
+              <div className="grid gap-6 2xl:grid-cols-[1.1fr_1fr]">
                 <div>
                   <div className="mb-2 label">GPUs</div>
                   <GpuGrid compute={state.compute} />
@@ -194,8 +196,8 @@ export default function MissionControl() {
           <div>
             <div className="mb-3 flex items-end justify-between px-1">
               <div>
-                <h2 className="font-display text-[13px] font-semibold">Problem portfolio</h2>
-                <p className="mt-0.5 text-xs text-fg-muted">Best-known record vs our best verified score, with the live progress metric</p>
+                <h2 className="text-[14px] font-semibold tracking-[-0.01em]">Problem portfolio</h2>
+                <p className="mt-0.5 text-[12.5px] text-fg-muted">Best-known record vs our best verified score, with the live progress metric</p>
               </div>
             </div>
             <div className="grid gap-3 sm:grid-cols-2 2xl:grid-cols-3">

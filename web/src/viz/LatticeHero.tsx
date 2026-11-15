@@ -13,9 +13,9 @@ function glowTexture(): THREE.Texture {
   c.width = c.height = 64
   const g = c.getContext('2d')!
   const grd = g.createRadialGradient(32, 32, 0, 32, 32, 32)
+  // crisp disc with a 1px soft edge: no bloom
   grd.addColorStop(0, 'rgba(255,255,255,1)')
-  grd.addColorStop(0.18, 'rgba(255,255,255,0.9)')
-  grd.addColorStop(0.42, 'rgba(255,255,255,0.25)')
+  grd.addColorStop(0.78, 'rgba(255,255,255,1)')
   grd.addColorStop(1, 'rgba(255,255,255,0)')
   g.fillStyle = grd
   g.fillRect(0, 0, 64, 64)
@@ -53,10 +53,10 @@ function Lattice({ art }: { art: GridArtifact | null }) {
     const cyan = new THREE.Color('#4FD1E0')
     const red = new THREE.Color('#E5676B')
     points.forEach(([x, y], i) => {
-      const h = 0.06 + Math.min(conf[i], 6) * 0.12
+      const h = 0.05 + Math.min(conf[i], 6) * 0.07
       const [a, b, c] = toWorld(x, y, n, h)
       pts.set([a, b, c], i * 3)
-      const col = conf[i] > 0 ? red.clone().lerp(cyan, 0.15) : cyan
+      const col = conf[i] > 0 ? red : cyan
       ptsColor.set([col.r, col.g, col.b], i * 3)
       pins.push(...toWorld(x, y, n, 0), a, b, c)
     })
@@ -76,7 +76,7 @@ function Lattice({ art }: { art: GridArtifact | null }) {
   }, [art, n])
 
   useFrame((_, dt) => {
-    if (group.current) group.current.rotation.y += Math.min(dt, 0.05) * 0.09
+    if (group.current) group.current.rotation.y += Math.min(dt, 0.05) * 0.04
   })
 
   return (
@@ -85,14 +85,14 @@ function Lattice({ art }: { art: GridArtifact | null }) {
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" count={lattice.length / 3} array={lattice} itemSize={3} />
         </bufferGeometry>
-        <pointsMaterial size={0.028} color="#4A5568" transparent opacity={0.55} sizeAttenuation depthWrite={false} />
+        <pointsMaterial size={0.022} color="#566070" transparent opacity={0.45} sizeAttenuation depthWrite={false} />
       </points>
       {lines.length > 0 && (
         <lineSegments key={'l' + lines.length}>
           <bufferGeometry>
             <bufferAttribute attach="attributes-position" count={lines.length / 3} array={lines} itemSize={3} />
           </bufferGeometry>
-          <lineBasicMaterial color="#E5676B" transparent opacity={0.16} depthWrite={false} blending={THREE.AdditiveBlending} />
+          <lineBasicMaterial color="#E5676B" transparent opacity={0.07} depthWrite={false} />
         </lineSegments>
       )}
       {pins.length > 0 && (
@@ -100,7 +100,7 @@ function Lattice({ art }: { art: GridArtifact | null }) {
           <bufferGeometry>
             <bufferAttribute attach="attributes-position" count={pins.length / 3} array={pins} itemSize={3} />
           </bufferGeometry>
-          <lineBasicMaterial color="#4FD1E0" transparent opacity={0.28} depthWrite={false} />
+          <lineBasicMaterial color="#4FD1E0" transparent opacity={0.18} depthWrite={false} />
         </lineSegments>
       )}
       {axis.length > 0 && (
@@ -108,7 +108,7 @@ function Lattice({ art }: { art: GridArtifact | null }) {
           <bufferGeometry>
             <bufferAttribute attach="attributes-position" count={axis.length / 3} array={axis} itemSize={3} />
           </bufferGeometry>
-          <lineBasicMaterial color="#E2B25C" transparent opacity={0.8} />
+          <lineBasicMaterial color="#9BA3AF" transparent opacity={0.45} />
         </lineSegments>
       )}
       {pts.length > 0 && (
@@ -117,12 +117,12 @@ function Lattice({ art }: { art: GridArtifact | null }) {
             <bufferAttribute attach="attributes-position" count={pts.length / 3} array={pts} itemSize={3} />
             <bufferAttribute attach="attributes-color" count={ptsColor.length / 3} array={ptsColor} itemSize={3} />
           </bufferGeometry>
-          <pointsMaterial size={0.34} map={tex} vertexColors transparent depthWrite={false} blending={THREE.AdditiveBlending} sizeAttenuation />
+          <pointsMaterial size={0.085} map={tex} vertexColors transparent opacity={0.95} alphaTest={0.05} depthWrite={false} sizeAttenuation />
         </points>
       )}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.005, 0]}>
         <planeGeometry args={[6.3, 6.3]} />
-        <meshBasicMaterial color="#0B1018" transparent opacity={0.55} />
+        <meshBasicMaterial color="#12161B" transparent opacity={0.9} />
       </mesh>
     </group>
   )
@@ -157,7 +157,7 @@ export default function LatticeHero({ art }: { art: GridArtifact | null }) {
         camera={{ position: [0, 5.6, 8.3], fov: 40, near: 0.1, far: 100 }}
         onCreated={({ camera }) => camera.lookAt(0, -0.6, 0)}
       >
-        <fog attach="fog" args={['#0B0D10', 8.5, 15]} />
+        <fog attach="fog" args={['#0E1014', 9, 16]} />
         <Lattice art={art} />
       </Canvas>
     </div>

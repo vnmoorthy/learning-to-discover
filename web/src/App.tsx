@@ -5,7 +5,7 @@ import { ConnectionBadge, LoopPill } from './components/LoopStatus'
 import { IconBook, IconDecisions, IconGallery, IconLearn, IconMemory, IconMission } from './components/icons'
 import { ToastProvider } from './components/Toast'
 import { Skeleton } from './components/ui'
-import { cx, dateTime } from './lib/format'
+import { cx, dateTime, problemColor, shortName } from './lib/format'
 import { LiveProvider, useLive } from './live'
 import { MODE, STATIC } from './mode'
 import MissionControl from './pages/MissionControl'
@@ -28,22 +28,22 @@ const NAV = [
   { to: '/gallery', label: 'Gallery', icon: IconGallery },
 ]
 
+export function LogoMark({ className = 'h-7 w-7' }: { className?: string }) {
+  // four-point star (the "astar") cut by a rising diagonal: one accent, no gradients
+  return (
+    <svg viewBox="0 0 32 32" className={className} aria-hidden>
+      <rect x="0.5" y="0.5" width="31" height="31" rx="8" fill="#171B21" stroke="rgba(255,255,255,0.1)" />
+      <path d="M16 6.5l2.5 7 7 2.5-7 2.5-2.5 7-2.5-7-7-2.5 7-2.5z" fill="#4FD1E0" />
+      <circle cx="16" cy="16" r="2" fill="#171B21" />
+    </svg>
+  )
+}
+
 function Brand() {
   return (
-    <NavLink to="/" className="group flex items-center gap-2.5">
-      <svg viewBox="0 0 32 32" className="h-7 w-7 shrink-0 sm:h-8 sm:w-8" aria-hidden>
-        <rect width="32" height="32" rx="9" fill="#111418" stroke="rgba(79,209,224,0.25)" />
-        <g fill="#4FD1E0">
-          <circle cx="9.5" cy="9.5" r="2.1" />
-          <circle cx="22.5" cy="12" r="2.1" />
-          <circle cx="12.5" cy="22" r="2.1" />
-        </g>
-        <circle cx="22" cy="22.5" r="2.6" fill="#E2B25C" />
-      </svg>
-      <div className="leading-tight">
-        <div className="whitespace-nowrap font-display text-[14px] font-semibold tracking-tight text-fg sm:text-[15px]">Phoenixastar</div>
-        <div className="hidden text-[10.5px] text-fg-dim sm:block">autonomous math lab</div>
-      </div>
+    <NavLink to="/" className="flex items-center gap-2.5">
+      <LogoMark className="h-7 w-7 shrink-0" />
+      <div className="whitespace-nowrap text-[15px] font-semibold tracking-[-0.02em] text-fg">Phoenixastar</div>
     </NavLink>
   )
 }
@@ -52,19 +52,19 @@ function ModeBanner() {
   const { state, error } = useLive()
   if (MODE === 'static')
     return (
-      <div className="border-b border-amber/25 bg-amber/[0.07] px-4 py-2 text-center text-xs text-amber">
+      <div className="border-b border-white/[0.07] px-4 py-2 text-center text-[12.5px] bg-amber/[0.06] text-amber">
         Replay of a live run{state ? `, snapshot ${dateTime(state.snapshot?.generated_at ?? state.now)}` : ''}. Controls are disabled; every number comes from the recorded run.
       </div>
     )
   if (MODE === 'fixtures')
     return (
-      <div className="border-b border-[#A99BEA]/30 bg-[#A99BEA]/[0.08] px-4 py-2 text-center text-xs text-[#B9AEEF]">
+      <div className="border-b border-white/[0.07] px-4 py-2 text-center text-[12.5px] bg-violet/[0.07] text-violet">
         Fixture mode (VITE_FIXTURES=1): simulated backend for development. These are not live results.
       </div>
     )
   if (error)
     return (
-      <div className="border-b border-bad/30 bg-bad/[0.08] px-4 py-2 text-center text-xs text-bad">
+      <div className="border-b border-white/[0.07] px-4 py-2 text-center text-[12.5px] bg-bad/[0.07] text-bad">
         Backend unreachable ({error}). Retrying every 5 s; start it with <code className="font-mono">python3 -m phoenixastar.server</code>.
       </div>
     )
@@ -74,9 +74,11 @@ function ModeBanner() {
 function Sidebar() {
   const { state } = useLive()
   return (
-    <aside className="sticky top-0 hidden h-screen w-[232px] shrink-0 flex-col border-r border-white/[0.06] bg-ink-900/70 px-4 py-5 backdrop-blur lg:flex">
-      <Brand />
-      <nav className="mt-8 flex flex-col gap-1">
+    <aside className="sticky top-0 hidden h-screen w-[240px] shrink-0 flex-col overflow-y-auto border-r border-white/[0.07] bg-ink-850 px-3 py-4 lg:flex">
+      <div className="px-2 py-1">
+        <Brand />
+      </div>
+      <nav className="mt-6 flex flex-col gap-0.5">
         {NAV.map(({ to, label, icon: Icon, end }) => (
           <NavLink
             key={to}
@@ -84,60 +86,66 @@ function Sidebar() {
             end={end}
             className={({ isActive }) =>
               cx(
-                'relative flex items-center gap-3 rounded-lg px-3 py-2 text-[13px] font-medium transition-colors',
-                isActive ? 'text-cyan' : 'text-fg-muted hover:bg-white/[0.03] hover:text-fg',
+                'relative flex h-8 items-center gap-2.5 rounded-md px-2 text-[13px] font-medium transition-colors duration-150',
+                isActive ? 'bg-white/[0.06] text-fg' : 'text-fg-muted hover:bg-white/[0.03] hover:text-fg',
               )
             }
           >
             {({ isActive }) => (
               <>
-                {isActive && (
-                  <motion.span
-                    layoutId="nav-active"
-                    className="absolute inset-0 rounded-lg border border-cyan/25 bg-cyan/[0.07]"
-                    transition={{ type: 'spring', stiffness: 420, damping: 34 }}
-                  />
-                )}
-                <Icon className="relative h-4 w-4" />
+                <Icon className={cx('relative h-4 w-4', isActive ? 'text-cyan' : 'text-fg-dim')} />
                 <span className="relative">{label}</span>
               </>
             )}
           </NavLink>
         ))}
       </nav>
-      <div className="mt-6 border-t border-white/[0.06] pt-4">
-        <div className="mb-2 label">Problems</div>
+      <div className="mt-6">
+        <div className="label mb-1.5 px-2">Problems</div>
         <div className="flex flex-col gap-0.5">
           {state?.problems.map((p) => (
             <NavLink
               key={p.slug}
               to={`/problems/${p.slug}`}
               className={({ isActive }) =>
-                cx('flex items-center gap-2 truncate rounded-md px-2 py-1 font-mono text-[11px] transition-colors', isActive ? 'bg-white/[0.05] text-fg' : 'text-fg-muted hover:text-fg')
+                cx('flex h-7 items-center gap-2.5 truncate rounded-md px-2 text-[12.5px] transition-colors duration-150', isActive ? 'bg-white/[0.06] text-fg' : 'text-fg-muted hover:bg-white/[0.03] hover:text-fg')
               }
             >
-              <span className={cx('h-1.5 w-1.5 shrink-0 rounded-full', p.beats_record ? 'bg-amber' : p.status === 'searching' ? 'bg-cyan animate-pulseDot' : 'bg-fg-dim')} />
-              <span className="truncate">{p.slug}</span>
+              <span className="mx-1 h-2 w-2 shrink-0 rounded-[2px]" style={{ background: problemColor(p.slug), opacity: p.status === 'idle' && !p.beats_record ? 0.45 : 1 }} />
+              <span className="truncate">{shortName(p.slug)}</span>
+              {p.beats_record && <span className="ml-auto h-1.5 w-1.5 shrink-0 rounded-full bg-amber" title="Record beaten" />}
             </NavLink>
           )) ?? <Skeleton className="h-24" />}
         </div>
       </div>
-      <div className="mt-auto space-y-1 pt-4 text-[10.5px] leading-relaxed text-fg-dim">
-        <div>An AI lab that gets better at discovering mathematics by doing it.</div>
-        <div className="font-mono">mode: {MODE}</div>
+      <div className="mt-auto flex items-center justify-between px-2 pt-6 text-[11.5px] text-fg-dim">
+        <span>Autonomous math lab</span>
+        <span className="rounded border border-white/[0.08] px-1.5 py-0.5 font-mono text-[10.5px]">{MODE}</span>
       </div>
     </aside>
   )
 }
 
 function TopBar() {
+  const { pathname } = useLocation()
+  const { state } = useLive()
+  const slug = pathname.startsWith('/problems/') ? pathname.slice('/problems/'.length) : null
+  const here = slug ? state?.problems.find((p) => p.slug === slug)?.title ?? shortName(slug) : NAV.find((n) => (n.end ? pathname === n.to : pathname.startsWith(n.to)))?.label
   return (
-    <div className="sticky top-0 z-30 border-b border-white/[0.06] bg-ink-900/80 backdrop-blur-md">
-      <div className="flex h-14 items-center justify-between gap-2 px-4 sm:px-6">
+    <div className="sticky top-0 z-30 border-b border-white/[0.07] bg-ink-900/90 backdrop-blur-md">
+      <div className="flex h-12 items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
         <div className="lg:hidden">
           <Brand />
         </div>
-        <div className="hidden lg:block" />
+        <div className="hidden min-w-0 items-center gap-2 text-[13px] lg:flex">
+          {slug && (
+            <>
+              <span className="text-fg-dim">Problems</span>
+              <span className="text-ink-400">/</span>
+            </>
+          )}
+          <span className="truncate font-medium text-fg">{here ?? 'Not found'}</span>
+        </div>
         <div className="flex items-center gap-2">
           <span className="hidden sm:inline-flex">
             <LoopPill />
@@ -156,8 +164,8 @@ function TopBar() {
             end={end}
             className={({ isActive }) =>
               cx(
-                'flex shrink-0 items-center gap-1.5 rounded-lg border px-2.5 py-1.5 text-xs font-medium',
-                isActive ? 'border-cyan/30 bg-cyan/[0.08] text-cyan' : 'border-transparent text-fg-muted',
+                'flex h-8 shrink-0 items-center gap-1.5 rounded-md px-2.5 text-[12.5px] font-medium',
+                isActive ? 'bg-white/[0.07] text-fg' : 'text-fg-muted',
               )
             }
           >
@@ -186,10 +194,10 @@ function AnimatedRoutes() {
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
         key={location.pathname}
-        initial={{ opacity: 0, y: 10 }}
+        initial={{ opacity: 0, y: 4 }}
         animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -6 }}
-        transition={{ duration: 0.22, ease: [0.2, 0.8, 0.2, 1] }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.16, ease: 'easeOut' }}
       >
         <Suspense fallback={<PageFallback />}>
           <Routes location={location}>
@@ -205,7 +213,7 @@ function AnimatedRoutes() {
               path="*"
               element={
                 <div className="py-24 text-center">
-                  <div className="font-display text-2xl">Not found</div>
+                  <div className="text-xl font-semibold tracking-tight">Not found</div>
                   <NavLink to="/" className="mt-3 inline-block text-sm text-cyan underline">
                     Back to Mission Control
                   </NavLink>
@@ -226,7 +234,7 @@ function Shell() {
       <div className="flex min-w-0 flex-1 flex-col">
         <ModeBanner />
         <TopBar />
-        <main className="mx-auto w-full max-w-[1600px] flex-1 px-4 pb-16 pt-5 sm:px-6 lg:px-8">
+        <main className="mx-auto w-full max-w-[1560px] flex-1 px-4 pb-16 pt-6 sm:px-6 lg:px-8">
           <AnimatedRoutes />
         </main>
       </div>

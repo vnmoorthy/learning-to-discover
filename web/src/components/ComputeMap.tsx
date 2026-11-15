@@ -10,49 +10,28 @@ function GpuTile({ g }: { g: ComputeState['gpus'][number] }) {
   const color = problemColor(g.problem)
   const util = Math.max(0, Math.min(100, g.util ?? 0))
   const mem = Math.max(0, g.mem_mb ?? 0)
-  const r = 19
-  const c = 2 * Math.PI * r
   const body = (
-    <div
-      className="group relative h-full overflow-hidden rounded-xl border p-3 transition-colors"
-      style={{ borderColor: g.problem ? color + '38' : 'rgba(255,255,255,0.06)', background: g.problem ? `linear-gradient(160deg, ${color}14, transparent 60%)` : 'rgba(255,255,255,0.015)' }}
-    >
-      <div className="flex items-start justify-between gap-2">
-        <div className="font-mono label">GPU {g.idx}</div>
-        <svg viewBox="0 0 48 48" className="-mr-1 -mt-1 h-11 w-11 shrink-0">
-          <circle cx="24" cy="24" r={r} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="4" />
-          <motion.circle
-            cx="24"
-            cy="24"
-            r={r}
-            fill="none"
-            stroke={g.problem ? color : '#7A838F'}
-            strokeWidth="4"
-            strokeLinecap="round"
-            transform="rotate(-90 24 24)"
-            strokeDasharray={c}
-            initial={false}
-            animate={{ strokeDashoffset: c * (1 - util / 100) }}
-            transition={{ duration: 0.8, ease: 'easeOut' }}
-            style={{ filter: g.problem ? `drop-shadow(0 0 4px ${color})` : undefined }}
-          />
-          <text x="24" y="27.5" textAnchor="middle" className="fill-fg font-mono" fontSize="11" fontWeight="600">
-            {util}
-          </text>
-        </svg>
+    <div className={cx('h-full rounded-lg border border-white/[0.07] bg-white/[0.02] p-3 transition-colors duration-150', g.problem && 'hover:border-white/[0.14] hover:bg-white/[0.035]')}>
+      <div className="flex items-baseline justify-between gap-2">
+        <div className="text-[11px] font-medium text-fg-dim">GPU {g.idx}</div>
+        <div className="font-mono text-[12px] font-medium tabular-nums text-fg">
+          {util}
+          <span className="text-fg-dim">%</span>
+        </div>
       </div>
-      <div className="-mt-2 truncate text-[12px] font-semibold" style={{ color: g.problem ? color : '#7A838F' }}>
-        {g.problem ? shortName(g.problem) : 'free'}
+      <div className="mt-2 flex items-center gap-1.5">
+        <span className="h-2 w-2 shrink-0 rounded-[2px]" style={{ background: g.problem ? color : 'rgba(255,255,255,0.12)' }} />
+        <span className={cx('truncate text-[12.5px] font-medium', g.problem ? 'text-fg' : 'text-fg-dim')}>{g.problem ? shortName(g.problem) : 'Free'}</span>
       </div>
-      <div className="mt-0.5 truncate font-mono text-[10px] text-fg-dim" title={(g.strategy_ids ?? [g.strategy_id]).filter(Boolean).join(', ')}>
+      <div className="mt-0.5 truncate font-mono text-[10.5px] text-fg-dim" title={(g.strategy_ids ?? [g.strategy_id]).filter(Boolean).join(', ')}>
         {g.strategy_id ?? '--'}
         {g.strategy_ids && g.strategy_ids.length > 1 && <span className="text-fg-muted"> +{g.strategy_ids.length - 1}</span>}
       </div>
-      <div className="mt-2">
-        <div className="h-1 overflow-hidden rounded-full bg-white/[0.06]">
-          <motion.div className="h-full rounded-full" style={{ background: g.problem ? color : '#7A838F' }} initial={false} animate={{ width: `${Math.min(100, (mem / A100_MB) * 100)}%` }} />
+      <div className="mt-3" title={`utilization ${util}%`}>
+        <div className="h-[3px] overflow-hidden rounded-full bg-white/[0.07]">
+          <motion.div className="h-full rounded-full" style={{ background: g.problem ? color : '#3A424F' }} initial={false} animate={{ width: `${util}%` }} transition={{ duration: 0.25, ease: 'easeOut' }} />
         </div>
-        <div className="mt-1 font-mono text-[10px] text-fg-dim">{(mem / 1024).toFixed(1)} / 40 GB</div>
+        <div className="mt-1.5 font-mono text-[10.5px] text-fg-dim">{(mem / 1024).toFixed(1)} / {(A100_MB / 1024).toFixed(0)} GB</div>
       </div>
     </div>
   )
@@ -92,38 +71,37 @@ export function CpuGrid({ compute }: { compute: ComputeState }) {
 
   return (
     <div>
-      <div className="grid gap-[3px]" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(13px, 1fr))' }}>
+      <div className="grid gap-[3px]" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(12px, 1fr))' }}>
         {cells.map((slug, i) => {
           const color = problemColor(slug)
           return (
             <div
               key={i}
               title={slug ? `core ${i}: ${slug}` : `core ${i}: idle`}
-              className={cx('aspect-square rounded-[3px] transition-colors duration-700', slug && 'cpu-cell')}
+              className="aspect-square rounded-[2px] transition-colors duration-200"
               style={{
-                background: slug ? color : 'rgba(255,255,255,0.045)',
-                boxShadow: slug ? `0 0 6px ${color}55` : undefined,
-                animationDelay: `${(i * 137) % 3000}ms`,
+                background: slug ? color : 'rgba(255,255,255,0.06)',
+                opacity: slug ? 0.85 : 1,
               }}
             />
           )
         })}
       </div>
-      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11px]">
+      <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1.5 text-[11.5px]">
         {legend.entries.map(([slug, n]) => (
           <Link key={slug} to={`/problems/${slug}`} className="flex items-center gap-1.5 text-fg-muted hover:text-fg">
-            <span className="h-2 w-2 rounded-sm" style={{ background: problemColor(slug) }} />
+            <span className="h-2 w-2 rounded-[2px]" style={{ background: problemColor(slug) }} />
             <span>{shortName(slug)}</span>
             <span className="font-mono text-fg">{n}</span>
           </Link>
         ))}
         <span className="flex items-center gap-1.5 text-fg-dim">
-          <span className="h-2 w-2 rounded-sm bg-white/10" /> idle <span className="font-mono">{Math.max(0, total - legend.assigned)}</span>
+          <span className="h-2 w-2 rounded-[2px] bg-white/10" /> Idle <span className="font-mono">{Math.max(0, total - legend.assigned)}</span>
         </span>
         <span className="ml-auto flex items-center gap-2 font-mono text-fg-muted">
           load1 <span className="text-fg">{fmtInt(compute.load1)}</span> / {total}
           <span className="relative inline-block h-1 w-16 overflow-hidden rounded-full bg-white/10">
-            <span className="absolute inset-y-0 left-0 rounded-full bg-cyan/70" style={{ width: `${loadPct * 100}%` }} />
+            <span className="absolute inset-y-0 left-0 rounded-full bg-fg-muted" style={{ width: `${loadPct * 100}%` }} />
           </span>
         </span>
       </div>
@@ -141,26 +119,25 @@ export function ModalFleet({ compute }: { compute: ComputeState }) {
   while (cells.length < m.max) cells.push(null)
   return (
     <div>
-      <div className="mb-2 flex items-baseline justify-between label">
+      <div className="label mb-2 flex items-baseline justify-between">
         <span>Modal fleet (elastic, planner-controlled)</span>
-        <span className="font-mono normal-case tracking-normal text-fg">{m.containers}/{m.max} containers</span>
+        <span className="font-mono text-fg-muted"><span className="text-fg">{m.containers}</span> / {m.max} containers</span>
       </div>
       <div className="grid gap-[3px]" style={{ gridTemplateColumns: 'repeat(auto-fill, minmax(9px, 1fr))' }}>
         {cells.map((slug, i) => {
           const color = problemColor(slug)
           return (
             <div key={i} title={slug ? `modal container ${i}: ${slug}` : 'free slot'}
-              className={cx('aspect-square rounded-full transition-colors duration-700', slug && 'cpu-cell')}
-              style={{ background: slug ? color : 'rgba(255,255,255,0.04)', boxShadow: slug ? `0 0 5px ${color}66` : undefined,
-                       animationDelay: `${(i * 211) % 3000}ms` }} />
+              className="aspect-square rounded-[2px] transition-colors duration-200"
+              style={{ background: slug ? color : 'rgba(255,255,255,0.06)', opacity: slug ? 0.85 : 1 }} />
           )
         })}
       </div>
-      <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-[11px] text-fg-dim">
+      <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1.5 text-[11.5px] text-fg-muted">
         {entries.map(([slug, n]) => (
           <span key={slug} className="inline-flex items-center gap-1.5">
-            <span className="h-2 w-2 rounded-full" style={{ background: problemColor(slug) }} />
-            {slug} <span className="font-mono text-fg">{n}</span>
+            <span className="h-2 w-2 rounded-[2px]" style={{ background: problemColor(slug) }} />
+            {shortName(slug)} <span className="font-mono text-fg">{n}</span>
           </span>
         ))}
         {m.error ? <span className="text-amber">telemetry: {m.error}</span> : null}

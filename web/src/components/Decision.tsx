@@ -9,7 +9,8 @@ import { Chip, Verdict } from './ui'
 function AgentTag({ agent }: { agent: string }) {
   const c = agentColor(agent)
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 font-mono text-[10.5px] font-semibold" style={{ color: c, background: c + '14', border: `1px solid ${c}33` }}>
+    <span className="inline-flex shrink-0 items-center gap-1.5 rounded-md border border-white/[0.08] bg-white/[0.03] px-1.5 py-0.5 text-[11px] font-medium capitalize leading-4 text-fg-muted">
+      <span className="h-1.5 w-1.5 rounded-full" style={{ background: c }} />
       {agent}
     </span>
   )
@@ -17,7 +18,7 @@ function AgentTag({ agent }: { agent: string }) {
 
 export function FeedItem({ d }: { d: Decision }) {
   return (
-    <Link to={`/decisions?focus=${d.id}`} className="group block rounded-xl border border-white/[0.05] bg-white/[0.015] px-3 py-2.5 transition-colors hover:border-cyan/25 hover:bg-cyan/[0.03]">
+    <Link to={`/decisions?focus=${d.id}`} className="group block rounded-lg border border-white/[0.06] bg-white/[0.015] px-3 py-2.5 transition-colors duration-150 hover:border-white/[0.14] hover:bg-white/[0.035]">
       <div className="flex items-center gap-2">
         <AgentTag agent={d.agent} />
         <span className="truncate font-mono text-[11.5px] text-fg">{d.action}</span>
@@ -27,8 +28,9 @@ export function FeedItem({ d }: { d: Decision }) {
         </span>
       </div>
       {d.problem && (
-        <div className="mt-1 truncate font-mono text-[10.5px]" style={{ color: problemColor(d.problem) }}>
-          {d.problem}
+        <div className="mt-1.5 flex items-center gap-1.5 font-mono text-[10.5px] text-fg-dim">
+          <span className="h-1.5 w-1.5 shrink-0 rounded-[1px]" style={{ background: problemColor(d.problem) }} />
+          <span className="truncate">{d.problem}</span>
         </div>
       )}
       <p className="mt-1 line-clamp-2 text-[12px] leading-snug text-fg-muted group-hover:text-fg">{d.rationale}</p>
@@ -58,7 +60,7 @@ export function DecisionCard({ d, defaultOpen = false, highlight = false }: { d:
     <motion.article
       layout="position"
       id={`decision-${d.id}`}
-      className={cx('panel overflow-hidden rounded-xl transition-colors', highlight && '!border-cyan/50 shadow-glow')}
+      className={cx('panel overflow-hidden rounded-xl transition-colors', highlight && '!border-cyan/50')}
     >
       <button onClick={() => setOpen((o) => !o)} className="flex w-full items-start gap-3 px-4 py-3 text-left hover:bg-white/[0.015]" aria-expanded={open}>
         <IconChevron className={cx('mt-0.5 h-4 w-4 shrink-0 text-fg-dim transition-transform', open && 'rotate-90 text-cyan')} />

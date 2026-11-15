@@ -226,7 +226,6 @@ export function Sparkline({
   const py = (y: number) => h - 3 - ((y - y0) / (y1 - y0)) * (h - 6)
   const path = data.map((d, i) => `${i ? 'L' : 'M'}${px(d[0]).toFixed(1)},${py(d[1]).toFixed(1)}`).join('')
   const id = 'sg' + color.replace('#', '')
-  const last = data[data.length - 1]
   return (
     <svg viewBox={`0 0 ${w} ${h}`} className={cx('w-full overflow-visible', className)} style={{ height: h }} preserveAspectRatio="none">
       <defs>

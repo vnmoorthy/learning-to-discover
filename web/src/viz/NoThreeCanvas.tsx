@@ -41,7 +41,7 @@ export default function NoThreeCanvas({ art }: { art: GridArtifact }) {
     // symmetry axis
     if (showAxis) {
       ctx.save()
-      ctx.strokeStyle = 'rgba(255,181,71,0.75)'
+      ctx.strokeStyle = 'rgba(226,178,92,0.6)'
       ctx.setLineDash([6, 5])
       ctx.lineWidth = 1.2
       ctx.beginPath()
@@ -70,12 +70,11 @@ export default function NoThreeCanvas({ art }: { art: GridArtifact }) {
     // violated lines across the grid
     if (showLines) {
       ctx.save()
-      ctx.globalCompositeOperation = 'lighter'
       ctx.lineWidth = 1
       for (const l of clipped) {
         if (!l.seg) continue
-        const alpha = Math.min(0.55, 0.16 + (l.m - 3) * 0.12)
-        ctx.strokeStyle = `rgba(255,77,94,${hoverPoint ? alpha * 0.35 : alpha})`
+        const alpha = Math.min(0.4, 0.1 + (l.m - 3) * 0.1)
+        ctx.strokeStyle = `rgba(229,103,107,${hoverPoint ? alpha * 0.35 : alpha})`
         ctx.beginPath()
         ctx.moveTo(X(l.seg[0][0]), Y(l.seg[0][1]))
         ctx.lineTo(X(l.seg[1][0]), Y(l.seg[1][1]))
@@ -85,10 +84,8 @@ export default function NoThreeCanvas({ art }: { art: GridArtifact }) {
     }
     if (hoverLines.length) {
       ctx.save()
-      ctx.strokeStyle = 'rgba(255,90,110,0.95)'
-      ctx.lineWidth = 1.8
-      ctx.shadowColor = '#E5676B'
-      ctx.shadowBlur = 8
+      ctx.strokeStyle = 'rgba(229,103,107,0.95)'
+      ctx.lineWidth = 1.5
       for (const l of hoverLines) {
         if (!l.seg) continue
         ctx.beginPath()
@@ -99,30 +96,17 @@ export default function NoThreeCanvas({ art }: { art: GridArtifact }) {
       ctx.restore()
     }
 
-    // points with glow
-    const pr = Math.max(1.8, cell * 0.36)
-    ctx.save()
-    ctx.globalCompositeOperation = 'lighter'
+    // points: flat discs
+    const pr = Math.max(1.6, cell * 0.32)
     art.points.forEach(([x, y], i) => {
-      const bad = conf[i] > 0
-      const g = ctx.createRadialGradient(X(x), Y(y), 0, X(x), Y(y), pr * 3.2)
-      g.addColorStop(0, bad ? 'rgba(255,120,130,0.55)' : 'rgba(79,209,224,0.55)')
-      g.addColorStop(1, 'rgba(0,0,0,0)')
-      ctx.fillStyle = g
-      ctx.beginPath()
-      ctx.arc(X(x), Y(y), pr * 3.2, 0, Math.PI * 2)
-      ctx.fill()
-    })
-    ctx.restore()
-    art.points.forEach(([x, y], i) => {
-      ctx.fillStyle = conf[i] > 0 ? '#FFB3BA' : '#C8FCFF'
+      ctx.fillStyle = conf[i] > 0 ? '#E5676B' : '#4FD1E0'
       ctx.beginPath()
       ctx.arc(X(x), Y(y), pr, 0, Math.PI * 2)
       ctx.fill()
     })
     if (hoverPoint) {
-      ctx.strokeStyle = '#FFFFFF'
-      ctx.lineWidth = 1.5
+      ctx.strokeStyle = '#E7E9EC'
+      ctx.lineWidth = 1.25
       ctx.beginPath()
       ctx.arc(X(hoverPoint[0]), Y(hoverPoint[1]), pr + 3, 0, Math.PI * 2)
       ctx.stroke()
@@ -144,7 +128,7 @@ export default function NoThreeCanvas({ art }: { art: GridArtifact }) {
     <div>
       <div className="mb-3 flex flex-wrap items-center gap-x-5 gap-y-2 font-mono text-[11.5px] text-fg-muted">
         <span>
-          points <span className="text-cyan">{art.count ?? art.points.length}</span>
+          points <span className="text-fg">{art.count ?? art.points.length}</span>
         </span>
         <span>
           violated lines <span className="text-bad">{art.violated_lines.length}</span>
@@ -153,7 +137,7 @@ export default function NoThreeCanvas({ art }: { art: GridArtifact }) {
           conflicted points <span className="text-fg">{badPoints}</span>
         </span>
         <span>
-          symmetry <span className="text-amber">{art.sym}</span>
+          symmetry <span className="text-fg">{art.sym}</span>
         </span>
         <span>
           SAT round <span className="text-fg">{art.round}</span>

@@ -20,7 +20,7 @@ the lab reads them back. The source of truth for shapes and contracts is [`SPEC.
 
 ## The cycle
 
-`phoenixastar/loop.py` runs in a background thread. Default interval: 300 s (`PHOENIX_LOOP_INTERVAL`). Pause, resume and
+`phoenixastar/loop.py` runs in a background thread. Default interval: 300 s; the live run uses 180 s (`PHOENIX_LOOP_INTERVAL`). Pause, resume and
 run-now are HTTP endpoints. A failing cycle is caught and logged as a decision (`agent: "system"`,
 `action: "error"`); it never takes the server down.
 

@@ -20,10 +20,10 @@ export function useToast() {
 }
 
 const STYLE: Record<ToastInput['kind'], string> = {
-  success: 'border-good/40 text-good',
-  error: 'border-bad/50 text-bad',
-  info: 'border-cyan/40 text-cyan',
-  record: 'border-amber/60 text-amber shadow-amber',
+  success: 'bg-good',
+  error: 'bg-bad',
+  info: 'bg-cyan',
+  record: 'bg-amber',
 }
 
 export function ToastProvider({ children }: { children: React.ReactNode }) {
@@ -44,14 +44,17 @@ export function ToastProvider({ children }: { children: React.ReactNode }) {
             <motion.div
               key={t.id}
               layout
-              initial={{ opacity: 0, y: 16, scale: 0.98 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              exit={{ opacity: 0, x: 40 }}
-              transition={{ type: 'spring', stiffness: 380, damping: 30 }}
-              className={`pointer-events-auto rounded-xl border bg-ink-800/95 px-4 py-3 backdrop-blur ${STYLE[t.kind]}`}
+              initial={{ opacity: 0, y: 8 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: 4 }}
+              transition={{ duration: 0.18, ease: 'easeOut' }}
+              className="pointer-events-auto flex gap-3 rounded-xl border border-white/10 bg-ink-700 px-4 py-3 shadow-pop"
             >
-              <div className="text-sm font-semibold">{t.title}</div>
-              {t.msg && <div className="mt-0.5 break-words font-mono text-xs text-fg-muted">{t.msg}</div>}
+              <span className={`mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full ${STYLE[t.kind]}`} />
+              <div className="min-w-0">
+                <div className="text-[13px] font-medium text-fg">{t.title}</div>
+                {t.msg && <div className="mt-0.5 break-words font-mono text-[11.5px] text-fg-muted">{t.msg}</div>}
+              </div>
             </motion.div>
           ))}
         </AnimatePresence>
