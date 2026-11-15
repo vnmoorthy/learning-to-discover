@@ -11,17 +11,45 @@ import { ActionButton, Chip, Empty, ErrorNote, Panel, Skeleton, StatusBadge } fr
 import { useAction, useApi } from '../hooks/useApi'
 import { cx, dateTime, fmtScore, gapToRecord, problemColor, timeAgo } from '../lib/format'
 import { useLive } from '../live'
-import { READ_ONLY } from '../mode'
+import { READ_ONLY, STATIC } from '../mode'
 import type { Artifact, Decision, ProblemDetail, Strategy, Template } from '../types'
 import BitWall from '../viz/BitWall'
 import IntegerSet from '../viz/IntegerSet'
 import NoThreeCanvas from '../viz/NoThreeCanvas'
 import SignMatrix from '../viz/SignMatrix'
 import { ReportView } from '../components/Report'
-import { CityViewer, DimSwitch, LatticeViewer, ViewerFrame } from '../viz3d/lazy'
+import { CityViewer, DimSwitch, LatticeViewer, OrbitsViewer, SafeLazy, ViewerFrame } from '../viz3d/lazy'
 
-function ArtifactView({ art, color }: { art: Artifact | null; color: string }) {
-  if (!art) return <Empty>No artifact yet for this problem. It appears once a search writes its current best construction.</Empty>
+type OrbitList = React.ComponentProps<typeof OrbitsViewer>['orbits']
+
+function SolutionView({ art, counted }: { art: { solution?: { orbits?: unknown } }; counted?: number | null }) {
+  const orbits = art.solution?.orbits
+  const raw = <pre className="max-h-80 overflow-auto rounded-lg bg-black/30 p-3 font-mono text-[11px] text-fg-muted">{JSON.stringify(art, null, 1)}</pre>
+  if (!Array.isArray(orbits) || !orbits.length) return raw
+  const submitted = orbits.length
+  return (
+    <div className="space-y-3">
+      <ViewerFrame className="aspect-[16/10] w-full">
+        <SafeLazy fallback={<div className="grid h-full place-items-center text-xs text-fg-dim">Loading orbit viewer...</div>}>
+          <OrbitsViewer orbits={orbits as OrbitList} />
+        </SafeLazy>
+      </ViewerFrame>
+      {typeof counted === 'number' && Number.isFinite(counted) && (
+        <div className="text-[11.5px] text-fg-muted">
+          {submitted} orbits submitted, {counted} counted as new families
+        </div>
+      )}
+      <details className="text-[11px] text-fg-dim">
+        <summary className="cursor-pointer select-none hover:text-fg-muted">raw</summary>
+        <div className="mt-2">{raw}</div>
+      </details>
+    </div>
+  )
+}
+
+function ArtifactView({ art, color, counted }: { art: Artifact | null; color: string; counted?: number | null }) {
+  if (!art) return <Empty>No visual view for this construction type yet; the verified best is in the decision log and leaderboard.</Empty>
+  if ((art as { kind: string }).kind === 'solution') return <SolutionView art={art as unknown as { solution?: { orbits?: unknown } }} counted={counted} />
   switch (art.kind) {
     case 'grid':
       return (
@@ -317,6 +345,23 @@ function LaunchForm({ slug, templates, onLaunched }: { slug: string; templates: 
   )
 }
 
+function DecisionList({ decs }: { decs: Decision[] }) {
+  const [showAll, setShowAll] = useState(false)
+  const rows = showAll ? decs : decs.slice(0, 10)
+  return (
+    <>
+      {rows.map((d) => (
+        <DecisionCard key={d.id} d={d} />
+      ))}
+      {decs.length > 10 && (
+        <button onClick={() => setShowAll((x) => !x)} className="mt-1 text-xs text-cyan hover:underline">
+          {showAll ? 'Show fewer' : `Show all ${decs.length}`}
+        </button>
+      )}
+    </>
+  )
+}
+
 function Leaderboard({ p }: { p: ProblemDetail }) {
   const rows = useMemo(() => {
     const base = p.leaderboard.map((r) => ({ ...r, ours: false }))
@@ -326,7 +371,7 @@ function Leaderboard({ p }: { p: ProblemDetail }) {
     }
     return base.slice(0, 12)
   }, [p])
-  if (!rows.length) return <Empty>No leaderboard entries</Empty>
+  if (!rows.length) return <Empty>No public leaderboard (lab problem)</Empty>
   return (
     <ol className="space-y-1">
       {rows.map((r, i) => (
@@ -380,6 +425,22 @@ export default function ProblemPage() {
     )
 
   const gap = gapToRecord(p)
+  const mv = p.metric.value
+  const mt = p.metric.target
+  const beatsTarget = typeof mv === 'number' && typeof mt === 'number' && (p.metric.lower_is_better ? mv < mt : mv > mt)
+  const isReport = p.artifact?.kind === 'report'
+  const inactive = !isReport && p.status === 'idle' && !p.strategies.length
+  const quiet = isReport || inactive
+  const showHistory = !quiet || series.length > 1
+  const showStrategies = !quiet || p.strategies.length > 0
+  const showLaunch = !quiet || p.templates.length > 0
+  const anyHidden = !showHistory || !showStrategies || !showLaunch
+  const artSubtitle = p.artifact?.label ?? (STATIC ? 'Recorded artifact (verified only when the critic says so)' : 'Live artifact from the search (verified only when the critic says so)')
+  const constructionPanel = (
+    <Panel title="Current construction" subtitle={artSubtitle}>
+      <ArtifactView art={p.artifact} color={color} counted={p.ours?.score ?? null} />
+    </Panel>
+  )
 
   return (
     <div className="space-y-5">
@@ -405,7 +466,7 @@ export default function ProblemPage() {
                 <div className="label">Ours</div>
                 <div className={cx('mt-0.5 font-mono text-[19px] font-medium tracking-tight', p.beats_record ? 'text-amber' : 'text-fg')}>{p.ours ? fmtScore(p.ours.score) : '--'}</div>
                 <div className="text-[11px] text-fg-dim">
-                  {p.ours ? `${p.ours.verified ? 'verified' : 'unverified'} ${dateTime(p.ours.at)}` : 'no valid solution yet'}
+                  {p.ours ? (p.ours.at ? `${p.ours.verified ? 'verified' : 'unverified'} ${dateTime(p.ours.at)}` : p.ours.verified ? 'verified' : 'unverified') : 'no valid solution yet'}
                   {gap != null && gap !== 0 && <span className={gap > 0 ? ' text-amber' : ''}> | gap {gap > 0 ? '+' : ''}{fmtScore(gap, Math.abs(gap) < 1 ? 8 : 0)}</span>}
                 </div>
               </div>
@@ -417,6 +478,7 @@ export default function ProblemPage() {
                 <div className="text-[11px] text-fg-dim">
                   target {fmtScore(p.metric.target)} | {p.metric.lower_is_better ? 'lower is better' : 'higher is better'}
                 </div>
+                {beatsTarget && !p.beats_record && <div className="text-[10.5px] italic text-fg-dim">search state, not a verified record</div>}
               </div>
               <div>
                 <div className="label">Compute</div>
@@ -431,23 +493,29 @@ export default function ProblemPage() {
         </div>
       </section>
 
+      {isReport && constructionPanel}
       <div className="grid gap-5 xl:grid-cols-[minmax(0,1.45fr)_minmax(0,1fr)]">
         <div className="min-w-0 space-y-5">
-          <Panel title="Current construction" subtitle={p.artifact?.label ?? 'Live artifact from the search (verified only when the critic says so)'}>
-            <ArtifactView art={p.artifact} color={color} />
-          </Panel>
-          <Panel title="Metric history" subtitle={`${p.metric.name}: the live progress signal`}>
-            {series.length > 1 ? <MetricChart data={series} color={color} name={p.metric.name} target={p.metric.target} /> : <Empty>Not enough history yet</Empty>}
-          </Panel>
-          <Panel title="Running strategies" subtitle={`${p.strategies.length} on the box`}>
-            <StrategiesTable strategies={p.strategies} onChange={reloadAll} />
-          </Panel>
-          <Panel title="Launch strategy" subtitle="Form generated from the template parameter schema">
-            <LaunchForm slug={slug} templates={p.templates} onLaunched={reloadAll} />
-          </Panel>
+          {!isReport && constructionPanel}
+          {showHistory && (
+            <Panel title="Metric history" subtitle={`${p.metric.name}: ${STATIC ? 'the recorded progress signal' : 'the live progress signal'}`}>
+              {series.length > 1 ? <MetricChart data={series} color={color} name={p.metric.name} target={p.metric.target} /> : <Empty>Not enough history yet</Empty>}
+            </Panel>
+          )}
+          {showStrategies && (
+            <Panel title="Running strategies" subtitle={`${p.strategies.length} on the box`}>
+              <StrategiesTable strategies={p.strategies} onChange={reloadAll} />
+            </Panel>
+          )}
+          {showLaunch && (
+            <Panel title="Launch strategy" subtitle="Form generated from the template parameter schema">
+              <LaunchForm slug={slug} templates={p.templates} onLaunched={reloadAll} />
+            </Panel>
+          )}
+          {anyHidden && <div className="px-1 text-[12px] text-fg-dim">{isReport ? 'Finished study: no search running' : 'Inactive: no search running'}</div>}
         </div>
         <div className="min-w-0 space-y-5">
-          <Panel title="Leaderboard" subtitle="EinsteinArena, with our best verified score inserted">
+          <Panel title="Leaderboard" subtitle={p.leaderboard.length ? 'EinsteinArena, with our best verified score inserted' : 'No public leaderboard (lab problem)'}>
             <Leaderboard p={p} />
           </Panel>
           <Panel
@@ -466,7 +534,7 @@ export default function ProblemPage() {
           <Panel title="Decisions on this problem" right={<Link to={`/decisions?problem=${slug}`} className="text-xs text-cyan hover:underline">All</Link>}>
             {decisions.error && !decisions.data && <ErrorNote error={decisions.error} onRetry={decisions.reload} />}
             <div className="space-y-2">
-              {decs.length ? decs.map((d) => <DecisionCard key={d.id} d={d} />) : !decisions.loading && <Empty>No decisions about this problem yet</Empty>}
+              {decs.length ? <DecisionList decs={decs} /> : !decisions.loading && <Empty>No decisions about this problem yet</Empty>}
             </div>
           </Panel>
         </div>
