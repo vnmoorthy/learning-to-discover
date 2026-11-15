@@ -1,2 +1,3 @@
 C N=12 haar 3.0s
 C N=12 stabilizer 57.7s
+C N=12 brick 170.8s

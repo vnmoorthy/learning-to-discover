@@ -153,8 +153,12 @@ def petz_fidelity_explicit(K: np.ndarray) -> float:
 
 def petz_fidelity_pure(Psi: np.ndarray) -> float:
     """F_Petz = (1/d_M) || Tr_Q sqrt(rho_QB') ||_F^2 (global state pure)."""
-    dQ, dBp = Psi.shape[:2]
-    sq = _sqrt_psd(rho_QBp(Psi)).reshape(dQ, dBp, dQ, dBp)
+    dQ, dBp, dD, dR = Psi.shape
+    # sqrt(rho_QB') = W S W^dag from the SVD Psi = W S V^dag (accurate for tiny
+    # Schmidt values, unlike sqrt of eigh eigenvalues ~ 1e-17 -> 3e-9).
+    W, sv, _ = np.linalg.svd(Psi.reshape(dQ * dBp, dD * dR), full_matrices=False)
+    sv = np.where(sv > 1e-13 * sv.max(), sv, 0.0)
+    sq = ((W * sv) @ W.conj().T).reshape(dQ, dBp, dQ, dBp)
     g = np.einsum("qiqj->ij", sq)
     return float(np.real(np.vdot(g, g)) / dQ)
 
