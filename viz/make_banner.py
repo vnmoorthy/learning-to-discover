@@ -46,15 +46,15 @@ LAYOUT = {
     # All positions in output pixels; y values are text baselines measured from the top.
     "banner": dict(
         bg="viz/blackhole/banner_bg.png", out="docs/assets/banner.png", margin=36,
-        x0=132, label=(170, 30), word=(352, 176), tag=([
+        x0=132, label=(182, 29), word=(352, 152), tag=([
             "An AI lab that gets better at discovering",
             "mathematics and physics by doing it.",
             "Every claim verified."], 432, 46, 1.36),
         stats=(694, 31), infra=(748, 31), foot=(22, 36, 34),
-        dim_lo=0.22, dim_from=0.16),
+        dim_lo=0.16, dim_from=0.20),
     "social": dict(
         bg="viz/blackhole/social_bg.png", out="docs/assets/social-preview.png", margin=48,
-        x0=72, label=(150, 21), word=(262, 108), tag=([
+        x0=72, label=(150, 21), word=(258, 98), tag=([
             "An AI lab that gets better at",
             "discovering mathematics and physics",
             "by doing it. Every claim verified."], 322, 31, 1.38),
@@ -140,7 +140,6 @@ def tracked(draw, xy, text, font, fill, track):
     for ch in text:
         draw.text((x, y), ch, font=font, fill=fill, anchor="ls")
         x += font.getlength(ch) + track
-    top = y - font.getbbox("A", anchor="ls")[1] * -1
     return (x_start, y + font.getbbox("A", anchor="ls")[1], x - track, y + font.getbbox("g", anchor="ls")[3])
 
 
