@@ -10,13 +10,15 @@ export default function PhysicsPage() {
   const ph = useApi(() => api.physics(), [], 60000)
   const tb = ph.data?.threebody
   const eh = ph.data?.event_horizon
+  const ns = ph.data?.neutron_star
   return (
     <div className="space-y-5">
       <div>
         <h1 className="text-[22px] font-semibold leading-7 tracking-[-0.02em]">Physics</h1>
         <p className="mt-1.5 max-w-3xl text-[14px] leading-6 text-fg-muted">
           The same loop, pointed beyond EinsteinArena: an open problem in celestial mechanics (periodic orbits of the three-body
-          problem) and EVENT HORIZON, a verified quantum-information study of the black hole information problem on the A100s.
+          problem), EVENT HORIZON, a verified quantum-information study of the black hole information problem, and STARFORGE, a
+          neutron-star equation-of-state lab on the A100s.
           Every claim below is classified; nothing here claims to settle an open problem.
         </p>
       </div>
@@ -65,6 +67,30 @@ export default function PhysicsPage() {
               </div>
             )}
           </Panel>
+          {ns && (
+            <Panel
+              title="STARFORGE · neutron-star equation of state"
+              subtitle={ns.question ?? 'What is the equation of state of matter inside neutron stars?'}
+              right={
+                <span className="flex flex-wrap items-center gap-2">
+                  <TestsBadge tests={ns.tests} />
+                  <Link to="/problems/neutron-star-eos" className="inline-flex h-8 items-center rounded-lg border border-white/10 bg-white/[0.03] px-3 text-[12.5px] font-medium text-fg transition-colors hover:border-white/20 hover:bg-white/[0.06]">
+                    Open problem page
+                  </Link>
+                </span>
+              }
+            >
+              <div className="space-y-5">
+                {ns.summary && <p className="max-w-4xl text-sm text-fg-muted">{ns.summary}</p>}
+                {ns.hardware && <p className="font-mono text-[11px] text-fg-dim">hardware: {ns.hardware}</p>}
+                <FigureGrid figures={ns.figures ?? []} />
+                <div className="space-y-2">
+                  <div className="label">Research cycles</div>
+                  {(ns.cycles ?? []).map((c, i) => <Cycle key={i} c={c} i={i} />)}
+                </div>
+              </div>
+            </Panel>
+          )}
           <Panel
             title="Three-body periodic orbits · candidates"
             subtitle={tb ? `${tb.orbits.length} verified periodic orbits whose topological families are absent from the ${tb.catalog_entries.toLocaleString()} catalogued orbits checked` : 'no data'}

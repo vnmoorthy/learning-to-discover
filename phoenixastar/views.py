@@ -55,7 +55,7 @@ def problem_summary(slug, an=None):
             out["metric"] = {"name": "candidate_new_families", "value": b["score"], "target": None, "lower_is_better": False}
         out["status"] = "candidates"
         out["beats_record"] = False
-    if slug == "event-horizon":   # a finished, verified study: its score is the number of independently verified claims
+    if slug in REPORTS:   # a finished, verified study: its score is the number of independently verified claims
         m = config.load_meta(slug)
         out["metric"] = {"name": "verified_claims", "value": m.get("verified_claims"), "target": m.get("claims_total"),
                          "lower_is_better": False}
@@ -92,7 +92,7 @@ def totals():
             "sources": one("SELECT COUNT(*) c FROM literature"),
             # EinsteinArena records only: lab-defined physics problems report candidates / verified claims instead
             "records": one("SELECT COUNT(*) c FROM bests WHERE beats_record=1 AND verified=1 AND problem NOT IN "
-                           "('three-body-periodic-orbits', 'event-horizon')"),
+                           "('three-body-periodic-orbits', 'event-horizon', 'neutron-star-eos')"),
             "candidate_orbit_families": int((ledger.get_best("three-body-periodic-orbits") or {}).get("score") or 0)}
 
 
@@ -108,12 +108,12 @@ def problem_detail(slug):
                           for i, r in enumerate(config.load_leaderboard(slug))]
     out["metric_history"] = ledger.metric_history(slug, config.PROBLEMS[slug]["metric"])
     out["artifact"] = ledger.get_artifact(slug)
-    if slug == "event-horizon":
-        eh = physics().get("event_horizon")
-        out["artifact"] = ({"kind": "report", **eh, "paper": "problems/event-horizon/paper/event_horizon.md",
-                            "notebook": "problems/event-horizon/notebooks/event_horizon.ipynb",
-                            "hero": "/gallery/blackhole.jpg", "interactive": "blackhole",
-                            "hero_caption": "A Schwarzschild black hole ray-traced on an A100: 24 million light rays integrated along exact null geodesics around a thin Keplerian accretion disk (ISCO to 13 r_s) with a Novikov-Thorne temperature profile, gravitational redshift and Doppler beaming. The far side of the disk is lensed over and under the shadow; the thin ring is the photon ring. A simulation, not a photograph; the gas texture is procedural. Source: viz/blackhole/raytrace.py."} if eh else None)
+    if slug in REPORTS:
+        rep = report(slug)
+        extra = {k: v for k, v in REPORTS[slug].items() if v is not None}
+        if slug == "event-horizon":
+            extra["hero_caption"] = HERO_CAPTION_EH
+        out["artifact"] = ({"kind": "report", **rep, **extra} if rep else None)
     out["templates"] = [{"name": n, "resource": t.get("resource", "cpu"), "params": strategies.public_params(t)}
                         for n, t in sorted(strategies.for_problem(slug).items())]
     return out
@@ -170,8 +170,32 @@ def memory_view():
     return memory.api_view()
 
 
+HERO_CAPTION_EH = "A Schwarzschild black hole ray-traced on an A100: 24 million light rays integrated along exact null geodesics around a thin Keplerian accretion disk (ISCO to 13 r_s) with a Novikov-Thorne temperature profile, gravitational redshift and Doppler beaming. The far side of the disk is lensed over and under the shadow; the thin ring is the photon ring. A simulation, not a photograph; the gas texture is procedural. Source: viz/blackhole/raytrace.py."
+
+# Finished, independently verified studies rendered as reports (score = number of independently verified claims).
+REPORTS = {
+    "event-horizon": {"paper": "problems/event-horizon/paper/event_horizon.md",
+                      "notebook": "problems/event-horizon/notebooks/event_horizon.ipynb",
+                      "hero": "/gallery/blackhole.jpg", "interactive": "blackhole",
+                      "hero_caption": None},
+    "neutron-star-eos": {"paper": "problems/neutron-star-eos/paper/starforge.md"},
+}
+
+
+def report(slug):
+    """A study's results/dashboard.json with figure paths rewritten to the web gallery (/gallery/<slug>/<file>)."""
+    p = os.path.join(config.PROBLEMS_DIR, slug, "results", "dashboard.json")
+    try:
+        d = json.load(open(p))
+    except (OSError, ValueError):
+        return None
+    for f in d.get("figures") or []:
+        f["src"] = f"/gallery/{slug}/" + os.path.basename(f.get("path") or f.get("src") or "")
+    return d
+
+
 def physics():
-    """The lab's science domains beyond EinsteinArena: three-body periodic orbits and EVENT HORIZON."""
+    """The lab's science domains beyond EinsteinArena: three-body periodic orbits, EVENT HORIZON and STARFORGE."""
     out = {"threebody": None, "event_horizon": None}
     slug = "three-body-periodic-orbits"
     meta = config.load_meta(slug)
@@ -188,12 +212,6 @@ def physics():
                         "not_checked": not_checked, "image": "/gallery/threebody_candidates.png",
                         "verification": meta.get("verification"), "novelty": meta.get("novelty"),
                         "caveats": meta.get("caveats")}
-    p = os.path.join(config.PROBLEMS_DIR, "event-horizon", "results", "dashboard.json")
-    try:
-        eh = json.load(open(p))
-        for f in eh.get("figures") or []:
-            f["src"] = "/gallery/event-horizon/" + os.path.basename(f.get("path") or "")
-        out["event_horizon"] = eh
-    except (OSError, ValueError):
-        out["event_horizon"] = None
+    out["event_horizon"] = report("event-horizon")
+    out["neutron_star"] = report("neutron-star-eos") if "neutron-star-eos" in config.PROBLEMS else None
     return out

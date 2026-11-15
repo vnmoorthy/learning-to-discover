@@ -366,4 +366,6 @@ export interface PhysicsResponse {
     verification?: unknown
     hardware?: string
   } | null
+  /** STARFORGE: neutron-star equation of state (same report schema) */
+  neutron_star?: PhysicsResponse['event_horizon']
 }
