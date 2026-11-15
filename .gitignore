@@ -28,3 +28,6 @@ video/*.wav
 
 # the presenter's own recording stays local
 video/me/
+video/clips_talk/
+video/frames_talk/
+video/phoenixastar_demo_presenter.mp4

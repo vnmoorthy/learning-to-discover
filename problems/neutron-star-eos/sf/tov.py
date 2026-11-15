@@ -94,8 +94,9 @@ def solve_star(eos, pc, rtol=1e-10, atol=1e-14, p_surf=1e-16, r0=1e-5, tidal=Tru
         def ev(rr, s, lnt=lnt):
             return s[1] - lnt
         ev.terminal, ev.direction = True, -1
-        sol = solve_ivp(_rhs_factory(eos, tgt, p_hi, tidal), (r, r_max), state, method=method,
-                        rtol=rtol, atol=atol, events=ev)
+        with np.errstate(all="ignore"):  # rejected trial steps may overflow harmlessly
+            sol = solve_ivp(_rhs_factory(eos, tgt, p_hi, tidal), (r, r_max), state, method=method,
+                            rtol=rtol, atol=atol, events=ev)
         out["nfev"] += sol.nfev
         if sol.status != 1:
             raise RuntimeError(f"TOV integration did not reach P={tgt:.3e} (status {sol.status})")
