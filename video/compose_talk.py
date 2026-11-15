@@ -116,7 +116,12 @@ def compose():
             clip = f"{HERE}/clips_talk/{s['id']}.mp4"
             if not os.path.exists(clip):
                 sys.exit(f"missing {clip}: run record first")
-            f.write(f"file '{clip}'\n")
+            # clips may have been pre-recorded at nominal timings: retime each one to the presenter's actual section length
+            cd = probe_duration(clip)
+            fit = f"{ME}/fit_{s['id']}.mp4"
+            sh("ffmpeg", "-y", "-v", "error", "-i", clip, "-vf", f"setpts=PTS*{s['dur'] / cd:.5f},fps=30",
+               "-t", f"{s['dur']:.3f}", "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "16", "-pix_fmt", "yuv420p", fit)
+            f.write(f"file '{fit}'\n")
     screen = f"{ME}/screen.mp4"
     sh("ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", screen)
     banner = f"{ROOT}/docs/assets/banner.png"
