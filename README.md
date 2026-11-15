@@ -58,6 +58,8 @@ real-time 3D scene built from real data (drag to rotate, pinch to zoom, tap to i
 | **Mission Control.** Loop status and phase, the 8 x A100 + 124-core + Modal compute map, the problem portfolio and the live decision feed. | **A problem page.** The current construction as an interactive 3D lattice, the leaderboard, live metric history, running strategies and the official verifier one click away. |
 | <img src="docs/assets/screens/physics.png" alt="Physics page with the interactive three-body viewer" width="100%"> | <img src="docs/assets/screens/memory.png" alt="Shared memory graph and benchmark" width="100%"> |
 | **Physics.** The three-body candidates integrated live in the browser (play, scrub, pick any of 17) next to their verified initial conditions. | **Memory.** Which agent read which agent's facts through past.dev, and the benchmark against markdown and RAG. |
+| <img src="docs/assets/screens/decisions.png" alt="The decision log" width="100%"> | <img src="docs/assets/screens/gallery.png" alt="Gallery with interactive scenes" width="100%"> |
+| **Decisions.** Every move with its rationale, parameters, model, tokens and latency; the critic marks predictions confirmed or refuted against what actually happened. | **Gallery.** Interactive 3D scenes (lattice, Hadamard city, snake, three-body orbits) and Blender renders, all from the run's real data. |
 
 ## What it does
 
