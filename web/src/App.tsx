@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion'
 import { lazy, Suspense, useEffect } from 'react'
-import { BrowserRouter, HashRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom'
+import { BrowserRouter, HashRouter, Link, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { ConnectionBadge, LoopPill } from './components/LoopStatus'
 import { IconBook, IconDecisions, IconGallery, IconLearn, IconMemory, IconMission } from './components/icons'
 import { ToastProvider } from './components/Toast'
@@ -140,7 +140,7 @@ function TopBar() {
         <div className="hidden min-w-0 items-center gap-2 text-[13px] lg:flex">
           {slug && (
             <>
-              <span className="text-fg-dim">Problems</span>
+              <Link to="/" className="text-fg-dim hover:text-cyan">Problems</Link>
               <span className="text-ink-400">/</span>
             </>
           )}

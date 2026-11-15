@@ -85,13 +85,39 @@ export function Cycle({ c, i }: { c: EHCycle; i: number }) {
   )
 }
 
+function VerificationBlock({ v }: { v: unknown }) {
+  if (!v || typeof v !== 'object' || Array.isArray(v)) return null
+  const o = v as Record<string, unknown>
+  const num = (x: unknown) => (typeof x === 'number' && Number.isFinite(x) ? x : null)
+  const checked = num(o.claims_checked)
+  const agree = num(o.agree)
+  const disagree = num(o.disagree)
+  const notes = Object.entries(o).filter(([, x]) => typeof x === 'string' && x)
+  if (checked == null && agree == null && disagree == null && !notes.length) return null
+  return (
+    <div className="mt-2 max-w-4xl rounded-lg border border-white/[0.07] bg-white/[0.02] px-3 py-2 text-[12.5px] leading-5 text-fg-dim">
+      {(checked != null || agree != null) && (
+        <div>
+          <span className="text-fg-muted">Independent verifier:</span> {agree ?? '?'}/{checked ?? '?'} claims agree
+          {disagree != null && <>; {disagree} corrected</>}
+        </div>
+      )}
+      {notes.map(([k, x]) => (
+        <div key={k} className="mt-1">
+          <span className="text-fg-muted">{k.replace(/_/g, ' ')}:</span> {String(x)}
+        </div>
+      ))}
+    </div>
+  )
+}
+
 export function FigureGrid({ figures }: { figures: EHFigure[] }) {
   if (!figures.length) return null
   return (
-    <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+    <div className="grid gap-4 lg:grid-cols-2">
       {figures.map((f, i) => (
         <figure key={i} className="flex flex-col overflow-hidden rounded-lg border border-white/[0.07] bg-ink-850">
-          <a href={assetUrl(f.src ?? '')} target="_blank" rel="noreferrer" className="block bg-black/20">
+          <a href={assetUrl(f.src ?? '')} target="_blank" rel="noreferrer" title="Open full size in a new tab" className="block cursor-zoom-in bg-black/20">
             <img src={assetUrl(f.src ?? '')} alt={f.title} className="w-full" loading="lazy" />
           </a>
           <figcaption className="flex flex-1 flex-col gap-1.5 border-t border-white/[0.07] px-3 py-2.5 text-[12.5px] leading-5">
@@ -188,6 +214,7 @@ export function ReportView({ art }: { art: ReportArtifact }) {
             <span className="text-fg-muted">Verification:</span> {art.verification}
           </p>
         )}
+        <VerificationBlock v={art.verification} />
       </div>
       {!!art.figures?.length && (
         <div>

@@ -357,7 +357,7 @@ None of this resolves the information paradox. The models assume unitarity and s
 - V2, [[5,1,3]]: 0 violations over 30 erasure patterns.
 - V3, Haar OTOC at N = 3: −0.0208 ± 0.0028 against −1/63 (z = −1.74).
 - V4, stabilizer counts: breadth-first search gives 6, 60 and 1080.
-- V5, old-hole F_Petz: 0.769 ± 0.019 over 48 seeds, against 0.765.
+- V5, old-hole F_Petz: 0.769 ± 0.003 over 48 seeds, against 0.765.
 
 V5 uses the same Petz formula with an independent state construction. The project now has 13 of 14 claims verified (`results/verification.json`). Tests: 204/204 pass.
 

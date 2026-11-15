@@ -44,7 +44,7 @@ function ParamList({ params }: { params: Record<string, unknown> }) {
   return (
     <div className="flex flex-wrap gap-1.5">
       {entries.map(([k, v]) => (
-        <span key={k} className="rounded-md border border-white/[0.07] bg-black/20 px-1.5 py-0.5 font-mono text-[10.5px] text-fg-muted">
+        <span key={k} className="max-w-full whitespace-pre-wrap break-all rounded-md border border-white/[0.07] bg-black/20 px-1.5 py-0.5 font-mono text-[10.5px] text-fg-muted">
           {k}=<span className="text-fg">{typeof v === 'object' ? JSON.stringify(v) : String(v)}</span>
         </span>
       ))}
