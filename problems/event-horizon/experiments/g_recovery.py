@@ -234,8 +234,12 @@ def part_plot():
     import _style as st
     plt = st.setup()
     g1 = json.load(open(os.path.join(PARTS, "g1.json")))
-    g2 = json.load(open(os.path.join(PARTS, "g2_D_n4.json")))
-    g2r = json.load(open(os.path.join(PARTS, "g2_DR_n4.json")))
+    big = all(os.path.exists(os.path.join(PARTS, f)) for f in ("g2_D.json", "g2_DR.json"))
+    g2 = json.load(open(os.path.join(PARTS, "g2_D.json" if big else "g2_D_n4.json")))
+    g2r = json.load(open(os.path.join(PARTS, "g2_DR.json" if big else "g2_DR_n4.json")))
+    if "scramblers" not in g2:
+        g2["scramblers"] = SCRAMBLERS_G2
+    small = {f: json.load(open(os.path.join(PARTS, f))) for f in ("g2_D_n4.json", "g2_DR_n4.json")}
     g3 = json.load(open(os.path.join(PARTS, "g3_fast.json")))
     extra = {f: json.load(open(os.path.join(PARTS, f))) for f in ("g2_D.json", "g2_DR.json", "g3.json")
              if os.path.exists(os.path.join(PARTS, f))}
@@ -280,6 +284,8 @@ def part_plot():
                 s = c["metrics"]["F_petz"][c["k"] + off]
                 xs.append(c["n_B"]); ys.append(1 - s["mean"]); es.append(s["sem"])
         ax[2].errorbar(xs, ys, yerr=es, marker="o", color=colr, label=f"old, m - k = {off}")
+        pr = [c["bounds"][c["k"] + off]["T_mm_bound"] ** 2 for c in g1["configs"] if c["k"] == 1 and c["old"]]
+        ax[2].plot(xs, pr, ":", color=colr, lw=1.2, label="(D E[tr rho^2] - 1)/4 (Bures 2nd order)" if off == 1 else None)
         xs, ys = [], []
         for c in g1["configs"]:
             if c["k"] == 1 and not c["old"]:
@@ -403,6 +409,7 @@ def part_plot():
     merged = {"description": "Tracks C+D: explicit HP recovery (Petz decoder), scrambling quality, noise, OTOCs",
               "decoder": "Petz recovery map (transpose channel), sigma = 1/d_M; Yoshida-Kitaev P_EPR/F_EPR alongside",
               "g1": g1, "g2_noise_D": g2, "g2_noise_DR": g2r, "g3": g3,
+              "g2_used_n": g2["k"] + g2["n_B"], "g2_n4_runs": small,
               "extra_larger_runs_if_finished": extra}
     with open(os.path.join(ROOT, "results", "g_recovery.json"), "w") as f:
         json.dump(merged, f, indent=1)

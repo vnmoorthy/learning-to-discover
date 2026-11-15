@@ -138,13 +138,23 @@ void main() {
   float h2 = dot(hv, hv) * uLensing;
   float r0 = length(x);
   float vinf = sqrt(max(1.0 - h2 / (r0 * r0 * r0), 1e-6));
-  float L = -hv.y / vinf;                       // photon angular momentum about the disk axis (physical direction)
-  // An outward-moving photon outside the photon sphere (r > 1.5) never turns back, so once it is beyond the disk
-  // it can only escape: stop there and use its current direction (the remaining weak-field bend is tiny).
+  // Photon angular momentum about the disk axis, sign chosen so the gas orbits in the +phi = atan(z, x) sense:
+  // the same sense the turbulence texture is advected in, and the same bright side as the A100 render.
+  float L = hv.y / vinf;
+  // An outward-moving photon outside the photon sphere (r > 1.5) never turns back, so once it is beyond the disk it
+  // can only escape: stop there and add the remaining weak-field bend analytically (below).
   float rEsc = uRout + 2.0;
   int state = 0;                                 // 0 running, 1 disk, 2 captured, 3 escaped
   float rc = 0.0, phc = 0.0;
+  // a camera far outside rEsc: move along the (nearly straight) ray to the rEsc sphere first, or escape at once
+  if (r0 > rEsc) {
+    float bq = dot(x, v);
+    float disc = bq * bq - (r0 * r0 - rEsc * rEsc);
+    if (disc < 0.0 || bq > 0.0) { state = 3; }
+    else { x += (-bq - sqrt(disc)) * v; }
+  }
   for (int i = 0; i < MAX_STEPS; i++) {
+    if (state != 0) break;
     float r = length(x);
     float dt = clamp(0.03 * r * r, 0.004, 0.08 * r + 0.2);
     vec3 k1x = v;                   vec3 k1v = acc(x, h2);
@@ -161,7 +171,7 @@ void main() {
     }
     float rn = length(xn);
     if (rn < 1.0) { state = 2; break; }
-    if (rn > rEsc && dot(xn, vn) > 0.0) { state = 3; v = vn; break; }
+    if (rn > rEsc && dot(xn, vn) > 0.0) { state = 3; x = xn; v = vn; break; }
     x = xn;
     v = vn;
   }
@@ -176,7 +186,15 @@ void main() {
     float I = pow(g * Tn, 4.0) * (0.22 + 1.6 * pow(turb, 1.7)) * fade;
     col = kelvin(g * Tn * uTpeak) * I * uExposure;
   } else if (state == 3) {
-    col = stars(normalize(v)) * 0.55;
+    // remaining weak-field deflection from the exit point to infinity (first order in M/b), towards the hole
+    vec3 vh = normalize(v);
+    float rr = length(x);
+    float s = dot(x, vh);
+    vec3 bv = x - s * vh;
+    float b = max(length(bv), 1e-4);
+    float del = uLensing * (1.0 / b) * (1.0 - s * (3.0 * b * b + 2.0 * s * s) / (2.0 * rr * rr * rr));
+    vec3 d = vh * cos(del) - (bv / b) * sin(del);
+    col = stars(normalize(d)) * 0.55;
   }
   col = aces(col);
   float l = dot(col, LUMA);

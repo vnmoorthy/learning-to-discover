@@ -187,8 +187,8 @@ def make_figures(agg, isl_out):
     ax[2].set_ylabel("fraction of erasure patterns exactly correctable")
     ax[2].set_title("(c) erasure thresholds vs code")
     ax[2].axvline(0.5, color=GREY, lw=0.8, ls=":")
-    ax[0].legend(fontsize=6.5, ncol=2, loc="upper left")
-    ax[1].legend(fontsize=6.5, ncol=2, loc="upper left")
+    ax[0].legend(fontsize=6.5, ncol=2, loc="lower right")
+    ax[1].legend(fontsize=6.5, ncol=2, loc="lower right")
     ax[2].legend(fontsize=6.5, ncol=2, loc="upper right")
     caption(fig, "Finite-dimensional codes, 1 logical qubit + reference R; exact statevectors; seeds in results/h_qec_islands.json. "
                  "Illustrates the QEC language for black holes; it does not derive holography.")

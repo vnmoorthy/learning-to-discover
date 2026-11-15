@@ -175,3 +175,60 @@ def flatness(p, clip: float = 1e-12) -> dict:
     return {"rank": int(r), "log2_rank": float(math.log2(r)) if r else float("nan"),
             "max_rel_dev": float(np.max(np.abs(nz * r - 1.0))) if r else float("nan"),
             "var_nonzero": float(np.var(nz)) if r else float("nan")}
+
+
+# ----------------------------------------------------------------------------- exact stabilizer ensemble
+def enumerate_stabilizer_states(n: int) -> np.ndarray:
+    """All n-qubit stabilizer states (mod global phase) as an (M, 2^n) array, by breadth-first
+    search from |0..0> under the Clifford generators {H_i, S_i, CNOT_ij}.  M must equal
+    2^n prod_{k=1}^n (2^k + 1) (Aaronson & Gottesman 2004): 6, 60, 1080, 36720 for n = 1..4.
+    The uniform distribution on this set is the Clifford orbit of |0..0>, a state 3-design."""
+    d = 2**n
+    h = np.array([[1, 1], [1, -1]], dtype=complex) / math.sqrt(2.0)
+    s = np.diag([1, 1j]).astype(complex)
+
+    def one(batch, g, i):
+        t = batch.reshape((-1,) + (2,) * n)
+        t = np.moveaxis(np.tensordot(g, t, axes=([1], [i + 1])), 0, i + 1)
+        return t.reshape(-1, d)
+
+    def cnot(batch, c, t_):
+        t = batch.reshape((-1,) + (2,) * n).copy()
+        idx1 = [slice(None)] * (n + 1)
+        idx1[c + 1] = 1
+        sub = t[tuple(idx1)]  # control = 1 block; target axis shifts if t_ > c
+        ax = t_ if t_ < c else t_ - 1
+        t[tuple(idx1)] = np.flip(sub, axis=ax + 1)
+        return t.reshape(-1, d)
+
+    def canon(batch):
+        idx = np.argmax(np.abs(batch) > 1e-9, axis=1)
+        lead = batch[np.arange(len(batch)), idx]
+        return batch * (np.abs(lead) / lead)[:, None]
+
+    def keys(batch):
+        r = np.round(batch, 8) + 0.0
+        return [row.tobytes() for row in r]
+
+    start = np.zeros((1, d), dtype=complex)
+    start[0, 0] = 1.0
+    seen = {keys(start)[0]}
+    out = [start]
+    frontier = start
+    while len(frontier):
+        cands = [one(frontier, h, i) for i in range(n)] + [one(frontier, s, i) for i in range(n)]
+        cands += [cnot(frontier, a, b) for a in range(n) for b in range(n) if a != b]
+        cand = canon(np.concatenate(cands))
+        nxt = []
+        for k, v in zip(keys(cand), cand):
+            if k not in seen:
+                seen.add(k)
+                nxt.append(v)
+        frontier = np.array(nxt) if nxt else np.zeros((0, d), dtype=complex)
+        if nxt:
+            out.append(frontier)
+    return np.concatenate(out)
+
+
+def n_stabilizer_states(n: int) -> int:
+    return 2**n * math.prod(2**k + 1 for k in range(1, n + 1))
