@@ -262,7 +262,9 @@ were re-derived by an independent implementation, and the independent verifier c
 [`problems/event-horizon/paper/event_horizon.md`](problems/event-horizon/paper/event_horizon.md); notebook:
 [`problems/event-horizon/notebooks/event_horizon.ipynb`](problems/event-horizon/notebooks/event_horizon.ipynb). Every result is classified as a reproduction
 or a computational observation; nothing here claims to solve the information paradox, and the island formula is kept
-separate from these finite-dimensional models.
+separate from these finite-dimensional models. 
+
+**Upgrade (Nov 15 afternoon), after an audit of the original study** ([`notes/AUDIT.md`](problems/event-horizon/notes/AUDIT.md)): Rényi Page curves and exact Haar moments of Tr ρ^k (Lubkin purity reproduced, largest |z| 2.48 over 30 comparisons); entanglement spectra against Marchenko-Pastur, and an exact enumeration of stabilizer states (a 3-design, not a 4-design: flat spectra that Rényi entropies can tell apart from Haar); Hayden-Preskill recovery with an explicit Petz decoder (old hole: about 1.7 extra qubits for one message qubit, essentially independent of hole size), OTOCs and depolarizing noise; black holes as erasure codes ([[5,1,3]] as a perfect tensor, random stabilizer and Haar codes); and a separate semiclassical island model (generalized entropy, Page time), never mixed with the qubit models. An adversarial reviewer downgraded two interpretations and retracted one novelty claim; a new, separate verifier (`verify/independent_upgrade.py`) re-derived 5 of 5 new key numbers. Now **204/204 tests** and **13 of 14 key claims independently verified**; every result is class 1-3.
 
 <p align="center"><img src="docs/assets/event-horizon/a_page_curve.png" alt="Page curve" width="80%"></p>
 <p align="center"><sub>The Page curve from exact Haar-random states up to 24 qubits on an A100, against Page's formula.</sub></p>
