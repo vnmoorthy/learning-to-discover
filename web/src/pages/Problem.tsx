@@ -17,6 +17,7 @@ import BitWall from '../viz/BitWall'
 import IntegerSet from '../viz/IntegerSet'
 import NoThreeCanvas from '../viz/NoThreeCanvas'
 import SignMatrix from '../viz/SignMatrix'
+import { ReportView } from '../components/Report'
 import { CityViewer, DimSwitch, LatticeViewer, ViewerFrame } from '../viz3d/lazy'
 
 function ArtifactView({ art, color }: { art: Artifact | null; color: string }) {
@@ -44,6 +45,8 @@ function ArtifactView({ art, color }: { art: Artifact | null; color: string }) {
           }
         />
       )
+    case 'report':
+      return <ReportView art={art} />
     case 'integer_set':
       return <IntegerSet elements={art.elements} h={art.h} score={art.score} color={color} />
     case 'code':
@@ -395,8 +398,8 @@ export default function ProblemPage() {
             <div className="mt-4 flex flex-wrap gap-x-8 gap-y-3">
               <div>
                 <div className="label">Record</div>
-                <div className="mt-0.5 font-mono text-[19px] font-medium tracking-tight text-fg-muted">{fmtScore(p.record.score)}</div>
-                <div className="text-[11px] text-fg-dim">{p.record.holder}</div>
+                <div className="mt-0.5 font-mono text-[19px] font-medium tracking-tight text-fg-muted">{p.record.score == null ? 'n/a' : fmtScore(p.record.score)}</div>
+                <div className="text-[11px] text-fg-dim">{p.record.score == null ? 'verified study' : p.record.holder}</div>
               </div>
               <div>
                 <div className="label">Ours</div>

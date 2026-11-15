@@ -47,13 +47,14 @@ export interface Strategy {
   metric_value: number | null
 }
 
-export type ProblemStatus = 'searching' | 'stalled' | 'record' | 'idle' | 'proved-negative'
+export type ProblemStatus = 'searching' | 'stalled' | 'record' | 'idle' | 'proved-negative' | 'verified'
 
 export interface ProblemSummary {
   slug: string
   title: string
   scoring: 'maximize' | 'minimize'
-  record: { score: number; holder: string }
+  /** score is null for verified studies that have no leaderboard record (e.g. event-horizon) */
+  record: { score: number | null; holder: string | null }
   ours: { score: number; verified: boolean; at: string; strategy_id: string | null } | null
   beats_record: boolean
   metric: { name: string; value: number | null; target: number | null; lower_is_better: boolean }
@@ -118,7 +119,21 @@ export interface CodeArtifact {
   count: number
 }
 
-export type Artifact = (GridArtifact | SignMatrixArtifact | IntegerSetArtifact | CodeArtifact) & {
+export interface ReportArtifact {
+  kind: 'report'
+  title?: string
+  question?: string
+  summary?: string
+  figures?: EHFigure[]
+  cycles?: EHCycle[]
+  tests?: { passed?: number; failed?: number; total?: number }
+  verification?: unknown
+  hardware?: string
+  paper?: string
+  notebook?: string
+}
+
+export type Artifact = (GridArtifact | SignMatrixArtifact | IntegerSetArtifact | CodeArtifact | ReportArtifact) & {
   /** optional provenance note from the backend, e.g. "current SAT model ..., not yet valid" */
   label?: string
   source?: string

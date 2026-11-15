@@ -8,6 +8,7 @@ export const PROBLEM_COLORS: Record<string, string> = {
   'two-deletion-code-16': '#7096E0',
   'snake-in-the-box-13': '#CDB866',
   'ring-loading-15': '#DE9A6E',
+  'event-horizon': '#A99BEA',
 }
 const FALLBACK = ['#7FB8D8', '#B490D8', '#D48AAE', '#62B894', '#D6AE5A', '#7096E0']
 
@@ -27,6 +28,7 @@ const SHORT: Record<string, string> = {
   'two-deletion-code-16': 'Two-deletion code 16',
   'snake-in-the-box-13': 'Snake-in-the-box 13',
   'ring-loading-15': 'Ring loading 15',
+  'event-horizon': 'Event Horizon',
 }
 export function shortName(slug: string | null | undefined): string {
   if (!slug) return 'global'
@@ -111,7 +113,7 @@ export function dateTime(iso: string | null | undefined): string {
 
 /** Signed gap between ours and the record, positive = we are ahead. */
 export function gapToRecord(p: ProblemSummary): number | null {
-  if (!p.ours) return null
+  if (!p.ours || p.record.score == null) return null
   const d = p.ours.score - p.record.score
   return p.scoring === 'maximize' ? d : -d
 }
@@ -120,6 +122,7 @@ export const STATUS_STYLE: Record<string, { label: string; cls: string; dot: str
   searching: { label: 'Searching', cls: 'text-fg border-white/10 bg-white/[0.03]', dot: 'bg-cyan' },
   stalled: { label: 'Stalled', cls: 'text-fg-muted border-white/10 bg-white/[0.03]', dot: 'bg-amber' },
   record: { label: 'Record', cls: 'text-amber border-amber/30 bg-amber/[0.08]', dot: 'bg-amber' },
+  verified: { label: 'Verified', cls: 'text-good border-good/30 bg-good/[0.08]', dot: 'bg-good' },
   idle: { label: 'Idle', cls: 'text-fg-dim border-white/[0.08] bg-transparent', dot: 'bg-ink-400' },
   'proved-negative': { label: 'Proved negative', cls: 'text-violet border-violet/30 bg-violet/[0.08]', dot: 'bg-violet' },
 }

@@ -30,10 +30,10 @@ export function ProblemCard({ p, series, index = 0 }: { p: ProblemSummary; serie
         <div className="mt-4 grid grid-cols-2 gap-3">
           <div className="min-w-0">
             <div className="label">Record</div>
-            <div className="mt-0.5 truncate font-mono text-[15px] font-medium text-fg-muted" title={String(p.record.score)}>
-              {fmtScore(p.record.score)}
+            <div className="mt-0.5 truncate font-mono text-[15px] font-medium text-fg-muted" title={p.record.score == null ? '' : String(p.record.score)}>
+              {p.record.score == null ? 'n/a' : fmtScore(p.record.score)}
             </div>
-            <div className="truncate text-[10.5px] text-fg-dim">{p.record.holder}</div>
+            <div className="truncate text-[10.5px] text-fg-dim">{p.record.score == null ? 'verified study' : p.record.holder}</div>
           </div>
           <div className="min-w-0">
             <div className="label">Ours</div>

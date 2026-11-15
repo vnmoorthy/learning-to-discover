@@ -1,65 +1,10 @@
-import { useState } from 'react'
 import { api } from '../api'
 import { Empty, ErrorNote, Panel, Skeleton } from '../components/ui'
 import { useApi } from '../hooks/useApi'
 import { assetUrl } from '../mode'
-import type { EHCycle } from '../types'
+import { Link } from 'react-router-dom'
+import { Cycle, FigureGrid, TestsBadge } from '../components/Report'
 import { OrbitsViewer, ViewerFrame } from '../viz3d/lazy'
-
-const CLASS_LABEL: Record<string, string> = {
-  '1': 'reproduction',
-  '2': 'verified known relation',
-  '3': 'new computational observation',
-  '4': 'new conjecture',
-  '5': 'potentially novel (needs work)',
-}
-function classOf(c: unknown) {
-  const k = String(c ?? '').trim().charAt(0)
-  return CLASS_LABEL[k] ? `${k} · ${CLASS_LABEL[k]}` : String(c ?? '')
-}
-function txt(v: unknown): string {
-  if (v == null) return ''
-  if (typeof v === 'string') return v
-  if (Array.isArray(v)) return v.map(txt).join(' · ')
-  return JSON.stringify(v)
-}
-
-function Cycle({ c, i }: { c: EHCycle; i: number }) {
-  const [open, setOpen] = useState(i === 0)
-  const rows: [string, unknown][] = [
-    ['Hypothesis', c.hypothesis],
-    ['Derivation', c.derivation_summary],
-    ['Prediction', c.prediction],
-    ['Result', c.result],
-    ['Independent verification', c.verification],
-    ['Critic', c.critic_objections],
-    ['Revised hypothesis', c.revised_hypothesis],
-    ['Conclusion', c.conclusion],
-  ]
-  return (
-    <div className="rounded-xl border border-white/[0.07] bg-white/[0.02]">
-      <button onClick={() => setOpen(!open)} className="flex w-full items-start justify-between gap-3 px-4 py-3 text-left">
-        <div className="min-w-0">
-          <div className="font-mono text-[11px] font-medium text-fg-dim">cycle {String(c.id ?? i + 1)}</div>
-          <div className="mt-0.5 text-sm text-fg">{txt(c.question)}</div>
-        </div>
-        {c.classification != null && (
-          <span className="shrink-0 rounded-full border border-white/10 bg-white/[0.03] px-2 py-0.5 text-[11px] font-medium text-fg-muted">{classOf(c.classification)}</span>
-        )}
-      </button>
-      {open && (
-        <dl className="grid gap-2 border-t border-white/[0.06] px-4 py-3 text-[13px] sm:grid-cols-[170px_1fr]">
-          {rows.filter(([, v]) => txt(v)).map(([k, v]) => (
-            <div key={k} className="contents">
-              <dt className="text-[11px] text-fg-dim">{k}</dt>
-              <dd className="whitespace-pre-wrap text-fg-muted">{txt(v)}</dd>
-            </div>
-          ))}
-        </dl>
-      )}
-    </div>
-  )
-}
 
 export default function PhysicsPage() {
   const ph = useApi(() => api.physics(), [], 60000)
@@ -128,11 +73,12 @@ export default function PhysicsPage() {
             title="EVENT HORIZON · black hole information"
             subtitle={eh?.question ?? 'Page curve, Page’s theorem, sequential evaporation, Bell-pair toy model, scrambling and Hayden-Preskill'}
             right={
-              eh?.tests ? (
-                <span className="rounded-full border border-good/30 bg-good/[0.08] px-2 py-0.5 text-[11px] font-medium text-good">
-                  tests {eh.tests.passed ?? '?'}/{eh.tests.total ?? '?'} passed
-                </span>
-              ) : null
+              <span className="flex flex-wrap items-center gap-2">
+                <TestsBadge tests={eh?.tests} />
+                <Link to="/problems/event-horizon" className="inline-flex h-8 items-center rounded-lg border border-white/10 bg-white/[0.03] px-3 text-[12.5px] font-medium text-fg transition-colors hover:border-white/20 hover:bg-white/[0.06]">
+                  Open problem page
+                </Link>
+              </span>
             }
           >
             {!eh ? (
@@ -141,18 +87,7 @@ export default function PhysicsPage() {
               <div className="space-y-5">
                 {eh.summary && <p className="max-w-4xl text-sm text-fg-muted">{eh.summary}</p>}
                 {eh.hardware && <p className="font-mono text-[11px] text-fg-dim">hardware: {eh.hardware}</p>}
-                <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
-                  {(eh.figures ?? []).map((f, i) => (
-                    <figure key={i} className="overflow-hidden rounded-lg border border-white/[0.07] bg-ink-850">
-                      <img src={assetUrl(f.src ?? '')} alt={f.title} className="w-full" loading="lazy" />
-                      <figcaption className="space-y-1 px-3 py-2 text-[12px]">
-                        <div className="text-fg">{f.title}</div>
-                        {f.caption && <div className="text-fg-dim">{f.caption}</div>}
-                        {f.classification != null && <div className="text-fg-muted">{classOf(f.classification)}</div>}
-                      </figcaption>
-                    </figure>
-                  ))}
-                </div>
+                <FigureGrid figures={eh.figures ?? []} />
                 <div className="space-y-2">
                   <div className="label">Research cycles</div>
                   {(eh.cycles ?? []).map((c, i) => <Cycle key={i} c={c} i={i} />)}
