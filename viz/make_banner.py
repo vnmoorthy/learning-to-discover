@@ -49,7 +49,7 @@ LAYOUT = {
         x0=132, label=(182, 29), word=(352, 152), tag=([
             "An AI lab that gets better at discovering",
             "mathematics and physics by doing it.",
-            "Every claim verified."], 432, 46, 1.36),
+            "Every claim verified."], 444, 46, 1.36),
         stats=(694, 31), infra=(748, 31), foot=(22, 36, 34),
         dim_lo=0.16, dim_from=0.20),
     "social": dict(
@@ -58,7 +58,7 @@ LAYOUT = {
             "An AI lab that gets better at",
             "discovering mathematics and physics",
             "by doing it. Every claim verified."], 322, 31, 1.38),
-        stats=None, infra=(484, 18), foot=(15, 48, 48),
+        stats=None, infra=(526, 18), foot=(15, 48, 48),
         dim_lo=0.22, dim_from=0.12),
 }
 
@@ -209,9 +209,9 @@ def compose(name):
     path = os.path.join(ROOT, L["out"])
     os.makedirs(os.path.dirname(path), exist_ok=True)
     out.save(path, optimize=True)
-    right = max(c for _, (a, b, c, d), m in boxes if m)
+    near = [c for _, (a, b, c, d), m in boxes if m and b < cy + 1.6 * rs and d > cy - 1.6 * rs]
     print(f"wrote {L['out']} {W}x{H}  hole centre ({cx:.0f},{cy:.0f}) shadow r {rs:.0f}px  "
-          f"text right edge {right:.0f} < arc {arc_edge:.0f}")
+          f"text beside the hole ends at x={max(near):.0f} < lensed arc x={arc_edge:.0f}")
 
 
 if __name__ == "__main__":
