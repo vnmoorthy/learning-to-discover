@@ -3,114 +3,114 @@
 <desc id="d">An eight-phase autonomous loop (telemetry, critic, memory, literature, propose, referee, plan, execute) in the centre, surrounded by the compute and services it uses: a Lambda GPU box, a Modal CPU fleet, Modal sandboxes, official EinsteinArena verifiers, past.dev memory, Exa search, OpenAI GPT-6 Astra, Claude Fable 5.2, Devin, Tinker and the decision ledger.</desc>
 <defs>
 <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse"><path d="M40 0H0V40" fill="none" stroke="#10151C" stroke-width="1"/></pattern>
-<radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#3DF5FF" stop-opacity="0.10"/><stop offset="1" stop-color="#3DF5FF" stop-opacity="0"/></radialGradient>
-<marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#3DF5FF"/></marker>
-<marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#FFB547"/></marker>
+<radialGradient id="glow" cx="50%" cy="50%" r="50%"><stop offset="0" stop-color="#4FD1E0" stop-opacity="0.10"/><stop offset="1" stop-color="#4FD1E0" stop-opacity="0"/></radialGradient>
+<marker id="ac" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#4FD1E0"/></marker>
+<marker id="aa" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#E8B65C"/></marker>
 <marker id="am" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#8B96A5"/></marker>
 </defs>
-<rect width="1600" height="1000" fill="#07080B"/>
+<rect width="1600" height="1000" fill="#0B0D10"/>
 <rect width="1600" height="1000" fill="url(#grid)"/>
 <circle cx="800" cy="510" r="330" fill="url(#glow)"/>
 <text x="70" y="48" fill="#E8EDF2" font-size="26" font-weight="700">Phoenixastar</text>
 <text x="338" y="48" fill="#8B96A5" font-size="17">one autonomous cycle, and everything it touches</text>
 
 <rect x="250" y="76" width="1100" height="144" rx="16" fill="none" stroke="#222B38" stroke-dasharray="4 6"/>
-<rect x="282" y="66" width="96" height="20" fill="#07080B"/>
-<text x="330" y="81" fill="#FFB547" font-size="12" text-anchor="middle" font-weight="700" letter-spacing="1.6">COMPUTE</text>
-<g><rect x="272" y="100" width="340" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="272" y="114" width="4" height="76" rx="2" fill="#FFB547"/><text x="292" y="127" fill="#FFB547" font-size="12" font-weight="700" letter-spacing="1.2">LAMBDA</text><text x="292" y="150" fill="#E8EDF2" font-size="18" font-weight="650">GPU box</text>
+<rect x="282" y="66" width="96" height="20" fill="#0B0D10"/>
+<text x="330" y="81" fill="#E8B65C" font-size="12" text-anchor="middle" font-weight="700" letter-spacing="1.6">COMPUTE</text>
+<g><rect x="272" y="100" width="340" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="272" y="114" width="4" height="76" rx="2" fill="#E8B65C"/><text x="292" y="127" fill="#E8B65C" font-size="12" font-weight="700" letter-spacing="1.2">LAMBDA</text><text x="292" y="150" fill="#E8EDF2" font-size="18" font-weight="650">GPU box</text>
 <text x="292" y="171" fill="#8B96A5" font-size="13.5">8x A100 40 GB, 124 CPU cores, over SSH</text>
 <text x="292" y="189" fill="#8B96A5" font-size="13.5">GPU tabu + min-conflicts, SAT (CaDiCaL)</text>
 </g>
-<g><rect x="630" y="100" width="340" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="630" y="114" width="4" height="76" rx="2" fill="#FFB547"/><text x="650" y="127" fill="#FFB547" font-size="12" font-weight="700" letter-spacing="1.2">MODAL</text><text x="650" y="150" fill="#E8EDF2" font-size="18" font-weight="650">CPU fleet</text>
+<g><rect x="630" y="100" width="340" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="630" y="114" width="4" height="76" rx="2" fill="#E8B65C"/><text x="650" y="127" fill="#E8B65C" font-size="12" font-weight="700" letter-spacing="1.2">MODAL</text><text x="650" y="150" fill="#E8EDF2" font-size="18" font-weight="650">CPU fleet</text>
 <text x="650" y="171" fill="#8B96A5" font-size="13.5">1-core containers, shared Volume phoenixastar-runs</text>
 <text x="650" y="189" fill="#8B96A5" font-size="13.5">SAT, local search, annealing, LNS</text>
 </g>
-<g><rect x="988" y="100" width="340" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="988" y="114" width="4" height="76" rx="2" fill="#FFB547"/><text x="1008" y="127" fill="#FFB547" font-size="12" font-weight="700" letter-spacing="1.2">MODAL</text><text x="1008" y="150" fill="#E8EDF2" font-size="18" font-weight="650">Agent sandboxes</text>
+<g><rect x="988" y="100" width="340" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="988" y="114" width="4" height="76" rx="2" fill="#E8B65C"/><text x="1008" y="127" fill="#E8B65C" font-size="12" font-weight="700" letter-spacing="1.2">MODAL</text><text x="1008" y="150" fill="#E8EDF2" font-size="18" font-weight="650">Agent sandboxes</text>
 <text x="1008" y="171" fill="#8B96A5" font-size="13.5">LLM-written search programs in parallel</text>
 <text x="1008" y="189" fill="#8B96A5" font-size="13.5">no network, no secrets, hard timeout</text>
 </g>
-<circle cx="800" cy="510" r="235" fill="none" stroke="#3DF5FF" stroke-opacity="0.45" stroke-width="2"/>
-<circle cx="800" cy="510" r="150" fill="#07080B" fill-opacity="0.55" stroke="#222B38"/>
-<path d="M-8 -6.5L8 0L-8 6.5z" fill="#3DF5FF" transform="translate(889.9 292.9) rotate(22.5)"/>
-<path d="M-8 -6.5L8 0L-8 6.5z" fill="#3DF5FF" transform="translate(1017.1 420.1) rotate(67.5)"/>
-<path d="M-8 -6.5L8 0L-8 6.5z" fill="#3DF5FF" transform="translate(1017.1 599.9) rotate(112.5)"/>
-<path d="M-8 -6.5L8 0L-8 6.5z" fill="#3DF5FF" transform="translate(889.9 727.1) rotate(157.5)"/>
-<path d="M-8 -6.5L8 0L-8 6.5z" fill="#3DF5FF" transform="translate(710.1 727.1) rotate(202.5)"/>
-<path d="M-8 -6.5L8 0L-8 6.5z" fill="#3DF5FF" transform="translate(582.9 599.9) rotate(247.5)"/>
-<path d="M-8 -6.5L8 0L-8 6.5z" fill="#3DF5FF" transform="translate(582.9 420.1) rotate(292.5)"/>
-<path d="M-8 -6.5L8 0L-8 6.5z" fill="#3DF5FF" transform="translate(710.1 292.9) rotate(337.5)"/>
-<g><rect x="734.0" y="250.0" width="132" height="50" rx="25" fill="#0A1A20" stroke="#3DF5FF" stroke-width="1.6"/><circle cx="756.0" cy="275.0" r="11" fill="#3DF5FF"/><text x="756.0" y="279.5" fill="#07080B" font-size="12.5" font-weight="700" text-anchor="middle">1</text><text x="812.0" y="280.5" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">telemetry</text></g>
-<g><rect x="900.2" y="318.8" width="132" height="50" rx="25" fill="#0A1A20" stroke="#3DF5FF" stroke-width="1.6"/><circle cx="922.2" cy="343.8" r="11" fill="#3DF5FF"/><text x="922.2" y="348.3" fill="#07080B" font-size="12.5" font-weight="700" text-anchor="middle">2</text><text x="978.2" y="349.3" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">critic</text></g>
-<g><rect x="969.0" y="485.0" width="132" height="50" rx="25" fill="#0A1A20" stroke="#3DF5FF" stroke-width="1.6"/><circle cx="991.0" cy="510.0" r="11" fill="#3DF5FF"/><text x="991.0" y="514.5" fill="#07080B" font-size="12.5" font-weight="700" text-anchor="middle">3</text><text x="1047.0" y="515.5" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">memory</text></g>
-<g><rect x="900.2" y="651.2" width="132" height="50" rx="25" fill="#0A1A20" stroke="#3DF5FF" stroke-width="1.6"/><circle cx="922.2" cy="676.2" r="11" fill="#3DF5FF"/><text x="922.2" y="680.7" fill="#07080B" font-size="12.5" font-weight="700" text-anchor="middle">4</text><text x="978.2" y="681.7" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">literature</text></g>
-<g><rect x="734.0" y="720.0" width="132" height="50" rx="25" fill="#0A1A20" stroke="#3DF5FF" stroke-width="1.6"/><circle cx="756.0" cy="745.0" r="11" fill="#3DF5FF"/><text x="756.0" y="749.5" fill="#07080B" font-size="12.5" font-weight="700" text-anchor="middle">5</text><text x="812.0" y="750.5" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">propose</text></g>
-<g><rect x="567.8" y="651.2" width="132" height="50" rx="25" fill="#0A1A20" stroke="#3DF5FF" stroke-width="1.6"/><circle cx="589.8" cy="676.2" r="11" fill="#3DF5FF"/><text x="589.8" y="680.7" fill="#07080B" font-size="12.5" font-weight="700" text-anchor="middle">6</text><text x="645.8" y="681.7" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">referee</text></g>
-<g><rect x="499.0" y="485.0" width="132" height="50" rx="25" fill="#0A1A20" stroke="#3DF5FF" stroke-width="1.6"/><circle cx="521.0" cy="510.0" r="11" fill="#3DF5FF"/><text x="521.0" y="514.5" fill="#07080B" font-size="12.5" font-weight="700" text-anchor="middle">7</text><text x="577.0" y="515.5" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">plan</text></g>
-<g><rect x="567.8" y="318.8" width="132" height="50" rx="25" fill="#0A1A20" stroke="#3DF5FF" stroke-width="1.6"/><circle cx="589.8" cy="343.8" r="11" fill="#3DF5FF"/><text x="589.8" y="348.3" fill="#07080B" font-size="12.5" font-weight="700" text-anchor="middle">8</text><text x="645.8" y="349.3" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">execute</text></g>
-<text x="800" y="452" fill="#3DF5FF" font-size="13" text-anchor="middle" font-weight="700" letter-spacing="2">THE LOOP</text>
+<circle cx="800" cy="510" r="235" fill="none" stroke="#4FD1E0" stroke-opacity="0.45" stroke-width="2"/>
+<circle cx="800" cy="510" r="150" fill="#0B0D10" fill-opacity="0.55" stroke="#222B38"/>
+<path d="M-8 -6.5L8 0L-8 6.5z" fill="#4FD1E0" transform="translate(889.9 292.9) rotate(22.5)"/>
+<path d="M-8 -6.5L8 0L-8 6.5z" fill="#4FD1E0" transform="translate(1017.1 420.1) rotate(67.5)"/>
+<path d="M-8 -6.5L8 0L-8 6.5z" fill="#4FD1E0" transform="translate(1017.1 599.9) rotate(112.5)"/>
+<path d="M-8 -6.5L8 0L-8 6.5z" fill="#4FD1E0" transform="translate(889.9 727.1) rotate(157.5)"/>
+<path d="M-8 -6.5L8 0L-8 6.5z" fill="#4FD1E0" transform="translate(710.1 727.1) rotate(202.5)"/>
+<path d="M-8 -6.5L8 0L-8 6.5z" fill="#4FD1E0" transform="translate(582.9 599.9) rotate(247.5)"/>
+<path d="M-8 -6.5L8 0L-8 6.5z" fill="#4FD1E0" transform="translate(582.9 420.1) rotate(292.5)"/>
+<path d="M-8 -6.5L8 0L-8 6.5z" fill="#4FD1E0" transform="translate(710.1 292.9) rotate(337.5)"/>
+<g><rect x="734.0" y="250.0" width="132" height="50" rx="25" fill="#0A1A20" stroke="#4FD1E0" stroke-width="1.6"/><circle cx="756.0" cy="275.0" r="11" fill="#4FD1E0"/><text x="756.0" y="279.5" fill="#0B0D10" font-size="12.5" font-weight="700" text-anchor="middle">1</text><text x="812.0" y="280.5" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">telemetry</text></g>
+<g><rect x="900.2" y="318.8" width="132" height="50" rx="25" fill="#0A1A20" stroke="#4FD1E0" stroke-width="1.6"/><circle cx="922.2" cy="343.8" r="11" fill="#4FD1E0"/><text x="922.2" y="348.3" fill="#0B0D10" font-size="12.5" font-weight="700" text-anchor="middle">2</text><text x="978.2" y="349.3" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">critic</text></g>
+<g><rect x="969.0" y="485.0" width="132" height="50" rx="25" fill="#0A1A20" stroke="#4FD1E0" stroke-width="1.6"/><circle cx="991.0" cy="510.0" r="11" fill="#4FD1E0"/><text x="991.0" y="514.5" fill="#0B0D10" font-size="12.5" font-weight="700" text-anchor="middle">3</text><text x="1047.0" y="515.5" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">memory</text></g>
+<g><rect x="900.2" y="651.2" width="132" height="50" rx="25" fill="#0A1A20" stroke="#4FD1E0" stroke-width="1.6"/><circle cx="922.2" cy="676.2" r="11" fill="#4FD1E0"/><text x="922.2" y="680.7" fill="#0B0D10" font-size="12.5" font-weight="700" text-anchor="middle">4</text><text x="978.2" y="681.7" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">literature</text></g>
+<g><rect x="734.0" y="720.0" width="132" height="50" rx="25" fill="#0A1A20" stroke="#4FD1E0" stroke-width="1.6"/><circle cx="756.0" cy="745.0" r="11" fill="#4FD1E0"/><text x="756.0" y="749.5" fill="#0B0D10" font-size="12.5" font-weight="700" text-anchor="middle">5</text><text x="812.0" y="750.5" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">propose</text></g>
+<g><rect x="567.8" y="651.2" width="132" height="50" rx="25" fill="#0A1A20" stroke="#4FD1E0" stroke-width="1.6"/><circle cx="589.8" cy="676.2" r="11" fill="#4FD1E0"/><text x="589.8" y="680.7" fill="#0B0D10" font-size="12.5" font-weight="700" text-anchor="middle">6</text><text x="645.8" y="681.7" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">referee</text></g>
+<g><rect x="499.0" y="485.0" width="132" height="50" rx="25" fill="#0A1A20" stroke="#4FD1E0" stroke-width="1.6"/><circle cx="521.0" cy="510.0" r="11" fill="#4FD1E0"/><text x="521.0" y="514.5" fill="#0B0D10" font-size="12.5" font-weight="700" text-anchor="middle">7</text><text x="577.0" y="515.5" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">plan</text></g>
+<g><rect x="567.8" y="318.8" width="132" height="50" rx="25" fill="#0A1A20" stroke="#4FD1E0" stroke-width="1.6"/><circle cx="589.8" cy="343.8" r="11" fill="#4FD1E0"/><text x="589.8" y="348.3" fill="#0B0D10" font-size="12.5" font-weight="700" text-anchor="middle">8</text><text x="645.8" y="349.3" fill="#E8EDF2" font-size="16.5" font-weight="600" text-anchor="middle">execute</text></g>
+<text x="800" y="452" fill="#4FD1E0" font-size="13" text-anchor="middle" font-weight="700" letter-spacing="2">THE LOOP</text>
 <text x="800" y="484" fill="#E8EDF2" font-size="19" text-anchor="middle" font-weight="650">one cycle every 180 s</text>
 <text x="800" y="514" fill="#8B96A5" font-size="14" text-anchor="middle" >every step is one ledger row:</text>
 <text x="800" y="536" fill="#8B96A5" font-size="14" text-anchor="middle" >rationale, prediction, outcome,</text>
 <text x="800" y="558" fill="#8B96A5" font-size="14" text-anchor="middle" >sources, memory reads</text>
 <text x="800" y="590" fill="#5E6876" font-size="12.5" text-anchor="middle" >a failed cycle is logged, never fatal</text>
-<path d="M634 319 L634 226" fill="none" stroke="#FFB547" stroke-width="1.8" marker-end="url(#aa)"/>
-<text x="622" y="268" fill="#FFB547" font-size="13" text-anchor="end" >launch / stop</text>
+<path d="M634 319 L634 226" fill="none" stroke="#E8B65C" stroke-width="1.8" marker-end="url(#aa)"/>
+<text x="622" y="268" fill="#E8B65C" font-size="13" text-anchor="end" >launch / stop</text>
 <text x="622" y="285" fill="#8B96A5" font-size="12" text-anchor="end" >validated commands only</text>
-<path d="M800 220 L800 244" fill="none" stroke="#FFB547" stroke-width="1.8" marker-end="url(#aa)"/>
-<text x="814" y="240" fill="#FFB547" font-size="13" text-anchor="start" >logs, metrics, FOUND_*.json</text>
-<g><rect x="1210" y="292" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="1210" y="306" width="4" height="76" rx="2" fill="#3DF5FF"/><text x="1230" y="319" fill="#3DF5FF" font-size="12" font-weight="700" letter-spacing="1.2">EINSTEINARENA</text><text x="1230" y="342" fill="#E8EDF2" font-size="18" font-weight="650">Official verifiers</text>
+<path d="M800 220 L800 244" fill="none" stroke="#E8B65C" stroke-width="1.8" marker-end="url(#aa)"/>
+<text x="814" y="240" fill="#E8B65C" font-size="13" text-anchor="start" >logs, metrics, FOUND_*.json</text>
+<g><rect x="1210" y="292" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="1210" y="306" width="4" height="76" rx="2" fill="#4FD1E0"/><text x="1230" y="319" fill="#4FD1E0" font-size="12" font-weight="700" letter-spacing="1.2">EINSTEINARENA</text><text x="1230" y="342" fill="#E8EDF2" font-size="18" font-weight="650">Official verifiers</text>
 <text x="1230" y="363" fill="#8B96A5" font-size="13.5">exact integer checks, in a subprocess</text>
 <text x="1230" y="381" fill="#8B96A5" font-size="13.5">a record counts only if evaluate() beats it</text>
 </g>
-<g><rect x="1210" y="458" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="1210" y="472" width="4" height="76" rx="2" fill="#3DF5FF"/><text x="1230" y="485" fill="#3DF5FF" font-size="12" font-weight="700" letter-spacing="1.2">PAST.DEV</text><text x="1230" y="508" fill="#E8EDF2" font-size="18" font-weight="650">Shared multi-agent memory</text>
+<g><rect x="1210" y="458" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="1210" y="472" width="4" height="76" rx="2" fill="#4FD1E0"/><text x="1230" y="485" fill="#4FD1E0" font-size="12" font-weight="700" letter-spacing="1.2">PAST.DEV</text><text x="1230" y="508" fill="#E8EDF2" font-size="18" font-weight="650">Shared multi-agent memory</text>
 <text x="1230" y="529" fill="#8B96A5" font-size="13.5">one identity; every agent writes + recalls</text>
 <text x="1230" y="547" fill="#8B96A5" font-size="13.5">benchmarked against markdown and RAG</text>
 </g>
-<g><rect x="1210" y="624" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="1210" y="638" width="4" height="76" rx="2" fill="#3DF5FF"/><text x="1230" y="651" fill="#3DF5FF" font-size="12" font-weight="700" letter-spacing="1.2">EXA</text><text x="1230" y="674" fill="#E8EDF2" font-size="18" font-weight="650">Literature search</text>
+<g><rect x="1210" y="624" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="1210" y="638" width="4" height="76" rx="2" fill="#4FD1E0"/><text x="1230" y="651" fill="#4FD1E0" font-size="12" font-weight="700" letter-spacing="1.2">EXA</text><text x="1230" y="674" fill="#E8EDF2" font-size="18" font-weight="650">Literature search</text>
 <text x="1230" y="695" fill="#8B96A5" font-size="13.5">queries written for stalled problems</text>
 <text x="1230" y="713" fill="#8B96A5" font-size="13.5">source cards cited by decisions</text>
 </g>
-<g><rect x="1210" y="790" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="1210" y="804" width="4" height="76" rx="2" fill="#3DF5FF"/><text x="1230" y="817" fill="#3DF5FF" font-size="12" font-weight="700" letter-spacing="1.2">TINKER</text><text x="1230" y="840" fill="#E8EDF2" font-size="18" font-weight="650">Self-improvement</text>
+<g><rect x="1210" y="790" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="1210" y="804" width="4" height="76" rx="2" fill="#4FD1E0"/><text x="1230" y="817" fill="#4FD1E0" font-size="12" font-weight="700" letter-spacing="1.2">TINKER</text><text x="1230" y="840" fill="#E8EDF2" font-size="18" font-weight="650">Self-improvement</text>
 <text x="1230" y="861" fill="#8B96A5" font-size="13.5">RL (GRPO-style) LoRA on Qwen3-8B</text>
 <text x="1230" y="879" fill="#8B96A5" font-size="13.5">learns to write valid constructions</text>
 </g>
-<path d="M1036 344 L1204 344" fill="none" stroke="#3DF5FF" stroke-width="1.8" marker-end="url(#ac)" marker-start="url(#ac)"/>
+<path d="M1036 344 L1204 344" fill="none" stroke="#4FD1E0" stroke-width="1.8" marker-end="url(#ac)" marker-start="url(#ac)"/>
 <text x="1120" y="334" fill="#8B96A5" font-size="13" text-anchor="middle" >re-verify every claim</text>
-<path d="M1105 510 L1204 510" fill="none" stroke="#3DF5FF" stroke-width="1.8" marker-end="url(#ac)" marker-start="url(#ac)"/>
+<path d="M1105 510 L1204 510" fill="none" stroke="#4FD1E0" stroke-width="1.8" marker-end="url(#ac)" marker-start="url(#ac)"/>
 <text x="1155" y="500" fill="#8B96A5" font-size="13" text-anchor="middle" >write / recall</text>
-<path d="M1036 676 L1204 676" fill="none" stroke="#3DF5FF" stroke-width="1.8" marker-end="url(#ac)" marker-start="url(#ac)"/>
+<path d="M1036 676 L1204 676" fill="none" stroke="#4FD1E0" stroke-width="1.8" marker-end="url(#ac)" marker-start="url(#ac)"/>
 <text x="1120" y="666" fill="#8B96A5" font-size="13" text-anchor="middle" >search + highlights</text>
-<path d="M1530 842 H1558 V344 H1536" fill="none" stroke="#3DF5FF" stroke-width="1.8" marker-end="url(#ac)" stroke-dasharray="6 6"/>
+<path d="M1530 842 H1558 V344 H1536" fill="none" stroke="#4FD1E0" stroke-width="1.8" marker-end="url(#ac)" stroke-dasharray="6 6"/>
 <text transform="translate(1582 593) rotate(-90)" fill="#8B96A5" font-size="13" text-anchor="middle">reward = official verifier score</text>
-<g><rect x="70" y="292" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="70" y="306" width="4" height="76" rx="2" fill="#3DF5FF"/><text x="90" y="319" fill="#3DF5FF" font-size="12" font-weight="700" letter-spacing="1.2">DEVIN</text><text x="90" y="342" fill="#E8EDF2" font-size="18" font-weight="650">Toolsmith</text>
+<g><rect x="70" y="292" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="70" y="306" width="4" height="76" rx="2" fill="#4FD1E0"/><text x="90" y="319" fill="#4FD1E0" font-size="12" font-weight="700" letter-spacing="1.2">DEVIN</text><text x="90" y="342" fill="#E8EDF2" font-size="18" font-weight="650">Toolsmith</text>
 <text x="90" y="363" fill="#8B96A5" font-size="13.5">writes new search strategies to a spec</text>
 <text x="90" y="381" fill="#8B96A5" font-size="13.5">smoke-tested in a Modal sandbox</text>
 </g>
-<g><rect x="70" y="458" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="70" y="472" width="4" height="76" rx="2" fill="#3DF5FF"/><text x="90" y="485" fill="#3DF5FF" font-size="12" font-weight="700" letter-spacing="1.2">SEARCH/</text><text x="90" y="508" fill="#E8EDF2" font-size="18" font-weight="650">Strategy templates</text>
+<g><rect x="70" y="458" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="70" y="472" width="4" height="76" rx="2" fill="#4FD1E0"/><text x="90" y="485" fill="#4FD1E0" font-size="12" font-weight="700" letter-spacing="1.2">SEARCH/</text><text x="90" y="508" fill="#E8EDF2" font-size="18" font-weight="650">Strategy templates</text>
 <text x="90" y="529" fill="#8B96A5" font-size="13.5">search/TEMPLATES.json</text>
 <text x="90" y="547" fill="#8B96A5" font-size="13.5">typed, range-checked parameters</text>
 </g>
-<g><rect x="70" y="624" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="70" y="638" width="4" height="76" rx="2" fill="#3DF5FF"/><text x="90" y="651" fill="#3DF5FF" font-size="12" font-weight="700" letter-spacing="1.2">CLAUDE FABLE 5.2</text><text x="90" y="674" fill="#E8EDF2" font-size="18" font-weight="650">Referee</text>
+<g><rect x="70" y="624" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="70" y="638" width="4" height="76" rx="2" fill="#4FD1E0"/><text x="90" y="651" fill="#4FD1E0" font-size="12" font-weight="700" letter-spacing="1.2">CLAUDE FABLE 5.2</text><text x="90" y="674" fill="#E8EDF2" font-size="18" font-weight="650">Referee</text>
 <text x="90" y="695" fill="#8B96A5" font-size="13.5">a second lab's model reviews proposals:</text>
 <text x="90" y="713" fill="#8B96A5" font-size="13.5">approve, veto or amend; abstains on failure</text>
 </g>
-<g><rect x="70" y="790" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="70" y="804" width="4" height="76" rx="2" fill="#3DF5FF"/><text x="90" y="817" fill="#3DF5FF" font-size="12" font-weight="700" letter-spacing="1.2">SQLITE</text><text x="90" y="840" fill="#E8EDF2" font-size="18" font-weight="650">Decision ledger</text>
+<g><rect x="70" y="790" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="70" y="804" width="4" height="76" rx="2" fill="#4FD1E0"/><text x="90" y="817" fill="#4FD1E0" font-size="12" font-weight="700" letter-spacing="1.2">SQLITE</text><text x="90" y="840" fill="#E8EDF2" font-size="18" font-weight="650">Decision ledger</text>
 <text x="90" y="861" fill="#8B96A5" font-size="13.5">feeds mission control (API + SSE)</text>
 <text x="90" y="879" fill="#8B96A5" font-size="13.5">and the static replay on GitHub Pages</text>
 </g>
-<path d="M230 396 L230 452" fill="none" stroke="#3DF5FF" stroke-width="1.8" marker-end="url(#ac)"/>
+<path d="M230 396 L230 452" fill="none" stroke="#4FD1E0" stroke-width="1.8" marker-end="url(#ac)"/>
 <text x="244" y="429" fill="#8B96A5" font-size="13" text-anchor="start" >adopted only if the verifier passes</text>
-<path d="M390 510 L493 510" fill="none" stroke="#3DF5FF" stroke-width="1.8" marker-end="url(#ac)"/>
+<path d="M390 510 L493 510" fill="none" stroke="#4FD1E0" stroke-width="1.8" marker-end="url(#ac)"/>
 <text x="444" y="500" fill="#8B96A5" font-size="13" text-anchor="middle" >templates</text>
-<path d="M396 676 L564 676" fill="none" stroke="#3DF5FF" stroke-width="1.8" marker-end="url(#ac)" marker-start="url(#ac)"/>
+<path d="M396 676 L564 676" fill="none" stroke="#4FD1E0" stroke-width="1.8" marker-end="url(#ac)" marker-start="url(#ac)"/>
 <text x="480" y="666" fill="#8B96A5" font-size="13" text-anchor="middle" >approve / veto / amend</text>
 <path d="M688 722 L396 818" fill="none" stroke="#8B96A5" stroke-width="1.8" marker-end="url(#am)" stroke-dasharray="6 6"/>
 <text x="404" y="752" fill="#8B96A5" font-size="13" text-anchor="start" >every phase logs a decision</text>
-<g><rect x="640" y="836" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="640" y="850" width="4" height="76" rx="2" fill="#3DF5FF"/><text x="660" y="863" fill="#3DF5FF" font-size="12" font-weight="700" letter-spacing="1.2">OPENAI GPT-6 ASTRA</text><text x="660" y="886" fill="#E8EDF2" font-size="18" font-weight="650">Proposer</text>
+<g><rect x="640" y="836" width="320" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="640" y="850" width="4" height="76" rx="2" fill="#4FD1E0"/><text x="660" y="863" fill="#4FD1E0" font-size="12" font-weight="700" letter-spacing="1.2">OPENAI GPT-6 ASTRA</text><text x="660" y="886" fill="#E8EDF2" font-size="18" font-weight="650">Proposer</text>
 <text x="660" y="907" fill="#8B96A5" font-size="13.5">one Responses API call per cycle</text>
 <text x="660" y="925" fill="#8B96A5" font-size="13.5">strict JSON: actions + predictions</text>
 </g>
-<path d="M800 770 L800 830" fill="none" stroke="#3DF5FF" stroke-width="1.8" marker-end="url(#ac)" marker-start="url(#ac)"/>
+<path d="M800 770 L800 830" fill="none" stroke="#4FD1E0" stroke-width="1.8" marker-end="url(#ac)" marker-start="url(#ac)"/>
 <text x="814" y="797" fill="#8B96A5" font-size="13" text-anchor="start" >lab state in,</text>
 <text x="814" y="814" fill="#8B96A5" font-size="13" text-anchor="start" >decisions out</text>
 <text x="800" y="978" fill="#5E6876" font-size="13" text-anchor="middle" >Solid cyan: called inside the cycle.  Amber: compute.  Dashed: side loops and logging.  Every solution is re-checked by the official verifier before it is counted.</text>

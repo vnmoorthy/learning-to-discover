@@ -41,19 +41,19 @@ BUILD = os.path.join(HERE, "build")
 W, H = 13.333, 7.5
 
 # palette (same as the web app)
-BG = "07080B"
-PANEL = "0E1117"
-PANEL2 = "141925"
-LINE = "232A38"
-CYAN = "3DF5FF"
-AMBER = "FFB547"
-WHITE = "F2F5F9"
-GREY = "9AA4B2"
+BG = "0B0D10"
+PANEL = "111418"
+PANEL2 = "171B21"
+LINE = "252B35"
+CYAN = "4FD1E0"
+AMBER = "E8B65C"
+WHITE = "EEF2F6"
+GREY = "8A94A3"
 DIM = "5D6675"
-RED = "FF5C6C"
-GREEN = "6EE7A0"
+RED = "E06C6C"
+GREEN = "6CCB8F"
 PROBLEM_COLORS = {
-    "no-three-in-line-75": "3DF5FF",
+    "no-three-in-line-75": "4FD1E0",
     "spencer-discrepancy": "B18CFF",
     "hadamard-det-51": "6EE7A0",
     "two-deletion-code-16": "FF7AB6",
@@ -1041,8 +1041,8 @@ def build(D, team):
     k = text(s, 0.6, 0.95, 8, 0.3, "WHAT'S NEXT", size=11, color=CYAN, font=MONO)
     h1 = text(s, 0.6, 1.3, 7.2, 2.2, [[("Any domain with an ", {}), ("exact verifier.", {"color": CYAN})]], size=42, bold=True, line_spacing=0.98, name="title")
     nx = text(s, 0.6, 3.3, 6.4, 1.3,
-              [[("Next: physics. ", {"bold": True}), ("Periodic orbits of the three-body problem: propose, integrate, verify, learn.", {"color": GREY})],
-               [("Same loop. Same log. A different verifier.", {"color": WHITE})]], size=16, spacing=10)
+              [[("Already running: physics. ", {"bold": True}), ("16 candidate new three-body orbit families, verified periodic to 1e-8, absent from 2,060 catalogued orbits; EVENT HORIZON: 8 of 9 black-hole-information claims independently verified.", {"color": GREY})],
+               [("Same loop. Same log. A different verifier.", {"color": WHITE})]], size=15, spacing=10)
     rb = box(s, 0.6, 4.95, 6.3, 0.62, fill=PANEL, line=CYAN, lw=1.0)
     rt = text(s, 0.82, 4.95, 5.9, 0.62, dd.REPO_URL.replace("https://", ""), size=14, color=CYAN, font=MONO, bold=True, anchor="m")
     for sh_ in (rb, rt):                      # shape-level link keeps the text colour (run-level links take the theme colour)
@@ -1054,7 +1054,8 @@ def build(D, team):
     chrome(s, D)
     finish_slide(s, m)
     notes.append("Mathematics is where we start, because the verifier is exact. But the loop does not care about the domain. "
-                 "Anything with an exact verifier works. Next is physics: periodic orbits of the three-body problem. "
+                 "Anything with an exact verifier works, and it is already doing physics: sixteen candidate new families of periodic three-body orbits, "
+                 "verified and absent from the catalogs we checked, and a black-hole-information study whose own verifier caught and corrected a wrong claim. "
                  "The code, the log and a replay of this run are public. Phoenixastar. Thank you.")
 
     for sl, n in zip(prs.slides, notes):

@@ -75,7 +75,7 @@ def write(D, notes, path):
          "Open `/learning`. Point at the reward curve, then the gen-0 vs gen-N panel."),
         ("2:25-2:45", "Slide 6 (results)", result_line, "Back to the deck, slide 6."),
         ("2:45-3:00", "Slide 10 (close)",
-         "Math is the start, because the verifier is exact. Next is physics: periodic orbits of the three-body problem. Same loop, same log. It is all public. Thank you.",
+         "Math is the start, because the verifier is exact. It already does physics: sixteen candidate new three-body orbit families, verified and not in the catalogs we checked. Same loop, same log. It is all public. Thank you.",
          "Jump to slide 10 (type 10, Enter). Stop talking at 2:58."),
     ]
     total_words = sum(_words(r[2]) for r in finals)
