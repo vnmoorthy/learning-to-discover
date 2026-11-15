@@ -1,7 +1,7 @@
 # Submission: Phoenixastar
 
-Ready-to-paste text for the Iterate submission form. Numbers are from the live run on Nov 15 2026 (about 11:00 PT,
-loop cycle 38); the replay at https://vnmoorthy.github.io/phoenixastar/ shows the snapshot they come from.
+Ready-to-paste text for the Iterate submission form. Numbers are from the live run on Nov 15 2026 (about 13:25 PT,
+loop cycle 83); the replay at https://vnmoorthy.github.io/phoenixastar/ shows the snapshot they come from.
 
 - **Project:** Phoenixastar
 - **Track:** Track 1: Build your own autoresearch framework
@@ -17,9 +17,10 @@ Modal fleet, re-verifies every claimed result, shares what each problem's agent 
 literature with Exa, and lets GPT-6 Astra propose the next experiments, each with a falsifiable prediction. Claude Fable
 5.2 referees every proposal before compute moves; a deterministic planner enforces budgets and kills provably dead
 searches; Devin writes new search programs that are adopted only after passing the verifier in a Modal sandbox; Tinker
-trains an open model on its own verified attempts. In one morning it made 900 logged decisions over 38 cycles and ran
-598 experiments. No EinsteinArena record has fallen yet (distances are reported), and in a celestial-mechanics domain it
-found 17 verified periodic three-body orbits in 16 families absent from the 2,060 catalogued orbits we checked, two of them at equal masses.
+trains an open model on its own verified attempts. In one day it made over 1,650 logged decisions over 83 cycles and ran
+over 950 experiments. No EinsteinArena record has fallen yet (distances are reported), and in a celestial-mechanics domain it
+found 17 verified periodic three-body orbits in 16 families absent from the 2,060 catalogued orbits we checked, two of them at equal masses. Two physics studies run on the same loop: EVENT HORIZON (quantum information in black hole
+evaporation, with a black hole ray-traced live in the browser) and STARFORGE (the neutron-star equation of state).
 
 ## Long description (about 400 words)
 

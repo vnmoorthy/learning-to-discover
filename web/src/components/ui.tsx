@@ -121,7 +121,7 @@ export function CheckIcon({ className }: { className?: string }) {
 }
 
 export function StatusBadge({ status }: { status: string }) {
-  const s = STATUS_STYLE[status] ?? STATUS_STYLE.idle
+  const s = STATUS_STYLE[status] ?? (status ? { ...STATUS_STYLE.idle, label: status } : STATUS_STYLE.idle)
   return (
     <span className={cx('inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2 py-0.5 text-[11px] font-medium leading-4', s.cls)}>
       <span className={cx('h-1.5 w-1.5 rounded-full', s.dot)} />

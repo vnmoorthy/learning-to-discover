@@ -1,4 +1,14 @@
 import type { ProblemSummary } from '../types'
+import { STATIC } from '../mode'
+
+/** In STATIC replay, relative times are measured against the snapshot clock, not the viewer's wall clock. */
+let nowRef: number | null = null
+export function setNowRef(ms: number | null | undefined): void {
+  if (STATIC && typeof ms === 'number' && Number.isFinite(ms)) nowRef = ms
+}
+function refNow(): number {
+  return STATIC && nowRef != null ? nowRef : Date.now()
+}
 
 export const PROBLEM_COLORS: Record<string, string> = {
   'no-three-in-line-75': '#4FD1E0',
@@ -82,7 +92,7 @@ export function fmtMs(v: number | null | undefined): string {
   return Math.round(v) + ' ms'
 }
 
-export function timeAgo(iso: string | null | undefined, now = Date.now()): string {
+export function timeAgo(iso: string | null | undefined, now = refNow()): string {
   if (!iso) return '--'
   const t = Date.parse(iso)
   if (Number.isNaN(t)) return '--'
@@ -128,6 +138,7 @@ export const STATUS_STYLE: Record<string, { label: string; cls: string; dot: str
   stalled: { label: 'Stalled', cls: 'text-fg-muted border-white/10 bg-white/[0.03]', dot: 'bg-amber' },
   record: { label: 'Record', cls: 'text-amber border-amber/30 bg-amber/[0.08]', dot: 'bg-amber' },
   verified: { label: 'Verified', cls: 'text-good border-good/30 bg-good/[0.08]', dot: 'bg-good' },
+  candidates: { label: 'Candidates', cls: 'text-amber border-amber/30 bg-amber/[0.08]', dot: 'bg-amber' },
   idle: { label: 'Idle', cls: 'text-fg-dim border-white/[0.08] bg-transparent', dot: 'bg-ink-400' },
   'proved-negative': { label: 'Proved negative', cls: 'text-violet border-violet/30 bg-violet/[0.08]', dot: 'bg-violet' },
 }

@@ -1,6 +1,7 @@
 import { createContext, useCallback, useContext, useEffect, useMemo, useRef, useState } from 'react'
 import { api } from './api'
 import { STATIC } from './mode'
+import { setNowRef } from './lib/format'
 import { useEventStream, type SseEventName, type StreamStatus } from './hooks/useEventStream'
 import { useToast } from './components/Toast'
 import type { ComputeState, Decision, LogEvent, LoopState, PhaseEvent, ProblemDetail, RecordEvent, StateResponse } from './types'
@@ -29,6 +30,11 @@ export function useLive(): LiveCtx {
   const c = useContext(Ctx)
   if (!c) throw new Error('useLive outside LiveProvider')
   return c
+}
+
+/** Problems whose headline number comes from /api/state (verified studies, candidate sets), not telemetry. */
+function isFrozen(status: string | null | undefined): boolean {
+  return status === 'candidates' || status === 'verified'
 }
 
 const MAX_FEED = 200
@@ -70,10 +76,14 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
   const [logs, setLogs] = useState<(LogEvent & { at: number })[]>([])
   const [records, setRecords] = useState<RecordEvent[]>([])
   const detailsLoaded = useRef(false)
+  const stateRef = useRef<StateResponse | null>(null)
+  stateRef.current = state
 
   const refresh = useCallback(async () => {
     try {
       const s = await api.state()
+      if (STATIC) setNowRef(Date.parse(s.now))
+      stateRef.current = s
       setState(s)
       setError(null)
       setUpdatedAt(Date.now())
@@ -166,13 +176,20 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
                 ...(comp.box ? { box: comp.box } : {}),
               }
             : s.compute
-          const problems = s.problems.map((p) => (p.slug in metrics ? { ...p, metric: { ...p.metric, value: metrics[p.slug] } } : p))
+          // never write null over a value; candidates/verified problems take their headline from /api/state
+          const problems = s.problems.map((p) => {
+            const v = metrics[p.slug]
+            if (!(p.slug in metrics) || typeof v !== 'number') return p
+            if (isFrozen(p.status)) return p
+            return { ...p, metric: { ...p.metric, value: v } }
+          })
           return { ...s, compute, problems }
         })
+        const frozen = new Set((stateRef.current?.problems ?? []).filter((p) => isFrozen(p.status)).map((p) => p.slug))
         setSeries((prev) => {
           const next = { ...prev }
           for (const [slug, v] of Object.entries(metrics)) {
-            if (typeof v !== 'number') continue
+            if (typeof v !== 'number' || frozen.has(slug)) continue
             next[slug] = [...(next[slug] ?? []), [t, v] as [number, number]].slice(-MAX_SERIES)
           }
           return next
@@ -180,13 +197,28 @@ export function LiveProvider({ children }: { children: React.ReactNode }) {
       } else if (ev === 'record') {
         const r = data as RecordEvent
         setRecords((prev) => [r, ...prev].slice(0, 20))
-        toast.push({
-          kind: 'record',
-          title: r.verified ? 'New verified record' : 'Candidate record (unverified)',
-          msg: `${r.slug}: ${r.score}`,
-          ttl: 12000,
-        })
-        void refresh()
+        const before = stateRef.current?.problems.find((p) => p.slug === r.slug)
+        const lowerBetter = before ? before.scoring !== 'maximize' : false
+        const notBetter = (p: typeof before) => {
+          if (!p) return false
+          if (isFrozen(p.status)) return true
+          const ours = p.ours?.score
+          if (typeof ours === 'number' && typeof r.score === 'number') return lowerBetter ? r.score >= ours : r.score <= ours
+          return false
+        }
+        const suppressBefore = notBetter(before)
+        void (async () => {
+          await refresh()
+          const after = stateRef.current?.problems.find((p) => p.slug === r.slug)
+          const beats = after?.beats_record
+          if (suppressBefore || beats === false || (after && after.status !== before?.status && isFrozen(after.status))) return
+          toast.push({
+            kind: 'record',
+            title: r.verified ? 'New verified record' : 'Candidate record (unverified)',
+            msg: `${r.slug}: ${r.score}`,
+            ttl: 12000,
+          })
+        })()
         void refreshDetail(r.slug)
       } else if (ev === 'log') {
         const l = data as LogEvent
