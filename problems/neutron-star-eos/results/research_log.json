@@ -1,0 +1,162 @@
+{
+ "project": "STARFORGE",
+ "generated": "2026-11-15",
+ "disclaimer": "Computational study with published EOS models and approximate likelihoods. Nothing here is a measurement or a discovery; results are reproductions (levels 1-2) or new computational explorations of known models (level 3). No posterior is reported because the MCMC chains did not converge.",
+ "classification_scale": {
+  "1": "reproduction",
+  "2": "verification of a known relation",
+  "3": "new computational exploration of known models",
+  "4": "new testable hypothesis",
+  "5": "potentially novel, needs expert review"
+ },
+ "highest_class_claimed": 3,
+ "hypotheses": [
+  {
+   "id": "H1",
+   "definition": "Core TOV/Love solver correctness",
+   "assumptions": "G=c=1, km units, Read PP EOS",
+   "prediction": "Analytic limits reproduced; second implementation agrees < 0.5%",
+   "falsification_criterion": "Any analytic test or independent comparison off by > tolerance",
+   "test": "tests/test_core.py, verify/run_verification.py",
+   "result": "21/21 tests; max rel diff 6e-6",
+   "status": "verified",
+   "level": 1
+  },
+  {
+   "id": "H2",
+   "definition": "c_s^2 > 1/3 needed for 2 M_sun if SLy trusted to 2 n_sat",
+   "assumptions": "SLy below n_m; step/ramp completions; causality",
+   "prediction": "c_s^2,min > 1/3 at n_m = 2 n_sat",
+   "falsification_criterion": "c_s^2,min <= 1/3 at n_m = 2 n_sat",
+   "test": "studies/sound_speed.py",
+   "result": "0.372 (step), 0.484 (ramp)",
+   "status": "supported",
+   "level": 2
+  },
+  {
+   "id": "H3",
+   "definition": "Seidov criterion predicts loss of connected hybrid branch",
+   "assumptions": "Maxwell transition, CSS quark matter, SLy",
+   "prediction": "Instability iff Delta_eps/eps_t > 1/2 + 3p_t/(2eps_t)",
+   "falsification_criterion": "Systematic disagreement away from the bound",
+   "test": "phase_sweep.py",
+   "result": "214/220 agree; 6 disagreements at the grid-bound edge",
+   "status": "supported",
+   "level": 2
+  },
+  {
+   "id": "H4",
+   "definition": "Twin stars exist for low p_t/eps_t and large Delta_eps",
+   "assumptions": "as H3",
+   "prediction": "Twins only for p_t/eps_t below a c_s^2-dependent limit",
+   "falsification_criterion": "Twins at high p_t/eps_t, or none at all",
+   "test": "phase_sweep.py, twins.py",
+   "result": "58/220; limits 0.12 (c_s^2=1/3), 0.24 (c_s^2=1)",
+   "status": "supported",
+   "level": 3
+  },
+  {
+   "id": "H5",
+   "definition": "Equal-mass twins are distinguishable by Lambda",
+   "assumptions": "illustrative EOSs, jump condition",
+   "prediction": "Lambda ratio >> GW measurement error",
+   "falsification_criterion": "Lambda ratio < ~2",
+   "test": "twins.py",
+   "result": "1163 vs 158; 462 vs 22; robust to +-2% parameter changes (hybrid Lambda varies ~15%)",
+   "status": "supported (illustrative; testable with future GW data, but expected from compactness difference)",
+   "level": 3
+  },
+  {
+   "id": "H6",
+   "definition": "Multimessenger posterior on R_1.4 robust to prior choice",
+   "assumptions": "split-normal NICER, GW170817 Lambda_1.4, J0348 mass",
+   "prediction": "Prior A and B posteriors agree within 68% CI",
+   "falsification_criterion": "Posterior medians differ by > 1 sigma",
+   "test": "run_inference.py, analyze_inference.py",
+   "result": "Not testable: chains unconverged",
+   "status": "retracted / untested",
+   "level": 1
+  }
+ ],
+ "cycles": [
+  {
+   "id": "A",
+   "question": "Is the TOV + tidal Love-number core correct in units and numerics?",
+   "hypothesis": "The core reproduces analytic limits (Schwarzschild interior, Lane-Emden, Newtonian and incompressible k2) and an independent second implementation to < 0.5%.",
+   "method": "pytest suite against closed-form limits; verify/independent.py (enthalpy formulation, s = sqrt(h_c - h), fixed-step RK4, second-order H equation, own constants) on 6 configurations.",
+   "result": "21/21 tests pass. Independent solver agrees with core to <= 9e-7 in M, <= 7e-8 in R, <= 6e-6 in Lambda for SLy, APR4, H4 and SLy+CSS; SLy M_max = 2.048 M_sun, R_1.4 = 11.70 km, Lambda_1.4 = 296.",
+   "verification": "Independent re-implementation: 6/6 configurations agree (0 flagged at 0.5%).",
+   "critic_objections": [
+    "Units could be self-consistently wrong in both codes -> independent code uses its own constants and the analytic tests fix the scale (Lane-Emden R = a xi1 in km); objection answered.",
+    "Surface truncation at P = 1e-16 km^-2 shifts R by 0.004 km (0.04%); reported, not hidden."
+   ],
+   "status": "verified",
+   "conclusion": "Core validated; SLy reference values reproduced.",
+   "classification": "1 (reproduction)"
+  },
+  {
+   "id": "B",
+   "question": "What minimum maximum sound speed c_s^2,max is needed for M_max >= 2.0 M_sun if SLy holds up to n_m?",
+   "hypothesis": "If SLy is trusted to 2 n_sat, c_s^2 must exceed the conformal value 1/3 to reach 2 M_sun.",
+   "method": "SpeedOfSoundEOS matched to SLy at n_m = 1.1, 1.5, 2.0 n_sat; step (stiffest) and ramp completions; brentq on c_s^2,max with xtol 2e-3; causality checked on every model.",
+   "result": "Step completion: c_s^2,min = 0.247 / 0.304 / 0.372 at n_m = 1.1 / 1.5 / 2.0 n_sat (M_max >= 2.0); 0.263 / 0.326 / 0.405 for 2.08 M_sun. Ramp: 0.366 (1.1 n_sat), 0.484 (2.0 n_sat). Causal limit at 2 n_sat gives M_max = 2.91 M_sun (cf. Kalogera & Baym 1996, ~2.9).",
+   "verification": "Uses the independently verified core; the threshold itself was not re-derived by a second code.",
+   "critic_objections": [
+    "Depends on SLy below n_m and on two completion shapes only -> stated as conditional.",
+    "Early stiffening gives Lambda_1.4 ~ 1000-1560, likely in tension with GW170817; tension not quantified -> no claim made.",
+    "2.08 M_sun used only as threshold, no uncertainty propagated."
+   ],
+   "status": "supported (conditional on assumptions)",
+   "conclusion": "c_s^2 > 1/3 required if SLy holds to 2 n_sat; consistent with Bedaque & Steiner 2015 and Tews et al. 2018.",
+   "classification": "2 (verification of known relation)"
+  },
+  {
+   "id": "C",
+   "question": "Where do first-order (Maxwell + CSS) transitions on SLy produce connected/disconnected hybrid branches and twin stars, and does the Seidov criterion predict the instability?",
+   "hypothesis": "The connected hybrid branch is lost exactly when Delta_eps/eps_t > 1/2 + 3 p_t/(2 eps_t) (Seidov), and twins appear only at low p_t/eps_t.",
+   "method": "220-EOS grid (p_t/eps_t 0.04-0.40, Delta_eps/eps_t 0.1-1.7, c_s^2_q = 1/3, 1), ~30 stars each, rtol 1e-8; turning-point (Bardeen-Thorne-Meltzer) stability; numerical vs predicted slope ratio of dM/dp_c across the transition.",
+   "result": "Seidov criterion agrees with the numerical classification in 214/220 cases; numerical slope ratios match the leading-order prediction (e.g. 0.68804 vs 0.68795). Twins in 58/220 EOSs; for c_s^2 = 1/3 only at p_t/eps_t <= 0.12 (heaviest twin 1.19 M_sun), for c_s^2 = 1 at p_t/eps_t <= 0.24 (heaviest twin 1.73 M_sun, third family up to 2.40 M_sun).",
+   "verification": "Hybrid-star M, R, Lambda (with jump condition) independently verified for one CSS EOS (2 configurations). Grid classification not re-run by a second code.",
+   "critic_objections": [
+    "6/220 disagreements -> all within one grid step of the Seidov bound (e.g. rd = 0.74 vs bound 0.74), i.e. grid resolution, not a failure; recorded as unresolved.",
+    "Topology labels depend on ~30 stars per EOS; narrow third families could be missed (category N may be overcounted).",
+    "Known phenomenology (Alford, Han & Prakash 2013) -> not a discovery."
+   ],
+   "status": "supported",
+   "conclusion": "Seidov criterion and AHP topology reproduced on SLy; grid map is a level-3 computational exploration of a known model.",
+   "classification": "2 (Seidov) / 3 (grid map)"
+  },
+  {
+   "id": "D",
+   "question": "How different are the tidal deformabilities of equal-mass twin stars?",
+   "hypothesis": "At equal mass the hybrid twin has a much smaller Lambda, making Lambda a potential discriminator between twins (testable with GW data).",
+   "method": "twins.py: equal-mass pairs on the hadronic and third-family branches, Lambda with the analytic jump condition; +-2% perturbations of p_t, Delta_eps and c_s^2_q.",
+   "result": "c_s^2_q = 1/3 case (p_t = 57, Delta_eps = 503 MeV/fm^3): M = 1.123 M_sun, R = 11.82 vs 9.36 km, Lambda = 1163 vs 158. c_s^2_q = 1 case (p_t = 91, Delta_eps = 873 MeV/fm^3): M = 1.307 M_sun, R = 11.75 vs 8.31 km, Lambda = 462 vs 22. Twins survive all +-2% perturbations; hybrid Lambda varies 137-179 and 20-23.",
+   "verification": "Jump-condition Lambda verified independently for a CSS EOS (cycle A); twin pairs themselves not re-run by a second code.",
+   "critic_objections": [
+    "Hybrid-twin Lambda is sensitive to parameters (+-15% for 2% changes) -> report ranges, not point values.",
+    "Both example twin masses are below 1.4 M_sun and the chosen EOSs were not tested against NICER/GW constraints -> no observational claim.",
+    "Large Lambda ratio at equal mass is expected from the compactness difference; downgraded from 4 to 3."
+   ],
+   "status": "supported (illustrative)",
+   "conclusion": "Equal-mass twins differ in Lambda by factors ~7-20 in these illustrative models.",
+   "classification": "3 (computational exploration of known models)"
+  },
+  {
+   "id": "E",
+   "question": "What do NICER, radio-timing and GW170817 constraints imply for PP and sound-speed EOS posteriors, and how prior-dependent is it?",
+   "hypothesis": "Posterior on R_1.4 and Lambda_1.4 is robust to the prior choice (A uniform vs B uniform in ln(Gamma-1)).",
+   "method": "emcee, 10 walkers, split-normal approximations to published posteriors (provenance in data/observations.json), fast RK4 TOV solver (fasttov, ~1% Lambda error).",
+   "result": "RETRACTED as a posterior: all 4 chains unconverged (23-27 steps, steps/tau ~ 10, cut off at 13:24 deadline). Unconverged PP_A quantiles (not a posterior): M_max median 2.14, R_1.4 median 12.1 km, Lambda_1.4 median 362.",
+   "verification": "Chains failed the convergence check; fasttov agrees with core (4/4 tests).",
+   "critic_objections": [
+    "Unconverged chains -> no posterior reported; prior-sensitivity comparison not meaningful.",
+    "Split-normal NICER approximation ignores M-R correlation and treats posterior as likelihood.",
+    "Approximate likelihood makes this a reproduction of a standard analysis at best."
+   ],
+   "status": "retracted (unconverged)",
+   "conclusion": "Pipeline built; no inference result.",
+   "classification": "1-2 (pipeline only)"
+  }
+ ]
+}

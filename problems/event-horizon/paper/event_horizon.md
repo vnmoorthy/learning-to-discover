@@ -319,6 +319,64 @@ What must be stated plainly:
 
 None of this resolves the information paradox. The models assume unitarity and strong scrambling and then display their consequences; whether and how gravity realises those assumptions is addressed by a separate body of work (Sec. 8) that this study does not test.
 
+## 11. Upgrade: Rényi and entanglement spectra (class 1)
+
+*Random-matrix model: Haar-random pure states, no dynamics, no gravity.* Rényi entropies S_n (n = 0, 1/2, 1, 2, 3, ∞) and exact Haar moments E Tr ρ^k come from the complex-Wishart permutation sum. The k = 2 case is Lubkin's (d_A + d_B)/(d_A d_B + 1); the k = 3 and 4 closed forms agree exactly with the sum (`eh/renyi.py`). At N = 12, half cut, 400 seeds (SeedSequence 202611151): S_1 = 3.65868 ± 0.00038 against Page's 3.65903, and S_2 = 3.4651 ± 0.0005 against −log E Tr ρ² = 3.46598. The second comparison is a Jensen-type approximation, not an exact prediction. Over 30 moment comparisons the largest |z| is 2.48; the z values within each (d_A, d_B) pair share samples. Figure `figures/f1_renyi_page.png`. These are reproductions of textbook results (Lubkin 1978; Nadal, Majumdar and Vergassola 2011).
+
+## 12. Upgrade: random-matrix diagnostics (class 1)
+
+*Asymptotic random-matrix laws compared with finite-d numerics.*
+- Haar Schmidt spectra approach Marchenko–Pastur: the moments match the Narayana numbers with O(1/d) corrections, and the KS distance shrinks with d (`figures/f2_spectrum_mp.png`).
+- Gap ratios reproduce Poisson 0.386 and GUE 0.5996. Applied to an entanglement spectrum they are descriptive only, not a Hamiltonian level-statistics test.
+- Exact enumeration gives 6, 60, 1080 and 36720 stabilizer states for n = 1..4, equal to 2^n ∏(2^k + 1). The enumerated ensemble is exactly a 3-design and not a 4-design (Webb 2016; Zhu 2017; Kueng and Gross 2015).
+- Stabilizer spectra are exactly flat, and flatness diagnostics separate Haar, stabilizer and shallow-brickwork states (`figures/f3_ensembles_distinguish.png`).
+
+## 13. Upgrade: recovery and OTOCs (class 2, with one class-3 observation)
+
+*Finite-dimensional circuit model: all-to-all Haar scrambler at β = 0.* The decoder is the Petz (transpose) map with σ = 1/d_M. Barnum–Knill gives F_Petz ≤ F_opt ≤ √F_Petz, so every threshold below belongs to this decoder; it is not a statement about information content.
+- **Old hole** (k = 1, n_B = 3..7, 24 seeds): F_Petz = 0.765, 0.951, 0.988 and 0.997 at m − k = 0..3. The 0.9 threshold is m* = 1.72–1.75 for every n_B. For k = 2, m* = 2.81.
+- **Young hole:** the young-minus-old shift is 1.24 to 3.28, against the large-d value n_B/2 = 1.5 to 3.5. It falls consistently 0.2–0.3 qubit short. Whether that gap is a finite-size effect or comes from the decoder is unresolved (`figures/g1_recovery_fidelity.png`).
+- **OTOC:** the infinite-temperature OTOC F(t) = 2^-N Tr[W(t) V W(t)† V†] decays toward the 2-design value −1/(d² − 1) at about the depth where recovery saturates (`figures/g3_otoc.png`; noise in `figures/g2_noise_scrambling.png`). This co-occurrence was seen at one size and is qualitative. OTOC decay is necessary for recovery but not sufficient.
+
+## 14. Upgrade: black holes as QEC codes (class 1–2)
+
+*Finite-dimensional QEC models; these do not derive holography.*
+- **[[5,1,3]]:** the Knill–Laflamme deviation is exactly 0 for every erasure of 1 or 2 qubits. I(R:A) is exactly 2 bits when |A| ≥ 3 and 0 otherwise, which is the perfect-tensor (AME(6,2)) property (Laflamme et al. 1996; Pastawski et al. 2015).
+- **Random stabilizer codes:** encoders are circuits of 10n random two-qubit Cliffords. Every I(R:A) is an integer number of bits, and the distance distribution belongs to this circuit ensemble.
+- **Haar isometries:** no erasure is ever exactly correctable. I(R:A) + I(R:E) = 2 ln 2 to 1e-10, and a Page-type approximation of the mean I(R:A) has a gap that shrinks from 0.028 bits at n = 5 to 0.0006 bits at n = 11 (`figures/h1_qec_erasure.png`).
+- **Retraction:** the erasure Petz formula F_Petz = Tr_E[(Tr_R √ρ_RE)²]/d_R was first presented as new. It is the complementary-channel form of the standard Petz fidelity (Sec. 13), so it is listed here as re-derived, not new.
+
+## 15. Upgrade: island toy model (class 1; semiclassical formula, kept separate)
+
+*Semiclassical-gravity formula (JT gravity + CFT, c = 24, β = 2π, φ_r = 40), evaluated numerically. This is not a circuit simulation; the qubit models above neither test nor derive it.* Extremizing the generalized entropy gives a quantum extremal surface at a* = 4.0386, against the AMM asymptotic value 3.9957. The relative error falls from 0.0049 to 0.0009 across the φ_r scan. The late no-island slope is 8.0 = 2πc/(3β), and t_Page = 66.29 equals the leading-order formula (`figures/h2_island_page_curve.png`). Putting this curve beside the qubit Page curve only illustrates their shapes: the two models share no parameters.
+
+## 16. What was reproduced / newly explored / unresolved
+
+**Independent verification of the upgrade:** `verify/independent_upgrade.py` (numpy only, no import from `eh/`, seed 20261116) re-derived five claims, and all five agree:
+- V1, Lubkin and Tr ρ³: |z| < 4, and the stored exact table is reproduced to 0.
+- V2, [[5,1,3]]: 0 violations over 30 erasure patterns.
+- V3, Haar OTOC at N = 3: −0.0208 ± 0.0028 against −1/63 (z = −1.74).
+- V4, stabilizer counts: breadth-first search gives 6, 60 and 1080.
+- V5, old-hole F_Petz: 0.769 ± 0.019 over 48 seeds, against 0.765.
+
+V5 uses the same Petz formula with an independent state construction. The project now has 13 of 14 claims verified (`results/verification.json`). Tests: 204/204 pass.
+
+**Reproduced (class 1–2):** Rényi Page curves and Wishart moments; Marchenko–Pastur spectra; stabilizer counts and design order; Haar OTOC value; [[5,1,3]] perfect-tensor erasure; Hayden–Preskill old-hole threshold and young-hole shift of about n_B/2; AMM island extremum.
+
+**Newly explored (class 2–3, model-specific):** Petz-decoder thresholds as a function of n_B, including the 0.2–0.3 qubit young-hole deficit; distance statistics of random-Clifford-circuit codes; co-occurrence of OTOC decay with recovery saturation; diagnostics that distinguish the ensembles. No claim exceeds class 3.
+
+**Unresolved:** whether the young-hole deficit is a finite-size effect or comes from the decoder (it needs F_opt, for example via an SDP, at larger n_B); OTOC versus recovery at more than one size; island and QEC numbers not re-derived by a second code path; the testing gaps listed in `notes/AUDIT.md`.
+
+**Adversarial review outcomes:**
+- One novelty claim was retracted (Sec. 14).
+- The recovery threshold is now called decoder-specific.
+- The OTOC–recovery link is downgraded to a qualitative co-occurrence.
+- The S_2 comparison is labelled approximate.
+- Gap ratios are labelled descriptive.
+- The island results are labelled formula evaluation only.
+
+None of this resolves the information paradox, and no circuit simulation here proves the island formula.
+
 ## References
 
 Existence of each entry was checked by web search during this project (by the builders, the verifier or the writer); journal pages were not all opened.
@@ -336,3 +394,18 @@ Existence of each entry was checked by web search during this project (by the bu
 11. A. Almheiri, N. Engelhardt, D. Marolf and H. Maxfield, "The entropy of bulk quantum fields and the entanglement wedge of an evaporating black hole", JHEP 12 (2019) 063, arXiv:1905.08762.
 
 The Cauchy-Schwarz, Jensen, Uhlmann and Fuchs-van de Graaf steps of Sec. 4.6 are textbook inequalities and are used without a specific citation.
+
+Upgrade references (Secs. 11–16; cited from memory, not re-checked by web search in this pass):
+
+12. A. Almheiri, R. Mahajan and J. Maldacena, "Islands outside the horizon", arXiv:1910.11077 (2019).
+13. H. Barnum and E. Knill, "Reversing quantum dynamics with near-optimal quantum and classical fidelity", J. Math. Phys. **43**, 2097 (2002).
+14. V. A. Marchenko and L. A. Pastur, Math. USSR-Sbornik **1**, 457 (1967).
+15. Y. Y. Atas, E. Bogomolny, O. Giraud and G. Roux, Phys. Rev. Lett. **110**, 084101 (2013).
+16. C. Nadal, S. N. Majumdar and M. Vergassola, J. Stat. Phys. **142**, 403 (2011).
+17. E. Knill and R. Laflamme, Phys. Rev. A **55**, 900 (1997).
+18. R. Laflamme, C. Miquel, J. P. Paz and W. H. Zurek, Phys. Rev. Lett. **77**, 198 (1996).
+19. F. Pastawski, B. Yoshida, D. Harlow and J. Preskill, JHEP 06 (2015) 149, arXiv:1503.06237.
+20. A. Almheiri, X. Dong and D. Harlow, JHEP 04 (2015) 163, arXiv:1411.7041.
+21. D. A. Roberts and B. Yoshida, JHEP 04 (2017) 121, arXiv:1610.04903.
+22. Z. Webb, arXiv:1510.02769; H. Zhu, Phys. Rev. A **96**, 062336 (2017); R. Kueng and D. Gross, arXiv:1510.02767.
+23. S. Aaronson and D. Gottesman, Phys. Rev. A **70**, 052328 (2004).

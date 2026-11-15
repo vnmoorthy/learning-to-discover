@@ -381,6 +381,114 @@
    "revised_hypothesis": "Old-hole thresholds are essentially independent of n_B (identical for n_B >= 5; up to one lower at n_B = 3, 4).",
    "conclusion": "The decoupling bound holds and is about 15% above the measured mean T; an old hole returns a k-qubit diary after m about k + 1 to k + 3 qubits regardless of size, a young hole needs about n_B/2 more.",
    "classification": "2 (Haar scrambler: verification of a known relation) / 3 (local scramblers)"
+  },
+  {
+   "id": "F1",
+   "question": "Do Renyi-n Page curves and exact Haar trace moments of random pure states match the complex-Wishart closed forms?",
+   "hypothesis": "E Tr rho^k from the Wishart permutation sum (Lubkin for k=2) matches Haar Monte Carlo; S_1 matches Page.",
+   "derivation_summary": "Haar-random pure states on N qubits (random-matrix model, no dynamics, no gravity); S_2 compared with -log E[Tr rho^2], which is not E[S_2] (Jensen gap)",
+   "prediction": "|z| < 3 against exact S_1 and exact E Tr rho^k for every cut; S_n non-increasing in n.",
+   "experiment": "experiments/f_spectra.py part A/B: N=12, 400 seeds (SeedSequence 202611151/2); 10 (dA,dB) pairs, 10k-40k samples.",
+   "result": "N=12 half cut: S_1 = 3.65868 +- 0.00038 vs Page 3.65903; S_2 = 3.4651 +- 0.0005 vs -log Lubkin 3.46598; max |z| 2.48 over 30 moment comparisons.",
+   "verification": "verify/independent_upgrade.py V1 (seed 20261116, numpy, no eh/ import): agree=True; Lubkin purity and Tr rho^3 re-derived by MC at (4,4),(8,8),(8,32); builder's N=12 exact purity table reproduced to 0.",
+   "critic_objections": [
+    "S_2 vs -log E[purity] is an approximation (Jensen), not an exact prediction; the 1.8 sigma offset is within it.",
+    "The three moments per pair share samples, so z values are correlated.",
+    "Renyi Page curves and Wishart moments are textbook (Lubkin 1978; Nadal-Majumdar-Vergassola 2011): reproduction only."
+   ],
+   "revised_hypothesis": "confirmed (reproduction)",
+   "conclusion": "N=12 half cut: S_1 = 3.65868 +- 0.00038 vs Page 3.65903; S_2 = 3.4651 +- 0.0005 vs -log Lubkin 3.46598; max |z| 2.48 over 30 moment comparisons.",
+   "classification": "1"
+  },
+  {
+   "id": "F2",
+   "question": "Do entanglement spectra follow Marchenko-Pastur, and which diagnostics distinguish Haar, stabilizer and shallow-brickwork ensembles?",
+   "hypothesis": "Haar Schmidt spectra converge to MP with O(1/d) moment corrections; stabilizer spectra are exactly flat; GUE-like gap ratios for Haar.",
+   "derivation_summary": "Random-matrix model; MP is an asymptotic law; Stabilizer ensemble approximated by depth-6N random Clifford brickwork (convergence checked at N,2N,4N,6N)",
+   "prediction": "KS distance to MP shrinks with d; <r> ~ 0.5996 (GUE) for Haar; stabilizer spectra flat to machine precision; stabilizer states a 3-design, not a 4-design.",
+   "experiment": "experiments/f_spectra.py parts B-E (seeds 202611152-202611155); exact enumeration of all stabilizer states n<=4 (6, 60, 1080, 36720).",
+   "result": "MP moments match Narayana numbers; KS shrinks with size; stabilizer flatness exact; enumeration exactly a 3-design and not a 4-design.",
+   "verification": "verify/independent_upgrade.py V4 (seed 20261116, numpy, no eh/ import): agree=True; stabilizer counts 6/60/1080 re-derived by Clifford-orbit BFS on state vectors.",
+   "critic_objections": [
+    "MP, Atas gap-ratio values and the 3-design/not-4-design property of stabilizer states are literature results (Marchenko-Pastur 1967; Atas et al. 2013; Webb 2016; Zhu 2017; Kueng-Gross 2015): class 1.",
+    "Gap ratios of an entanglement spectrum are not a Hamiltonian level-statistics diagnostic; usage is descriptive only.",
+    "The 6N brickwork is not exactly uniform over stabilizer states; only convergence of low moments was checked."
+   ],
+   "revised_hypothesis": "confirmed (reproduction)",
+   "conclusion": "MP moments match Narayana numbers; KS shrinks with size; stabilizer flatness exact; enumeration exactly a 3-design and not a 4-design.",
+   "classification": "1"
+  },
+  {
+   "id": "G1",
+   "question": "How many emitted qubits m does a Petz decoder need to recover a k-qubit diary from an old vs young Haar-scrambled hole?",
+   "hypothesis": "Old hole: m* - k = O(1) independent of n_B; young hole: shift about n_B/2 (Hayden-Preskill).",
+   "derivation_summary": "All-to-all Haar scrambler at infinite temperature; Petz (transpose) decoder with sigma = 1/d_M: F_Petz <= F_opt <= sqrt(F_Petz) (Barnum-Knill), so m* is decoder-specific; Exact dense linear algebra, n_B <= 7",
+   "prediction": "m*(F_Petz=0.9) constant in n_B for an old hole; young-old shift approaching n_B/2.",
+   "experiment": "experiments/g_recovery.py g1: k=1, n_B=3..7, 24 seeds (12 at n_B=7), seed 20261115+1000.",
+   "result": "Old hole F = 0.765/0.951/0.988/0.997 at m-k = 0..3, m* = 1.72-1.75 for every n_B; k=2 gives m* = 2.81; young-old shift 1.24..3.28 vs n_B/2 = 1.5..3.5.",
+   "verification": "verify/independent_upgrade.py V5 (seed 20261116, numpy, no eh/ import): agree=True; F(m-k=0, n_B=3) = 0.769 +- 0.003 (48 seeds) vs builder 0.765.",
+   "critic_objections": [
+    "The Petz threshold measures one decoder's performance, not information content: I(R D : Q) can be near-maximal while F_Petz < 0.9. Statement downgraded to 'Petz-decoder threshold'.",
+    "'Finite-size correction' for the 0.2-0.3 qubit deficit is an untested interpretation; it could equally be decoder suboptimality (sqrt(F_Petz) bracket is wide at F~0.8).",
+    "V5 re-uses the builder's Petz formula (independent state construction and sampler only); the formula itself is checked against Kraus composition in tests/test_recovery.py."
+   ],
+   "revised_hypothesis": "confirmed, wording downgraded (decoder-specific threshold)",
+   "conclusion": "Old hole F = 0.765/0.951/0.988/0.997 at m-k = 0..3, m* = 1.72-1.75 for every n_B; k=2 gives m* = 2.81; young-old shift 1.24..3.28 vs n_B/2 = 1.5..3.5.",
+   "classification": "2"
+  },
+  {
+   "id": "G2",
+   "question": "How do depolarizing noise on the radiation and finite circuit depth degrade recovery, and how does the infinite-temperature OTOC track it?",
+   "hypothesis": "Recovery fidelity decreases smoothly with noise; OTOCs decay to the 2-design value -1/(d^2-1) at the same depth that recovery saturates.",
+   "derivation_summary": "beta = 0 OTOC F(t) = 2^-N Tr[W(t) V W(t)^dag V^dag], Pauli W, V; Haar and Clifford brickwork; small N (<= 8 for dense OTOC)",
+   "prediction": "Haar average OTOC = -1/(d^2-1); OTOC decay and Petz-fidelity saturation occur at comparable depth.",
+   "experiment": "experiments/g_recovery.py g2*/g3* (seeds 20261115+2000..+6000).",
+   "result": "See results/g_recovery.json (g2_noise_D, g2_noise_DR, g3); OTOC and recovery saturate at comparable depths; Clifford purity matches Haar (2-design).",
+   "verification": "verify/independent_upgrade.py V3 (seed 20261116, numpy, no eh/ import): agree=True; Haar OTOC N=3: -0.0208 +- 0.0028 vs -1/63 = -0.0159 (z = -1.74).",
+   "critic_objections": [
+    "OTOC decay is necessary but not sufficient for Hayden-Preskill recovery (Yoshida-Kitaev link holds for the Pauli-averaged OTOC only); the 'tracks' statement is a qualitative co-occurrence at one N.",
+    "Clifford circuits agreeing with Haar on second moments is guaranteed (2-design), not a finding.",
+    "Noise results are channel-specific (depolarizing only)."
+   ],
+   "revised_hypothesis": "partially confirmed (qualitative co-occurrence; class 2-3)",
+   "conclusion": "See results/g_recovery.json (g2_noise_D, g2_noise_DR, g3); OTOC and recovery saturate at comparable depths; Clifford purity matches Haar (2-design).",
+   "classification": "3"
+  },
+  {
+   "id": "H1",
+   "question": "Which erasures of an encoded logical qubit are correctable for [[5,1,3]], random stabilizer and Haar-isometry codes?",
+   "hypothesis": "[[5,1,3]] is a perfect tensor (I(R:A) in {0,2} bits); random stabilizer codes give integer I(R:A); Haar codes are never exactly correctable but approximate a Page-type I(R:A).",
+   "derivation_summary": "Finite-dimensional QEC models; this does not derive holography; Random stabilizer codes from 10n random 2-qubit Cliffords on random pairs (not exactly uniform)",
+   "prediction": "I(R:A) = 2 bits iff |A| >= 3 for [[5,1,3]]; Knill-Laflamme deviation 0 for |E| <= 2.",
+   "experiment": "experiments/h_qec_islands.py: n = 5,7,9,11, 40/40/30/16 seeds, SeedSequence([20261115, family, n, seed]); exact enumeration of erasure subsets.",
+   "result": "[[5,1,3]] exactly perfect; random-code distance distribution e.g. n=11: d=3 in 10/16; Haar I(R:A)+I(R:E) = 2 ln 2 to 1e-10; Page-type approximation gap 0.028 -> 0.0006 bits for n = 5 -> 11.",
+   "verification": "verify/independent_upgrade.py V2 (seed 20261116, numpy, no eh/ import): agree=True; [[5,1,3]] built from its stabilizer generators, all 30 erasure patterns |A| = 1..4 checked.",
+   "critic_objections": [
+    "'New closed form' F_Petz = Tr_E[(Tr_R sqrt(rho_RE))^2]/d_R is the complementary-channel form of the standard Petz fidelity (same as Track C's pure-state formula); novelty claim retracted, now 're-derived'.",
+    "Random-code distance statistics are specific to the 10n-gate circuit ensemble.",
+    "Haar 'distance' is undefined (no exact correction); kept only with the distance_note."
+   ],
+   "revised_hypothesis": "confirmed; novelty claim on Petz closed form retracted",
+   "conclusion": "[[5,1,3]] exactly perfect; random-code distance distribution e.g. n=11: d=3 in 10/16; Haar I(R:A)+I(R:E) = 2 ln 2 to 1e-10; Page-type approximation gap 0.028 -> 0.0006 bits for n = 5 -> 11.",
+   "classification": "2"
+  },
+  {
+   "id": "H2",
+   "question": "Does a semiclassical island formula (AMM eternal-BH model) reproduce a Page-like curve, and how does its shape compare with the qubit Page curve?",
+   "hypothesis": "Extremizing the generalized entropy gives a QES at a* matching the AMM asymptotic, and S(R) saturates at t_Page.",
+   "derivation_summary": "Semiclassical gravity formula (JT + CFT, c = 24, beta = 2 pi), not a circuit simulation; The shape comparison with qubit Page curves is illustrative only: different models, no shared parameters",
+   "prediction": "a* within 1% of AMM asymptotic; late no-island slope = 2 pi c/(3 beta).",
+   "experiment": "experiments/h_qec_islands.py islands: numerical extremization on a grid, phi_r scan.",
+   "result": "a* = 4.0386 vs AMM asymptotic 3.9957 (rel. err 0.0049 -> 0.0009 as phi_r grows); slope 8.0 = 2 pi c/(3 beta); t_Page = 66.29 equals the leading-order formula.",
+   "verification": "Internal: slope and t_Page match closed forms in results/h_qec_islands.json; not re-derived by a separate code path in this pass.",
+   "critic_objections": [
+    "This evaluates a published formula; it does not test or derive the island formula, and the qubit circuits say nothing about it.",
+    "Agreement with AMM is agreement of a numerical extremum with its own asymptotic expansion: class 1.",
+    "Not independently re-run."
+   ],
+   "revised_hypothesis": "reproduction (formula evaluation only)",
+   "conclusion": "a* = 4.0386 vs AMM asymptotic 3.9957 (rel. err 0.0049 -> 0.0009 as phi_r grows); slope 8.0 = 2 pi c/(3 beta); t_Page = 66.29 equals the leading-order formula.",
+   "classification": "1"
   }
  ]
 }

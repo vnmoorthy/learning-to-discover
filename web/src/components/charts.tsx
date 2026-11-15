@@ -19,6 +19,21 @@ export const tooltipStyle = {
 export function MetricChart({ data, color, name, target, height = 220 }: { data: Series; color: string; name: string; target?: number | null; height?: number }) {
   const rows = data.map(([t, v]) => ({ t, v }))
   const gid = 'mc' + color.replace('#', '')
+  // explicit domain: pad so float noise is not stretched to full height
+  const vals = rows.map((r) => r.v).filter((v) => Number.isFinite(v))
+  let lo = vals.length ? Math.min(...vals) : 0
+  let hi = vals.length ? Math.max(...vals) : 1
+  const mid = (lo + hi) / 2
+  const minSpan = Math.max(Math.abs(mid) * 1e-9, 1e-12)
+  if (hi - lo < minSpan) {
+    lo = mid - minSpan / 2
+    hi = mid + minSpan / 2
+  }
+  const pad = (hi - lo) * 0.08
+  const domain: [number, number] = [lo - pad, hi + pad]
+  // size the axis from the longest formatted tick (~7 px per char + 12)
+  const tickLen = Math.max(...[domain[0], domain[1], mid].map((v) => fmtScore(v).length), 3)
+  const yWidth = Math.min(Math.max(tickLen * 7 + 12, 40), 160)
   return (
     <div style={{ height }}>
       <ResponsiveContainer width="100%" height="100%">
@@ -31,9 +46,9 @@ export function MetricChart({ data, color, name, target, height = 220 }: { data:
           </defs>
           <CartesianGrid stroke="rgba(255,255,255,0.04)" vertical={false} />
           <XAxis dataKey="t" type="number" scale="time" domain={['dataMin', 'dataMax']} tickFormatter={(t) => clockTime(new Date(t).toISOString()).slice(0, 5)} {...axisProps} minTickGap={40} />
-          <YAxis domain={['auto', 'auto']} tickFormatter={(v) => fmtScore(v)} width={64} {...axisProps} />
+          <YAxis domain={domain} tickFormatter={(v) => fmtScore(v)} width={yWidth} {...axisProps} />
           <Tooltip {...tooltipStyle} labelFormatter={(t) => new Date(t as number).toLocaleString()} formatter={(v: number) => [fmtScore(v), name]} />
-          {target != null && <ReferenceLine y={target} stroke="#E2B25C" strokeDasharray="4 4" label={{ value: 'target', fill: '#E2B25C', fontSize: 10, position: 'insideTopRight' }} />}
+          {target != null && <ReferenceLine y={target} ifOverflow="extendDomain" stroke="#E2B25C" strokeDasharray="4 4" label={{ value: 'target', fill: '#E2B25C', fontSize: 10, position: 'insideTopRight' }} />}
           <Area type="monotone" dataKey="v" stroke={color} strokeWidth={2} fill={`url(#${gid})`} isAnimationActive={false} dot={false} />
         </AreaChart>
       </ResponsiveContainer>

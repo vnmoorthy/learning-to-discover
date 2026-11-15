@@ -1,0 +1,9 @@
+{
+ "name": "neutron-star-eos",
+ "title": "STARFORGE: neutron-star equation of state",
+ "kind": "report",
+ "verified_claims": 3,
+ "claims_total": 7,
+ "record": null,
+ "tests": "21/21"
+}

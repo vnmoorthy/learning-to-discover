@@ -8,8 +8,8 @@
  "record": null,
  "holder": null,
  "minImprovement": 1,
- "verified_claims": 8,
- "claims_total": 9,
+ "verified_claims": 13,
+ "claims_total": 14,
  "classification_scale": "1 reproduction, 2 verification of a known relation, 3 new computational observation, 4 new conjecture, 5 potentially novel",
  "paper": "problems/event-horizon/paper/event_horizon.md",
  "notebook": "problems/event-horizon/notebooks/event_horizon.ipynb"

@@ -624,5 +624,141 @@
   "agree": true,
   "tolerance": "n/a",
   "notes": "PRL page itself was not opened; the journal reference is confirmed only through the arXiv record plus a secondary citation. Other references were not re-checked by the verifier."
+ },
+ {
+  "claim": "Lubkin purity and exact E Tr rho^3 for Haar states (Track A)",
+  "classification": 1,
+  "method_builder": "experiments/f_spectra.py, eh/renyi.py",
+  "method_verifier": "verify/independent_upgrade.py V1: numpy only, no eh/ import, seed 20261116",
+  "numbers": {
+   "rows": [
+    {
+     "dA": 4,
+     "dB": 4,
+     "samples": 20000,
+     "mc_purity": 0.47076410264952995,
+     "exact_purity": 0.47058823529411764,
+     "z_purity": 0.37065239787863197,
+     "mc_tr_rho3": 0.2649476777425528,
+     "exact_tr_rho3": 0.2647058823529412,
+     "z_tr_rho3": 0.4208339668879903
+    },
+    {
+     "dA": 8,
+     "dB": 8,
+     "samples": 20000,
+     "mc_purity": 0.24616645867704637,
+     "exact_purity": 0.24615384615384617,
+     "z_purity": 0.08623269486587862,
+     "mc_tr_rho3": 0.07484965774971782,
+     "exact_tr_rho3": 0.07482517482517483,
+     "z_tr_rho3": 0.23338690268176723
+    },
+    {
+     "dA": 8,
+     "dB": 32,
+     "samples": 10000,
+     "mc_purity": 0.15563678735174907,
+     "exact_purity": 0.1556420233463035,
+     "z_purity": -0.0969841667722701,
+     "mc_tr_rho3": 0.028003846933152773,
+     "exact_tr_rho3": 0.028006515247488914,
+     "z_tr_rho3": -0.10581245279794406
+    }
+   ],
+   "max_abs_diff_stored_lubkin_N12": 0.0,
+   "runtime_s": 9.01734209060669
+  },
+  "agree": true,
+  "tolerance": "|z| < 4 or exact",
+  "notes": ""
+ },
+ {
+  "claim": "[[5,1,3]] is a perfect tensor: I(R:A) in {0, 2} bits by |A| (Track E)",
+  "classification": 1,
+  "method_builder": "experiments/h_qec_islands.py, eh/qec.py",
+  "method_verifier": "verify/independent_upgrade.py V2: numpy only, no eh/ import, seed 20261116",
+  "numbers": {
+   "I_RA_minmax_by_size": {
+    "1": [
+     0.0,
+     0.0
+    ],
+    "2": [
+     0.0,
+     8.881784197001252e-16
+    ],
+    "3": [
+     1.9999999999999991,
+     2.0
+    ],
+    "4": [
+     2.0,
+     2.0
+    ]
+   },
+   "violations": 0,
+   "runtime_s": 0.006104230880737305
+  },
+  "agree": true,
+  "tolerance": "|z| < 4 or exact",
+  "notes": ""
+ },
+ {
+  "claim": "Haar-averaged beta=0 OTOC = -1/(d^2-1) (Track D)",
+  "classification": 1,
+  "method_builder": "experiments/g_recovery.py, eh/otoc.py",
+  "method_verifier": "verify/independent_upgrade.py V3: numpy only, no eh/ import, seed 20261116",
+  "numbers": {
+   "N": 3,
+   "samples": 4000,
+   "mc_mean": -0.020827836917060267,
+   "stderr": 0.0028424968073113635,
+   "prediction": -0.015873015873015872,
+   "z": -1.74312281769316,
+   "runtime_s": 1.3714890480041504
+  },
+  "agree": true,
+  "tolerance": "|z| < 4 or exact",
+  "notes": ""
+ },
+ {
+  "claim": "Stabilizer-state counts 2^n prod(2^k+1) (Track B)",
+  "classification": 1,
+  "method_builder": "eh/rmt.py exact enumeration",
+  "method_verifier": "verify/independent_upgrade.py V4: numpy only, no eh/ import, seed 20261116",
+  "numbers": {
+   "bfs_counts": {
+    "1": 6,
+    "2": 60,
+    "3": 1080
+   },
+   "formula": {
+    "1": 6,
+    "2": 60,
+    "3": 1080
+   },
+   "runtime_s": 0.3971998691558838
+  },
+  "agree": true,
+  "tolerance": "|z| < 4 or exact",
+  "notes": ""
+ },
+ {
+  "claim": "Old-hole Petz fidelity 0.765 at k=1, n_B=3, m-k=0 (Track C)",
+  "classification": 2,
+  "method_builder": "experiments/g_recovery.py g1, eh/recovery.py",
+  "method_verifier": "verify/independent_upgrade.py V5: numpy only, no eh/ import, seed 20261116",
+  "numbers": {
+   "formula_note": "same Petz formula F=(1/d_M)Tr[(rho_QX (1 x rho_X^-1/2))^2], independent state construction, Haar sampler, partial traces and seed",
+   "mc_mean": 0.7693217015792014,
+   "stderr": 0.0028223651865198385,
+   "samples": 48,
+   "builder_value": 0.765,
+   "runtime_s": 0.050959110260009766
+  },
+  "agree": true,
+  "tolerance": "|z| < 4 or exact",
+  "notes": "same Petz formula F=(1/d_M)Tr[(rho_QX (1 x rho_X^-1/2))^2], independent state construction, Haar sampler, partial traces and seed"
  }
 ]
