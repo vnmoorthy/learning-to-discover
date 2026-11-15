@@ -120,6 +120,8 @@ export interface CodeArtifact {
 }
 
 export interface ReportArtifact {
+  hero?: string
+  hero_caption?: string
   kind: 'report'
   title?: string
   question?: string

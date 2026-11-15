@@ -8,7 +8,7 @@ import { ProblemCard } from '../components/ProblemCard'
 import { Counter, Empty, ErrorNote, Panel, Skeleton } from '../components/ui'
 import { dateTime, fmtScore, timeAgo } from '../lib/format'
 import { useLive } from '../live'
-import { STATIC } from '../mode'
+import { STATIC, assetUrl } from '../mode'
 import { LatticeViewer } from '../viz3d/lazy'
 import type { GridArtifact } from '../types'
 
@@ -146,12 +146,37 @@ function Feed() {
   )
 }
 
+function PhysicsFeature() {
+  const { state } = useLive()
+  const eh = state?.problems.find((p) => p.slug === 'event-horizon')
+  const tb = state?.problems.find((p) => p.slug === 'three-body-periodic-orbits')
+  return (
+    <Link to="/problems/event-horizon" className="group relative block overflow-hidden rounded-2xl border border-white/[0.07] bg-[#07080A]">
+      <img src={assetUrl('/gallery/blackhole.jpg')} alt="Event Horizon: a black hole drawn from the measured Page curve"
+        className="h-[260px] w-full object-cover object-center opacity-90 transition-opacity duration-300 group-hover:opacity-100 sm:h-[340px]" loading="lazy" />
+      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#07080A] via-[#07080A]/70 to-transparent" />
+      <div className="absolute inset-y-0 left-0 flex max-w-xl flex-col justify-center gap-3 p-6 sm:p-8">
+        <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-accent">Physics · Event Horizon</div>
+        <h2 className="text-[22px] font-semibold leading-tight tracking-[-0.02em] text-fg sm:text-[28px]">How does information survive a black hole&rsquo;s evaporation?</h2>
+        <p className="text-[13px] leading-6 text-fg-muted">
+          Exact numerics on an A100: the Page curve to 24 qubits, evaporation to 27, Hayden-Preskill recovery, every key claim re-derived by an independent verifier
+          {eh?.metric?.value != null ? ` (${eh.metric.value} of ${eh.metric.target ?? '?'} verified)` : ''}.
+          {tb?.metric?.value != null ? ` Plus ${tb.metric.value} candidate new three-body orbit families.` : ''}
+        </p>
+        <div className="text-[12px] font-medium text-accent">Open the study &rarr;</div>
+      </div>
+      <div className="absolute bottom-3 right-4 text-[10.5px] text-fg-dim">Disk rings = measured S(R) per evaporation step (N = 26). Artwork from data.</div>
+    </Link>
+  )
+}
+
 export default function MissionControl() {
   const { state, error, series, refresh } = useLive()
   return (
     <div className="space-y-6">
       {error && !state && <ErrorNote error={error} onRetry={refresh} />}
       <Hero />
+      <PhysicsFeature />
       <Panel title="Autonomous loop" subtitle={STATIC ? 'The seven phases of every cycle (recorded run; live, they animate as the server publishes them)' : 'Phases animate live as the server publishes them'}>
         <PhaseStepper />
       </Panel>

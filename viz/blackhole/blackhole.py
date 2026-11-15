@@ -30,21 +30,31 @@ hz = bpy.context.active_object; m = bpy.data.materials.new("void"); nt = m.node_
 bs = nt.nodes["Principled BSDF"]; bs.inputs["Base Color"].default_value = (0, 0, 0, 1); bs.inputs["Roughness"].default_value = 1.0
 bs.inputs["Specular IOR Level"].default_value = 0.0; hz.data.materials.append(m)
 # photon ring
-ring("photon", 1.32, 0.012, emis("pr", (1.0, 0.86, 0.62), 9.0))
+ring("photon", 1.06, 0.006, emis("pr", (1.0, 0.88, 0.70), 6.0))
 # accretion disk = Page curve: one ring per evaporation step, glow = measured S(R)_t
 n = len(S)
 for t, s in enumerate(S):
     x = s / smax                                   # 0..1, peaks at the Page time
-    R = 1.75 + 2.6 * t / (n - 1)
-    warm = (1.0, 0.55 + 0.35 * x, 0.25 + 0.45 * x)  # hotter (whiter) where the entropy is high
-    ring(f"disk{t}", R, 0.018 + 0.020 * x, emis(f"d{t}", warm, 0.4 + 7.5 * x ** 1.6))
+    R = 1.45 + 2.9 * t / (n - 1)
+    warm = (1.0, 0.42 + 0.40 * x, 0.12 + 0.40 * x)  # hotter (whiter) where the entropy is high
+    ring(f"disk{t}", R, 0.010 + 0.016 * x, emis(f"d{t}", warm, 0.15 + 3.2 * x ** 1.8))
 # lensed back side of the disk (stylized): a tilted halo hugging the horizon
-for k, (R, s) in enumerate([(1.55, 3.0), (1.75, 1.6)]):
-    ring(f"halo{k}", R, 0.02, emis(f"h{k}", (1.0, 0.72, 0.42), s), rot=(math.radians(90), 0, 0))
+for k, (R, s, r) in enumerate([(1.12, 2.2, 0.010), (1.22, 1.1, 0.008), (1.34, 0.5, 0.006)]):
+    ring(f"halo{k}", R, r, emis(f"h{k}", (1.0, 0.70, 0.40), s), rot=(math.radians(90), 0, 0))
+# faint background stars (decoration, deterministic)
+import random
+random.seed(7)
+star = emis("star", (0.85, 0.9, 1.0), 2.0)
+for i in range(420):
+    th = random.uniform(0, 2 * math.pi); ph = random.uniform(-0.55, 0.75)
+    r = 60.0
+    bpy.ops.mesh.primitive_ico_sphere_add(radius=random.uniform(0.02, 0.07), subdivisions=1,
+                                          location=(r * math.cos(ph) * math.sin(th), r * math.cos(ph) * math.cos(th) + 40, r * math.sin(ph)))
+    bpy.context.active_object.data.materials.append(star)
 # camera just above the disk plane
-cd = bpy.data.cameras.new("Cam"); cd.lens = 55
+cd = bpy.data.cameras.new("Cam"); cd.lens = 48
 cam = bpy.data.objects.new("Cam", cd); sc.collection.objects.link(cam); sc.camera = cam
-cam.location = (0.0, -13.5, 1.55)
+cam.location = (0.0, -11.0, 0.95)
 tgt = bpy.data.objects.new("T", None); sc.collection.objects.link(tgt); tgt.location = (0, 0, -0.1)
 c = cam.constraints.new('TRACK_TO'); c.target = tgt; c.track_axis = 'TRACK_NEGATIVE_Z'; c.up_axis = 'UP_Y'
 # bloom
@@ -52,7 +62,7 @@ ng = bpy.data.node_groups.new("Comp", "CompositorNodeTree"); sc.compositing_node
 ng.interface.new_socket("Image", in_out='OUTPUT', socket_type='NodeSocketColor')
 rl = ng.nodes.new("CompositorNodeRLayers"); og = ng.nodes.new("NodeGroupOutput"); g = ng.nodes.new("CompositorNodeGlare")
 g.inputs['Type'].default_value = 'Bloom'; g.inputs['Quality'].default_value = 'High'
-g.inputs['Threshold'].default_value = 0.7; g.inputs['Strength'].default_value = 0.9; g.inputs['Size'].default_value = 0.8
+g.inputs['Threshold'].default_value = 1.0; g.inputs['Strength'].default_value = 0.55; g.inputs['Size'].default_value = 0.65
 ng.links.new(rl.outputs['Image'], g.inputs['Image']); ng.links.new(g.outputs['Image'], og.inputs['Image'])
 sc.render.image_settings.file_format = 'PNG'; sc.render.filepath = out
 bpy.ops.render.render(write_still=True)

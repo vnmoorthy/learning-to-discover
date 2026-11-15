@@ -126,6 +126,12 @@ function RepoLink({ path, children }: { path?: string; children: React.ReactNode
 export function ReportView({ art }: { art: ReportArtifact }) {
   return (
     <div className="space-y-6">
+      {art.hero && (
+        <figure className="overflow-hidden rounded-xl border border-white/[0.07] bg-[#07080A]">
+          <img src={assetUrl(art.hero)} alt={art.title ?? 'hero'} className="w-full object-cover" />
+          {art.hero_caption && <figcaption className="px-4 py-2 text-[11.5px] text-fg-dim">{art.hero_caption}</figcaption>}
+        </figure>
+      )}
       <div>
         {art.question && <p className="max-w-4xl text-[14px] font-medium leading-6 text-fg">{art.question}</p>}
         {art.summary && <p className="mt-2 max-w-4xl text-[13.5px] leading-6 text-fg-muted">{art.summary}</p>}
