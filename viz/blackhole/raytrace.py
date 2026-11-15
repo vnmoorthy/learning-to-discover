@@ -71,19 +71,19 @@ def gauss_blur(img, sigma):
     return img
 
 
-def star_field(dev, seed, W=4096, H=2048, n=16000):
+def star_field(dev, seed, W=8192, H=4096, n=26000):
     gen = torch.Generator(device=dev).manual_seed(seed)
     sl = torch.rand(n, generator=gen, device=dev) * 2 - 1
     lon = torch.rand(n, generator=gen, device=dev) * 2 * math.pi - math.pi
     lat = torch.asin(sl)
     xi = ((lon + math.pi) / (2 * math.pi) * W).long().clamp(0, W - 1)
     yi = ((math.pi / 2 - lat) / math.pi * H).long().clamp(0, H - 1)
-    bright = 0.015 + 2.2 * torch.rand(n, generator=gen, device=dev) ** 9
+    bright = 0.01 + 1.6 * torch.rand(n, generator=gen, device=dev) ** 12
     col = kelvin_rgb(3200 + 9000 * torch.rand(n, generator=gen, device=dev)) * bright[:, None]
     tex = torch.zeros(3, H * W, device=dev)
     for c in range(3):
         tex[c].index_add_(0, yi * W + xi, col[:, c])
-    return gauss_blur(tex.view(1, 3, H, W), 0.9)[0]
+    return gauss_blur(tex.view(1, 3, H, W), 0.7)[0]
 
 
 def sample_stars(stars, d):
