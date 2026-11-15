@@ -1,10 +1,10 @@
-import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { api } from '../api'
 import { Empty, ErrorNote, Panel, Skeleton } from '../components/ui'
 import { useApi } from '../hooks/useApi'
 import { assetUrl } from '../mode'
 import type { EHCycle } from '../types'
+import { OrbitsViewer, ViewerFrame } from '../viz3d/lazy'
 
 const CLASS_LABEL: Record<string, string> = {
   '1': 'reproduction',
@@ -44,7 +44,7 @@ function Cycle({ c, i }: { c: EHCycle; i: number }) {
           <div className="mt-0.5 text-sm text-fg">{txt(c.question)}</div>
         </div>
         {c.classification != null && (
-          <span className="shrink-0 rounded-full border border-cyan/30 bg-cyan/10 px-2 py-0.5 text-[10px] text-cyan">{classOf(c.classification)}</span>
+          <span className="shrink-0 rounded-full border border-white/10 bg-white/[0.03] px-2 py-0.5 text-[11px] font-medium text-fg-muted">{classOf(c.classification)}</span>
         )}
       </button>
       {open && (
@@ -68,8 +68,8 @@ export default function PhysicsPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="font-display text-2xl font-semibold tracking-tight">Physics</h1>
-        <p className="mt-1 max-w-3xl text-sm text-fg-muted">
+        <h1 className="text-[22px] font-semibold leading-7 tracking-[-0.02em]">Physics</h1>
+        <p className="mt-1.5 max-w-3xl text-[14px] leading-6 text-fg-muted">
           The same loop, pointed beyond EinsteinArena: an open problem in celestial mechanics (periodic orbits of the three-body
           problem) and EVENT HORIZON, a verified quantum-information study of the black hole information problem on the A100s.
           Every claim below is classified; nothing here claims to settle an open problem.
@@ -83,21 +83,31 @@ export default function PhysicsPage() {
           <Panel
             title="Three-body periodic orbits · candidates"
             subtitle={tb ? `${tb.orbits.length} verified periodic orbits whose topological families are absent from the ${tb.catalog_entries.toLocaleString()} catalogued orbits checked` : 'no data'}
-            right={tb?.score != null ? <span className="rounded-full border border-amber-300/30 bg-amber-300/10 px-2 py-0.5 font-mono text-[11px] text-amber-200">{tb.score} candidate families</span> : null}
+            right={tb?.score != null ? <span className="rounded-full border border-amber/30 bg-amber/[0.08] px-2 py-0.5 text-[11px] font-medium text-amber">{tb.score} candidate families</span> : null}
           >
             {!tb ? (
               <Empty>No verified orbits yet.</Empty>
             ) : (
               <div className="grid gap-5 lg:grid-cols-[1.4fr_1fr]">
-                <motion.img initial={{ opacity: 0 }} animate={{ opacity: 1 }} src={assetUrl(tb.image)} alt="candidate orbits" className="w-full rounded-xl border border-white/[0.06]" />
+                <div className="min-w-0">
+                  <ViewerFrame className="h-[420px] w-full sm:h-[520px]">
+                    <OrbitsViewer orbits={tb.orbits} fallback={<img src={assetUrl(tb.image)} alt="candidate orbits" className="h-full w-full object-contain" />} />
+                  </ViewerFrame>
+                  <p className="mt-2 text-[12px] text-fg-dim">
+                    Integrated live in your browser (RK4, G = 1, m1 = m2 = 1) from the verified initial conditions. Drag to rotate, scroll or pinch to zoom, tap to pause.{' '}
+                    <a href={assetUrl(tb.image)} target="_blank" rel="noreferrer" className="text-fg-muted underline decoration-white/20 underline-offset-2 hover:text-fg">
+                      Verifier plot of all {tb.orbits.length}
+                    </a>
+                  </p>
+                </div>
                 <div className="space-y-3 text-[13px]">
-                  <table className="w-full font-mono text-[12px]">
+                  <table className="w-full font-mono text-[12px] [&_td]:py-1.5 [&_th]:pb-1.5 [&_th]:font-sans [&_th]:text-[11px] [&_th]:font-medium">
                     <thead className="text-fg-dim">
                       <tr><th className="text-left">#</th><th className="text-right">vx</th><th className="text-right">vy</th><th className="text-right">T</th><th className="text-right">m3</th></tr>
                     </thead>
                     <tbody>
                       {tb.orbits.map((o, i) => (
-                        <tr key={i} className="border-t border-white/[0.05]">
+                        <tr key={i} className="border-t border-white/[0.06]">
                           <td>{i + 1}</td>
                           <td className="text-right">{o.vx.toFixed(6)}</td>
                           <td className="text-right">{o.vy.toFixed(6)}</td>
@@ -119,7 +129,7 @@ export default function PhysicsPage() {
             subtitle={eh?.question ?? 'Page curve, Page’s theorem, sequential evaporation, Bell-pair toy model, scrambling and Hayden-Preskill'}
             right={
               eh?.tests ? (
-                <span className="rounded-full border border-emerald-300/30 bg-emerald-300/10 px-2 py-0.5 font-mono text-[11px] text-emerald-200">
+                <span className="rounded-full border border-good/30 bg-good/[0.08] px-2 py-0.5 text-[11px] font-medium text-good">
                   tests {eh.tests.passed ?? '?'}/{eh.tests.total ?? '?'} passed
                 </span>
               ) : null
@@ -133,12 +143,12 @@ export default function PhysicsPage() {
                 {eh.hardware && <p className="font-mono text-[11px] text-fg-dim">hardware: {eh.hardware}</p>}
                 <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
                   {(eh.figures ?? []).map((f, i) => (
-                    <figure key={i} className="overflow-hidden rounded-xl border border-white/[0.06] bg-black/30">
+                    <figure key={i} className="overflow-hidden rounded-lg border border-white/[0.07] bg-ink-850">
                       <img src={assetUrl(f.src ?? '')} alt={f.title} className="w-full" loading="lazy" />
                       <figcaption className="space-y-1 px-3 py-2 text-[12px]">
                         <div className="text-fg">{f.title}</div>
                         {f.caption && <div className="text-fg-dim">{f.caption}</div>}
-                        {f.classification != null && <div className="text-cyan">{classOf(f.classification)}</div>}
+                        {f.classification != null && <div className="text-fg-muted">{classOf(f.classification)}</div>}
                       </figcaption>
                     </figure>
                   ))}

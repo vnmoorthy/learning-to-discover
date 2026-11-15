@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://vnmoorthy.github.io/phoenixastar/">
-    <img src="docs/assets/og-banner.png" alt="Phoenixastar: an AI lab that gets better at discovering mathematics by doing it" width="100%">
+    <img src="docs/assets/banner.png" alt="Phoenixastar: an AI lab that gets better at discovering mathematics by doing it" width="100%">
   </a>
 </p>
 
@@ -32,9 +32,6 @@ cores, reads its own memory and the literature, proposes the next experiment wit
 moves compute accordingly. Every decision, source, prediction and outcome is logged, so the whole run can be
 replayed and audited.
 
-> **Honest status.** This is a hackathon entry and a live run, not a paper. Whether a record has fallen is stated
-> in the generated block under [Problems and results](#problems-and-results); it is rebuilt from the run's data
-> files by [`docs/update_results.py`](docs/update_results.py) and never edited by hand.
 
 <table>
   <tr>

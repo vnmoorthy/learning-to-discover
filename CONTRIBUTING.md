@@ -1,6 +1,6 @@
 # Contributing
 
-Thanks for looking. This started as a hackathon entry, so the bar is simple: keep it honest, keep it verifiable,
+Thanks for looking. This started as a hackathon entry, so the bar is simple: keep it verifiable,
 keep it working.
 
 ## Ground rules

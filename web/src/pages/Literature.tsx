@@ -40,8 +40,8 @@ export default function LiteraturePage() {
     <div className="space-y-5">
       <div className="flex flex-wrap items-end justify-between gap-4">
         <div>
-          <h1 className="font-display text-2xl font-semibold tracking-tight">Literature</h1>
-          <p className="mt-1 max-w-3xl text-sm text-fg-muted">
+          <h1 className="text-[22px] font-semibold leading-7 tracking-[-0.02em]">Literature</h1>
+          <p className="mt-1.5 max-w-3xl text-[14px] leading-6 text-fg-muted">
             Sources found by Exa inside the main loop. The proposer writes the queries when a problem is new or stalls; cited sources are linked to the decisions that used them.
           </p>
         </div>

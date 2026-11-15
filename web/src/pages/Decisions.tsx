@@ -97,8 +97,8 @@ export default function DecisionsPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="font-display text-2xl font-semibold tracking-tight">Decision audit log</h1>
-        <p className="mt-1 max-w-3xl text-sm text-fg-muted">
+        <h1 className="text-[22px] font-semibold leading-7 tracking-[-0.02em]">Decision audit log</h1>
+        <p className="mt-1.5 max-w-3xl text-[14px] leading-6 text-fg-muted">
           Every action any agent takes is a row: rationale, the prediction it made, what was later observed, the Exa sources it cited and the memory facts it read or wrote.
         </p>
       </div>

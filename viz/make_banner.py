@@ -65,12 +65,13 @@ def draw(w, h, out, compact=False):
         n = art.get("n", 75)
         aspect = w / h
         X, Y = np.meshgrid(np.arange(n), np.arange(n))
-        sx = lambda x: 0.36 + 0.64 * (x / (n - 1))        # lattice spans the right part
+        left = 0.64 if compact else 0.55
+        sx = lambda x: left + (1 - left) * (x / (n - 1))   # lattice field on the right only
         sy = lambda y: 0.04 + 0.92 * (y / (n - 1))
         ax0.set_xlim(0, 1); ax0.set_ylim(0, 1)
         ax0.scatter(sx(X.ravel()), sy(Y.ravel()), s=0.6 if not compact else 0.35, c="#1B2129", lw=0)
-        for a, b, *_ in (art.get("violated_lines") or [])[:160]:
-            ax0.plot([sx(a[0]), sx(b[0])], [sy(a[1]), sy(b[1])], color=ROSE, lw=0.35, alpha=0.18)
+        for a, b, *_ in (art.get("violated_lines") or [])[:60]:
+            ax0.plot([sx(a[0]), sx(b[0])], [sy(a[1]), sy(b[1])], color=ROSE, lw=0.3, alpha=0.10)
         if len(pts):
             ax0.scatter(sx(pts[:, 0]), sy(pts[:, 1]), s=2.2 if not compact else 1.4, c="#2E6F78", lw=0, alpha=0.9)
     except Exception as e:
@@ -78,9 +79,9 @@ def draw(w, h, out, compact=False):
     # hero: the 7 candidate orbits, small multiples on the right
     orbs = json.load(open(os.path.join(ROOT, "problems", "three-body-periodic-orbits", "candidates_verified.json")))["orbits"]
     cols = [ACC, WARM, ROSE]
-    pick = [1, 5, 6] if compact else [1, 5, 6, 2, 0]
-    xs = np.linspace(0.47, 0.90, len(pick))
-    size = 0.30 if compact else 0.27
+    pick = [5, 2] if compact else [1, 5, 6, 2]
+    xs = np.linspace(0.76, 0.93, len(pick)) if compact else np.linspace(0.64, 0.93, len(pick))
+    size = 0.40 if compact else 0.30
     for k, (i, cx) in enumerate(zip(pick, xs)):
         tr = orbit(orbs[i])
         a = fig.add_axes([cx - size * h / w / 2 * (w / h) * 0.5, 0.5 - size / 2 - (0.06 if k % 2 else -0.04), size * h / w * (w / h) * 0.5, size])
@@ -89,9 +90,9 @@ def draw(w, h, out, compact=False):
             for lw, al in ((3.2, 0.06), (1.6, 0.14), (0.55, 0.95)):
                 a.plot(tr[:, b, 0], tr[:, b, 1], color=cols[b], lw=lw * (0.8 if compact else 1), alpha=al, solid_capstyle="round")
     # text
-    tf = font(["Avenir Next", "Helvetica Neue", "Inter"], 64 if not compact else 46, "bold")
-    sf = font(["Avenir Next", "Helvetica Neue", "Inter"], 19 if not compact else 15)
-    mf = font(["Menlo", "SF Mono", "DejaVu Sans Mono"], 12 if not compact else 10)
+    tf = font(["Avenir Next", "Helvetica Neue", "Inter"], 64 if not compact else 34, "bold")
+    sf = font(["Avenir Next", "Helvetica Neue", "Inter"], 19 if not compact else 12, "medium")
+    mf = font(["Menlo", "SF Mono", "DejaVu Sans Mono"], 12 if not compact else 8)
     x0 = 0.055
     fig.text(x0, 0.70, "AUTONOMOUS RESEARCH LAB", color=ACC, fontdict=font(["Menlo", "SF Mono"], 11 if not compact else 9), alpha=0.95)
     fig.text(x0, 0.52, "Phoenixastar", color=FG, fontdict=tf)

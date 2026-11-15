@@ -268,8 +268,8 @@ export default function MemoryPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="font-display text-2xl font-semibold tracking-tight">Multi-agent memory</h1>
-        <p className="mt-1 max-w-3xl text-sm text-fg-muted">
+        <h1 className="text-[22px] font-semibold leading-7 tracking-[-0.02em]">Multi-agent memory</h1>
+        <p className="mt-1.5 max-w-3xl text-[14px] leading-6 text-fg-muted">
           Planner, proposer, critic and one agent per problem share one past.dev space. Facts written by one agent are recalled by others; every read is recorded.
         </p>
       </div>

@@ -396,8 +396,8 @@ export default function LearningPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="font-display text-2xl font-semibold tracking-tight">Self-improvement</h1>
-        <p className="mt-1 max-w-3xl text-sm text-fg-muted">
+        <h1 className="text-[22px] font-semibold leading-7 tracking-[-0.02em]">Self-improvement</h1>
+        <p className="mt-1.5 max-w-3xl text-[14px] leading-6 text-fg-muted">
           The lab trains its own model with Tinker: RL on a cheap verifiable problem with the official verifier as reward, then checks whether the skill transfers to a held-out problem. Modal
           sandboxes let the proposer test many small search programs in parallel.
         </p>

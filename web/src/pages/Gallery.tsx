@@ -38,8 +38,8 @@ export default function GalleryPage() {
   return (
     <div className="space-y-5">
       <div>
-        <h1 className="font-display text-2xl font-semibold tracking-tight">Gallery</h1>
-        <p className="mt-1 max-w-3xl text-sm text-fg-muted">Renders made from the lab's real artifacts: Blender scenes scripted by GPT-6 Astra and hero art from gpt-image-2.</p>
+        <h1 className="text-[22px] font-semibold leading-7 tracking-[-0.02em]">Gallery</h1>
+        <p className="mt-1.5 max-w-3xl text-[14px] leading-6 text-fg-muted">Renders made from the lab's real artifacts: Blender scenes scripted by GPT-6 Astra and hero art from gpt-image-2.</p>
       </div>
       {g.error && !g.data && <ErrorNote error={g.error} onRetry={g.reload} />}
       {g.loading && !g.data ? (

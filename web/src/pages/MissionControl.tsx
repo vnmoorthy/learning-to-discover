@@ -1,18 +1,17 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { lazy, Suspense, useMemo } from 'react'
+import { Suspense, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import { CpuGrid, GpuGrid, ModalFleet } from '../components/ComputeMap'
 import { FeedItem } from '../components/Decision'
-import { ErrorBoundary } from '../components/ErrorBoundary'
 import { LoopControls, PhaseStepper } from '../components/LoopStatus'
 import { ProblemCard } from '../components/ProblemCard'
 import { Counter, Empty, ErrorNote, Panel, Skeleton } from '../components/ui'
 import { dateTime, fmtScore, timeAgo } from '../lib/format'
 import { useLive } from '../live'
 import { STATIC } from '../mode'
+import { LatticeViewer } from '../viz3d/lazy'
 import type { GridArtifact } from '../types'
 
-const LatticeHero = lazy(() => import('../viz/LatticeHero'))
 
 function Totals() {
   const { state } = useLive()
@@ -53,7 +52,7 @@ function Hero() {
 
   return (
     <section className="panel relative overflow-hidden rounded-xl">
-      <div className="grid lg:grid-cols-[1.05fr_1fr]">
+      <div className="grid lg:grid-cols-[1fr_1.15fr]">
         <div className="relative z-10 flex flex-col justify-between gap-8 p-5 sm:p-8">
           <div>
             <div className="flex flex-wrap items-center gap-2 text-[12.5px] font-medium text-fg-muted">
@@ -80,12 +79,10 @@ function Hero() {
             )}
           </div>
         </div>
-        <div className="relative min-h-[260px] border-t border-white/[0.07] bg-ink-850 sm:min-h-[320px] lg:border-l lg:border-t-0">
-          <ErrorBoundary fallback={<div className="flex h-full items-center justify-center text-xs text-fg-dim">3D view unavailable (WebGL disabled)</div>}>
-            <Suspense fallback={<div className="absolute inset-0 skeleton" />}>
-              <LatticeHero art={art} />
-            </Suspense>
-          </ErrorBoundary>
+        <div className="relative min-h-[300px] border-t border-white/[0.07] bg-ink-850 sm:min-h-[380px] lg:border-l lg:border-t-0">
+          <Suspense fallback={<div className="absolute inset-0 skeleton" />}>
+            <LatticeViewer art={art} hero />
+          </Suspense>
           <Link
             to="/problems/no-three-in-line-75"
             className="absolute bottom-3 left-3 right-3 flex flex-wrap items-center gap-x-3 gap-y-1 rounded-lg border border-white/[0.08] bg-ink-800/90 px-3 py-2 font-mono text-[11px] text-fg-muted backdrop-blur transition-colors hover:border-white/20"

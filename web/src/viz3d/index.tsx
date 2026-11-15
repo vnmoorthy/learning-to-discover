@@ -1,5 +1,5 @@
 // Interactive viewers (lazy chunk): each wraps a scene in the shared Stage and adds its own read-outs.
-import { useFrame } from '@react-three/fiber'
+import { useFrame, useThree } from '@react-three/fiber'
 import { useEffect, useMemo, useRef, useState } from 'react'
 import * as THREE from 'three'
 import { ErrorBoundary } from '../components/ErrorBoundary'
@@ -113,7 +113,7 @@ export function SnakeViewer({ fallback }: { fallback?: React.ReactNode }) {
 
 const BODY = [C.cyan, C.violet, C.amber]
 
-function OrbitBodies({ traj, time, playing, speed, onTick }: { traj: ReturnType<typeof integrate>; time: React.MutableRefObject<number>; playing: boolean; speed: number; onTick: (t: number) => void }) {
+function OrbitBodies({ traj, time, playing, speed, onTick, shown }: { shown: number; traj: ReturnType<typeof integrate>; time: React.MutableRefObject<number>; playing: boolean; speed: number; onTick: (t: number) => void }) {
   const lines = useMemo(() => {
     const mk = (b: number, opacity: number) => {
       const arr = new Float32Array((traj.samples + 1) * 3)
@@ -130,9 +130,11 @@ function OrbitBodies({ traj, time, playing, speed, onTick }: { traj: ReturnType<
   }, [traj])
   useEffect(() => () => lines.forEach((l) => { l.full.geometry.dispose(); l.head.geometry.dispose() }), [lines])
   const balls = useRef<(THREE.Mesh | null)[]>([])
+  const invalidate = useThree((s) => s.invalidate)
+  useEffect(() => invalidate(), [shown, invalidate])
   const TAIL = Math.round(traj.samples * 0.12)
 
-  useFrame((state, dt) => {
+  useFrame((_, dt) => {
     if (playing) {
       time.current = (time.current + Math.min(dt, 0.05) * speed) % traj.T
       onTick(time.current)
@@ -147,7 +149,6 @@ function OrbitBodies({ traj, time, playing, speed, onTick }: { traj: ReturnType<
       const start = Math.max(0, i - TAIL)
       lines[b].head.geometry.setDrawRange(start, i - start + 2)
     }
-    if (!playing) state.invalidate()
   })
 
   return (
@@ -210,7 +211,7 @@ export function OrbitsViewer({ orbits, fallback, className }: { orbits: Orbit[];
               </Readout>
             }
           >
-            <OrbitBodies traj={traj} time={time} playing={playing} speed={Math.max(1.2, traj.T / 18)} onTick={onTick} />
+            <OrbitBodies traj={traj} time={time} playing={playing} speed={Math.max(1.2, traj.T / 18)} onTick={onTick} shown={shown} />
           </Stage>
         </ErrorBoundary>
       </div>

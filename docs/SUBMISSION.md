@@ -36,7 +36,7 @@ searches: SAT/CEGAR, GPU min-conflicts, tabu, exact LNS, prox-linear polishing) 
 (140 containers at peak). The lab extends itself: it commissions new search programs from Devin, smoke-tests them in Modal
 sandboxes against the verifier, and adopts only what passes.
 
-**Results (honest).** Ten problems attacked; no EinsteinArena record beaten by 11:00. Closest: two-deletion code (best valid code 226 = the record; a
+**Results.** Ten problems attacked; no EinsteinArena record beaten by 11:00. Closest: two-deletion code (best valid code 226 = the record; a
 weighted search reached 227 words with one conflicting pair), first autocorrelation (3.2e-10 below the record; a record needs 1e-8),
 no-three-in-line 75x75 (best SAT model 107 violated lines). Proved negatives are logged too (no one-point extension of the
 Sidon record; UNSAT neighbourhoods; dead symmetry classes). In the astrophysics domain, 7 verified periodic orbits (float64

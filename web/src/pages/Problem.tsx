@@ -17,14 +17,33 @@ import BitWall from '../viz/BitWall'
 import IntegerSet from '../viz/IntegerSet'
 import NoThreeCanvas from '../viz/NoThreeCanvas'
 import SignMatrix from '../viz/SignMatrix'
+import { CityViewer, DimSwitch, LatticeViewer, ViewerFrame } from '../viz3d/lazy'
 
 function ArtifactView({ art, color }: { art: Artifact | null; color: string }) {
   if (!art) return <Empty>No artifact yet for this problem. It appears once a search writes its current best construction.</Empty>
   switch (art.kind) {
     case 'grid':
-      return <NoThreeCanvas art={art} />
+      return (
+        <DimSwitch
+          flat={<NoThreeCanvas art={art} />}
+          solid={
+            <ViewerFrame className="aspect-square max-h-[640px] w-full sm:aspect-[16/10]">
+              <LatticeViewer art={art} />
+            </ViewerFrame>
+          }
+        />
+      )
     case 'sign_matrix':
-      return <SignMatrix art={art} />
+      return (
+        <DimSwitch
+          flat={<SignMatrix art={art} />}
+          solid={
+            <ViewerFrame className="aspect-square max-h-[640px] w-full sm:aspect-[16/10]">
+              <CityViewer art={art} />
+            </ViewerFrame>
+          }
+        />
+      )
     case 'integer_set':
       return <IntegerSet elements={art.elements} h={art.h} score={art.score} color={color} />
     case 'code':
