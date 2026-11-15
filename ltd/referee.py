@@ -40,10 +40,32 @@ def available() -> bool:
     return shutil.which("claude") is not None
 
 
+REMOTE = os.environ.get("LTD_REFEREE_URL")   # e.g. http://127.0.0.1:8899/review via a reverse tunnel to the laptop
+
+
+def _remote(state_summary, decisions, t0):
+    import urllib.request
+    req = urllib.request.Request(REMOTE, method="POST", headers={"Content-Type": "application/json"},
+                                 data=json.dumps({"state": state_summary, "decisions": decisions}, default=str).encode())
+    with urllib.request.urlopen(req, timeout=TIMEOUT_S + 30) as r:
+        out = json.loads(r.read())
+    out.setdefault("model", MODEL)
+    out["latency_ms"] = int((time.time() - t0) * 1000)
+    out["via"] = "remote"
+    return out
+
+
 def review(state_summary: dict, decisions: list[dict]) -> dict:
     t0 = time.time()
     if not decisions:
         return {"verdicts": [], "model": MODEL, "latency_ms": 0, "status": "empty"}
+    if REMOTE and not available():
+        try:
+            return _remote(state_summary, decisions, t0)
+        except Exception as e:  # noqa: BLE001 - laptop closed / tunnel down: abstain, the planner's limits still apply
+            return {"verdicts": [{"index": i, "verdict": "abstain", "reason": f"referee unreachable ({type(e).__name__}); laptop offline?"}
+                                 for i in range(len(decisions))], "model": MODEL, "latency_ms": int((time.time() - t0) * 1000),
+                    "status": "unreachable"}
     if not available():
         return {"verdicts": [{"index": i, "verdict": "abstain", "reason": "referee CLI not available"} for i in range(len(decisions))],
                 "model": MODEL, "latency_ms": 0, "status": "unavailable"}
