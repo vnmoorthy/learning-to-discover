@@ -1,10 +1,17 @@
 [
  {
-  "title": "Three-body: 7 candidate periodic-orbit families",
+  "title": "Three-body braid: an equal-mass candidate orbit through time",
+  "src": "/gallery/orbit_braid.jpg",
+  "kind": "image",
+  "made_with": "Blender 5 (EEVEE), real trajectory re-integrated with DOP853",
+  "caption": "Candidate 14 (m1 = m2 = m3 = 1, T = 45.872): the three bodies' paths over one full period, with time running left to right. A verified periodic orbit whose topological family is absent from the 2,060 catalogued orbits checked (candidate, not proven new)."
+ },
+ {
+  "title": "Three-body: 16 candidate periodic-orbit families",
   "src": "/gallery/threebody_candidates.png",
   "kind": "image",
   "made_with": "threebody_gpu (A100) + official verifier + matplotlib (re-integrated, DOP853)",
-  "caption": "7 verified periodic orbits (return error < 1e-8, two tolerances agree) whose topological families are absent from the 2,060 catalogued orbits checked (Suvakov-Dmitrasinovic 2013, Li-Liao 2017, Li-Jing-Liao 2018). Candidates, not proven new: later catalogs were not checked. m1=m2=1, m3=0.5."
+  "caption": "17 verified periodic orbits in 16 topological families (return error < 1e-8, two tolerances agree) absent from the 2,060 catalogued orbits checked (Suvakov-Dmitrasinovic 2013, Li-Liao 2017, Li-Jing-Liao 2018); two at equal masses. Candidates, not proven new: later catalogs were not checked. m1 = m2 = 1, m3 in {0.5, 1, 2}."
  },
  {
   "title": "The Lattice: 150 points, 116 lines to go",
@@ -42,18 +49,11 @@
   "caption": "The same 2950-edge snake rotating once about its vertical axis."
  },
  {
-  "title": "Social banner",
+  "title": "Phoenixastar banner",
   "src": "/gallery/og-banner.png",
   "kind": "image",
-  "made_with": "gpt-image-2 backdrop + Blender 5.2 render (script by GPT-6 Astra) + PIL type",
-  "caption": "1280x640 GitHub social preview. The backdrop is AI-generated art (illustrative, not data); the lattice on the right is the Blender render of our real SAT snapshot."
- },
- {
-  "title": "gpt-image-2 backdrop",
-  "src": "/gallery/og_bg_gptimage2.jpg",
-  "kind": "image",
-  "made_with": "gpt-image-2 (OpenAI images API)",
-  "caption": "Illustrative backdrop painted by gpt-image-2 for the banner (art direction only; not real data)."
+  "made_with": "matplotlib, from real run data",
+  "caption": "Built only from the run's own data: the live 75 x 75 no-three-in-line SAT model and two of the verified three-body candidate orbits, re-integrated from their initial conditions."
  },
  {
   "title": "Three-body: the figure-eight, rediscovered",
