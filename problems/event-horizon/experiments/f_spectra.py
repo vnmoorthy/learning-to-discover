@@ -11,6 +11,7 @@ Run (local CPU, numpy only; three independent parts can run in parallel):
     python experiments/f_spectra.py A      # Renyi Page curves + exact moment checks
     python experiments/f_spectra.py B      # MP spectra, finite-size corrections, level spacing
     python experiments/f_spectra.py C      # direction 6: Haar vs stabilizer vs brickwork
+    python experiments/f_spectra.py D      # exact stabilizer ensemble by complete enumeration (N<=4)
     python experiments/f_spectra.py plot   # merge results/f_parts/*.json -> results/f_spectra.json + figures
 """
 from __future__ import annotations
@@ -277,13 +278,87 @@ def part_C():
     print("C done", res["runtime_s"], flush=True)
 
 
+# ============================================================================ part D
+def part_D():
+    """Exact uniform stabilizer ensemble (complete enumeration, N = 2, 3, 4): exact averages of
+    Tr rho^k, k = 2, 3, 4, and of S_1 at every contiguous cut, vs the exact Haar values."""
+    from fractions import Fraction
+    t0 = time.time()
+    res = {"model": "uniform random stabilizer states, complete enumeration (no sampling, no seed)",
+           "prediction": "Clifford orbit is a state 3-design => E Tr rho^k (k=2,3) equal Haar exactly; k=4 need not"}
+    for N in (2, 3, 4):
+        S = rmt.enumerate_stabilizer_states(N)
+        assert len(S) == rmt.n_stabilizer_states(N)
+        cuts = []
+        for k in range(1, N):
+            m, n = 2**k, 2 ** (N - k)
+            mats = S.reshape(len(S), m, n)
+            ev = np.clip(np.linalg.eigvalsh(mats @ np.conj(np.swapaxes(mats, 1, 2))), 0, None)
+            ranks = (ev > 1e-9).sum(1)
+            vals, cnt = np.unique(ranks, return_counts=True)
+            M = len(S)
+            row = {"k": k, "dims": [m, n], "n_states": M,
+                   "rank_counts": {str(int(v)): int(c) for v, c in zip(vals, cnt)}}
+            for q in (2, 3, 4):
+                exact_stab = sum(Fraction(int(c), M) * Fraction(1, int(v)) ** (q - 1) for v, c in zip(vals, cnt))
+                hq = R.haar_trace_moment(q, m, n)
+                row[f"tr{q}_stab_exact"] = str(exact_stab)
+                row[f"tr{q}_stab"] = float(exact_stab)
+                row[f"tr{q}_haar"] = hq
+                row[f"tr{q}_diff"] = float(exact_stab) - hq
+                row[f"tr{q}_stab_float_check"] = float(R.trace_moment(ev, q).mean())
+            row["S1_stab"] = float(sum(c * math.log(v) for v, c in zip(vals, cnt)) / M)
+            row["S1_page"] = P.page_entropy(m, n)
+            row["S1_diff"] = row["S1_stab"] - row["S1_page"]
+            row["max_flat_dev"] = float(max(np.max(np.abs(e[e > 1e-9] * (e > 1e-9).sum() - 1)) for e in ev))
+            cuts.append(row)
+        res[f"N{N}"] = cuts
+        print(f"D N={N} {len(S)} states {time.time()-t0:.1f}s", flush=True)
+    json.dump(res, open(os.path.join(PARTS, "D.json"), "w"), indent=1)
+    print("D done", flush=True)
+
+
+def _fix_z(obj):
+    """Cuts whose empirical SEM is numerically zero (every sample identical, e.g. all stabilizer
+    samples maximally mixed on one qubit) have no meaningful z-score: set to None, recompute max."""
+    if isinstance(obj, dict):
+        if "stats" in obj and "z" in obj:
+            for key, zk in obj["z"].items():
+                st = obj["stats"][key]
+                z = [None if (sd <= 1e-12 or not math.isfinite(zz)) else zz
+                     for zz, sd in zip(zk["z_per_cut"], st["sem"])]
+                zk["z_per_cut"] = z
+                valid = [abs(v) for v in z if v is not None]
+                zk["max_abs_z"] = max(valid) if valid else None
+                zk["n_cuts_zero_variance"] = sum(v is None for v in z)
+        for v in obj.values():
+            _fix_z(v)
+    return obj
+
+
+TW2_MEAN = -1.7710868074  # mean of the GUE Tracy-Widom distribution
+
+
+def tw_edge_prediction(dA, dB):
+    """Leading soft-edge shift of <x_max> = d_A <lambda_max>: x_+ + s * E[TW2] with
+    s = (sqrt dA + sqrt dB)(1/sqrt dA + 1/sqrt dB)^{1/3} / dB (Johansson 2000; Johnstone 2001)."""
+    a, b = math.sqrt(dA), math.sqrt(dB)
+    return (a + b) * (1 / a + 1 / b) ** (1 / 3) / dB * TW2_MEAN
+
+
 # ============================================================================ plots + merge
 def plot():
     from _style import setup, caption, PALETTE, CYAN, AMBER, MAGENTA, GREEN, GREY, FG
     plt = setup()
     A = json.load(open(os.path.join(PARTS, "A.json")))
     B = json.load(open(os.path.join(PARTS, "B.json")))
-    Cc = json.load(open(os.path.join(PARTS, "C.json")))
+    Cc = _fix_z(json.load(open(os.path.join(PARTS, "C.json"))))
+    A = _fix_z(A)
+    Dd = json.load(open(os.path.join(PARTS, "D.json")))
+    for cname in ("c=1.0", "c=0.25"):
+        for r in B[cname]["rows"]:
+            r["tw_pred_edge_dev"] = -tw_edge_prediction(r["dA"], r["dB"])
+            r["edge_dev_over_tw_pred"] = r["edge_dev"] / r["tw_pred_edge_dev"]
 
     # ---------------- f1: Renyi Page curves
     fig, ax = plt.subplots(1, 2, figsize=(11, 4.4))
@@ -343,10 +418,10 @@ def plot():
         blk = B[cname]
         d = [r["dA"] for r in blk["rows"]]
         ax[1, 0].loglog(d, [r["ks_mp"] for r in blk["rows"]], "o-", color=PALETTE[i], label=f"KS distance to MP, {cname} (slope {blk['ks_loglog_slope']:.2f})")
-        ax[1, 0].loglog(d, [r["edge_dev"] for r in blk["rows"]], "s--", color=PALETTE[i + 2], label=f"x_+ − ⟨x_max⟩, {cname} (slope {blk['edge_dev_loglog_slope']:.2f})")
+        ax[1, 0].loglog(d, [r["edge_dev"] for r in blk["rows"]], "s", color=PALETTE[i + 2], label=f"x_+ − ⟨x_max⟩, {cname} (slope {blk['edge_dev_loglog_slope']:.2f})")
+        ax[1, 0].loglog(d, [r["tw_pred_edge_dev"] for r in blk["rows"]], "-", lw=0.8, color=PALETTE[i + 2], label=f"Tracy–Widom prediction (no fit), {cname}")
         ax[1, 1].errorbar(d, [r["r_mean"] for r in blk["rows"]], yerr=[r["r_sem"] for r in blk["rows"]], fmt="o-", color=PALETTE[i], ms=4, label=f"⟨r⟩ {cname}")
     dd = np.array([8, 256])
-    ax[1, 0].loglog(dd, 0.6 * dd ** (-2 / 3.0), ":", color=GREY, label="∝ d_A^{−2/3} (Tracy–Widom scale)")
     ax[1, 0].loglog(dd, 0.3 * dd ** (-1.0), "-.", color=GREY, label="∝ d_A^{−1}")
     ax[1, 0].set_xlabel("d_A")
     ax[1, 0].set_ylabel("finite-size deviation")
@@ -369,7 +444,8 @@ def plot():
     N = 12
     ks = np.arange(N + 1)
     Dst = str(6 * N)
-    fig, ax = plt.subplots(2, 2, figsize=(11, 8))
+    fig, axs = plt.subplots(2, 3, figsize=(16, 8))
+    ax = axs[:, :2]
     ens = [("Haar", blk["haar"]["stats"], CYAN), ("stabilizer", blk["stabilizer_by_depth"][Dst]["stats"], MAGENTA)]
     bcols = {"2": "#9AD1FF", "4": "#B8A1FF", "8": AMBER, "24": GREEN}
     for D, col in bcols.items():
@@ -413,18 +489,50 @@ def plot():
     ax[1, 1].set_ylabel("max deviation over cuts (nats)")
     ax[1, 1].set_title("Convergence of brickwork circuits to Haar")
     ax[1, 1].legend(fontsize=6.5)
-    caption(fig, "Finite-dimensional circuit models only (N=12; 300 seeds each, SEM bars). Stabilizer = depth-72 random-Clifford brickwork. Seeds: SeedSequence(%d)." % Cc["seed_base"])
+    # exact stabilizer vs Haar moments (complete enumeration)
+    a5 = axs[0, 2]
+    labels, xs = [], 0
+    for N in (2, 3, 4):
+        for row in Dd[f"N{N}"]:
+            for j, (q, col) in enumerate(((2, CYAN), (3, AMBER), (4, MAGENTA))):
+                rel = row[f"tr{q}_diff"] / row[f"tr{q}_haar"]
+                a5.bar(xs + (j - 1) * 0.27, rel, width=0.25, color=col, label=f"k={q}" if xs == 0 else None)
+            labels.append(f"N={N}\nk_A={row['k']}")
+            xs += 1
+    a5.axhline(0, color=FG, lw=0.6)
+    a5.set_xticks(range(xs))
+    a5.set_xticklabels(labels, fontsize=7)
+    a5.set_ylabel("(E_stab Tr ρ^k − E_Haar Tr ρ^k) / E_Haar")
+    a5.set_title("Exact stabilizer ensemble: 3-design, not 4-design")
+    a5.legend(fontsize=7)
+    a6 = axs[1, 2]
+    for name, key, col in (("Haar", None, CYAN), ("stabilizer (D=6N)", None, MAGENTA)):
+        pass
+    for i, (nm, blkN) in enumerate((("N=8", Cc["N8"]), ("N=12", Cc["N12"]))):
+        bdd = sorted(int(d) for d in blkN["brick"])
+        hh = int(nm.split("=")[1]) // 2
+        a6.errorbar(bdd, [blkN["brick"][str(d)]["stats"]["S2_minus_Sinf"]["mean"][hh] for d in bdd],
+                    yerr=[blkN["brick"][str(d)]["stats"]["S2_minus_Sinf"]["sem"][hh] for d in bdd],
+                    fmt="o-", ms=3.5, color=PALETTE[i], label=f"brickwork, {nm}")
+        a6.axhline(blkN["haar"]["stats"]["S2_minus_Sinf"]["mean"][hh], color=PALETTE[i], ls="--", lw=0.8, label=f"Haar, {nm}")
+    a6.axhline(0, color=MAGENTA, lw=1.0, label="stabilizer (exactly 0)")
+    a6.set_xlabel("brickwork depth D")
+    a6.set_ylabel("⟨S_2 − S_∞⟩ at half cut (nats)")
+    a6.set_title("Half-cut spectral width vs depth")
+    a6.legend(fontsize=6.5)
+    caption(fig, "Finite-dimensional circuit models only (N=12; 300 seeds each, SEM bars). Stabilizer = depth-72 random-Clifford brickwork; top-right panel: complete enumeration (exact). Seeds: SeedSequence(%d)." % Cc["seed_base"])
     fig.tight_layout(rect=(0, 0.03, 1, 1))
     fig.savefig(os.path.join(FIGURES, "f3_ensembles_distinguish.png"), dpi=150)
     plt.close(fig)
 
     merged = {"experiment": "f_spectra (upgrade tracks A, B, direction 6)",
               "time_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
-              "backend": "numpy (local CPU), complex128", "A_renyi": A, "B_rmt": B, "C_ensembles": Cc}
+              "backend": "numpy (local CPU), complex128", "A_renyi": A, "B_rmt": B, "C_ensembles": Cc,
+              "D_stabilizer_exact": Dd}
     json.dump(merged, open(os.path.join(RESULTS, "f_spectra.json"), "w"), indent=1, default=float)
     print("wrote results/f_spectra.json and figures f1-f3")
 
 
 if __name__ == "__main__":
     which = sys.argv[1] if len(sys.argv) > 1 else "plot"
-    {"A": part_A, "B": part_B, "C": part_C, "plot": plot}[which]()
+    {"A": part_A, "B": part_B, "C": part_C, "D": part_D, "plot": plot}[which]()

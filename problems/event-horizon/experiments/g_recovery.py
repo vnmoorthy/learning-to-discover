@@ -387,15 +387,28 @@ def part_plot():
     ax[1].set_ylabel("F_Petz (old hole, n = 7, k = 1)")
     ax[1].set_title("Recovery onset vs depth (thin: Haar value)")
     ax[1].legend(fontsize=6.5, ncol=2)
-    g = b["gates"]["haar"]
-    o = [x["mean"] for x in g["otoc_q0_qlast"]]
-    ax[2].plot(b["depths"], o, color=st.CYAN, marker="o", ms=3, label="OTOC q0 vs q6 (9 Pauli pairs)")
-    ax[2].plot(b["depths"], [x["mean"] * 4 for x in g["P_EPR"]["3"]], color=st.AMBER, marker="s", ms=3,
-               label="d_M^2 P_EPR = Pauli-avg OTOC(M, D) x 4, m=3")
-    ax[2].plot(b["depths"], [x["mean"] for x in g["F_petz"]["3"]], color=st.MAGENTA, marker="^", ms=3,
-               label="F_Petz, m=3")
-    ax[2].plot(b["depths"], [x["mean"] for x in g["F_EPR"]["3"]], color=st.GREEN, marker="v", ms=3,
-               label="F_EPR (Yoshida-Kitaev), m=3")
+    lp = os.path.join(PARTS, "g3_long.json")
+    if os.path.exists(lp):
+        L = json.load(open(lp))
+        dd = L["depths"]
+        ax[2].plot(dd, [x["mean"] for x in L["otoc_q0_farthestD"]], color=st.CYAN, marker="o", ms=3,
+                   label="OTOC q0 vs farthest D qubit q6")
+        ax[2].plot(dd, [x["mean"] for x in L["otoc_q0_nearestD"]], color="#9AD1FF", marker="o", ms=3, ls="--",
+                   label="OTOC q0 vs nearest D qubit q4")
+        ax[2].plot(dd, [4 * x["mean"] - 1 for x in L["P_EPR"]], color=st.AMBER, marker="s", ms=3,
+                   label="d_M^2 P_EPR - 1 (Pauli-avg OTOC(M,D), m=3)")
+        ax[2].plot(dd, [x["mean"] for x in L["F_petz"]], color=st.MAGENTA, marker="^", ms=3, label="F_Petz, m=3")
+        ax[2].axhline(0.9 * L["haar_F_petz"]["mean"], color=st.MAGENTA, lw=0.6, alpha=0.6)
+        ax[2].axhline(0.1, color=st.CYAN, lw=0.6, alpha=0.6)
+        g3["long"] = L
+    else:
+        g = b["gates"]["haar"]
+        ax[2].plot(b["depths"], [x["mean"] for x in g["otoc_q0_qlast"]], color=st.CYAN, marker="o", ms=3,
+                   label="OTOC q0 vs q6 (9 Pauli pairs)")
+        ax[2].plot(b["depths"], [x["mean"] * 4 - 1 for x in g["P_EPR"]["3"]], color=st.AMBER, marker="s", ms=3,
+                   label="d_M^2 P_EPR - 1, m=3")
+        ax[2].plot(b["depths"], [x["mean"] for x in g["F_petz"]["3"]], color=st.MAGENTA, marker="^", ms=3,
+                   label="F_Petz, m=3")
     ax[2].set_xlabel("brickwork depth t (Haar gates)")
     ax[2].set_ylabel("value")
     ax[2].set_title("OTOC decay vs recovery onset (n = 7)")
@@ -416,6 +429,36 @@ def part_plot():
     log("wrote results/g_recovery.json and figures g1-g3")
 
 
+def part_g3long():
+    """H-G4 follow-up: n = 7 old hole, Haar brickwork, depths 0..24, m = 3."""
+    k, nB, m = 1, 6, 3
+    n = k + nB
+    T, S = 24, 16
+    seeds = [SEED + 4000 + s for s in range(S)]  # same circuits as g3b (haar) for depth <= 12
+    wl = [{n - 1: w} for w in "XYZ"] + [{n - m: w} for w in "XYZ"]
+    vl = [{0: v} for v in "XYZ"]
+    F = np.zeros((T + 1, S)); P = np.zeros((T + 1, S)); O = np.zeros((T + 1, S, 2))
+    for j, sd in enumerate(seeds):
+        o = ot.otoc_vs_depth_fast(n, T, np.random.default_rng(sd), "haar", wl, vl)
+        O[:, j, 0] = o[:, :3].mean(axis=(1, 2)); O[:, j, 1] = o[:, 3:].mean(axis=(1, 2))
+        for dep in range(T + 1):
+            U = brickwork_unitary(n, dep, np.random.default_rng(sd), gate="haar") if dep else np.eye(2 ** n, dtype=complex)
+            r = rc.recovery_metrics(U, k, nB, m, old=True, with_yk=True)
+            F[dep, j], P[dep, j] = r["F_petz"], r["P_EPR"]
+    hr = stats([rc.recovery_metrics(haar_unitary(2 ** n, np.random.default_rng(SEED + 4500 + s)), k, nB, m)["F_petz"]
+                for s in range(S)])
+    out = {"k": k, "n_B": nB, "m": m, "depths": list(range(T + 1)), "seeds": seeds, "haar_F_petz": hr,
+           "F_petz": [stats(F[d]) for d in range(T + 1)], "P_EPR": [stats(P[d]) for d in range(T + 1)],
+           "otoc_q0_farthestD": [stats(O[d, :, 0]) for d in range(T + 1)],
+           "otoc_q0_nearestD": [stats(O[d, :, 1]) for d in range(T + 1)]}
+    Fm = F.mean(axis=1)
+    out["d_rec"] = next((d for d in range(T + 1) if Fm[d] >= 0.9 * hr["mean"]), None)
+    out["d_otoc_farthest"] = next((d for d in range(T + 1) if O[d, :, 0].mean() < 0.1), None)
+    out["d_otoc_nearest"] = next((d for d in range(T + 1) if O[d, :, 1].mean() < 0.1), None)
+    log("g3long", out["d_rec"], out["d_otoc_farthest"], out["d_otoc_nearest"])
+    dump("g3_long.json", out)
+
+
 if __name__ == "__main__":
     cmd = sys.argv[1]
     t0 = time.time()
@@ -423,5 +466,5 @@ if __name__ == "__main__":
      "g3": part_g3, "plot": part_plot,
      "g2fast": lambda: (part_g2("D", 3, SCRAMBLERS_G2_N4, "g2_D_n4.json"),
                         part_g2("DR", 3, ["haar", "haar:8", "clifford:24"], "g2_DR_n4.json")),
-     "g3fast": lambda: part_g3(True)}[cmd]()
+     "g3fast": lambda: part_g3(True), "g3long": part_g3long}[cmd]()
     log(f"{cmd} done in {time.time() - t0:.1f}s")

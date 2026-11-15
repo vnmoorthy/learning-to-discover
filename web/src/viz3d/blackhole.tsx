@@ -220,11 +220,16 @@ const TMAX = (() => {
   return m
 })()
 
-function BlackHoleScene({ opts, onFail, readout, maxDpr }: { opts: BlackHoleOptions; onFail: () => void; readout?: React.RefObject<HTMLSpanElement>; maxDpr: number }) {
+// Below this camera radius, zooming magnifies (narrower field of view) instead of moving the ray origin closer,
+// so the photon ring stays in frame instead of the shadow filling the screen.
+const R_MAG = 8
+
+function BlackHoleScene({ opts, onFail, readout, maxDpr, dpr, onDpr }: {
+  opts: BlackHoleOptions; onFail: () => void; readout?: React.RefObject<HTMLSpanElement>; maxDpr: number; dpr: number; onDpr: (d: number) => void
+}) {
   const mat = useRef<THREE.ShaderMaterial>(null)
   const gl = useThree((s) => s.gl)
   const invalidate = useThree((s) => s.invalidate)
-  const setDpr = useThree((s) => s.setDpr)
   const uniforms = useMemo(
     () => ({
       uCamPos: { value: new THREE.Vector3() },
@@ -261,45 +266,65 @@ function BlackHoleScene({ opts, onFail, readout, maxDpr }: { opts: BlackHoleOpti
     invalidate()
   }, [opts.doppler, opts.lensing, uniforms, invalidate])
 
-  // adaptive resolution: drop the pixel ratio while frames are slow, raise it again when there is headroom
-  const perf = useRef({ acc: 0, n: 0, dpr: Math.min(maxDpr, 1), frame: 0 })
-  useEffect(() => setDpr(perf.current.dpr), [setDpr])
+  // Adaptive resolution. The pixel ratio lives in the viewer's React state (passed to the Canvas as a number, so r3f's
+  // configure() never resets it). Frame times are only meaningful while rendering continuously; decisions are made
+  // over ~0.4 s windows with a proportional step towards a 20 ms frame, and the first frame after a change is skipped.
+  const perf = useRef({ acc: 0, n: 0, skip: 1, init: false, frame: 0 })
+  useEffect(() => {
+    perf.current.acc = 0
+    perf.current.n = 0
+    perf.current.skip = 1
+  }, [dpr])
 
   const m = useMemo(() => new THREE.Matrix4(), [])
-  useFrame(({ camera, size }, delta) => {
+  const sz = useMemo(() => new THREE.Vector2(), [])
+  useFrame((state, delta) => {
+    const { camera, size } = state
     const u = uniforms
     const cam = camera as THREE.PerspectiveCamera
     cam.updateMatrixWorld()
     m.copy(cam.matrixWorld)
     u.uCamPos.value.setFromMatrixPosition(m)
+    const rCam = u.uCamPos.value.length()
+    const k = rCam < R_MAG ? rCam / R_MAG : 1
+    if (k < 1) u.uCamPos.value.multiplyScalar(1 / k)
     u.uRight.value.setFromMatrixColumn(m, 0).normalize()
     u.uUp.value.setFromMatrixColumn(m, 1).normalize()
     u.uFwd.value.setFromMatrixColumn(m, 2).normalize().negate()
-    const ty = Math.tan(THREE.MathUtils.degToRad(cam.fov) / 2) / cam.zoom
+    const ty = (Math.tan(THREE.MathUtils.degToRad(cam.fov) / 2) / cam.zoom) * k
     u.uTanY.value = ty
     u.uTanX.value = ty * (size.width / Math.max(1, size.height))
     if (opts.motion) u.uTime.value += Math.min(delta, 0.05)
+
     const p = perf.current
     p.frame++
-    if (delta > 0 && delta < 0.25) {
-      p.acc += delta
-      p.n++
-      if (p.n >= 24) {
-        const avg = p.acc / p.n
-        const next = avg > 0.045 ? Math.max(0.35, p.dpr * 0.8) : avg < 0.022 ? Math.min(maxDpr, p.dpr * 1.12) : p.dpr
-        if (Math.abs(next - p.dpr) > 0.02) {
-          p.dpr = next
-          setDpr(next)
+    if (!p.init && size.width > 0) {   // start from a ray budget instead of a fixed pixel ratio
+      p.init = true
+      const start = THREE.MathUtils.clamp(Math.sqrt(420000 / (size.width * size.height)), 0.35, maxDpr)
+      if (Math.abs(start - dpr) > 0.02) onDpr(start)
+    } else if (state.frameloop === 'always') {
+      if (p.skip > 0) p.skip--
+      else {
+        p.acc += Math.min(delta, 1)
+        p.n++
+        if (p.acc >= 0.4 && p.n >= 3) {
+          const avg = p.acc / p.n
+          const next = THREE.MathUtils.clamp(dpr * THREE.MathUtils.clamp(Math.sqrt(0.02 / avg), 0.5, 1.1), 0.35, maxDpr)
+          if (Math.abs(next - dpr) > 0.03) onDpr(next)
+          p.acc = 0
+          p.n = 0
         }
-        p.acc = 0
-        p.n = 0
       }
+    } else {
+      p.acc = 0
+      p.n = 0
     }
     if (readout?.current && p.frame % 6 === 0) {
       const pos = u.uCamPos.value
-      const r = pos.length()
-      const incl = THREE.MathUtils.radToDeg(Math.acos(THREE.MathUtils.clamp(pos.y / r, -1, 1)))
-      readout.current.textContent = `r = ${r.toFixed(1)} r_s · inclination ${incl.toFixed(0)}° · ${Math.round(size.width * p.dpr)}×${Math.round(size.height * p.dpr)} rays/frame`
+      const incl = THREE.MathUtils.radToDeg(Math.acos(THREE.MathUtils.clamp(pos.y / pos.length(), -1, 1)))
+      gl.getDrawingBufferSize(sz)
+      readout.current.textContent =
+        `r = ${pos.length().toFixed(1)} r_s${k < 1 ? ` · ×${(1 / k).toFixed(1)} zoom` : ''} · inclination ${incl.toFixed(0)}° · ${sz.x}×${sz.y} rays/frame`
     }
   })
   return (
@@ -317,7 +342,7 @@ const Toggle = ({ on, onClick, children, title }: { on: boolean; onClick: () => 
     title={title}
     onClick={onClick}
     className={cx(
-      'h-7 rounded-md border px-2.5 text-[11.5px] font-medium backdrop-blur transition-colors',
+      'h-7 whitespace-nowrap rounded-md border px-2.5 text-[11.5px] font-medium backdrop-blur transition-colors',
       on ? 'border-cyan/40 bg-cyan/[0.12] text-fg' : 'border-white/10 bg-ink-800/80 text-fg-muted hover:border-white/20 hover:text-fg',
     )}
   >
@@ -326,13 +351,15 @@ const Toggle = ({ on, onClick, children, title }: { on: boolean; onClick: () => 
 )
 
 const coarse = () => typeof window !== 'undefined' && !!window.matchMedia?.('(pointer: coarse)').matches
+const reduced = () => typeof window !== 'undefined' && !!window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
-/** Live ray-traced black hole. `compact` hides the physics toggles (for small cards). */
-export function BlackHoleViewer({ fallback, compact = false, spin = true }: { fallback?: React.ReactNode; compact?: boolean; spin?: boolean }) {
-  const [opts, setOpts] = useState<BlackHoleOptions>({ lensing: true, doppler: true, motion: true })
+/** Live ray-traced black hole. `compact` hides the physics toggles (for small cards). Tap pauses the gas. */
+export function BlackHoleViewer({ fallback, compact = false }: { fallback?: React.ReactNode; compact?: boolean }) {
+  const [opts, setOpts] = useState<BlackHoleOptions>(() => ({ lensing: true, doppler: true, motion: !reduced() }))
   const [failed, setFailed] = useState(false)
   const readout = useRef<HTMLSpanElement>(null)
   const maxDpr = useMemo(() => Math.min(typeof window !== 'undefined' ? window.devicePixelRatio || 1 : 1, coarse() ? 0.8 : 1.5), [])
+  const [dpr, setDpr] = useState(() => Math.min(maxDpr, 0.75))
   const onFail = useMemo(() => () => setFailed(true), [])
   const still = fallback ?? <div className="absolute inset-0 flex items-center justify-center bg-ink-850 text-xs text-fg-dim">3D view unavailable (WebGL disabled)</div>
   if (failed) return <>{still}</>
@@ -343,33 +370,35 @@ export function BlackHoleViewer({ fallback, compact = false, spin = true }: { fa
         camera={[0, 2.6, 29.9]}
         target={[0, 0, 0]}
         fov={26}
-        zoomSpeed={2.2}
-        spin={spin}
+        zoomSpeed={1}
+        spin={false}
+        onTap={() => flip('motion')}
         animating={opts.motion}
-        autoRotateSpeed={0.25}
         focusZoom
         pan={false}
-        minDistance={3.4}
+        minDistance={2.5}
         maxDistance={90}
         maxPolar={Math.PI - 0.02}
-        dpr={[0.35, maxDpr]}
+        dpr={dpr}
         hintClass={compact ? 'right-3 bottom-3' : 'left-3 top-3'}
-        hint={coarse() ? 'Drag to orbit · pinch to zoom' : 'Drag to orbit · click, then scroll to zoom'}
+        hint={coarse() ? 'Drag to orbit · pinch to zoom · tap to pause' : 'Drag to orbit · click, then scroll to zoom · tap to pause'}
         overlay={
           <>
-            {!compact && (
-              <div className="absolute bottom-3 left-3 flex flex-wrap items-center gap-1.5">
-                <Toggle on={opts.lensing} onClick={() => flip('lensing')} title="Bend light with gravity (off: straight rays, as if spacetime were flat)">
-                  Lensing
-                </Toggle>
-                <Toggle on={opts.doppler} onClick={() => flip('doppler')} title="Doppler beaming of the orbiting gas (off: gravitational redshift only)">
-                  Doppler
-                </Toggle>
-                <Toggle on={opts.motion} onClick={() => flip('motion')} title="Keplerian rotation of the gas">
-                  Gas motion
-                </Toggle>
-              </div>
-            )}
+            <div className={cx('absolute flex flex-wrap items-center gap-1.5', compact ? 'right-[4.5rem] top-3' : 'bottom-3 left-3')}>
+              <Toggle on={opts.motion} onClick={() => flip('motion')} title="Keplerian rotation of the gas (tap the view to pause or resume)">
+                {opts.motion ? 'Pause gas' : 'Play gas'}
+              </Toggle>
+              {!compact && (
+                <>
+                  <Toggle on={opts.lensing} onClick={() => flip('lensing')} title="Bend light with gravity (off: straight rays, as if spacetime were flat)">
+                    Lensing
+                  </Toggle>
+                  <Toggle on={opts.doppler} onClick={() => flip('doppler')} title="Doppler beaming of the orbiting gas (off: no beaming; gravitational redshift and time dilation remain)">
+                    Doppler
+                  </Toggle>
+                </>
+              )}
+            </div>
             {!compact && (
               <div className="pointer-events-none absolute right-3 bottom-3 hidden rounded-md border border-white/[0.08] bg-ink-800/85 px-2.5 py-1.5 font-mono text-[11px] text-fg-muted backdrop-blur sm:block">
                 <span ref={readout}>ray tracing…</span>
@@ -378,7 +407,7 @@ export function BlackHoleViewer({ fallback, compact = false, spin = true }: { fa
           </>
         }
       >
-        <BlackHoleScene opts={opts} onFail={onFail} readout={compact ? undefined : readout} maxDpr={maxDpr} />
+        <BlackHoleScene opts={opts} onFail={onFail} readout={compact ? undefined : readout} maxDpr={maxDpr} dpr={dpr} onDpr={setDpr} />
       </Stage>
     </ErrorBoundary>
   )

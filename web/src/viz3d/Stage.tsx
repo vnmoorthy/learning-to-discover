@@ -94,6 +94,9 @@ export function Stage({
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const controls = useRef<any>(null)
   const down = useRef<{ x: number; y: number; t: number } | null>(null)
+  const pointers = useRef(new Set<number>())
+  const multi = useRef(false)
+  const activeRef = useRef(false)
   const [spinning, setSpinning] = useState(spin && !reducedMotion())
   const [active, setActive] = useState(false)
   const [touched, setTouched] = useState(false)
@@ -113,6 +116,26 @@ export function Stage({
     }
   }, [])
 
+  useEffect(() => {
+    activeRef.current = active
+  }, [active])
+  // Scroll-to-zoom only after the viewer was pressed (so the page still scrolls past embedded scenes). Done with a
+  // capture-phase listener instead of toggling enableZoom, so pinch works on the first gesture; a trackpad pinch
+  // (ctrl+wheel) always zooms the scene rather than the whole page.
+  useEffect(() => {
+    const el = wrap.current
+    if (!el || !focusZoom) return
+    const h = (e: WheelEvent) => {
+      if (e.ctrlKey) {
+        activeRef.current = true
+        return
+      }
+      if (!activeRef.current) e.stopPropagation()
+    }
+    el.addEventListener('wheel', h, { capture: true, passive: true })
+    return () => el.removeEventListener('wheel', h, { capture: true })
+  }, [focusZoom])
+
   const loop = visible && tabVisible && (spinning || animating)
 
   return (
@@ -121,14 +144,26 @@ export function Stage({
         className="absolute inset-0 cursor-grab active:cursor-grabbing"
         data-stage-canvas
         onPointerDown={(e) => {
-          down.current = { x: e.clientX, y: e.clientY, t: performance.now() }
+          pointers.current.add(e.pointerId)
+          if (pointers.current.size > 1) {
+            multi.current = true
+            down.current = null
+          } else down.current = { x: e.clientX, y: e.clientY, t: performance.now() }
           setActive(true)
           setTouched(true)
         }}
+        onPointerCancel={(e) => {
+          pointers.current.delete(e.pointerId)
+          if (!pointers.current.size) multi.current = false
+          down.current = null
+        }}
         onPointerUp={(e) => {
+          pointers.current.delete(e.pointerId)
+          const wasMulti = multi.current
+          if (!pointers.current.size) multi.current = false
           const d = down.current
           down.current = null
-          if (!d || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 6 || performance.now() - d.t > 400) return
+          if (wasMulti || !d || Math.hypot(e.clientX - d.x, e.clientY - d.y) > 6 || performance.now() - d.t > 400) return
           if (onTap) onTap()
           else setSpinning((s) => !s)
         }}
@@ -149,9 +184,9 @@ export function Stage({
             dampingFactor={0.08}
             rotateSpeed={0.7}
             zoomSpeed={zoomSpeed}
-            enableZoom={!focusZoom || active}
+            enableZoom
             enablePan={pan}
-            autoRotate={spinning}
+            autoRotate={spinning && visible && tabVisible}
             autoRotateSpeed={autoRotateSpeed}
             minDistance={minDistance}
             maxDistance={maxDistance}
