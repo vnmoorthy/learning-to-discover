@@ -28,7 +28,7 @@ export default defineConfig({
         // Keep React in the entry vendor chunk so lazy pages (3D, charts, markdown) stay lazy.
         manualChunks(id) {
           if (!id.includes('node_modules')) return undefined
-          if (/[\\/]node_modules[\\/](three|@react-three)[\\/]/.test(id)) return 'three'
+          if (/[\\/]node_modules[\\/](three|@react-three|three-stdlib|three-mesh-bvh|troika-[^\\/]+|maath|meshline|camera-controls|stats-gl|stats\.js|@monogrid|detect-gpu|suspend-react|its-fine|zustand|tunnel-rat|hls\.js|@mediapipe|draco3d|bidi-js|webgl-sdf-generator|react-reconciler|@use-gesture|glsl-noise|utility-types|react-composer|@react-spring|use-sync-external-store|debounce|react-use-measure)[\\/]/.test(id)) return 'three'
           if (/[\\/]node_modules[\\/](recharts|recharts-scale|d3-[^\\/]+|victory-vendor|lodash|decimal\.js-light)[\\/]/.test(id)) return 'charts'
           if (/[\\/]node_modules[\\/](katex|react-markdown|remark-[^\\/]+|rehype-[^\\/]+|micromark[^\\/]*|mdast-[^\\/]+|hast-[^\\/]+|unified|unist-[^\\/]+|vfile[^\\/]*)[\\/]/.test(id)) return 'md'
           if (/[\\/]node_modules[\\/](react|react-dom|scheduler|react-router|react-router-dom|@remix-run|framer-motion|motion-dom|motion-utils)[\\/]/.test(id)) return 'vendor'
