@@ -24,7 +24,7 @@ for i, o in enumerate(orbs):
     for b, c in enumerate((C1, C2, C3)):
         a2.plot(tr[:, b, 0], tr[:, b, 1], color=c, lw=1.1)
     a2.set_aspect("equal"); f2.savefig(os.path.join(out, f"candidate_{i+1}.png"), dpi=160, facecolor=BG, bbox_inches="tight"); plt.close(f2)
-fig.suptitle("Three-body: 7 verified periodic orbits whose topological families are absent from the 2,060 catalogued orbits checked\n"
-             "(candidates, not proven new; float64 DOP853, return error < 1e-8; equal masses m1=m2=1, m3=0.5)", color=FG, fontsize=12)
+fig.suptitle(f"Three-body: {len(orbs)} verified periodic orbits whose topological families are absent from the 2,060 catalogued orbits checked\n"
+             "(candidates, not proven new; float64 DOP853, return error < 1e-8; m1 = m2 = 1, m3 as labelled)", color=FG, fontsize=13)
 fig.savefig(os.path.join(out, "candidates_contact_sheet.png"), dpi=150, facecolor=BG, bbox_inches="tight")
 print("ok", len(orbs))

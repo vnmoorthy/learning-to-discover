@@ -1,10 +1,10 @@
 [
  {
-  "title": "Three-body: 7 candidate periodic-orbit families",
+  "title": "Three-body: 16 candidate periodic-orbit families",
   "src": "/gallery/threebody_candidates.png",
   "kind": "image",
   "made_with": "threebody_gpu (A100) + official verifier + matplotlib (re-integrated, DOP853)",
-  "caption": "7 verified periodic orbits (return error < 1e-8, two tolerances agree) whose topological families are absent from the 2,060 catalogued orbits checked (Suvakov-Dmitrasinovic 2013, Li-Liao 2017, Li-Jing-Liao 2018). Candidates, not proven new: later catalogs were not checked. m1=m2=1, m3=0.5."
+  "caption": "17 verified periodic orbits in 16 topological families (return error < 1e-8, two tolerances agree) absent from the 2,060 catalogued orbits checked (Suvakov-Dmitrasinovic 2013, Li-Liao 2017, Li-Jing-Liao 2018); two at equal masses. Candidates, not proven new: later catalogs were not checked. m1 = m2 = 1, m3 in {0.5, 1, 2}."
  },
  {
   "title": "The Lattice: 150 points, 116 lines to go",

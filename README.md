@@ -41,7 +41,7 @@ replayed and audited.
   </tr>
   <tr>
     <td><sub><b>Mathematics.</b> A live SAT model of no-three-in-line on the 75 x 75 grid; red threads are lines that still hold three points.</sub></td>
-    <td><sub><b>Celestial mechanics.</b> 7 verified periodic three-body orbits whose families are absent from the 2,060 catalogued orbits we checked (candidates).</sub></td>
+    <td><sub><b>Celestial mechanics.</b> 17 verified periodic three-body orbits in 16 families absent from the 2,060 catalogued orbits we checked (candidates).</sub></td>
     <td><sub><b>Black hole information.</b> The Page curve from exact Haar-random states up to 24 qubits on an A100, against Page's formula.</sub></td>
   </tr>
 </table>
@@ -240,15 +240,15 @@ The loop only needs a problem and an exact checker, so the same lab runs two phy
 `search/threebody_gpu.py` integrates hundreds of thousands of candidate initial conditions in parallel on the A100s,
 refines the near-returns with Newton steps, and the official checker (`problems/three-body-periodic-orbits/verifier.py`)
 re-integrates every orbit with float64 Dormand-Prince at two tolerances (return error < 1e-8, both runs agree) and
-reduces its topological word. **7 verified periodic orbits (m1 = m2 = 1, m3 = 0.5) have topological families that do not
+reduces its topological word. **17 verified periodic orbits in 16 topological families (m1 = m2 = 1; m3 = 0.5, 1 and 2) do not
 appear among the 2,060 catalogued orbits we checked** (Suvakov-Dmitrasinovic 2013, Li-Liao 2017, Li-Jing-Liao 2018).
 They are *candidates*: later catalogs were not checked and the literature uses multi-precision integration for long
 unstable orbits. Initial conditions: [`problems/three-body-periodic-orbits/candidates_verified.json`](problems/three-body-periodic-orbits/candidates_verified.json).
 
 | | | |
 |---|---|---|
-| <img src="docs/assets/threebody/candidate_2.png" alt="candidate 2" width="100%"> | <img src="docs/assets/threebody/candidate_6.png" alt="candidate 6" width="100%"> | <img src="docs/assets/threebody/candidate_7.png" alt="candidate 7" width="100%"> |
-| Candidate 2, T = 19.810 | Candidate 6, T = 15.221 | Candidate 7, T = 45.886 |
+| <img src="docs/assets/threebody/candidate_14.png" alt="candidate 14" width="100%"> | <img src="docs/assets/threebody/candidate_15.png" alt="candidate 15" width="100%"> | <img src="docs/assets/threebody/candidate_17.png" alt="candidate 17" width="100%"> |
+| Candidate 14, equal masses, T = 45.872 | Candidate 15, equal masses, T = 50.449 | Candidate 17, m3 = 2, T = 11.361 |
 
 ### EVENT HORIZON (black hole information, quantum-information toy models)
 

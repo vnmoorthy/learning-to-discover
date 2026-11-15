@@ -19,7 +19,7 @@ literature with Exa, and lets GPT-6 Astra propose the next experiments, each wit
 searches; Devin writes new search programs that are adopted only after passing the verifier in a Modal sandbox; Tinker
 trains an open model on its own verified attempts. In one morning it made 900 logged decisions over 38 cycles and ran
 598 experiments. No EinsteinArena record has fallen yet (distances are reported), and in a celestial-mechanics domain it
-found 7 verified periodic three-body orbits whose families are absent from the 2,060 catalogued orbits we checked.
+found 17 verified periodic three-body orbits in 16 families absent from the 2,060 catalogued orbits we checked, two of them at equal masses.
 
 ## Long description (about 400 words)
 
@@ -39,9 +39,8 @@ sandboxes against the verifier, and adopts only what passes.
 **Results.** Ten problems attacked; no EinsteinArena record beaten by 11:00. Closest: two-deletion code (best valid code 226 = the record; a
 weighted search reached 227 words with one conflicting pair), first autocorrelation (3.2e-10 below the record; a record needs 1e-8),
 no-three-in-line 75x75 (best SAT model 107 violated lines). Proved negatives are logged too (no one-point extension of the
-Sidon record; UNSAT neighbourhoods; dead symmetry classes). In the astrophysics domain, 7 verified periodic orbits (float64
-DOP853, return error < 1e-8) whose topological families do not appear in the 2,060-orbit catalog we checked: candidates,
-not proven new. EVENT HORIZON reproduces the Page curve, Page's theorem and Hayden-Preskill decoupling on the A100s (classified as
+Sidon record; UNSAT neighbourhoods; dead symmetry classes). In the astrophysics domain, 17 verified periodic orbits in 16 topological families (float64 DOP853,
+return error < 1e-8; two at equal masses) that do not appear in the 2,060-orbit catalog we checked: candidates, not proven new. EVENT HORIZON reproduces the Page curve, Page's theorem and Hayden-Preskill decoupling on the A100s (classified as
 reproductions; independent-verification status in `domains/event-horizon`).
 
 **Self-improvement and rigour.** 49 decisions carried falsifiable predictions (9 confirmed, 11 refuted, the rest not
