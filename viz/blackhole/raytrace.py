@@ -171,6 +171,7 @@ def main():
     ap.add_argument("--key", type=float, default=1.25, help="exposure: 99.5th percentile disk luminance maps here")
     ap.add_argument("--stars", type=float, default=0.55)
     ap.add_argument("--bloom", type=float, default=1.0)
+    ap.add_argument("--sat", type=float, default=1.0, help="display saturation")
     ap.add_argument("--k", type=float, default=0.03); ap.add_argument("--dtmin", type=float, default=0.004)
     ap.add_argument("--dtmax", type=float, default=0.5); ap.add_argument("--resc", type=float, default=50.0)
     ap.add_argument("--max_steps", type=int, default=6000)
@@ -225,7 +226,11 @@ def main():
     s = P.w / 2400
     bloom = 0.30 * gauss_blur(bright, 3 * s) + 0.18 * gauss_blur(bright, 12 * s) + 0.10 * gauss_blur(bright, 40 * s)
     img = img + P.bloom * bloom + P.stars * skyimg
-    out = aces(img) ** (1 / 2.2)
+    out = aces(img)
+    if P.sat != 1.0:
+        l = (out * torch.tensor(LUMA, device=dev).view(1, 3, 1, 1)).sum(1, keepdim=True)
+        out = (l + P.sat * (out - l)).clamp(0, 1)
+    out = out ** (1 / 2.2)
     out8 = (out[0].permute(1, 2, 0) * 255 + 0.5).clamp(0, 255).to(torch.uint8).cpu().contiguous()
     im = Image.frombytes("RGB", (P.w, P.h), bytes(out8.view(-1).tolist()))
     os.makedirs(os.path.dirname(os.path.abspath(P.out)), exist_ok=True)
