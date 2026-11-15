@@ -61,8 +61,7 @@ def pauli_averaged_otoc(U: np.ndarray, n: int, in_qubits, out_qubits, include_id
 
     def strings(qs):
         for combo in itertools.product(labels, repeat=len(qs)):
-            if not include_identity or True:
-                yield pauli_string(n, dict(zip(qs, combo)))
+            yield pauli_string(n, dict(zip(qs, combo)))
 
     Vs = list(strings(list(in_qubits)))
     tot, cnt = 0.0, 0

@@ -165,7 +165,7 @@ def petz_fidelity_mixed(rhoQX: np.ndarray, dQ: int) -> float:
     t = rhoQX.reshape(dQ, dX, dQ, dX)
     rX = np.einsum("qiqj->ij", t)
     Om = _inv_sqrt_psd(rX)
-    A = np.einsum("aibj,jk->aibk", t, Om).reshape(dQ * dX, dQ * dX)
+    A = (rhoQX.reshape(dQ * dX * dQ, dX) @ Om).reshape(dQ * dX, dQ * dX)
     return float(np.real(np.sum(A * A.T)) / dQ)
 
 
@@ -184,7 +184,7 @@ def decoupling(Psi: np.ndarray) -> dict:
     dQ, dBp = Psi.shape[:2]
     rho = rho_QBp(Psi)
     t = rho.reshape(dQ, dBp, dQ, dBp)
-    rQ = np.einsum("aiba->ib", t.transpose(0, 1, 2, 3)) if False else np.einsum("aibi->ab", t)
+    rQ = np.einsum("aibi->ab", t)
     rB = np.einsum("aiaj->ij", t)
     prod = np.kron(rQ, rB)
     D = dQ * dBp
