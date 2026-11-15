@@ -56,6 +56,15 @@ export interface StageProps {
   /** DOM overlay drawn above the canvas */
   overlay?: ReactNode
   controlsClass?: string
+  /** canvas pixel ratio (heavy shaders render below device resolution) */
+  dpr?: number | [number, number]
+  /** position classes for the first-use hint */
+  hintClass?: string
+  /** replaces the first-use hint text */
+  hint?: string
+  /** enable right-drag / two-finger pan (default on) */
+  pan?: boolean
+  autoRotateSpeed?: number
 }
 
 export function Stage({
@@ -73,6 +82,11 @@ export function Stage({
   className,
   overlay,
   controlsClass = 'right-3 top-3',
+  dpr = [1, 2],
+  hintClass = 'left-3 top-3',
+  hint,
+  pan = true,
+  autoRotateSpeed = 0.45,
 }: StageProps) {
   const wrap = useRef<HTMLDivElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -119,7 +133,7 @@ export function Stage({
       >
         <Canvas
           frameloop={loop ? 'always' : 'demand'}
-          dpr={[1, 2]}
+          dpr={dpr}
           gl={{ antialias: true, alpha: true, powerPreference: 'high-performance' }}
           camera={{ position: camera, fov, near: 0.1, far: 200 }}
         >
@@ -134,9 +148,9 @@ export function Stage({
             rotateSpeed={0.7}
             zoomSpeed={0.8}
             enableZoom={!focusZoom || active}
-            enablePan
+            enablePan={pan}
             autoRotate={spinning}
-            autoRotateSpeed={0.45}
+            autoRotateSpeed={autoRotateSpeed}
             minDistance={minDistance}
             maxDistance={maxDistance}
             maxPolarAngle={maxPolar}
@@ -174,11 +188,12 @@ export function Stage({
       </div>
       <div
         className={cx(
-          'pointer-events-none absolute left-3 top-3 rounded-md border border-white/[0.08] bg-ink-800/70 px-2 py-1 text-[11px] text-fg-muted backdrop-blur transition-opacity duration-300',
+          'pointer-events-none absolute rounded-md border border-white/[0.08] bg-ink-800/70 px-2 py-1 text-[11px] text-fg-muted backdrop-blur transition-opacity duration-300',
+          hintClass,
           touched ? 'opacity-0' : 'opacity-100',
         )}
       >
-        Drag to rotate · {focusZoom ? 'click, then scroll to zoom' : 'scroll or pinch to zoom'}
+        {hint ?? <>Drag to rotate · {focusZoom ? 'click, then scroll to zoom' : 'scroll or pinch to zoom'}</>}
       </div>
       {overlay}
     </div>
