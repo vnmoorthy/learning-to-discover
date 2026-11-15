@@ -1,0 +1,10 @@
+{
+ "id": 27,
+ "slug": null,
+ "title": "Hadamard Maximal Determinant (order 51)",
+ "scoring": "maximize",
+ "minImprovement": 0,
+ "solutionSchema": {
+  "matrix": "51x51 array of integers, each entry 1 or -1"
+ }
+}

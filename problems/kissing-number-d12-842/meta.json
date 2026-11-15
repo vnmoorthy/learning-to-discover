@@ -1,0 +1,10 @@
+{
+ "id": 25,
+ "slug": "kissing-number-d12-842",
+ "title": "Kissing Number in Dimension 12 (n=842)",
+ "scoring": "minimize",
+ "minImprovement": 0,
+ "solutionSchema": {
+  "vectors": "array of 842 vectors in R^12 (each a list of 12 numbers)"
+ }
+}

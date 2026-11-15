@@ -1,0 +1,999 @@
+{
+ "spencer_gpu": {
+  "problem": "spencer-discrepancy",
+  "script": "search/spencer_gpu.py",
+  "resource": "gpu",
+  "params": {
+   "n": {
+    "type": "int",
+    "min": 10,
+    "max": 20,
+    "default": 20
+   },
+   "D": {
+    "type": "int",
+    "min": 4,
+    "max": 10,
+    "default": 8
+   },
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "init": {
+    "type": "enum",
+    "values": [
+     "random",
+     "paley"
+    ],
+    "default": "random"
+   },
+   "tenure": {
+    "type": "int",
+    "min": 5,
+    "max": 200,
+    "default": 25
+   },
+   "restart": {
+    "type": "int",
+    "min": 1000,
+    "max": 200000,
+    "default": 20000
+   }
+  },
+  "out": "runs/spencer",
+  "log": "runs/spencer/{id}.log"
+ },
+ "hadamard_gpu": {
+  "problem": "hadamard-det-51",
+  "script": "search/hadamard_gpu.py",
+  "resource": "gpu",
+  "params": {
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "chains": {
+    "type": "int",
+    "min": 32,
+    "max": 2048,
+    "default": 512
+   },
+   "perturb": {
+    "type": "int",
+    "min": 0,
+    "max": 400,
+    "default": 12
+   },
+   "tenure": {
+    "type": "int",
+    "min": 5,
+    "max": 500,
+    "default": 40
+   },
+   "restart": {
+    "type": "int",
+    "min": 200,
+    "max": 50000,
+    "default": 3000
+   }
+  },
+  "out": "runs/hadamard",
+  "log": "runs/hadamard/{id}.log"
+ },
+ "nothree_sat": {
+  "problem": "no-three-in-line-75",
+  "script": "search/nothree_sat.py",
+  "resource": "cpu",
+  "params": {
+   "sym": {
+    "type": "enum",
+    "values": [
+     "mirror-149",
+     "rot180-150",
+     "diag-149",
+     "diag-150",
+     "none-149",
+     "none-150"
+    ],
+    "default": "mirror-149"
+   },
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "solver": {
+    "type": "enum",
+    "values": [
+     "cadical195",
+     "glucose4",
+     "maplechrono"
+    ],
+    "default": "cadical195"
+   },
+   "presolve-slopes": {
+    "type": "int",
+    "min": 1,
+    "max": 4,
+    "default": 2
+   }
+  },
+  "out": "runs/nothree",
+  "log": "runs/nothree/{sym}_s{seed}.log"
+ },
+ "nothree_gpu": {
+  "problem": "no-three-in-line-75",
+  "script": "search/nothree_gpu.py",
+  "resource": "gpu",
+  "params": {
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "chains": {
+    "type": "int",
+    "min": 64,
+    "max": 1024,
+    "default": 1024
+   },
+   "tenure": {
+    "type": "int",
+    "min": 1,
+    "max": 200,
+    "default": 10
+   },
+   "noise": {
+    "type": "float",
+    "min": 0.0,
+    "max": 0.5,
+    "default": 0.02
+   },
+   "restart": {
+    "type": "int",
+    "min": 1000,
+    "max": 200000,
+    "default": 20000
+   }
+  },
+  "out": "runs/nothree_gpu",
+  "log": "runs/nothree_gpu/{id}.log",
+  "notes": "min-conflicts tabu over 150-point configurations; declares 149 when one point covers every collinear triple. Log: [nothree_gpu s<seed>] t=..s step=.. best_triples=.. best_after_deletion=..; artifact runs/nothree_gpu/latest_s<seed>.json"
+ },
+ "twodel_ils": {
+  "problem": "two-deletion-code-16",
+  "script": "search/twodel_ils.py",
+  "resource": "cpu",
+  "params": {
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "mode": {
+    "type": "enum",
+    "values": [
+     "from_record",
+     "from_scratch",
+     "symmetric"
+    ],
+    "default": "from_record"
+   },
+   "group": {
+    "type": "enum",
+    "values": [
+     "rev",
+     "comp",
+     "rc",
+     "full"
+    ],
+    "default": "full"
+   },
+   "algo": {
+    "type": "enum",
+    "values": [
+     "ils",
+     "tabu"
+    ],
+    "default": "ils"
+   },
+   "perturb": {
+    "type": "int",
+    "min": 1,
+    "max": 6,
+    "default": 1
+   },
+   "pmulti": {
+    "type": "float",
+    "min": 0.0,
+    "max": 0.9,
+    "default": 0.15
+   },
+   "accept": {
+    "type": "enum",
+    "values": [
+     "arw",
+     "plateau"
+    ],
+    "default": "arw"
+   },
+   "restart": {
+    "type": "int",
+    "min": 1000,
+    "max": 10000000,
+    "default": 50000
+   },
+   "rank": {
+    "type": "int",
+    "min": 0,
+    "max": 4,
+    "default": 0
+   },
+   "tenure": {
+    "type": "int",
+    "min": 3,
+    "max": 200,
+    "default": 15
+   },
+   "seconds": {
+    "type": "int",
+    "min": 60,
+    "max": 86400,
+    "default": 21600
+   }
+  },
+  "out": "runs/twodel",
+  "log": "runs/twodel/{id}.log"
+ },
+ "sidon_sa": {
+  "problem": "sidon-45-set",
+  "script": "search/sidon_sa.py",
+  "resource": "cpu",
+  "params": {
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "n": {
+    "type": "int",
+    "min": 12,
+    "max": 18,
+    "default": 15
+   },
+   "target": {
+    "type": "int",
+    "min": 0,
+    "max": 12,
+    "default": 0
+   },
+   "M": {
+    "type": "int",
+    "min": 200,
+    "max": 200000,
+    "default": 2000
+   },
+   "init": {
+    "type": "enum",
+    "values": [
+     "matang",
+     "random"
+    ],
+    "default": "matang"
+   },
+   "T0": {
+    "type": "float",
+    "min": 0.01,
+    "max": 3.0,
+    "default": 0.3
+   },
+   "T1": {
+    "type": "float",
+    "min": 0.001,
+    "max": 1.0,
+    "default": 0.01
+   },
+   "cycle": {
+    "type": "int",
+    "min": 1000,
+    "max": 10000000,
+    "default": 20000
+   },
+   "pstruct": {
+    "type": "float",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.55
+   },
+   "plocal": {
+    "type": "float",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.2
+   },
+   "phub": {
+    "type": "float",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.2
+   },
+   "pw": {
+    "type": "float",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.8
+   },
+   "seconds": {
+    "type": "int",
+    "min": 60,
+    "max": 86400,
+    "default": 21600
+   }
+  },
+  "out": "runs/sidon",
+  "log": "runs/sidon/{id}.log"
+ },
+ "snake_beam": {
+  "problem": "snake-in-the-box-13",
+  "script": "search/snake_beam.py",
+  "resource": "cpu",
+  "params": {
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "rank": {
+    "type": "int",
+    "min": 0,
+    "max": 4,
+    "default": 0
+   },
+   "wmin": {
+    "type": "int",
+    "min": 2,
+    "max": 200,
+    "default": 4
+   },
+   "wmax": {
+    "type": "int",
+    "min": 2,
+    "max": 400,
+    "default": 24
+   },
+   "budget": {
+    "type": "int",
+    "min": 1000,
+    "max": 20000000,
+    "default": 20000
+   },
+   "psideways": {
+    "type": "float",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.5
+   },
+   "pend": {
+    "type": "float",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.05
+   },
+   "seconds": {
+    "type": "int",
+    "min": 60,
+    "max": 86400,
+    "default": 21600
+   }
+  },
+  "out": "runs/snake",
+  "log": "runs/snake/{id}.log"
+ },
+ "twodel_lns": {
+  "problem": "two-deletion-code-16",
+  "script": "search/twodel_lns.py",
+  "resource": "cpu",
+  "params": {
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "rmin": {
+    "type": "int",
+    "min": 2,
+    "max": 120,
+    "default": 6
+   },
+   "rmax": {
+    "type": "int",
+    "min": 2,
+    "max": 160,
+    "default": 24
+   },
+   "hood": {
+    "type": "enum",
+    "values": [
+     "hamming",
+     "random",
+     "mixed"
+    ],
+    "default": "hamming"
+   },
+   "conflicts": {
+    "type": "int",
+    "min": 1000,
+    "max": 20000000,
+    "default": 200000
+   },
+   "rank": {
+    "type": "int",
+    "min": 0,
+    "max": 4,
+    "default": 0
+   }
+  },
+  "out": "runs/twodel_lns",
+  "log": "runs/twodel_lns/{id}.log",
+  "notes": "LNS with an exact SAT sub-solver: free r codewords, list compatible candidates, ask CaDiCaL for r+1. UNSAT = neighbourhood proved optimal."
+ },
+ "autocorr1_polish": {
+  "problem": "first-autocorrelation-inequality",
+  "script": "search/autocorr1_polish.py",
+  "resource": "gpu",
+  "params": {
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "seconds": {
+    "type": "int",
+    "min": 60,
+    "max": 43200,
+    "default": 21600
+   },
+   "method": {
+    "type": "enum",
+    "values": [
+     "proxlin",
+     "lse"
+    ],
+    "default": "proxlin"
+   },
+   "start": {
+    "type": "int",
+    "min": 0,
+    "max": 4,
+    "default": 0
+   },
+   "upsample": {
+    "type": "int",
+    "min": 1,
+    "max": 4,
+    "default": 1
+   },
+   "resume": {
+    "type": "int",
+    "min": 0,
+    "max": 1,
+    "default": 1
+   },
+   "batch": {
+    "type": "int",
+    "min": 1,
+    "max": 16,
+    "default": 4
+   },
+   "inner": {
+    "type": "int",
+    "min": 50,
+    "max": 20000,
+    "default": 2000
+   },
+   "tau": {
+    "type": "float",
+    "min": 1e-12,
+    "max": 0.001,
+    "default": 1e-08
+   },
+   "tau_spread": {
+    "type": "float",
+    "min": 1.2,
+    "max": 10.0,
+    "default": 2.0
+   },
+   "perturb": {
+    "type": "float",
+    "min": 0.0,
+    "max": 0.01,
+    "default": 0.0
+   },
+   "lr": {
+    "type": "float",
+    "min": 1e-09,
+    "max": 0.001,
+    "default": 1e-06
+   },
+   "beta0": {
+    "type": "float",
+    "min": 1000.0,
+    "max": 100000000.0,
+    "default": 100000.0
+   },
+   "beta1": {
+    "type": "float",
+    "min": 100000.0,
+    "max": 100000000000.0,
+    "default": 100000000.0
+   },
+   "cycle": {
+    "type": "int",
+    "min": 100,
+    "max": 100000,
+    "default": 2000
+   }
+  },
+  "out": "runs/autocorr1",
+  "log": "runs/autocorr1/{id}.log",
+  "notes": "Minimize C (record 1.502743486709583 by Atris; a new record needs <= 1.5027434767). Starts from public solution --start (0 = record), np.repeat-upsampled by --upsample (exactly the same C), and resumes from the best best_*.json in --out with the same n. method=proxlin: prox-linear (sequential LP) descent on the max of the autoconvolution, dual FISTA with FFTs, --batch trust-region sizes in parallel, monotone. method=lse: annealed log-sum-exp + Adam (found no descent from the record in tests). Log lines: [autocorr1 s<seed>] t=..s best=<C> gap_to_top=<C - record> outer=.. tau=.. gain=..; negative gap_to_top means below the record, FOUND needs gap <= -1e-8 and is written only after the official O(n^2) verifier confirms. Measured on a shared A100: about -3e-10 in 2 min then ~1e-11 per 5 s and slowing; upsample 1 and 2 gave the same gains, upsample 1 is 2x faster. More --inner (5000-10000) gives larger gain per outer step at the same wall rate. One GPU, <2 GB memory, so several can share a GPU."
+ },
+ "polish_k11": {
+  "problem": "kissing-number-d11-605",
+  "script": "search/polish_gpu.py",
+  "resource": "gpu",
+  "params": {
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "seconds": {
+    "type": "int",
+    "min": 60,
+    "max": 86400,
+    "default": 3600
+   },
+   "topk": {
+    "type": "int",
+    "min": 1,
+    "max": 5,
+    "default": 2
+   },
+   "batch": {
+    "type": "int",
+    "min": 1,
+    "max": 128,
+    "default": 32
+   },
+   "sigma_min": {
+    "type": "float",
+    "min": 1e-14,
+    "max": 0.01,
+    "default": 1e-09
+   },
+   "sigma_max": {
+    "type": "float",
+    "min": 1e-12,
+    "max": 0.1,
+    "default": 1e-05
+   },
+   "adam_steps": {
+    "type": "int",
+    "min": 0,
+    "max": 50000,
+    "default": 2000
+   },
+   "lr": {
+    "type": "float",
+    "min": 0.001,
+    "max": 100.0,
+    "default": 1.0
+   },
+   "tau0": {
+    "type": "float",
+    "min": 1e-12,
+    "max": 0.1,
+    "default": 1e-06
+   },
+   "tau1": {
+    "type": "float",
+    "min": 1e-15,
+    "max": 0.01,
+    "default": 1e-11
+   },
+   "slp_seconds": {
+    "type": "float",
+    "min": 5.0,
+    "max": 3600.0,
+    "default": 60.0
+   },
+   "slp_r0": {
+    "type": "float",
+    "min": 1e-12,
+    "max": 0.001,
+    "default": 1e-06
+   },
+   "polish_window": {
+    "type": "float",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.0001
+   }
+  },
+  "fixed_args": [
+   "--problem",
+   "kissing-number-d11-605"
+  ],
+  "out": "runs/polish_k11",
+  "log": "runs/polish_k11/{id}.log",
+  "notes": "Same polisher for d=11, n=605. The kgrey top (1.71023812080097) has only 3 genuinely overlapping pairs, ~9800 contacts with only 3e-13 total residual, and no first-order descent in ~1600 block LPs: a polished local optimum. Basin hopping (tau 1e-6->1e-11, sigma<=1e-5) reached 1.7102383052 (1.8e-7 above it, about the 2nd-place level) in 4-min tests. HONEST: a lower positive penalty is a leaderboard improvement only, NOT a new kissing configuration (that needs penalty exactly 0). Odds: very low. Log: [polish_k11 s<seed>] t=..s best=.. record=.. gap=..; artifact runs/polish_k11/best_<id>.json"
+ },
+ "polish_k12": {
+  "problem": "kissing-number-d12-842",
+  "script": "search/polish_gpu.py",
+  "resource": "gpu",
+  "params": {
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "seconds": {
+    "type": "int",
+    "min": 60,
+    "max": 86400,
+    "default": 3600
+   },
+   "topk": {
+    "type": "int",
+    "min": 1,
+    "max": 5,
+    "default": 2
+   },
+   "batch": {
+    "type": "int",
+    "min": 1,
+    "max": 128,
+    "default": 32
+   },
+   "sigma_min": {
+    "type": "float",
+    "min": 1e-14,
+    "max": 0.01,
+    "default": 1e-09
+   },
+   "sigma_max": {
+    "type": "float",
+    "min": 1e-12,
+    "max": 0.1,
+    "default": 1e-05
+   },
+   "adam_steps": {
+    "type": "int",
+    "min": 0,
+    "max": 50000,
+    "default": 2000
+   },
+   "lr": {
+    "type": "float",
+    "min": 0.001,
+    "max": 100.0,
+    "default": 1.0
+   },
+   "tau0": {
+    "type": "float",
+    "min": 1e-12,
+    "max": 0.1,
+    "default": 1e-06
+   },
+   "tau1": {
+    "type": "float",
+    "min": 1e-15,
+    "max": 0.01,
+    "default": 1e-11
+   },
+   "slp_seconds": {
+    "type": "float",
+    "min": 5.0,
+    "max": 3600.0,
+    "default": 60.0
+   },
+   "slp_r0": {
+    "type": "float",
+    "min": 1e-12,
+    "max": 0.001,
+    "default": 1e-06
+   },
+   "polish_window": {
+    "type": "float",
+    "min": 0.0,
+    "max": 1.0,
+    "default": 0.0001
+   }
+  },
+  "fixed_args": [
+   "--problem",
+   "kissing-number-d12-842"
+  ],
+  "out": "runs/polish_k12",
+  "log": "runs/polish_k12/{id}.log",
+  "notes": "Polisher for the d=12, n=842 overlap penalty (minImprovement 0): block sequential LP with trust region on the EXACT hinge (scipy HiGHS, 40-point blocks), plus basin hopping (perturb, Adam on the softplus hinge annealed to exact, block-LP polish). Re-scored with the verifier's Decimal arithmetic on near pairs; FOUND only from the official verifier. Measured: the kgrey top (0.5309634950279605) admits no first-order descent in ~1500 block LPs, and removing its ~1240 tiny (~6e-12) contact overlaps by restoration makes it WORSE (+6.4e-9), so it is a genuine local optimum; basin hopping (tau 1e-6->1e-11, sigma<=1e-5) returns to 0.5309763, i.e. 1.3e-5 above it, in 4-min tests. HONEST: a lower positive penalty is a leaderboard improvement only, NOT a new kissing configuration (that needs penalty exactly 0). Odds: very low. Log: [polish_k12 s<seed>] t=..s best=.. record=.. gap=..; artifact runs/polish_k12/best_<id>.json"
+ },
+ "polish_kakeya": {
+  "problem": "kakeya-needle-128",
+  "script": "search/polish_gpu.py",
+  "resource": "gpu",
+  "params": {
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "seconds": {
+    "type": "int",
+    "min": 60,
+    "max": 86400,
+    "default": 3600
+   },
+   "topk": {
+    "type": "int",
+    "min": 1,
+    "max": 5,
+    "default": 2
+   },
+   "batch": {
+    "type": "int",
+    "min": 1,
+    "max": 128,
+    "default": 32
+   },
+   "sigma_min": {
+    "type": "float",
+    "min": 1e-14,
+    "max": 0.001,
+    "default": 1e-10
+   },
+   "sigma_max": {
+    "type": "float",
+    "min": 1e-12,
+    "max": 0.01,
+    "default": 1e-06
+   },
+   "adam_steps": {
+    "type": "int",
+    "min": 0,
+    "max": 20000,
+    "default": 400
+   },
+   "lr": {
+    "type": "float",
+    "min": 1e-13,
+    "max": 0.001,
+    "default": 1e-07
+   },
+   "tau0": {
+    "type": "float",
+    "min": 0.0,
+    "max": 0.001,
+    "default": 0.0
+   },
+   "tau1": {
+    "type": "float",
+    "min": 0.0,
+    "max": 0.001,
+    "default": 0.0
+   },
+   "lbfgs_iters": {
+    "type": "int",
+    "min": 10,
+    "max": 3000,
+    "default": 300
+   }
+  },
+  "fixed_args": [
+   "--problem",
+   "kakeya-needle-128"
+  ],
+  "out": "runs/polish_kakeya",
+  "log": "runs/polish_kakeya/{id}.log",
+  "notes": "Exact-area polisher for the Kakeya needle problem (n=128): torch float64 trapezoid integration over every height where two section endpoints cross (the verifier's breakpoint set, kept differentiable), so the objective is the verifier's exact piecewise-quadratic area (matches the Fraction verifier to 1e-17 on the public tops). Batch of perturbed copies of the top public offsets -> Adam (optional annealed smoothing tau0->tau1) -> L-BFGS on the best; offsets rounded to 25 fractional digits and re-scored by the official verifier; FOUND needs record - score > 1e-9. Tests (GPU 4, 3x5 min): no descent from kgrey 0.10675138995168142 (local minimum for gradient methods); ~200-250 exact area evals/s at batch 32. Odds of beating by 1e-9: low (<5%) without a structurally new start. Log: [polish_kakeya s<seed>] t=..s best=.. record=.. gap=.. phase=.. round=..; artifact runs/polish_kakeya/best_<id>.json"
+ },
+ "threebody_gpu": {
+  "problem": "three-body-periodic-orbits",
+  "script": "search/threebody_gpu.py",
+  "resource": "gpu",
+  "params": {
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "m3": {
+    "type": "float",
+    "min": 0.3,
+    "max": 10.0,
+    "default": 1.0
+   },
+   "tmin": {
+    "type": "float",
+    "min": 2.0,
+    "max": 100.0,
+    "default": 5.0
+   },
+   "tmax": {
+    "type": "float",
+    "min": 8.0,
+    "max": 150.0,
+    "default": 40.0
+   },
+   "vmax": {
+    "type": "float",
+    "min": 0.3,
+    "max": 1.5,
+    "default": 1.0
+   },
+   "batch": {
+    "type": "int",
+    "min": 20000,
+    "max": 1000000,
+    "default": 200000
+   },
+   "cands": {
+    "type": "int",
+    "min": 1000,
+    "max": 60000,
+    "default": 20000
+   },
+   "thr": {
+    "type": "float",
+    "min": 0.05,
+    "max": 0.6,
+    "default": 0.25
+   }
+  },
+  "out": "runs/threebody",
+  "log": "runs/threebody/{id}.log",
+  "notes": "Periodic orbits of the planar Newtonian three-body problem (zero angular momentum, isosceles collinear start, m1=m2=1). Each round: GPU scan of `batch` random (vx,vy) seeds for near-returns with period in [tmin,tmax], batched Levenberg-Marquardt on (vx,vy,T) with a float64 DOP853 flow, then the official CPU verifier (return error < 1e-8, topological word, catalog check against 2060 literature orbits). Log: `[threebody s<seed>] t=..s best=<distinct verified families> new=<candidates not in catalog> rediscovered=<..> orbits=..`. Artifacts: runs/threebody/orbits_<id>.json, best_<id>.json, FOUND_<id>_<n>.json (only for families not in the catalog; candidates, not proven new). Tuning: m3=1 with tmax<=100 is the region Li-Liao 2017 scanned exhaustively (expect rediscoveries only); the less explored regions are m3 not in {0.5,0.75,1,2,4,5,8,10} and larger tmax. Cost grows about linearly with tmax; tmax-tmin windows of 20-40 work best. Needs problems/three-body-periodic-orbits/{verifier.py,dop853.json,meta.json,catalog.json} on the box."
+ },
+ "twodel_weighted": {
+  "problem": "two-deletion-code-16",
+  "script": "search/twodel_weighted.py",
+  "resource": "cpu",
+  "params": {
+   "seed": {
+    "type": "int",
+    "min": 0,
+    "max": 100000,
+    "default": 0
+   },
+   "init": {
+    "type": "enum",
+    "values": [
+     "record0",
+     "record1",
+     "record2",
+     "record3",
+     "record4",
+     "scratch"
+    ],
+    "default": "record0"
+   },
+   "k": {
+    "type": "int",
+    "min": 0,
+    "max": 232,
+    "default": 227
+   },
+   "tenure": {
+    "type": "int",
+    "min": 1,
+    "max": 200,
+    "default": 10
+   },
+   "cand": {
+    "type": "int",
+    "min": 2,
+    "max": 227,
+    "default": 12
+   },
+   "noise": {
+    "type": "float",
+    "min": 0.0,
+    "max": 0.5,
+    "default": 0.05
+   },
+   "w0": {
+    "type": "int",
+    "min": 1,
+    "max": 64,
+    "default": 1
+   },
+   "wcap": {
+    "type": "int",
+    "min": 2,
+    "max": 1000,
+    "default": 4
+   },
+   "decay": {
+    "type": "int",
+    "min": 5,
+    "max": 100000,
+    "default": 200
+   },
+   "rho": {
+    "type": "float",
+    "min": 0.0,
+    "max": 0.95,
+    "default": 0.5
+   },
+   "band": {
+    "type": "int",
+    "min": 1,
+    "max": 200,
+    "default": 10
+   },
+   "force": {
+    "type": "float",
+    "min": 0.0,
+    "max": 0.5,
+    "default": 0.0
+   },
+   "restart": {
+    "type": "int",
+    "min": 10000,
+    "max": 100000000,
+    "default": 400000
+   },
+   "kick": {
+    "type": "int",
+    "min": 0,
+    "max": 120,
+    "default": 12
+   },
+   "repair-at": {
+    "type": "int",
+    "min": 0,
+    "max": 12,
+    "default": 4
+   },
+   "repair-r": {
+    "type": "int",
+    "min": 4,
+    "max": 60,
+    "default": 12
+   },
+   "repair-conflicts": {
+    "type": "int",
+    "min": 1000,
+    "max": 5000000,
+    "default": 20000
+   },
+   "seconds": {
+    "type": "int",
+    "min": 60,
+    "max": 86400,
+    "default": 21600
+   }
+  },
+  "out": "runs/twodel_w",
+  "log": "runs/twodel_w/{id}.log",
+  "notes": "Fixed-k (k=227) min-conflict search with dynamic descendant weights (breakout/NuMVC style): exact best swap per step, tabu + configuration checking, weights bumped at local minima (capped at --wcap, then the best swap is forced) and smoothed every --decay bumps, return-to-elite when the walk strays more than --band over-covered descendants, kicks after --restart stagnant steps. When <= --repair-at words conflict, an exact CaDiCaL repair frees them plus Hamming-near words (--repair-r, then 3x). init=record0..4 are the five public codes (226,225,224,223,222) padded to k; scratch = greedy. Log: [twodel_w s<seed>] t=..s best=<valid size> conf=<min conflicting pairs at size k> cwords=.. over=.. rate=<steps per CPU-s>. conf=0 means a verified k-word code (FOUND_*.json). 1 core, ~250 MB RAM. k=0 means (start code size + 1), raised by one after each verified success: use it with record1..4/scratch to climb from another basin."
+ }
+}

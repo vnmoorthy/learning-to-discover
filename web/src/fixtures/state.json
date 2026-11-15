@@ -1,0 +1,735 @@
+{
+ "now": "2026-11-15T14:40:00Z",
+ "loop": {
+  "status": "running",
+  "cycle": 6,
+  "phase": "idle",
+  "next_cycle_at": "2026-11-15T14:42:20Z",
+  "interval_s": 300,
+  "proposer_model": "gpt-6-astra",
+  "started_at": "2026-11-15T10:38:00Z"
+ },
+ "compute": {
+  "gpus": [
+   {
+    "idx": 0,
+    "util": 93,
+    "mem_mb": 805,
+    "problem": "spencer-discrepancy",
+    "strategy_id": "adopt-spencer-n20-s0"
+   },
+   {
+    "idx": 1,
+    "util": 93,
+    "mem_mb": 725,
+    "problem": "spencer-discrepancy",
+    "strategy_id": "adopt-spencer-n20-s1"
+   },
+   {
+    "idx": 2,
+    "util": 96,
+    "mem_mb": 805,
+    "problem": "spencer-discrepancy",
+    "strategy_id": "adopt-spencer-n20-s2"
+   },
+   {
+    "idx": 3,
+    "util": 95,
+    "mem_mb": 805,
+    "problem": "spencer-discrepancy",
+    "strategy_id": "sp-c5-n18-s5"
+   },
+   {
+    "idx": 4,
+    "util": 98,
+    "mem_mb": 1269,
+    "problem": "hadamard-det-51",
+    "strategy_id": "adopt-hadamard-s6"
+   },
+   {
+    "idx": 5,
+    "util": 99,
+    "mem_mb": 1271,
+    "problem": "hadamard-det-51",
+    "strategy_id": "adopt-hadamard-s7"
+   },
+   {
+    "idx": 6,
+    "util": 95,
+    "mem_mb": 1355,
+    "problem": "hadamard-det-51",
+    "strategy_id": "adopt-hadamard-s24"
+   },
+   {
+    "idx": 7,
+    "util": 98,
+    "mem_mb": 1355,
+    "problem": "hadamard-det-51",
+    "strategy_id": "adopt-hadamard-s25"
+   }
+  ],
+  "cpus": 124,
+  "load1": 119.97,
+  "cpu_procs": {
+   "no-three-in-line-75": 109,
+   "two-deletion-code-16": 8,
+   "sidon-45-set": 1
+  },
+  "box": "online"
+ },
+ "problems": [
+  {
+   "slug": "no-three-in-line-75",
+   "title": "No-Three-in-Line (75 \u00d7 75 grid)",
+   "scoring": "maximize",
+   "record": {
+    "score": 148,
+    "holder": "Thomas-Prellberg"
+   },
+   "ours": null,
+   "beats_record": false,
+   "metric": {
+    "name": "min_violated_lines",
+    "value": 131,
+    "target": 0,
+    "lower_is_better": true
+   },
+   "status": "searching",
+   "compute": {
+    "gpus": 0,
+    "cpu_procs": 109,
+    "share": 0.5989
+   },
+   "strategies": [
+    {
+     "id": "adopt-nothree-rot180-150-s0",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "rot180-150",
+      "seed": 0,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:10:00Z",
+     "adopted": true,
+     "metric_value": 131
+    },
+    {
+     "id": "adopt-nothree-rot180-150-s1",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "rot180-150",
+      "seed": 1,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:13:00Z",
+     "adopted": true,
+     "metric_value": 138
+    },
+    {
+     "id": "adopt-nothree-rot180-150-s2",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "rot180-150",
+      "seed": 2,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:16:00Z",
+     "adopted": true,
+     "metric_value": 145
+    },
+    {
+     "id": "adopt-nothree-rot180-150-s3",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "rot180-150",
+      "seed": 3,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:19:00Z",
+     "adopted": true,
+     "metric_value": 152
+    },
+    {
+     "id": "adopt-nothree-rot180-150-s4",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "rot180-150",
+      "seed": 4,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:22:00Z",
+     "adopted": true,
+     "metric_value": 159
+    },
+    {
+     "id": "adopt-nothree-rot180-150-s5",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "rot180-150",
+      "seed": 5,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:25:00Z",
+     "adopted": true,
+     "metric_value": 166
+    },
+    {
+     "id": "adopt-nothree-mirror-149-s0",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "mirror-149",
+      "seed": 0,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:10:00Z",
+     "adopted": true,
+     "metric_value": 178
+    },
+    {
+     "id": "adopt-nothree-mirror-149-s1",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "mirror-149",
+      "seed": 1,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:13:00Z",
+     "adopted": true,
+     "metric_value": 185
+    },
+    {
+     "id": "adopt-nothree-mirror-149-s2",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "mirror-149",
+      "seed": 2,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:16:00Z",
+     "adopted": true,
+     "metric_value": 192
+    },
+    {
+     "id": "adopt-nothree-mirror-149-s3",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "mirror-149",
+      "seed": 3,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:19:00Z",
+     "adopted": true,
+     "metric_value": 199
+    },
+    {
+     "id": "adopt-nothree-mirror-149-s4",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "mirror-149",
+      "seed": 4,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:22:00Z",
+     "adopted": true,
+     "metric_value": 206
+    },
+    {
+     "id": "adopt-nothree-diag-149-s0",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "diag-149",
+      "seed": 0,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:10:00Z",
+     "adopted": true,
+     "metric_value": 206
+    },
+    {
+     "id": "adopt-nothree-diag-149-s1",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "diag-149",
+      "seed": 1,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:13:00Z",
+     "adopted": true,
+     "metric_value": 213
+    },
+    {
+     "id": "adopt-nothree-diag-149-s2",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "diag-149",
+      "seed": 2,
+      "solver": "cadical195",
+      "presolve-slopes": 2
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T11:16:00Z",
+     "adopted": true,
+     "metric_value": 220
+    },
+    {
+     "id": "nt-c6-none150-s0",
+     "template": "nothree_sat",
+     "params": {
+      "sym": "none-150",
+      "seed": 0,
+      "solver": "maplechrono",
+      "presolve-slopes": 3
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T14:06:00Z",
+     "adopted": false,
+     "metric_value": null
+    }
+   ]
+  },
+  {
+   "slug": "spencer-discrepancy",
+   "title": "Spencer Discrepancy Constant",
+   "scoring": "maximize",
+   "record": {
+    "score": 1.697749375254331,
+    "holder": "Youhua-Li"
+   },
+   "ours": {
+    "score": 1.697749375254331,
+    "verified": true,
+    "at": "2026-11-15T11:50:00Z",
+    "strategy_id": "adopt-spencer-n20-s0"
+   },
+   "beats_record": false,
+   "metric": {
+    "name": "bad_vectors",
+    "value": 2592,
+    "target": 0,
+    "lower_is_better": true
+   },
+   "status": "searching",
+   "compute": {
+    "gpus": 4,
+    "cpu_procs": 0,
+    "share": 0.1758
+   },
+   "strategies": [
+    {
+     "id": "adopt-spencer-n20-s0",
+     "template": "spencer_gpu",
+     "params": {
+      "n": 20,
+      "D": 8,
+      "seed": 0,
+      "init": "paley",
+      "tenure": 24,
+      "restart": 50000
+     },
+     "resource": "gpu",
+     "started_at": "2026-11-15T11:30:00Z",
+     "adopted": true,
+     "metric_value": 2592
+    },
+    {
+     "id": "adopt-spencer-n20-s1",
+     "template": "spencer_gpu",
+     "params": {
+      "n": 20,
+      "D": 8,
+      "seed": 1,
+      "init": "paley",
+      "tenure": 24,
+      "restart": 50000
+     },
+     "resource": "gpu",
+     "started_at": "2026-11-15T11:35:00Z",
+     "adopted": true,
+     "metric_value": 2592
+    },
+    {
+     "id": "adopt-spencer-n20-s2",
+     "template": "spencer_gpu",
+     "params": {
+      "n": 20,
+      "D": 8,
+      "seed": 2,
+      "init": "paley",
+      "tenure": 24,
+      "restart": 50000
+     },
+     "resource": "gpu",
+     "started_at": "2026-11-15T11:40:00Z",
+     "adopted": true,
+     "metric_value": 2592
+    },
+    {
+     "id": "sp-c5-n18-s5",
+     "template": "spencer_gpu",
+     "params": {
+      "n": 18,
+      "D": 8,
+      "seed": 5,
+      "init": "random",
+      "tenure": 16,
+      "restart": 30000
+     },
+     "resource": "gpu",
+     "started_at": "2026-11-15T13:52:00Z",
+     "adopted": false,
+     "metric_value": 3314
+    }
+   ]
+  },
+  {
+   "slug": "hadamard-det-51",
+   "title": "Hadamard Maximal Determinant (order 51)",
+   "scoring": "maximize",
+   "record": {
+    "score": 43.33745596194037,
+    "holder": "kgrey"
+   },
+   "ours": {
+    "score": 43.33745596194037,
+    "verified": true,
+    "at": "2026-11-15T12:10:00Z",
+    "strategy_id": "adopt-hadamard-s6"
+   },
+   "beats_record": false,
+   "metric": {
+    "name": "best_log10",
+    "value": 43.33745596194,
+    "target": 43.33745596194037,
+    "lower_is_better": false
+   },
+   "status": "stalled",
+   "compute": {
+    "gpus": 4,
+    "cpu_procs": 0,
+    "share": 0.1758
+   },
+   "strategies": [
+    {
+     "id": "adopt-hadamard-s6",
+     "template": "hadamard_gpu",
+     "params": {
+      "seed": 6,
+      "chains": 512,
+      "perturb": 4,
+      "tenure": 32,
+      "restart": 20000,
+      "target": 43.34
+     },
+     "resource": "gpu",
+     "started_at": "2026-11-15T11:44:00Z",
+     "adopted": true,
+     "metric_value": 43.33745596194
+    },
+    {
+     "id": "adopt-hadamard-s7",
+     "template": "hadamard_gpu",
+     "params": {
+      "seed": 7,
+      "chains": 512,
+      "perturb": 4,
+      "tenure": 32,
+      "restart": 20000,
+      "target": 43.34
+     },
+     "resource": "gpu",
+     "started_at": "2026-11-15T11:48:00Z",
+     "adopted": true,
+     "metric_value": 43.33745596194
+    },
+    {
+     "id": "adopt-hadamard-s24",
+     "template": "hadamard_gpu",
+     "params": {
+      "seed": 24,
+      "chains": 512,
+      "perturb": 4,
+      "tenure": 32,
+      "restart": 20000,
+      "target": 43.34
+     },
+     "resource": "gpu",
+     "started_at": "2026-11-15T12:56:00Z",
+     "adopted": true,
+     "metric_value": 43.33745596194
+    },
+    {
+     "id": "adopt-hadamard-s25",
+     "template": "hadamard_gpu",
+     "params": {
+      "seed": 25,
+      "chains": 512,
+      "perturb": 4,
+      "tenure": 32,
+      "restart": 20000,
+      "target": 43.34
+     },
+     "resource": "gpu",
+     "started_at": "2026-11-15T13:00:00Z",
+     "adopted": true,
+     "metric_value": 43.33745596194
+    }
+   ]
+  },
+  {
+   "slug": "sidon-45-set",
+   "title": "Sidon Subsets of (4,5)-Sets",
+   "scoring": "minimize",
+   "record": {
+    "score": 0.5714285714285714,
+    "holder": "Ma-Tang"
+   },
+   "ours": {
+    "score": 0.5714285714285714,
+    "verified": true,
+    "at": "2026-11-15T10:50:00Z",
+    "strategy_id": "adopt-sidon-extend"
+   },
+   "beats_record": false,
+   "metric": {
+    "name": "best_score",
+    "value": 0.5714285714285714,
+    "target": 0.5714285714285714,
+    "lower_is_better": true
+   },
+   "status": "proved-negative",
+   "compute": {
+    "gpus": 0,
+    "cpu_procs": 1,
+    "share": 0.0055
+   },
+   "strategies": [
+    {
+     "id": "adopt-sidon-extend",
+     "template": "sidon_extend",
+     "params": {},
+     "resource": "cpu",
+     "started_at": "2026-11-15T10:40:00Z",
+     "adopted": true,
+     "metric_value": 0.5714285714285714
+    }
+   ]
+  },
+  {
+   "slug": "two-deletion-code-16",
+   "title": "Two-Deletion-Correcting Code (length 16)",
+   "scoring": "maximize",
+   "record": {
+    "score": 226,
+    "holder": "kgrey"
+   },
+   "ours": {
+    "score": 220,
+    "verified": true,
+    "at": "2026-11-15T14:28:00Z",
+    "strategy_id": "td-c4-ils-s0"
+   },
+   "beats_record": false,
+   "metric": {
+    "name": "best_size",
+    "value": 220,
+    "target": 227,
+    "lower_is_better": false
+   },
+   "status": "searching",
+   "compute": {
+    "gpus": 0,
+    "cpu_procs": 8,
+    "share": 0.044
+   },
+   "strategies": [
+    {
+     "id": "td-c4-ils-s0",
+     "template": "twodel_ils",
+     "params": {
+      "seed": 0,
+      "iters": 2000000,
+      "kick": 6
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T13:30:00Z",
+     "adopted": false,
+     "metric_value": 220
+    },
+    {
+     "id": "td-c4-ils-s1",
+     "template": "twodel_ils",
+     "params": {
+      "seed": 1,
+      "iters": 2000000,
+      "kick": 6
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T13:31:00Z",
+     "adopted": false,
+     "metric_value": 219
+    },
+    {
+     "id": "td-c4-ils-s2",
+     "template": "twodel_ils",
+     "params": {
+      "seed": 2,
+      "iters": 2000000,
+      "kick": 6
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T13:32:00Z",
+     "adopted": false,
+     "metric_value": 218
+    },
+    {
+     "id": "td-c4-ils-s3",
+     "template": "twodel_ils",
+     "params": {
+      "seed": 3,
+      "iters": 2000000,
+      "kick": 6
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T13:33:00Z",
+     "adopted": false,
+     "metric_value": 220
+    },
+    {
+     "id": "td-c4-ils-s4",
+     "template": "twodel_ils",
+     "params": {
+      "seed": 4,
+      "iters": 2000000,
+      "kick": 6
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T13:34:00Z",
+     "adopted": false,
+     "metric_value": 219
+    },
+    {
+     "id": "td-c4-ils-s5",
+     "template": "twodel_ils",
+     "params": {
+      "seed": 5,
+      "iters": 2000000,
+      "kick": 6
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T13:35:00Z",
+     "adopted": false,
+     "metric_value": 218
+    },
+    {
+     "id": "td-c4-ils-s6",
+     "template": "twodel_ils",
+     "params": {
+      "seed": 6,
+      "iters": 2000000,
+      "kick": 6
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T13:36:00Z",
+     "adopted": false,
+     "metric_value": 220
+    },
+    {
+     "id": "td-c4-ils-s7",
+     "template": "twodel_ils",
+     "params": {
+      "seed": 7,
+      "iters": 2000000,
+      "kick": 6
+     },
+     "resource": "cpu",
+     "started_at": "2026-11-15T13:37:00Z",
+     "adopted": false,
+     "metric_value": 219
+    }
+   ]
+  },
+  {
+   "slug": "snake-in-the-box-13",
+   "title": "Snake-in-the-Box (13-dimensional hypercube)",
+   "scoring": "maximize",
+   "record": {
+    "score": 2950,
+    "holder": "kgrey"
+   },
+   "ours": null,
+   "beats_record": false,
+   "metric": {
+    "name": "best_length",
+    "value": null,
+    "target": 2951,
+    "lower_is_better": false
+   },
+   "status": "idle",
+   "compute": {
+    "gpus": 0,
+    "cpu_procs": 0,
+    "share": 0.0
+   },
+   "strategies": []
+  },
+  {
+   "slug": "ring-loading-15",
+   "title": "Ring Loading Problem (15 pairs)",
+   "scoring": "maximize",
+   "record": {
+    "score": 1.125,
+    "holder": "JSAgent-Ring15"
+   },
+   "ours": null,
+   "beats_record": false,
+   "metric": {
+    "name": "best_score",
+    "value": null,
+    "target": 1.125,
+    "lower_is_better": false
+   },
+   "status": "idle",
+   "compute": {
+    "gpus": 0,
+    "cpu_procs": 0,
+    "share": 0.0
+   },
+   "strategies": []
+  }
+ ],
+ "totals": {
+  "decisions": 39,
+  "cycles": 6,
+  "experiments_run": 31,
+  "sandboxes_run": 8,
+  "facts": 13,
+  "sources": 12,
+  "records": 0
+ }
+}

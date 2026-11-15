@@ -1,0 +1,17 @@
+{
+ "id": null,
+ "slug": "three-body-periodic-orbits",
+ "title": "New periodic orbits of the planar Newtonian three-body problem",
+ "source": "Learning to Discover lab problem (theoretical astrophysics). NOT an EinsteinArena problem: there is no public leaderboard.",
+ "scoring": "maximize",
+ "score": "number of distinct topological families (canonical reduced syzygy words = free-group conjugacy classes) of verified periodic orbits in the solution that are NOT in catalog.json",
+ "record": 0,
+ "holder": "baseline: every orbit in catalog.json is known, so a solution made of catalog orbits scores 0",
+ "minImprovement": 1,
+ "solutionSchema": {
+  "orbits": "list of 1 to 20000 objects {vx, vy, T, m3 (optional, default 1)}: G=1, m1=m2=1, r1=(-1,0), r2=(1,0), r3=(0,0), v1=v2=(vx,vy), v3=-2(vx,vy)/m3, period T in [0.5, 2000]"
+ },
+ "verification": "float64 adaptive Dormand-Prince 8(5,3); return error |r(T)-r(0)|+|v(T)-v(0)| < 1e-8 at rtol 1e-13, < 1e-6 at rtol 1e-11, both runs agree to 1e-6; T must be the minimal period; E < 0",
+ "novelty": "an orbit counts only if its canonical word matches no catalog entry AND no catalog entry has the same m3, T* = T|E|^1.5 and initial velocity. A score > 0 is a CANDIDATE new family relative to catalog.json (2060 literature entries), not a proof of novelty: see catalog.json 'not_included' for catalogs that were not checked.",
+ "caveats": "float64 only (the literature uses multi-precision Clean Numerical Simulation for long unstable orbits); orbits that are too unstable to close to 1e-8 in float64 are rejected, which is conservative."
+}

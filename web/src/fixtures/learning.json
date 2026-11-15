@@ -1,0 +1,327 @@
+{
+ "status": "running",
+ "base_model": "Qwen/Qwen3-8B",
+ "problem": "sidon-45-set",
+ "steps": [
+  {
+   "step": 0,
+   "reward_mean": 0.0777,
+   "reward_best": 0.2516,
+   "valid_rate": 0.2377,
+   "time": "2026-11-15T12:40:00Z"
+  },
+  {
+   "step": 1,
+   "reward_mean": 0.1292,
+   "reward_best": 0.2987,
+   "valid_rate": 0.2901,
+   "time": "2026-11-15T12:42:36Z"
+  },
+  {
+   "step": 2,
+   "reward_mean": 0.1568,
+   "reward_best": 0.3768,
+   "valid_rate": 0.3588,
+   "time": "2026-11-15T12:45:12Z"
+  },
+  {
+   "step": 3,
+   "reward_mean": 0.1786,
+   "reward_best": 0.407,
+   "valid_rate": 0.3759,
+   "time": "2026-11-15T12:47:48Z"
+  },
+  {
+   "step": 4,
+   "reward_mean": 0.2163,
+   "reward_best": 0.4269,
+   "valid_rate": 0.4266,
+   "time": "2026-11-15T12:50:24Z"
+  },
+  {
+   "step": 5,
+   "reward_mean": 0.2487,
+   "reward_best": 0.4018,
+   "valid_rate": 0.5016,
+   "time": "2026-11-15T12:53:00Z"
+  },
+  {
+   "step": 6,
+   "reward_mean": 0.2892,
+   "reward_best": 0.485,
+   "valid_rate": 0.5538,
+   "time": "2026-11-15T12:55:36Z"
+  },
+  {
+   "step": 7,
+   "reward_mean": 0.2914,
+   "reward_best": 0.497,
+   "valid_rate": 0.573,
+   "time": "2026-11-15T12:58:12Z"
+  },
+  {
+   "step": 8,
+   "reward_mean": 0.3276,
+   "reward_best": 0.5141,
+   "valid_rate": 0.6204,
+   "time": "2026-11-15T13:00:48Z"
+  },
+  {
+   "step": 9,
+   "reward_mean": 0.367,
+   "reward_best": 0.5549,
+   "valid_rate": 0.6393,
+   "time": "2026-11-15T13:03:24Z"
+  },
+  {
+   "step": 10,
+   "reward_mean": 0.3424,
+   "reward_best": 0.5486,
+   "valid_rate": 0.665,
+   "time": "2026-11-15T13:06:00Z"
+  },
+  {
+   "step": 11,
+   "reward_mean": 0.4073,
+   "reward_best": 0.623,
+   "valid_rate": 0.6674,
+   "time": "2026-11-15T13:08:36Z"
+  },
+  {
+   "step": 12,
+   "reward_mean": 0.3937,
+   "reward_best": 0.5972,
+   "valid_rate": 0.6735,
+   "time": "2026-11-15T13:11:12Z"
+  },
+  {
+   "step": 13,
+   "reward_mean": 0.4131,
+   "reward_best": 0.5766,
+   "valid_rate": 0.699,
+   "time": "2026-11-15T13:13:48Z"
+  },
+  {
+   "step": 14,
+   "reward_mean": 0.4074,
+   "reward_best": 0.6189,
+   "valid_rate": 0.7176,
+   "time": "2026-11-15T13:16:24Z"
+  },
+  {
+   "step": 15,
+   "reward_mean": 0.4302,
+   "reward_best": 0.6115,
+   "valid_rate": 0.7783,
+   "time": "2026-11-15T13:19:00Z"
+  },
+  {
+   "step": 16,
+   "reward_mean": 0.4342,
+   "reward_best": 0.6202,
+   "valid_rate": 0.7737,
+   "time": "2026-11-15T13:21:36Z"
+  },
+  {
+   "step": 17,
+   "reward_mean": 0.4858,
+   "reward_best": 0.7014,
+   "valid_rate": 0.8058,
+   "time": "2026-11-15T13:24:12Z"
+  },
+  {
+   "step": 18,
+   "reward_mean": 0.4662,
+   "reward_best": 0.6494,
+   "valid_rate": 0.7875,
+   "time": "2026-11-15T13:26:48Z"
+  },
+  {
+   "step": 19,
+   "reward_mean": 0.5063,
+   "reward_best": 0.7329,
+   "valid_rate": 0.7859,
+   "time": "2026-11-15T13:29:24Z"
+  },
+  {
+   "step": 20,
+   "reward_mean": 0.48,
+   "reward_best": 0.6486,
+   "valid_rate": 0.8006,
+   "time": "2026-11-15T13:32:00Z"
+  },
+  {
+   "step": 21,
+   "reward_mean": 0.5039,
+   "reward_best": 0.701,
+   "valid_rate": 0.8113,
+   "time": "2026-11-15T13:34:36Z"
+  },
+  {
+   "step": 22,
+   "reward_mean": 0.4876,
+   "reward_best": 0.6712,
+   "valid_rate": 0.8257,
+   "time": "2026-11-15T13:37:12Z"
+  },
+  {
+   "step": 23,
+   "reward_mean": 0.523,
+   "reward_best": 0.7492,
+   "valid_rate": 0.8523,
+   "time": "2026-11-15T13:39:48Z"
+  },
+  {
+   "step": 24,
+   "reward_mean": 0.5271,
+   "reward_best": 0.7265,
+   "valid_rate": 0.858,
+   "time": "2026-11-15T13:42:24Z"
+  },
+  {
+   "step": 25,
+   "reward_mean": 0.5102,
+   "reward_best": 0.7322,
+   "valid_rate": 0.8702,
+   "time": "2026-11-15T13:45:00Z"
+  },
+  {
+   "step": 26,
+   "reward_mean": 0.557,
+   "reward_best": 0.7708,
+   "valid_rate": 0.8523,
+   "time": "2026-11-15T13:47:36Z"
+  },
+  {
+   "step": 27,
+   "reward_mean": 0.5385,
+   "reward_best": 0.6968,
+   "valid_rate": 0.8717,
+   "time": "2026-11-15T13:50:12Z"
+  },
+  {
+   "step": 28,
+   "reward_mean": 0.5266,
+   "reward_best": 0.682,
+   "valid_rate": 0.8506,
+   "time": "2026-11-15T13:52:48Z"
+  },
+  {
+   "step": 29,
+   "reward_mean": 0.5362,
+   "reward_best": 0.7134,
+   "valid_rate": 0.8452,
+   "time": "2026-11-15T13:55:24Z"
+  },
+  {
+   "step": 30,
+   "reward_mean": 0.5323,
+   "reward_best": 0.6944,
+   "valid_rate": 0.8517,
+   "time": "2026-11-15T13:58:00Z"
+  },
+  {
+   "step": 31,
+   "reward_mean": 0.5544,
+   "reward_best": 0.7064,
+   "valid_rate": 0.9014,
+   "time": "2026-11-15T14:00:36Z"
+  },
+  {
+   "step": 32,
+   "reward_mean": 0.5705,
+   "reward_best": 0.7324,
+   "valid_rate": 0.867,
+   "time": "2026-11-15T14:03:12Z"
+  },
+  {
+   "step": 33,
+   "reward_mean": 0.5605,
+   "reward_best": 0.7396,
+   "valid_rate": 0.8619,
+   "time": "2026-11-15T14:05:48Z"
+  },
+  {
+   "step": 34,
+   "reward_mean": 0.5887,
+   "reward_best": 0.8181,
+   "valid_rate": 0.8849,
+   "time": "2026-11-15T14:08:24Z"
+  },
+  {
+   "step": 35,
+   "reward_mean": 0.5733,
+   "reward_best": 0.7302,
+   "valid_rate": 0.8653,
+   "time": "2026-11-15T14:11:00Z"
+  },
+  {
+   "step": 36,
+   "reward_mean": 0.5689,
+   "reward_best": 0.7401,
+   "valid_rate": 0.9109,
+   "time": "2026-11-15T14:13:36Z"
+  },
+  {
+   "step": 37,
+   "reward_mean": 0.5623,
+   "reward_best": 0.7141,
+   "valid_rate": 0.92,
+   "time": "2026-11-15T14:16:12Z"
+  },
+  {
+   "step": 38,
+   "reward_mean": 0.5829,
+   "reward_best": 0.7446,
+   "valid_rate": 0.8972,
+   "time": "2026-11-15T14:18:48Z"
+  },
+  {
+   "step": 39,
+   "reward_mean": 0.56,
+   "reward_best": 0.7522,
+   "valid_rate": 0.9247,
+   "time": "2026-11-15T14:21:24Z"
+  },
+  {
+   "step": 40,
+   "reward_mean": 0.6037,
+   "reward_best": 0.8094,
+   "valid_rate": 0.883,
+   "time": "2026-11-15T14:24:00Z"
+  }
+ ],
+ "eval": {
+  "gen0": {
+   "score": 0.31,
+   "valid_rate": 0.19
+  },
+  "genN": {
+   "score": 0.58,
+   "valid_rate": 0.83
+  },
+  "heldout": "spencer-discrepancy n<=8"
+ },
+ "best": {
+  "solution": {
+   "elements": [
+    0,
+    1,
+    3,
+    7,
+    12,
+    20,
+    30,
+    44,
+    65,
+    80,
+    96,
+    122,
+    147,
+    181,
+    203
+   ]
+  },
+  "score": 0.6
+ }
+}

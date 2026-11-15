@@ -1,0 +1,309 @@
+{
+ "facts": [
+  {
+   "id": "f_001",
+   "agent": "agent:no-three-in-line-75",
+   "problem": "no-three-in-line-75",
+   "text": "rot180-150 class converges fastest: median 44 rounds, min violated lines 151 after 3h; mirror-149 plateaus near 178.",
+   "time": "2026-11-15T11:20:00Z",
+   "read_by": [
+    "planner",
+    "proposer"
+   ]
+  },
+  {
+   "id": "f_002",
+   "agent": "critic",
+   "problem": "no-three-in-line-75",
+   "text": "Prediction refuted: diag-149 was expected to reach <150 violated lines within 60 min; observed 206. Diagonal symmetry adds too many forced collinear triples.",
+   "time": "2026-11-15T12:10:00Z",
+   "read_by": [
+    "proposer",
+    "agent:no-three-in-line-75"
+   ]
+  },
+  {
+   "id": "f_003",
+   "agent": "agent:spencer-discrepancy",
+   "problem": "spencer-discrepancy",
+   "text": "n=20 D=8 tabu from Paley init stalls at 2592 bad vectors on all 3 seeds; identical plateau suggests a structural barrier, not bad luck.",
+   "time": "2026-11-15T12:40:00Z",
+   "read_by": [
+    "planner",
+    "proposer",
+    "critic"
+   ]
+  },
+  {
+   "id": "f_004",
+   "agent": "agent:hadamard-det-51",
+   "problem": "hadamard-det-51",
+   "text": "All 6 hadamard chains seeded from the kgrey record matrix return to 43.33745596194 within 100 steps; neighbourhood of the record looks locally optimal under 1-4 flips.",
+   "time": "2026-11-15T12:50:00Z",
+   "read_by": [
+    "planner",
+    "proposer"
+   ]
+  },
+  {
+   "id": "f_005",
+   "agent": "agent:sidon-45-set",
+   "problem": "sidon-45-set",
+   "text": "Exact search: the Ma-Tang 14-element set has no 1-point extension and no 2-point extension inside [-3000, 4000]. Status: proved-negative for small extensions.",
+   "time": "2026-11-15T10:50:00Z",
+   "read_by": [
+    "planner",
+    "critic",
+    "proposer"
+   ]
+  },
+  {
+   "id": "f_006",
+   "agent": "planner",
+   "problem": null,
+   "text": "GPU budget split 4/4 spencer/hadamard; 109 CPU cores on no-three SAT. Free resources: 3 cores.",
+   "time": "2026-11-15T13:10:00Z",
+   "read_by": [
+    "proposer"
+   ]
+  },
+  {
+   "id": "f_007",
+   "agent": "proposer",
+   "problem": "two-deletion-code-16",
+   "text": "Launched twodel_ils x8 with kick=6: conflict-graph ILS reached 220 words in 12 min (record 226).",
+   "time": "2026-11-15T14:28:00Z",
+   "read_by": [
+    "planner",
+    "agent:two-deletion-code-16"
+   ]
+  },
+  {
+   "id": "f_008",
+   "agent": "critic",
+   "problem": "spencer-discrepancy",
+   "text": "Verified with official verifier: our n=17 Paley-derived matrix scores 1.697749375254331, equal to the record (no improvement, minImprovement 1e-6).",
+   "time": "2026-11-15T11:50:00Z",
+   "read_by": [
+    "proposer",
+    "agent:spencer-discrepancy"
+   ]
+  },
+  {
+   "id": "f_009",
+   "agent": "agent:two-deletion-code-16",
+   "problem": "two-deletion-code-16",
+   "text": "Words with long runs (>=6 equal bits) are rarely in large codes; seeding ILS from the record minus run-heavy words speeds convergence.",
+   "time": "2026-11-15T14:32:00Z",
+   "read_by": [
+    "proposer"
+   ]
+  },
+  {
+   "id": "f_010",
+   "agent": "proposer",
+   "problem": "no-three-in-line-75",
+   "text": "Exa: Flammenkamp found 2n-point solutions for large n mainly in rotation-symmetric classes; supports shifting more seeds to rot180-150.",
+   "time": "2026-11-15T13:40:00Z",
+   "read_by": [
+    "planner",
+    "agent:no-three-in-line-75"
+   ]
+  },
+  {
+   "id": "f_011",
+   "agent": "critic",
+   "problem": "hadamard-det-51",
+   "text": "Prediction confirmed: hadamard stays at record after 90 min (expected no gain). Recommend reallocating 2 GPUs.",
+   "time": "2026-11-15T14:00:00Z",
+   "read_by": [
+    "planner"
+   ]
+  },
+  {
+   "id": "f_012",
+   "agent": "planner",
+   "problem": "spencer-discrepancy",
+   "text": "Priority drop: spencer gap closed per GPU-hour = 0 for 4 cycles; keep 2 GPUs as exploration, release 2.",
+   "time": "2026-11-15T14:10:00Z",
+   "read_by": [
+    "proposer",
+    "critic"
+   ]
+  },
+  {
+   "id": "f_013",
+   "agent": "agent:no-three-in-line-75",
+   "problem": "no-three-in-line-75",
+   "text": "Round-55 rot180-150 s0 model: 150 points, 131 violated lines, 12475 lazy line clauses. Violations concentrate on slopes 1/2, 2, -1/3.",
+   "time": "2026-11-15T14:35:00Z",
+   "read_by": [
+    "proposer",
+    "planner"
+   ]
+  }
+ ],
+ "agents": [
+  "planner",
+  "proposer",
+  "critic",
+  "agent:no-three-in-line-75",
+  "agent:spencer-discrepancy",
+  "agent:hadamard-det-51",
+  "agent:sidon-45-set",
+  "agent:two-deletion-code-16"
+ ],
+ "links": [
+  {
+   "from_agent": "agent:no-three-in-line-75",
+   "to_agent": "planner",
+   "fact_id": "f_001"
+  },
+  {
+   "from_agent": "agent:no-three-in-line-75",
+   "to_agent": "proposer",
+   "fact_id": "f_001"
+  },
+  {
+   "from_agent": "critic",
+   "to_agent": "proposer",
+   "fact_id": "f_002"
+  },
+  {
+   "from_agent": "critic",
+   "to_agent": "agent:no-three-in-line-75",
+   "fact_id": "f_002"
+  },
+  {
+   "from_agent": "agent:spencer-discrepancy",
+   "to_agent": "planner",
+   "fact_id": "f_003"
+  },
+  {
+   "from_agent": "agent:spencer-discrepancy",
+   "to_agent": "proposer",
+   "fact_id": "f_003"
+  },
+  {
+   "from_agent": "agent:spencer-discrepancy",
+   "to_agent": "critic",
+   "fact_id": "f_003"
+  },
+  {
+   "from_agent": "agent:hadamard-det-51",
+   "to_agent": "planner",
+   "fact_id": "f_004"
+  },
+  {
+   "from_agent": "agent:hadamard-det-51",
+   "to_agent": "proposer",
+   "fact_id": "f_004"
+  },
+  {
+   "from_agent": "agent:sidon-45-set",
+   "to_agent": "planner",
+   "fact_id": "f_005"
+  },
+  {
+   "from_agent": "agent:sidon-45-set",
+   "to_agent": "critic",
+   "fact_id": "f_005"
+  },
+  {
+   "from_agent": "agent:sidon-45-set",
+   "to_agent": "proposer",
+   "fact_id": "f_005"
+  },
+  {
+   "from_agent": "planner",
+   "to_agent": "proposer",
+   "fact_id": "f_006"
+  },
+  {
+   "from_agent": "proposer",
+   "to_agent": "planner",
+   "fact_id": "f_007"
+  },
+  {
+   "from_agent": "proposer",
+   "to_agent": "agent:two-deletion-code-16",
+   "fact_id": "f_007"
+  },
+  {
+   "from_agent": "critic",
+   "to_agent": "proposer",
+   "fact_id": "f_008"
+  },
+  {
+   "from_agent": "critic",
+   "to_agent": "agent:spencer-discrepancy",
+   "fact_id": "f_008"
+  },
+  {
+   "from_agent": "agent:two-deletion-code-16",
+   "to_agent": "proposer",
+   "fact_id": "f_009"
+  },
+  {
+   "from_agent": "proposer",
+   "to_agent": "planner",
+   "fact_id": "f_010"
+  },
+  {
+   "from_agent": "proposer",
+   "to_agent": "agent:no-three-in-line-75",
+   "fact_id": "f_010"
+  },
+  {
+   "from_agent": "critic",
+   "to_agent": "planner",
+   "fact_id": "f_011"
+  },
+  {
+   "from_agent": "planner",
+   "to_agent": "proposer",
+   "fact_id": "f_012"
+  },
+  {
+   "from_agent": "planner",
+   "to_agent": "critic",
+   "fact_id": "f_012"
+  },
+  {
+   "from_agent": "agent:no-three-in-line-75",
+   "to_agent": "proposer",
+   "fact_id": "f_013"
+  },
+  {
+   "from_agent": "agent:no-three-in-line-75",
+   "to_agent": "planner",
+   "fact_id": "f_013"
+  }
+ ],
+ "benchmark": {
+  "systems": [
+   {
+    "name": "past.dev",
+    "accuracy": 0.88,
+    "latency_ms": 412.0,
+    "cost_usd": 0.0009,
+    "n": 40
+   },
+   {
+    "name": "markdown",
+    "accuracy": 0.73,
+    "latency_ms": 2870.0,
+    "cost_usd": 0.0187,
+    "n": 40
+   },
+   {
+    "name": "rag",
+    "accuracy": 0.8,
+    "latency_ms": 655.0,
+    "cost_usd": 0.0014,
+    "n": 40
+   }
+  ],
+  "time": "2026-11-15T14:15:00Z"
+ }
+}

@@ -1,0 +1,995 @@
+[
+ {
+  "id": 39,
+  "cycle": 6,
+  "time": "2026-11-15T14:37:00Z",
+  "agent": "proposer",
+  "problem": "two-deletion-code-16",
+  "action": "keep",
+  "params": {},
+  "rationale": "ILS still improving (218 -> 220 in 10 min); keep all 8 seeds.",
+  "prediction": {
+   "metric": "best_size",
+   "expected": 223,
+   "horizon_min": 40
+  },
+  "outcome": {
+   "observed": null,
+   "verdict": "pending",
+   "note": ""
+  },
+  "sources": [],
+  "memory_reads": [
+   "f_007",
+   "f_009"
+  ],
+  "memory_writes": [],
+  "model": "gpt-5.4-mini",
+  "tokens": 2110,
+  "latency_ms": 1900
+ },
+ {
+  "id": 38,
+  "cycle": 6,
+  "time": "2026-11-15T14:35:00Z",
+  "agent": "memory",
+  "problem": "no-three-in-line-75",
+  "action": "write",
+  "params": {},
+  "rationale": "Wrote round-55 model summary for agent:no-three-in-line-75 to past.dev.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [
+   "f_013"
+  ],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 37,
+  "cycle": 6,
+  "time": "2026-11-15T14:32:00Z",
+  "agent": "critic",
+  "problem": "two-deletion-code-16",
+  "action": "verify",
+  "params": {
+   "score": 220
+  },
+  "rationale": "Official verifier on td-c4-ils-s0 best code: 220 words, valid. Record 226 not beaten.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [
+   "f_009"
+  ],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 36,
+  "cycle": 6,
+  "time": "2026-11-15T14:28:00Z",
+  "agent": "learning",
+  "problem": "sidon-45-set",
+  "action": "train_step",
+  "params": {
+   "step": 40
+  },
+  "rationale": "Tinker GRPO step 40: reward mean 0.61, best 0.83, valid rate 0.91.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 35,
+  "cycle": 6,
+  "time": "2026-11-15T14:25:00Z",
+  "agent": "proposer",
+  "problem": "no-three-in-line-75",
+  "action": "launch",
+  "params": {
+   "template": "nothree_sat",
+   "sym": "none-150",
+   "seed": 0,
+   "solver": "maplechrono",
+   "presolve-slopes": 3
+  },
+  "rationale": "Add one unsymmetric none-150 seed with maplechrono and 6 presolved slopes as a control for the symmetry hypothesis.",
+  "prediction": {
+   "metric": "min_violated_lines",
+   "expected": 125,
+   "horizon_min": 45
+  },
+  "outcome": {
+   "observed": null,
+   "verdict": "pending",
+   "note": ""
+  },
+  "sources": [
+   {
+    "id": 1,
+    "title": "No-three-in-line problem",
+    "url": "https://en.wikipedia.org/wiki/No-three-in-line_problem",
+    "published": null
+   },
+   {
+    "id": 4,
+    "title": "CaDiCaL SAT solver",
+    "url": "https://github.com/arminbiere/cadical",
+    "published": null
+   }
+  ],
+  "memory_reads": [
+   "f_001",
+   "f_013"
+  ],
+  "memory_writes": [],
+  "model": "gpt-6-astra",
+  "tokens": 7310,
+  "latency_ms": 9600
+ },
+ {
+  "id": 34,
+  "cycle": 6,
+  "time": "2026-11-15T14:23:00Z",
+  "agent": "planner",
+  "problem": "spencer-discrepancy",
+  "action": "reallocate",
+  "params": {},
+  "rationale": "Spencer gap closed per GPU-hour is 0 for 4 cycles. Keep 2 GPUs exploring, mark 2 for release next cycle.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [
+   "f_012"
+  ],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 33,
+  "cycle": 5,
+  "time": "2026-11-15T13:52:00Z",
+  "agent": "critic",
+  "problem": "hadamard-det-51",
+  "action": "score_prediction",
+  "params": {},
+  "rationale": "Prediction confirmed: no gain on hadamard over 90 min.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [
+   "f_011"
+  ],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 32,
+  "cycle": 5,
+  "time": "2026-11-15T13:50:00Z",
+  "agent": "sandbox",
+  "problem": "sidon-45-set",
+  "action": "sandbox",
+  "params": {
+   "n": 8,
+   "ok": 6,
+   "invalid": 1,
+   "timeout": 1
+  },
+  "rationale": "Proposer wrote 8 Sidon search programs; ran 8 Modal sandboxes in parallel (120 s each). Best valid score 0.6 (9/15), worse than record.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 31,
+  "cycle": 5,
+  "time": "2026-11-15T13:47:00Z",
+  "agent": "memory",
+  "problem": null,
+  "action": "recall",
+  "params": {
+   "k": 6,
+   "latency_ms": 388
+  },
+  "rationale": "Recalled 6 facts for proposer from past.dev shared space ltd-lab (level high).",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [
+   "f_001",
+   "f_002",
+   "f_003",
+   "f_004",
+   "f_006",
+   "f_010"
+  ],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 30,
+  "cycle": 5,
+  "time": "2026-11-15T13:46:00Z",
+  "agent": "proposer",
+  "problem": "no-three-in-line-75",
+  "action": "research",
+  "params": {},
+  "rationale": "rot180-150 has the steepest violated-lines decline; Flammenkamp reports most large 2n solutions are rotation-symmetric. Ask literature agent for slope-presolve tricks.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [
+   {
+    "id": 2,
+    "title": "Achim Flammenkamp: The No-Three-in-Line Problem",
+    "url": "https://wwwhomes.uni-bielefeld.de/achim/no3in/readme.html",
+    "published": "1998-01-01"
+   },
+   {
+    "id": 4,
+    "title": "CaDiCaL SAT solver",
+    "url": "https://github.com/arminbiere/cadical",
+    "published": null
+   }
+  ],
+  "memory_reads": [
+   "f_001",
+   "f_010"
+  ],
+  "memory_writes": [],
+  "model": "gpt-6-astra",
+  "tokens": 6650,
+  "latency_ms": 8800
+ },
+ {
+  "id": 29,
+  "cycle": 4,
+  "time": "2026-11-15T13:06:00Z",
+  "agent": "executor",
+  "problem": "no-three-in-line-75",
+  "action": "stop",
+  "params": {
+   "count": 8
+  },
+  "rationale": "Stopped 8 diag-150 seeds (no model after 2h, lowest priority class).",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 28,
+  "cycle": 4,
+  "time": "2026-11-15T13:05:00Z",
+  "agent": "executor",
+  "problem": "two-deletion-code-16",
+  "action": "launch",
+  "params": {
+   "count": 8
+  },
+  "rationale": "Launched td-c4-ils-s0..s7 (8 CPU cores).",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 27,
+  "cycle": 4,
+  "time": "2026-11-15T13:04:00Z",
+  "agent": "proposer",
+  "problem": "two-deletion-code-16",
+  "action": "launch",
+  "params": {
+   "template": "twodel_ils",
+   "seeds": 8,
+   "kick": 6
+  },
+  "rationale": "No strategy yet for two-deletion-code-16. Conflict-graph iterated local search with random kicks is cheap on CPU; use the 8 cores freed by stopping diag-150 seeds.",
+  "prediction": {
+   "metric": "best_size",
+   "expected": 222,
+   "horizon_min": 30
+  },
+  "outcome": {
+   "observed": 220,
+   "verdict": "refuted",
+   "note": "reached 220 after 30 min"
+  },
+  "sources": [
+   {
+    "id": 10,
+    "title": "Deletion channel",
+    "url": "https://en.wikipedia.org/wiki/Deletion_channel",
+    "published": null
+   },
+   {
+    "id": 11,
+    "title": "Tabu search",
+    "url": "https://en.wikipedia.org/wiki/Tabu_search",
+    "published": null
+   }
+  ],
+  "memory_reads": [
+   "f_006"
+  ],
+  "memory_writes": [
+   "f_007"
+  ],
+  "model": "gpt-6-astra",
+  "tokens": 8830,
+  "latency_ms": 11200
+ },
+ {
+  "id": 26,
+  "cycle": 4,
+  "time": "2026-11-15T13:02:00Z",
+  "agent": "literature",
+  "problem": "two-deletion-code-16",
+  "action": "search",
+  "params": {
+   "query": "two deletion correcting codes length 16 largest known",
+   "results": 2
+  },
+  "rationale": "New problem in portfolio: searched for two-deletion code constructions and local search methods.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [
+   {
+    "id": 10,
+    "title": "Deletion channel",
+    "url": "https://en.wikipedia.org/wiki/Deletion_channel",
+    "published": null
+   },
+   {
+    "id": 11,
+    "title": "Tabu search",
+    "url": "https://en.wikipedia.org/wiki/Tabu_search",
+    "published": null
+   }
+  ],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 25,
+  "cycle": 3,
+  "time": "2026-11-15T12:15:00Z",
+  "agent": "critic",
+  "problem": "no-three-in-line-75",
+  "action": "score_prediction",
+  "params": {},
+  "rationale": "Prediction from cycle 1 refuted (expected 170, observed 178). Lesson written to memory.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [
+   "f_002"
+  ],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 24,
+  "cycle": 3,
+  "time": "2026-11-15T12:14:00Z",
+  "agent": "executor",
+  "problem": "spencer-discrepancy",
+  "action": "launch",
+  "params": {
+   "strategy_id": "sp-c5-n18-s5",
+   "pid": 412233
+  },
+  "rationale": "Launched sp-c5-n18-s5 on GPU 3 (CUDA_VISIBLE_DEVICES=3).",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 23,
+  "cycle": 3,
+  "time": "2026-11-15T12:13:00Z",
+  "agent": "planner",
+  "problem": "spencer-discrepancy",
+  "action": "launch",
+  "params": {
+   "template": "spencer_gpu",
+   "n": 18,
+   "D": 8,
+   "seed": 5,
+   "init": "random",
+   "tenure": 16,
+   "restart": 30000,
+   "gpu": 3
+  },
+  "rationale": "Validated spencer_gpu params against schema; GPU 3 freed by stopping seed 3 (identical plateau).",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 22,
+  "cycle": 3,
+  "time": "2026-11-15T12:12:00Z",
+  "agent": "proposer",
+  "problem": "spencer-discrepancy",
+  "action": "note",
+  "params": {},
+  "rationale": "All n=20 D=8 seeds share the 2592 plateau; propose testing n=18 D=8 (target ratio 8/sqrt(18)=1.8856) on one GPU.",
+  "prediction": {
+   "metric": "bad_vectors",
+   "expected": 2000,
+   "horizon_min": 60
+  },
+  "outcome": {
+   "observed": 3314,
+   "verdict": "refuted",
+   "note": "n=18 plateau 3314"
+  },
+  "sources": [
+   {
+    "id": 5,
+    "title": "Discrepancy theory",
+    "url": "https://en.wikipedia.org/wiki/Discrepancy_theory",
+    "published": null
+   },
+   {
+    "id": 6,
+    "title": "Paley construction",
+    "url": "https://en.wikipedia.org/wiki/Paley_construction",
+    "published": null
+   }
+  ],
+  "memory_reads": [
+   "f_003"
+  ],
+  "memory_writes": [],
+  "model": "gpt-6-astra",
+  "tokens": 7020,
+  "latency_ms": 9100
+ },
+ {
+  "id": 21,
+  "cycle": 2,
+  "time": "2026-11-15T11:25:00Z",
+  "agent": "literature",
+  "problem": "hadamard-det-51",
+  "action": "search",
+  "params": {
+   "query": "large determinant sign matrices table Orrick Solomon",
+   "results": 2
+  },
+  "rationale": "Exa search for record tables of order 4k+3 max-det matrices.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [
+   {
+    "id": 7,
+    "title": "Hadamard's maximal determinant problem",
+    "url": "https://en.wikipedia.org/wiki/Hadamard%27s_maximal_determinant_problem",
+    "published": null
+   },
+   {
+    "id": 8,
+    "title": "Large-determinant sign matrices of order 4k+3",
+    "url": "http://www.indiana.edu/~maxdet/",
+    "published": null
+   }
+  ],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 20,
+  "cycle": 2,
+  "time": "2026-11-15T11:24:00Z",
+  "agent": "proposer",
+  "problem": "hadamard-det-51",
+  "action": "keep",
+  "params": {},
+  "rationale": "Hadamard chains are at the record value; keep for one cycle since GPU tabu needs ~2h to escape the basin according to step rates.",
+  "prediction": {
+   "metric": "best_log10",
+   "expected": 43.33745596194,
+   "horizon_min": 90
+  },
+  "outcome": {
+   "observed": 43.33745596194,
+   "verdict": "confirmed",
+   "note": "no gain, as predicted"
+  },
+  "sources": [],
+  "memory_reads": [
+   "f_004"
+  ],
+  "memory_writes": [],
+  "model": "gpt-6-astra",
+  "tokens": 5410,
+  "latency_ms": 7300
+ },
+ {
+  "id": 19,
+  "cycle": 2,
+  "time": "2026-11-15T11:22:00Z",
+  "agent": "critic",
+  "problem": "spencer-discrepancy",
+  "action": "verify",
+  "params": {},
+  "rationale": "Official verifier on our n=17 matrix: 1.697749375254331 = 7/sqrt(17), equal to the record. minImprovement 1e-6 not met.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [
+   "f_008"
+  ],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 18,
+  "cycle": 1,
+  "time": "2026-11-15T10:47:00Z",
+  "agent": "critic",
+  "problem": "sidon-45-set",
+  "action": "verify",
+  "params": {
+   "score": 0.5714285714285714
+  },
+  "rationale": "Re-ran official verifier on the record 14-element set: 0.5714285714285714 (h=8). Our best equals the record; no record declared.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [
+   "f_005"
+  ],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 17,
+  "cycle": 1,
+  "time": "2026-11-15T10:46:00Z",
+  "agent": "proposer",
+  "problem": "no-three-in-line-75",
+  "action": "keep",
+  "params": {},
+  "rationale": "Keep all five symmetry classes running for one more cycle to measure convergence rates before reallocating cores.",
+  "prediction": {
+   "metric": "min_violated_lines",
+   "expected": 170,
+   "horizon_min": 60
+  },
+  "outcome": {
+   "observed": 178,
+   "verdict": "refuted",
+   "note": "min violated 178 after 60 min (mirror-149); rot180 not yet converged"
+  },
+  "sources": [
+   {
+    "id": 2,
+    "title": "Achim Flammenkamp: The No-Three-in-Line Problem",
+    "url": "https://wwwhomes.uni-bielefeld.de/achim/no3in/readme.html",
+    "published": "1998-01-01"
+   }
+  ],
+  "memory_reads": [
+   "f_006"
+  ],
+  "memory_writes": [
+   "f_010"
+  ],
+  "model": "gpt-6-astra",
+  "tokens": 6120,
+  "latency_ms": 8400
+ },
+ {
+  "id": 16,
+  "cycle": 1,
+  "time": "2026-11-15T10:44:00Z",
+  "agent": "literature",
+  "problem": "no-three-in-line-75",
+  "action": "search",
+  "params": {
+   "query": "no-three-in-line 2n point counts table Flammenkamp",
+   "results": 3
+  },
+  "rationale": "Exa search for prior 2n-point constructions under symmetry to decide which classes to favour.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [
+   {
+    "id": 1,
+    "title": "No-three-in-line problem",
+    "url": "https://en.wikipedia.org/wiki/No-three-in-line_problem",
+    "published": null
+   },
+   {
+    "id": 2,
+    "title": "Achim Flammenkamp: The No-Three-in-Line Problem",
+    "url": "https://wwwhomes.uni-bielefeld.de/achim/no3in/readme.html",
+    "published": "1998-01-01"
+   },
+   {
+    "id": 3,
+    "title": "A000769: No-3-in-line problem on n X n grid",
+    "url": "https://oeis.org/A000769",
+    "published": null
+   }
+  ],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 15,
+  "cycle": 1,
+  "time": "2026-11-15T10:42:00Z",
+  "agent": "executor",
+  "problem": "hadamard-det-51",
+  "action": "adopt",
+  "params": {
+   "count": 6
+  },
+  "rationale": "Adopted 6 hadamard_gpu processes on GPUs 4-7.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 14,
+  "cycle": 1,
+  "time": "2026-11-15T10:42:00Z",
+  "agent": "executor",
+  "problem": "spencer-discrepancy",
+  "action": "adopt",
+  "params": {
+   "count": 6
+  },
+  "rationale": "Adopted 6 spencer_gpu processes on GPUs 0-3.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 13,
+  "cycle": 1,
+  "time": "2026-11-15T10:41:00Z",
+  "agent": "executor",
+  "problem": "no-three-in-line-75",
+  "action": "adopt",
+  "params": {
+   "count": 109
+  },
+  "rationale": "Adopted 109 running nothree_sat processes found via pgrep (5 symmetry classes); not restarted.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 12,
+  "cycle": 6,
+  "time": "2026-11-15T14:22:30Z",
+  "agent": "planner",
+  "problem": null,
+  "action": "priorities",
+  "params": {
+   "free_gpus": 0,
+   "free_cores": 3
+  },
+  "rationale": "UCB priority over gap-closed-per-compute-hour and staleness: no-three 0.81, two-deletion 0.64, spencer 0.38, hadamard 0.21, sidon 0.05.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [
+   "f_006"
+  ],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 11,
+  "cycle": 6,
+  "time": "2026-11-15T14:22:00Z",
+  "agent": "system",
+  "problem": null,
+  "action": "cycle_start",
+  "params": {
+   "interval_s": 300
+  },
+  "rationale": "Cycle 6 started: telemetry pulled from 8 GPUs and 124 cores.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 10,
+  "cycle": 5,
+  "time": "2026-11-15T13:45:30Z",
+  "agent": "planner",
+  "problem": null,
+  "action": "priorities",
+  "params": {
+   "free_gpus": 0,
+   "free_cores": 3
+  },
+  "rationale": "UCB priority over gap-closed-per-compute-hour and staleness: no-three 0.81, two-deletion 0.64, spencer 0.38, hadamard 0.21, sidon 0.05.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [
+   "f_006"
+  ],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 9,
+  "cycle": 5,
+  "time": "2026-11-15T13:45:00Z",
+  "agent": "system",
+  "problem": null,
+  "action": "cycle_start",
+  "params": {
+   "interval_s": 300
+  },
+  "rationale": "Cycle 5 started: telemetry pulled from 8 GPUs and 124 cores.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 8,
+  "cycle": 4,
+  "time": "2026-11-15T13:00:30Z",
+  "agent": "planner",
+  "problem": null,
+  "action": "priorities",
+  "params": {
+   "free_gpus": 0,
+   "free_cores": 3
+  },
+  "rationale": "UCB priority over gap-closed-per-compute-hour and staleness: no-three 0.81, two-deletion 0.64, spencer 0.38, hadamard 0.21, sidon 0.05.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [
+   "f_006"
+  ],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 7,
+  "cycle": 4,
+  "time": "2026-11-15T13:00:00Z",
+  "agent": "system",
+  "problem": null,
+  "action": "cycle_start",
+  "params": {
+   "interval_s": 300
+  },
+  "rationale": "Cycle 4 started: telemetry pulled from 8 GPUs and 124 cores.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 6,
+  "cycle": 3,
+  "time": "2026-11-15T12:10:30Z",
+  "agent": "planner",
+  "problem": null,
+  "action": "priorities",
+  "params": {
+   "free_gpus": 0,
+   "free_cores": 3
+  },
+  "rationale": "UCB priority over gap-closed-per-compute-hour and staleness: no-three 0.81, two-deletion 0.64, spencer 0.38, hadamard 0.21, sidon 0.05.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [
+   "f_006"
+  ],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 5,
+  "cycle": 3,
+  "time": "2026-11-15T12:10:00Z",
+  "agent": "system",
+  "problem": null,
+  "action": "cycle_start",
+  "params": {
+   "interval_s": 300
+  },
+  "rationale": "Cycle 3 started: telemetry pulled from 8 GPUs and 124 cores.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 4,
+  "cycle": 2,
+  "time": "2026-11-15T11:20:30Z",
+  "agent": "planner",
+  "problem": null,
+  "action": "priorities",
+  "params": {
+   "free_gpus": 0,
+   "free_cores": 3
+  },
+  "rationale": "UCB priority over gap-closed-per-compute-hour and staleness: no-three 0.81, two-deletion 0.64, spencer 0.38, hadamard 0.21, sidon 0.05.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [
+   "f_006"
+  ],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 3,
+  "cycle": 2,
+  "time": "2026-11-15T11:20:00Z",
+  "agent": "system",
+  "problem": null,
+  "action": "cycle_start",
+  "params": {
+   "interval_s": 300
+  },
+  "rationale": "Cycle 2 started: telemetry pulled from 8 GPUs and 124 cores.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 2,
+  "cycle": 1,
+  "time": "2026-11-15T10:40:30Z",
+  "agent": "planner",
+  "problem": null,
+  "action": "priorities",
+  "params": {
+   "free_gpus": 0,
+   "free_cores": 3
+  },
+  "rationale": "UCB priority over gap-closed-per-compute-hour and staleness: no-three 0.81, two-deletion 0.64, spencer 0.38, hadamard 0.21, sidon 0.05.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [
+   "f_006"
+  ],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ },
+ {
+  "id": 1,
+  "cycle": 1,
+  "time": "2026-11-15T10:40:00Z",
+  "agent": "system",
+  "problem": null,
+  "action": "cycle_start",
+  "params": {
+   "interval_s": 300
+  },
+  "rationale": "Cycle 1 started: telemetry pulled from 8 GPUs and 124 cores.",
+  "prediction": null,
+  "outcome": null,
+  "sources": [],
+  "memory_reads": [],
+  "memory_writes": [],
+  "model": null,
+  "tokens": null,
+  "latency_ms": null
+ }
+]

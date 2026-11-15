@@ -1,0 +1,10 @@
+{
+ "id": 2,
+ "slug": "first-autocorrelation-inequality",
+ "title": "First Autocorrelation Inequality (Upper Bound)",
+ "scoring": "minimize",
+ "minImprovement": 1e-08,
+ "solutionSchema": {
+  "values": "array of non-negative floats (the discretized function values)"
+ }
+}

@@ -1,0 +1,10 @@
+{
+ "id": 33,
+ "slug": null,
+ "title": "No-Three-in-Line (75 \u00d7 75 grid)",
+ "scoring": "maximize",
+ "minImprovement": 1,
+ "solutionSchema": {
+  "points": "list of 1 to 150 distinct integer pairs [x, y], where 0 <= x, y <= 74"
+ }
+}

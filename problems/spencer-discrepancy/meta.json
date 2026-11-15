@@ -1,0 +1,10 @@
+{
+ "id": 31,
+ "slug": null,
+ "title": "Spencer Discrepancy Constant",
+ "scoring": "maximize",
+ "minImprovement": 1e-06,
+ "solutionSchema": {
+  "matrix": "square matrix of -1 and 1 entries, with order between 1 and 20"
+ }
+}

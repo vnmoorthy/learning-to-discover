@@ -1,0 +1,10 @@
+{
+ "id": 30,
+ "slug": null,
+ "title": "Ring Loading Problem (15 pairs)",
+ "scoring": "maximize",
+ "minImprovement": 0,
+ "solutionSchema": {
+  "pairs": "exactly 15 pairs [u, v], where each value is a nonnegative decimal or fraction string and u + v <= 1"
+ }
+}

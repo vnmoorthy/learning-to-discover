@@ -1,0 +1,10 @@
+{
+ "id": 24,
+ "slug": "kissing-number-d11-605",
+ "title": "Kissing Number in Dimension 11 (n=605)",
+ "scoring": "minimize",
+ "minImprovement": 0,
+ "solutionSchema": {
+  "vectors": "array of 605 vectors in R^11 (each a list of 11 float64 values or high-precision decimal strings with up to 80 significant digits)"
+ }
+}

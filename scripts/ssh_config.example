@@ -1,0 +1,6 @@
+Host ltd
+  HostName <your-gpu-box-ip>
+  User ubuntu
+  IdentityFile ~/.ssh/<your-key>
+  BatchMode yes
+  ServerAliveInterval 30

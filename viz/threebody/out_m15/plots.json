@@ -1,0 +1,129 @@
+{
+ "plots": [
+  {
+   "file": "viz/threebody/out_m15/threebody_00.png",
+   "title": "Candidate new orbit",
+   "orbit": {
+    "vx": 0.24347358532406208,
+    "vy": 0.2700709647917082,
+    "T": 6.903397372223221,
+    "m3": 1.5,
+    "E": -3.1914920035271526,
+    "err": 4.738988731985073e-11,
+    "err_coarse": 1.586943520227749e-08,
+    "consistency": 9.757623153916484e-09,
+    "rmin": 0.008466213310523475,
+    "steps": 1532,
+    "valid": true,
+    "reason": null,
+    "Tstar": 39.35985717328782,
+    "syzygies": 18,
+    "word": "121312131231213123",
+    "free_group_word": "abABBABBABabb",
+    "status": "new_candidate",
+    "match": null,
+    "family": "121312131231213123",
+    "power": 1
+   }
+  },
+  {
+   "file": "viz/threebody/out_m15/threebody_01.png",
+   "title": "Candidate new orbit",
+   "orbit": {
+    "vx": 0.04482473985289384,
+    "vy": 0.8108542833101394,
+    "T": 13.469656525378747,
+    "m3": 1.5,
+    "E": -1.9611808391810148,
+    "err": 4.896186211014121e-11,
+    "err_coarse": 3.8069556133359183e-08,
+    "consistency": 1.738558333408413e-08,
+    "rmin": 0.011636353746791174,
+    "steps": 1207,
+    "valid": true,
+    "reason": null,
+    "Tstar": 36.99414408216098,
+    "syzygies": 18,
+    "word": "121321323121321323",
+    "free_group_word": "aBabaBAbABAb",
+    "status": "new_candidate",
+    "match": null,
+    "family": "121321323121321323",
+    "power": 1
+   }
+  },
+  {
+   "file": "viz/threebody/out_m15/threebody_02.png",
+   "title": "Candidate new orbit",
+   "orbit": {
+    "vx": 0.39719457887672854,
+    "vy": 0.8898238351636051,
+    "T": 22.500161166089857,
+    "m3": 1.5,
+    "E": -1.2843833540665672,
+    "err": 4.702798111780138e-12,
+    "err_coarse": 1.0062547474988135e-08,
+    "consistency": 4.0604533624311046e-09,
+    "rmin": 0.41246831932492534,
+    "steps": 598,
+    "valid": true,
+    "reason": null,
+    "Tstar": 32.75123124750063,
+    "syzygies": 16,
+    "word": "1212132132323123",
+    "free_group_word": "aBBabABABAb",
+    "status": "new_candidate",
+    "match": null,
+    "family": "1212132132323123",
+    "power": 1
+   }
+  },
+  {
+   "file": "viz/threebody/out_m15/threebody_03.png",
+   "title": "Candidate new orbit",
+   "orbit": {
+    "vx": 0.6793037447555738,
+    "vy": 0.6712078647349681,
+    "T": 15.967912290508187,
+    "m3": 1.5,
+    "E": -1.3720616575842848,
+    "err": 2.0123650133979632e-10,
+    "err_coarse": 1.879935549496016e-07,
+    "consistency": 6.850886646869725e-08,
+    "rmin": 0.019291925359533158,
+    "steps": 904,
+    "valid": true,
+    "reason": null,
+    "Tstar": 25.663068346400966,
+    "syzygies": 12,
+    "word": "121321323123",
+    "free_group_word": "aBabABAb",
+    "status": "new_candidate",
+    "match": null,
+    "family": "121321323123",
+    "power": 1
+   }
+  }
+ ],
+ "sheet": "viz/threebody/out_m15/threebody_sheet.png",
+ "summary": {
+  "id": "test-threebody-m15",
+  "seed": 0,
+  "t": 293.0,
+  "rounds": 1,
+  "seeds_scanned": 300000,
+  "m3": 1.5,
+  "T_window": [
+   5.0,
+   30.0
+  ],
+  "verified_orbits": 7,
+  "families": 7,
+  "new_candidates": 4,
+  "rediscovered": 3,
+  "figure_eight": null,
+  "catalog_entries": 2060,
+  "note": "'new_candidate' = canonical word, T* and initial condition match no entry of problems/three-body-periodic-orbits/catalog.json; see its not_included list for catalogs that were NOT checked.",
+  "reclassified_with_final_verifier": true
+ }
+}
