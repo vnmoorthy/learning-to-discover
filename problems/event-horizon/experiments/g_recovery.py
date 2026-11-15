@@ -286,16 +286,10 @@ def part_plot():
         ax[2].errorbar(xs, ys, yerr=es, marker="o", color=colr, label=f"old, m - k = {off}")
         pr = [c["bounds"][c["k"] + off]["T_mm_bound"] ** 2 for c in g1["configs"] if c["k"] == 1 and c["old"]]
         ax[2].plot(xs, pr, ":", color=colr, lw=1.2, label="(D E[tr rho^2] - 1)/4 (Bures 2nd order)" if off == 1 else None)
-        xs, ys = [], []
-        for c in g1["configs"]:
-            if c["k"] == 1 and not c["old"]:
-                s = c["metrics"]["F_petz"][min(c["k"] + off + c["n_B"] // 2, len(c["m"]) - 1)]
-                xs.append(c["n_B"]); ys.append(1 - s["mean"])
-        ax[2].plot(xs, ys, "--", marker="s", ms=3, color=colr, label=f"young, m - k = {off} + floor(n_B/2)")
     ax[2].set_yscale("log")
     ax[2].set_xlabel("black-hole qubits n_B")
     ax[2].set_ylabel("1 - F_Petz (finite-size infidelity)")
-    ax[2].set_title("Finite-size corrections at fixed m - k")
+    ax[2].set_title("Finite-size corrections at fixed m - k (old hole)")
     ax[2].legend(fontsize=6.5)
     st.caption(fig, "Exact dense simulation, Haar U on M+B, Petz (transpose-channel) decoder with sigma = 1/d_M; "
                     "mean +- s.e.m. over 24 (12 for n = 8) seeds. Finite-dimensional circuit model, no gravity.")
@@ -353,7 +347,9 @@ def part_plot():
     ax[2].set_ylabel("threshold m* (mean F_Petz = 0.9)")
     ax[2].set_xlabel("scrambler (missing marker: never reaches 0.9)")
     ax[2].set_title("Threshold shift")
-    ax[2].legend(fontsize=6, ncol=2)
+    yl = ax[2].get_ylim()
+    ax[2].set_ylim(yl[0] - 0.1, yl[1] + 0.9)
+    ax[2].legend(fontsize=6, ncol=4, loc="upper center")
     st.caption(fig, f"n = {n} (k = 1, n_B = {n - 1}) exact density-matrix simulation; single-qubit depolarizing x -> (1-p)x + p 1/2 on each "
                     "radiation qubit before Petz decoding; 10 seeds per point. Toy circuit model, not gravity.")
     fig.tight_layout(rect=(0, 0.04, 1, 1))
@@ -395,8 +391,8 @@ def part_plot():
                    label="OTOC q0 vs farthest D qubit q6")
         ax[2].plot(dd, [x["mean"] for x in L["otoc_q0_nearestD"]], color="#9AD1FF", marker="o", ms=3, ls="--",
                    label="OTOC q0 vs nearest D qubit q4")
-        ax[2].plot(dd, [4 * x["mean"] - 1 for x in L["P_EPR"]], color=st.AMBER, marker="s", ms=3,
-                   label="d_M^2 P_EPR - 1 (Pauli-avg OTOC(M,D), m=3)")
+        ax[2].plot(dd, [(4 * x["mean"] - 1) / 3 for x in L["P_EPR"]], color=st.AMBER, marker="s", ms=3,
+                   label="(d_M^2 P_EPR - 1)/(d_M^2 - 1): non-identity Pauli-avg OTOC(M, D), m=3")
         ax[2].plot(dd, [x["mean"] for x in L["F_petz"]], color=st.MAGENTA, marker="^", ms=3, label="F_Petz, m=3")
         ax[2].axhline(0.9 * L["haar_F_petz"]["mean"], color=st.MAGENTA, lw=0.6, alpha=0.6)
         ax[2].axhline(0.1, color=st.CYAN, lw=0.6, alpha=0.6)
@@ -405,8 +401,8 @@ def part_plot():
         g = b["gates"]["haar"]
         ax[2].plot(b["depths"], [x["mean"] for x in g["otoc_q0_qlast"]], color=st.CYAN, marker="o", ms=3,
                    label="OTOC q0 vs q6 (9 Pauli pairs)")
-        ax[2].plot(b["depths"], [x["mean"] * 4 - 1 for x in g["P_EPR"]["3"]], color=st.AMBER, marker="s", ms=3,
-                   label="d_M^2 P_EPR - 1, m=3")
+        ax[2].plot(b["depths"], [(x["mean"] * 4 - 1) / 3 for x in g["P_EPR"]["3"]], color=st.AMBER, marker="s", ms=3,
+                   label="(d_M^2 P_EPR - 1)/(d_M^2 - 1), m=3")
         ax[2].plot(b["depths"], [x["mean"] for x in g["F_petz"]["3"]], color=st.MAGENTA, marker="^", ms=3,
                    label="F_Petz, m=3")
     ax[2].set_xlabel("brickwork depth t (Haar gates)")

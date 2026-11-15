@@ -4,7 +4,7 @@ import { useApi } from '../hooks/useApi'
 import { assetUrl } from '../mode'
 import { Link } from 'react-router-dom'
 import { Cycle, FigureGrid, TestsBadge } from '../components/Report'
-import { BlackHoleViewer, OrbitsViewer, ViewerFrame } from '../viz3d/lazy'
+import { BlackHoleViewer, OrbitsViewer, SafeLazy, ViewerFrame } from '../viz3d/lazy'
 
 export default function PhysicsPage() {
   const ph = useApi(() => api.physics(), [], 60000)
@@ -45,12 +45,14 @@ export default function PhysicsPage() {
               <div className="space-y-5">
                 <div>
                   <ViewerFrame className="h-[380px] w-full bg-[#050608] sm:h-[540px]">
-                    <BlackHoleViewer fallback={<img src={assetUrl('/gallery/blackhole.jpg')} alt="ray-traced black hole" className="h-full w-full object-cover" />} />
+                    <SafeLazy fallback={<img src={assetUrl('/gallery/blackhole.jpg')} alt="ray-traced black hole" className="h-full w-full object-cover" />}>
+                      <BlackHoleViewer fallback={<img src={assetUrl('/gallery/blackhole.jpg')} alt="ray-traced black hole" className="h-full w-full object-cover" />} />
+                    </SafeLazy>
                   </ViewerFrame>
                   <p className="mt-2 text-[12px] text-fg-dim">
                     A Schwarzschild black hole ray-traced live in your browser: one light ray per pixel per frame along exact null geodesics,
-                    thin Keplerian disk from the ISCO, gravitational redshift and Doppler beaming, lensed star field. Drag to orbit (below the disk too),
-                    scroll or pinch to zoom in to the photon ring. Same equations as the{' '}
+                    thin Keplerian disk from the ISCO, gravitational redshift and Doppler beaming, lensed star field. Drag to orbit (below the disk too);
+                    click the view, then scroll to zoom in to the photon ring (or pinch); tap to pause the gas. Same equations as the{' '}
                     <a href={assetUrl('/gallery/blackhole.jpg')} target="_blank" rel="noreferrer" className="text-fg-muted underline decoration-white/20 underline-offset-2 hover:text-fg">
                       24M-ray A100 render
                     </a>

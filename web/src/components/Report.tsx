@@ -1,11 +1,11 @@
 // A verified study rendered as a report: figures with captions and classification, expandable research cycles,
 // a tests badge and links to the paper and notebook. Used by the Physics page and by "report" problem artifacts.
-import { Suspense, useState } from 'react'
+import { useState } from 'react'
 import { assetUrl } from '../mode'
 import type { EHCycle, EHFigure, ReportArtifact } from '../types'
 import { IconChevron, IconExternal } from './icons'
 import { cx } from '../lib/format'
-import { BlackHoleViewer } from '../viz3d/lazy'
+import { BlackHoleViewer, SafeLazy } from '../viz3d/lazy'
 
 const REPO = 'https://github.com/vnmoorthy/phoenixastar/blob/main/'
 const CLASS_LABEL: Record<string, string> = {
@@ -139,9 +139,13 @@ function ReportHero({ art }: { art: ReportArtifact }) {
                 role="tab"
                 aria-selected={mode === m}
                 onClick={() => setMode(m)}
-                className={cx('h-7 rounded-md px-3 text-[12px] font-medium transition-colors', mode === m ? 'bg-white/[0.09] text-fg' : 'text-fg-muted hover:text-fg')}
+                className={cx('h-7 whitespace-nowrap rounded-md px-3 text-[12px] font-medium transition-colors', mode === m ? 'bg-white/[0.09] text-fg' : 'text-fg-muted hover:text-fg')}
               >
-                {m === 'live' ? 'Interactive (live ray tracing)' : 'A100 render (24M rays)'}
+                {m === 'live' ? (
+                  <><span className="sm:hidden">Live</span><span className="hidden sm:inline">Interactive (live ray tracing)</span></>
+                ) : (
+                  <><span className="sm:hidden">A100 still</span><span className="hidden sm:inline">A100 render (24M rays)</span></>
+                )}
               </button>
             ))}
           </div>
@@ -150,16 +154,16 @@ function ReportHero({ art }: { art: ReportArtifact }) {
       )}
       {mode === 'live' ? (
         <div className="relative h-[360px] w-full sm:h-[520px]">
-          <Suspense fallback={still}>
+          <SafeLazy fallback={still}>
             <BlackHoleViewer fallback={still} />
-          </Suspense>
+          </SafeLazy>
         </div>
       ) : (
         <img src={assetUrl(art.hero!)} alt={art.title ?? 'hero'} className="w-full object-cover" />
       )}
       <figcaption className="px-4 py-2 text-[11.5px] leading-5 text-fg-dim">
         {mode === 'live'
-          ? 'Ray-traced live in your browser, one light ray per pixel per frame, with the same equations as the A100 render: drag to orbit (go below the disk too), scroll or pinch to zoom in to the photon ring, tap to pause. Toggle lensing off to see the disk as it would look in flat spacetime.'
+          ? 'Ray-traced live in your browser, one light ray per pixel per frame, with the same equations as the A100 render: drag to orbit (go below the disk too); click the view, then scroll to zoom in to the photon ring (or pinch on a touch screen or trackpad); tap to pause the gas. Toggle lensing off to see the disk as it would look in flat spacetime.'
           : art.hero_caption}
       </figcaption>
     </figure>

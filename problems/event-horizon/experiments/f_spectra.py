@@ -11,6 +11,7 @@ Run (local CPU, numpy only; three independent parts can run in parallel):
     python experiments/f_spectra.py A      # Renyi Page curves + exact moment checks
     python experiments/f_spectra.py B      # MP spectra, finite-size corrections, level spacing
     python experiments/f_spectra.py C      # direction 6: Haar vs stabilizer vs brickwork
+    python experiments/f_spectra.py E      # deeper brickwork grid, N = 10, 12
     python experiments/f_spectra.py D      # exact stabilizer ensemble by complete enumeration (N<=4)
     python experiments/f_spectra.py plot   # merge results/f_parts/*.json -> results/f_spectra.json + figures
 """
@@ -278,6 +279,43 @@ def part_C():
     print("C done", res["runtime_s"], flush=True)
 
 
+# ============================================================================ part E
+SEED_E = 20261115_5
+
+
+def part_E():
+    """Finer / deeper brickwork depth grid (N = 10, 12) to locate the depth at which each
+    statistic is within eps = 0.05 nats of its Haar value at every cut."""
+    t0 = time.time()
+    ss = np.random.SeedSequence(SEED_E)
+    res = {"seed_base": SEED_E, "model": "Haar 2-qubit-gate brickwork, open chain, from |0..0>"}
+    for N, ns, depths in ((10, 300, [4, 8, 12, 16, 20, 24, 32, 40]), (12, 300, [16, 20, 24, 28, 32, 40, 48])):
+        ex = exact_curves(N)
+        rng = np.random.default_rng(ss.spawn(1)[0])
+        hprof, _ = cut_profile([C.haar_state(N, rng) for _ in range(ns)], N)
+        hm = {k: v.mean(0) for k, v in hprof.items()}
+        rng = np.random.default_rng(ss.spawn(1)[0])
+        bs = [brickwork_states(N, depths, "haar", rng) for _ in range(ns)]
+        blk = {"n_samples": ns, "haar_stats": summarise(hprof), "brick": {}}
+        for D in depths:
+            prof, half = cut_profile([s[D] for s in bs], N)
+            m = {k: v.mean(0) for k, v in prof.items()}
+            sm = summarise(prof)
+            hs = summarise(hprof)
+            dev = {}
+            for key, ref in (("S_1", np.array(ex["page_S1"])), ("S_2", hm["S_2"]), ("S_3", hm["S_3"]),
+                             ("S_inf", hm["S_inf"]), ("S2_minus_Sinf", hm["S2_minus_Sinf"]), ("capacity", hm["capacity"])):
+                d = np.abs(m[key] - ref)
+                comb = np.sqrt(np.array(sm[key]["sem"]) ** 2 + (0 if key == "S_1" else np.array(hs[key]["sem"]) ** 2))
+                i = int(np.argmax(d))
+                dev[key] = {"max_dev": float(d[i]), "at_cut": i, "sem_at_cut": float(comb[i])}
+            blk["brick"][D] = {"stats": sm, "max_dev": dev, "half_r": rmt.mean_gap_ratio(half, floor=1e-12)}
+        res[f"N{N}"] = blk
+        print(f"E N={N} {time.time()-t0:.1f}s", flush=True)
+    json.dump(res, open(os.path.join(PARTS, "E.json"), "w"), indent=1, default=float)
+    print("E done", flush=True)
+
+
 # ============================================================================ part D
 def part_D():
     """Exact uniform stabilizer ensemble (complete enumeration, N = 2, 3, 4): exact averages of
@@ -535,4 +573,4 @@ def plot():
 
 if __name__ == "__main__":
     which = sys.argv[1] if len(sys.argv) > 1 else "plot"
-    {"A": part_A, "B": part_B, "C": part_C, "D": part_D, "plot": plot}[which]()
+    {"A": part_A, "B": part_B, "C": part_C, "D": part_D, "E": part_E, "plot": plot}[which]()

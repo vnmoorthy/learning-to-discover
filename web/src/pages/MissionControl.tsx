@@ -9,7 +9,7 @@ import { Counter, Empty, ErrorNote, Panel, Skeleton } from '../components/ui'
 import { dateTime, fmtScore, timeAgo } from '../lib/format'
 import { useLive } from '../live'
 import { STATIC, assetUrl } from '../mode'
-import { BlackHoleViewer, LatticeViewer } from '../viz3d/lazy'
+import { BlackHoleViewer, LatticeViewer, SafeLazy } from '../viz3d/lazy'
 import type { GridArtifact } from '../types'
 
 
@@ -153,13 +153,13 @@ function PhysicsFeature() {
   const still = <img src={assetUrl('/gallery/blackhole_1280.jpg')} alt="A Schwarzschild black hole ray-traced through curved spacetime" className="absolute inset-0 h-full w-full object-cover" />
   return (
     <section className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#050608]" aria-label="Event Horizon: interactive black hole">
-      <div className="relative h-[300px] w-full sm:absolute sm:inset-y-0 sm:right-0 sm:h-auto sm:w-[70%]">
-        <Suspense fallback={still}>
+      <div className="relative h-[300px] w-full sm:h-[380px] lg:absolute lg:inset-y-0 lg:right-0 lg:h-auto lg:w-[70%] [@media(pointer:coarse)]:[&_[data-stage-canvas]>div]:!touch-pan-y">
+        <SafeLazy fallback={still}>
           <BlackHoleViewer compact fallback={still} />
-        </Suspense>
+        </SafeLazy>
       </div>
-      <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#050608] from-30% via-[#050608]/70 via-38% to-transparent to-50% sm:block" />
-      <div className="pointer-events-none relative flex flex-col gap-3 p-6 sm:min-h-[380px] sm:max-w-[44%] sm:justify-center sm:p-8">
+      <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#050608] from-30% via-[#050608]/70 via-38% to-transparent to-50% lg:block" />
+      <div className="pointer-events-none relative flex flex-col gap-3 p-6 lg:min-h-[380px] lg:max-w-[44%] lg:justify-center lg:p-8">
         <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-cyan">Physics · Event Horizon</div>
         <h2 className="text-[22px] font-semibold leading-tight tracking-[-0.02em] text-fg sm:text-[26px]">How does information survive a black hole&rsquo;s evaporation?</h2>
         <p className="text-[13px] leading-6 text-fg-muted">
@@ -176,8 +176,8 @@ function PhysicsFeature() {
           </Link>
         </div>
         <p className="text-[11px] leading-5 text-fg-dim">
-          Ray-traced live in your browser: one light ray per pixel along Schwarzschild null geodesics. Drag to orbit, {' '}
-          <span className="hidden sm:inline">click then scroll</span><span className="sm:hidden">pinch</span> to zoom, tap to pause.
+          Ray-traced live in your browser: one light ray per pixel along Schwarzschild null geodesics. Drag to orbit; click the view, then
+          scroll to zoom (or pinch on a touch screen or trackpad); tap to pause the gas.
         </p>
       </div>
     </section>

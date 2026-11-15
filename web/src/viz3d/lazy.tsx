@@ -1,5 +1,6 @@
 // Lazy entry points so three.js stays out of the main bundle.
 import { lazy, Suspense, useState } from 'react'
+import { ErrorBoundary } from '../components/ErrorBoundary'
 import { cx } from '../lib/format'
 
 export const LatticeViewer = lazy(() => import('./index').then((m) => ({ default: m.LatticeViewer })))
@@ -38,5 +39,15 @@ export function DimSwitch({ flat, solid }: { flat: React.ReactNode; solid: React
       </div>
       {mode === '2d' ? flat : solid}
     </div>
+  )
+}
+
+/** Error boundary + Suspense around a lazy viewer: a failed chunk load (e.g. a stale deploy) shows the fallback
+ * instead of taking the page down. */
+export function SafeLazy({ fallback, children }: { fallback: React.ReactNode; children: React.ReactNode }) {
+  return (
+    <ErrorBoundary fallback={fallback}>
+      <Suspense fallback={fallback}>{children}</Suspense>
+    </ErrorBoundary>
   )
 }

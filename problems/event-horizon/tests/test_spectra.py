@@ -221,3 +221,22 @@ def test_haar_brickwork_spectrum_not_flat():
         s = C.apply_brick_layer(s, 8, layer, rng, "haar")
     p = C.schmidt_probs(s, 4)
     assert R.renyi(p, 2) - R.renyi(p, math.inf) > 0.1
+
+
+@pytest.mark.parametrize("n", [1, 2, 3])
+def test_stabilizer_enumeration_count_and_3_design(n):
+    """Complete enumeration: |Stab_n| = 2^n prod (2^k+1); uniform average reproduces the exact Haar
+    E Tr rho^2 (Lubkin) and E Tr rho^3 (3-design) but NOT E Tr rho^4 (not a 4-design)."""
+    S = rmt.enumerate_stabilizer_states(n)
+    assert len(S) == rmt.n_stabilizer_states(n)
+    assert np.allclose(np.linalg.norm(S, axis=1), 1.0, atol=1e-12)
+    G = np.abs(S.conj() @ S.T) ** 2  # distinct up to phase: |<a|b>|^2 < 1 off the diagonal
+    np.fill_diagonal(G, 0.0)
+    assert G.max() < 1 - 1e-9
+    for k in range(1, n):
+        m, d = 2**k, 2 ** (n - k)
+        mats = S.reshape(len(S), m, d)
+        ev = np.clip(np.linalg.eigvalsh(mats @ np.conj(np.swapaxes(mats, 1, 2))), 0, None)
+        for q in (2, 3):
+            assert abs(R.trace_moment(ev, q).mean() - R.haar_trace_moment(q, m, d)) < 1e-12
+        assert R.trace_moment(ev, 4).mean() - R.haar_trace_moment(4, m, d) > 1e-3
