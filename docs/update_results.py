@@ -89,6 +89,8 @@ def gap_text(p):
     if not ours or ours.get("score") is None:
         return "no valid solution of ours yet"
     s = ours["score"]
+    if rec is None:
+        return "verified study (no numeric record)"
     better = (s - rec) if p["scoring"] == "maximize" else (rec - s)
     if p.get("beats_record"):
         return f"**beats the record by {num(better)}**"
@@ -103,7 +105,7 @@ def signal_text(p):
     v, name, rec = m.get("value"), m.get("name"), p["record"]["score"]
     if v is None:
         return "no run"
-    seeded = " (searches start from the public record; not ours)" if abs(v - rec) < 1e-9 and not p.get("beats_record") else ""
+    seeded = " (searches start from the public record; not ours)" if rec is not None and abs(v - rec) < 1e-9 and not p.get("beats_record") else ""
     if name == "min_violated_lines":
         return f"{num(v)} violated lines in the best SAT model (0 = valid)"
     if name == "bad_vectors":
