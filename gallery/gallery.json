@@ -1,5 +1,12 @@
 [
  {
+  "title": "Event Horizon: a black hole drawn from the measured Page curve",
+  "src": "/gallery/blackhole.jpg",
+  "kind": "image",
+  "made_with": "Blender 5 (EEVEE) from problems/event-horizon results (N = 26 evaporation on the A100)",
+  "caption": "Artwork from data, not an astrophysical image. Each ring of the accretion disk is one evaporation step of the 26-qubit sequential-evaporation run; its glow is the measured mean radiation entropy S(R) at that step, so the disk brightens toward the Page time and fades as the hole evaporates."
+ },
+ {
   "title": "Three-body braid: an equal-mass candidate orbit through time",
   "src": "/gallery/orbit_braid.jpg",
   "kind": "image",
