@@ -20,12 +20,12 @@ export function Panel({
   bodyClass?: string
 }) {
   return (
-    <section className={cx('panel relative overflow-hidden rounded-2xl', className)}>
+    <section className={cx('panel relative overflow-hidden rounded-xl', className)}>
       {(title || right) && (
-        <header className="flex flex-wrap items-start justify-between gap-3 border-b border-white/[0.06] px-4 py-3 sm:px-5">
+        <header className="flex flex-wrap items-center justify-between gap-3 border-b border-white/[0.07] px-4 py-3 sm:px-5">
           <div className="min-w-0">
-            {title && <h2 className="font-display text-[13px] font-semibold uppercase tracking-[0.14em] text-fg">{title}</h2>}
-            {subtitle && <p className="mt-0.5 text-xs text-fg-muted">{subtitle}</p>}
+            {title && <h2 className="text-[14px] font-semibold leading-5 tracking-[-0.01em] text-fg">{title}</h2>}
+            {subtitle && <p className="mt-0.5 text-[12.5px] leading-5 text-fg-muted">{subtitle}</p>}
           </div>
           {right && <div className="flex flex-wrap items-center gap-2">{right}</div>}
         </header>
@@ -45,10 +45,10 @@ export function Spinner({ className }: { className?: string }) {
 }
 
 const BTN = {
-  primary: 'bg-cyan text-ink-900 hover:bg-[#7af8ff] shadow-glow',
-  ghost: 'border border-white/10 bg-white/[0.03] text-fg hover:border-cyan/40 hover:bg-cyan/[0.06]',
-  danger: 'border border-bad/40 bg-bad/10 text-bad hover:bg-bad/20',
-  amber: 'bg-amber text-ink-900 hover:bg-[#ffc56e] shadow-amber',
+  primary: 'bg-cyan text-ink-900 hover:bg-[#6FDCE8] border border-transparent',
+  ghost: 'border border-white/10 bg-white/[0.03] text-fg hover:border-white/20 hover:bg-white/[0.06]',
+  danger: 'border border-bad/30 bg-bad/[0.08] text-bad hover:bg-bad/[0.14]',
+  amber: 'border border-amber/30 bg-amber/[0.1] text-amber hover:bg-amber/[0.16]',
 }
 
 /**
@@ -92,9 +92,9 @@ export function ActionButton({
         disabled={isDisabled}
         title={replay ? 'Disabled in replay mode' : error ?? title}
         className={cx(
-          'inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium transition-all duration-150 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-45 disabled:shadow-none',
-          size === 'sm' ? 'h-8 px-3 text-xs' : 'h-9 px-4 text-sm',
-          status === 'error' ? BTN.danger : status === 'success' ? 'border border-good/50 bg-good/10 text-good' : BTN[variant],
+          'inline-flex select-none items-center justify-center gap-2 whitespace-nowrap rounded-lg font-medium transition-colors duration-150 disabled:cursor-not-allowed disabled:opacity-45',
+          size === 'sm' ? 'h-8 px-3 text-[12.5px]' : 'h-9 px-3.5 text-[13px]',
+          status === 'error' ? BTN.danger : status === 'success' ? 'border border-good/30 bg-good/[0.08] text-good' : BTN[variant],
           className,
         )}
       >
@@ -104,7 +104,7 @@ export function ActionButton({
         <span className="inline-flex items-center gap-1.5">{status === 'success' ? successLabel : status === 'error' ? 'Failed' : children}</span>
       </button>
       {status === 'error' && error && (
-        <span className="absolute left-0 top-full z-20 mt-1 w-max max-w-[280px] rounded-md border border-bad/30 bg-ink-800 px-2 py-1 font-mono text-[11px] leading-snug text-bad shadow-xl">
+        <span className="absolute left-0 top-full z-20 mt-1 w-max max-w-[280px] rounded-md border border-bad/30 bg-ink-700 px-2 py-1 font-mono text-[11px] leading-snug text-bad shadow-pop">
           {error}
         </span>
       )}
@@ -123,8 +123,8 @@ export function CheckIcon({ className }: { className?: string }) {
 export function StatusBadge({ status }: { status: string }) {
   const s = STATUS_STYLE[status] ?? STATUS_STYLE.idle
   return (
-    <span className={cx('inline-flex items-center gap-1.5 rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider', s.cls)}>
-      <span className={cx('h-1.5 w-1.5 rounded-full', s.dot, status === 'searching' && 'animate-pulseDot')} />
+    <span className={cx('inline-flex shrink-0 items-center gap-1.5 whitespace-nowrap rounded-full border px-2 py-0.5 text-[11px] font-medium leading-4', s.cls)}>
+      <span className={cx('h-1.5 w-1.5 rounded-full', s.dot)} />
       {s.label}
     </span>
   )
@@ -134,8 +134,8 @@ export function Chip({ children, color, className, title }: { children: React.Re
   return (
     <span
       title={title}
-      className={cx('inline-flex max-w-full items-center gap-1.5 truncate rounded-md border px-1.5 py-0.5 font-mono text-[10.5px]', className)}
-      style={color ? { color, borderColor: color + '40', background: color + '12' } : undefined}
+      className={cx('inline-flex max-w-full items-center gap-1.5 truncate rounded-md border border-white/[0.08] px-1.5 py-0.5 font-mono text-[10.5px]', className)}
+      style={color ? { color, borderColor: color + '33', background: color + '0F' } : undefined}
     >
       {children}
     </span>
@@ -143,23 +143,23 @@ export function Chip({ children, color, className, title }: { children: React.Re
 }
 
 export function Dot({ color, pulse }: { color: string; pulse?: boolean }) {
-  return <span className={cx('inline-block h-2 w-2 shrink-0 rounded-full', pulse && 'animate-pulseDot')} style={{ background: color, boxShadow: `0 0 8px ${color}` }} />
+  return <span className={cx('inline-block h-2 w-2 shrink-0 rounded-full', pulse && 'animate-pulseDot')} style={{ background: color }} />
 }
 
 export function Verdict({ verdict }: { verdict: string | undefined | null }) {
   if (!verdict) return null
   const map: Record<string, string> = {
-    confirmed: 'text-good border-good/40 bg-good/10',
-    refuted: 'text-bad border-bad/40 bg-bad/10',
-    pending: 'text-amber border-amber/40 bg-amber/10',
-    'n/a': 'text-fg-dim border-ink-400 bg-ink-700',
+    confirmed: 'text-good border-good/30 bg-good/[0.08]',
+    refuted: 'text-bad border-bad/30 bg-bad/[0.08]',
+    pending: 'text-amber border-amber/30 bg-amber/[0.08]',
+    'n/a': 'text-fg-dim border-white/[0.08] bg-transparent',
   }
-  return <span className={cx('rounded-full border px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wider', map[verdict] ?? map['n/a'])}>{verdict}</span>
+  return <span className={cx('whitespace-nowrap rounded-full border px-2 py-0.5 text-[11px] font-medium capitalize leading-4', map[verdict] ?? map['n/a'])}>{verdict}</span>
 }
 
 export function ErrorNote({ error, onRetry }: { error: string; onRetry?: () => void }) {
   return (
-    <div className="flex flex-wrap items-center gap-3 rounded-xl border border-bad/30 bg-bad/[0.06] px-4 py-3 text-sm text-bad">
+    <div className="flex flex-wrap items-center gap-3 rounded-xl border border-bad/25 bg-bad/[0.06] px-4 py-3 text-sm text-bad">
       <span className="font-mono text-xs">{error}</span>
       {onRetry && (
         <button onClick={onRetry} className="rounded-md border border-bad/40 px-2 py-0.5 text-xs hover:bg-bad/10">
@@ -171,7 +171,7 @@ export function ErrorNote({ error, onRetry }: { error: string; onRetry?: () => v
 }
 
 export function Empty({ children }: { children: React.ReactNode }) {
-  return <div className="rounded-xl border border-dashed border-white/10 px-4 py-8 text-center text-sm text-fg-dim">{children}</div>
+  return <div className="rounded-xl border border-dashed border-white/10 px-4 py-10 text-center text-[13px] text-fg-dim">{children}</div>
 }
 
 export function Skeleton({ className }: { className?: string }) {
@@ -192,7 +192,7 @@ export function Counter({ value, format = (v) => Math.round(v).toLocaleString('e
 /** Tiny dependency-free sparkline. */
 export function Sparkline({
   data,
-  color = '#3DF5FF',
+  color = '#4FD1E0',
   height = 36,
   className,
   target,
@@ -231,16 +231,16 @@ export function Sparkline({
     <svg viewBox={`0 0 ${w} ${h}`} className={cx('w-full overflow-visible', className)} style={{ height: h }} preserveAspectRatio="none">
       <defs>
         <linearGradient id={id} x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor={color} stopOpacity="0.28" />
+          <stop offset="0%" stopColor={color} stopOpacity="0.14" />
           <stop offset="100%" stopColor={color} stopOpacity="0" />
         </linearGradient>
       </defs>
       {target != null && target >= y0 && target <= y1 && (
-        <line x1="0" x2={w} y1={py(target)} y2={py(target)} stroke="#FFB547" strokeOpacity="0.5" strokeDasharray="2 3" vectorEffect="non-scaling-stroke" />
+        <line x1="0" x2={w} y1={py(target)} y2={py(target)} stroke="#E2B25C" strokeOpacity="0.5" strokeDasharray="2 3" vectorEffect="non-scaling-stroke" />
       )}
       <path d={`${path}L${w},${h}L0,${h}Z`} fill={`url(#${id})`} />
-      <path d={path} fill="none" stroke={color} strokeWidth="1.6" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
-      <circle cx={px(last[0])} cy={py(last[1])} r="2.5" fill={color} />
+      <path d={path} fill="none" stroke={color} strokeWidth="1.5" vectorEffect="non-scaling-stroke" strokeLinejoin="round" />
+      
     </svg>
   )
 }
@@ -248,8 +248,8 @@ export function Sparkline({
 export function Stat({ label, value, sub, accent }: { label: string; value: React.ReactNode; sub?: React.ReactNode; accent?: string }) {
   return (
     <div className="min-w-0">
-      <div className="text-[10px] font-semibold uppercase tracking-[0.16em] text-fg-dim">{label}</div>
-      <div className="mt-1 truncate font-mono text-xl font-semibold tabular-nums" style={accent ? { color: accent } : undefined}>
+      <div className="label">{label}</div>
+      <div className="mt-1 truncate font-mono text-[19px] font-medium tracking-tight tabular-nums" style={accent ? { color: accent } : undefined}>
         {value}
       </div>
       {sub && <div className="mt-0.5 truncate text-[11px] text-fg-muted">{sub}</div>}
@@ -272,11 +272,11 @@ export function Select({
 }) {
   return (
     <label className={cx('inline-flex items-center gap-2 text-xs text-fg-muted', className)}>
-      {label && <span className="uppercase tracking-wider">{label}</span>}
+      {label && <span>{label}</span>}
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
-        className="h-8 max-w-[220px] rounded-lg border border-white/10 bg-ink-800 px-2 font-mono text-xs text-fg outline-none focus:border-cyan/50"
+        className="h-8 max-w-[220px] rounded-lg border border-white/10 bg-ink-700 px-2 text-[12.5px] text-fg outline-none transition-colors hover:border-white/20 focus:border-cyan/60"
       >
         {options.map((o) => (
           <option key={o.value} value={o.value}>

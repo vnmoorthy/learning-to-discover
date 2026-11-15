@@ -18,7 +18,7 @@ Tagline: **An AI lab that gets better at discovering mathematics by doing it.**
 - Python 3.12 on the Mac (`python3`), anaconda env: fastapi, uvicorn, sse-starlette, httpx, openai 1.75,
   modal 1.5.4, tinker 0.39, numpy, pandas, sympy, numba, torch are installed. `pip3 install` more if needed.
 - The GPU box: 8x A100 40GB, 124 CPU cores, Ubuntu, Python 3.10, reached ONLY via
-  `ssh -F ROOT/scripts/ssh_config ltd '<cmd>'` (host alias `ltd`, user ubuntu, code in `~/ltd`).
+  `ssh -F ROOT/scripts/ssh_config gpubox '<cmd>'` (host alias `ltd`, user ubuntu, code in `~/ltd`).
   It is RUNNING LIVE SEARCHES that must not be disturbed. Read-only commands are fine
   (`python3 -B ~/ltd/scripts/telemetry.py`, `cat`, `ls`, `tail`, `nvidia-smi`). Never `pkill`/`kill` anything you
   did not start yourself; anything you start for testing must carry an id starting `test-` and be stopped by you.
@@ -63,57 +63,57 @@ must ADOPT them (discover via `pgrep -af "[s]pencer_gpu.py|[h]adamard_gpu.py|[n]
 
 ## 3. Backend (`ROOT/ltd/` Python package + `ROOT/ltd/server.py`), runs on the Mac
 
-Start: `python3 -m ltd.server` -> http://127.0.0.1:8787 (serves API under `/api` and the built frontend from
+Start: `python3 -m phoenixastar.server` -> http://127.0.0.1:8787 (serves API under `/api` and the built frontend from
 `ROOT/web/dist` at `/`). The autonomous loop runs in a background thread inside the server process.
-State persists in `ROOT/data/ltd.sqlite` (decisions, telemetry history, memory facts, literature, artifacts) so a
+State persists in `ROOT/data/phoenixastar.sqlite` (decisions, telemetry history, memory facts, literature, artifacts) so a
 restart keeps history. `ROOT/data/` is git-ignored except `ROOT/data/snapshot/` (see section 6).
 
 ### Modules
-- `ltd/config.py`: paths, problem registry (slug, title, scoring, record, holder, family, metric), model names:
+- `phoenixastar/config.py`: paths, problem registry (slug, title, scoring, record, holder, family, metric), model names:
   `PROPOSER_MODEL = "gpt-6-astra"` (fallback `gpt-5.5`), `FAST_MODEL = "gpt-5.4-mini"`, loop interval (default 300 s).
-- `ltd/box.py`: SSH wrapper (subprocess `ssh -F scripts/ssh_config ltd`), with timeouts. Functions: `telemetry()`,
+- `phoenixastar/box.py`: SSH wrapper (subprocess `ssh -F scripts/ssh_config gpubox`), with timeouts. Functions: `telemetry()`,
   `list_processes()` (pid, cmdline, parsed template + params), `launch(strategy_id, template, params, resource)`,
   `stop(strategy_id)` (pid file `~/ltd/runs/strategies/<id>.pid`; for adopted processes, by pid), `fetch(path)`,
-  `sync_code()` (rsync `search/` and `scripts/`). Launch command lines come ONLY from `ltd/strategies.py`.
-- `ltd/strategies.py`: registry of templates with JSON-schema-like param specs (types, ranges, enums), resource
+  `sync_code()` (rsync `search/` and `scripts/`). Launch command lines come ONLY from `phoenixastar/strategies.py`.
+- `phoenixastar/strategies.py`: registry of templates with JSON-schema-like param specs (types, ranges, enums), resource
   type (gpu|cpu) and a `command(params)` builder. Validation rejects anything outside the schema. GPU assignment
   uses `CUDA_VISIBLE_DEVICES` of a free GPU (a GPU is free if no adopted/launched strategy owns it).
-- `ltd/ledger.py`: SQLite event store. Tables: `decisions`, `telemetry`, `facts`, `literature`, `artifacts`,
+- `phoenixastar/ledger.py`: SQLite event store. Tables: `decisions`, `telemetry`, `facts`, `literature`, `artifacts`,
   `strategies`, `learning`. Every agent action is a `decision` row (schema in section 4).
-- `ltd/literature.py` (**Exa**, main loop): for a problem, the proposer asks for queries; run `exa search`
+- `phoenixastar/literature.py` (**Exa**, main loop): for a problem, the proposer asks for queries; run `exa search`
   (+ contents/highlights) via the Exa REST API (`https://api.exa.ai/search`, header `x-api-key`), store
   title/url/published date/highlights, return compact cards to the proposer. Cache by query. Each card that the
   proposer cites is linked to that decision.
-- `ltd/memory.py` (**past.dev**): agents = `planner`, `proposer`, `critic`, and one `agent:<slug>` per problem.
+- `phoenixastar/memory.py` (**past.dev**): agents = `planner`, `proposer`, `critic`, and one `agent:<slug>` per problem.
   `write(agent, problem, text, tags)` -> past.dev ingest (`POST https://app.past.dev/api/v1/ingest`, Bearer
   `PAST_API_KEY`, body `{id, content, label, timestamp, identity, metadata}`) + local `facts` row.
   `recall(agent, query, k)` -> `POST https://app.past.dev/api/v1/recall` body `{query, identity, level:"high",
-  limit}`; record which agent read which fact (`read_by`). Use identity = `"ltd-lab"` for the shared space (so
+  limit}`; record which agent read which fact (`read_by`). Use identity = `"phoenixastar-lab"` for the shared space (so
   agents read each other's facts) and put the writer agent in metadata. Also keep two baselines for the
   benchmark: a markdown file `data/memory.md` (append-only) and a small RAG (OpenAI `text-embedding-3-small` +
   cosine top-k over the same facts).
-- `ltd/memory_bench.py`: builds a QA set from facts (question -> expected fact), runs past.dev vs markdown
+- `phoenixastar/memory_bench.py`: builds a QA set from facts (question -> expected fact), runs past.dev vs markdown
   (whole file in context) vs RAG; measures accuracy (LLM judge with FAST_MODEL, exact rubric), latency (ms),
   cost (tokens -> USD). Saves results to `learning` table key `memory_benchmark` and `data/snapshot/memory_benchmark.json`.
-- `ltd/proposer.py` (**OpenAI**): one call per cycle with the Responses API (`client.responses.create`), JSON
+- `phoenixastar/proposer.py` (**OpenAI**): one call per cycle with the Responses API (`client.responses.create`), JSON
   output validated against a schema: `{decisions:[{problem, action: launch|stop|keep|research|note,
   template?, params?, strategy_id?, rationale, prediction:{metric, expected, horizon_min}, cite:[literature_ids],
   memory_used:[fact_ids]}]}`. Input = compact state (telemetry per problem, gaps to record, strategy history with
   outcomes, recalled memory facts, literature cards, budget: free GPUs/cores). Must never exceed free resources.
-- `ltd/planner.py`: deterministic layer under the LLM: computes per-problem progress rate and a UCB-style
+- `phoenixastar/planner.py`: deterministic layer under the LLM: computes per-problem progress rate and a UCB-style
   priority (gap closed per compute-hour, staleness), enforces budgets, kills strategies that are provably dead
   (UNSAT, no progress for N cycles) and turns proposer output into executable, validated actions.
-- `ltd/critic.py`: (a) verifies every `FOUND_*` artifact by running the OFFICIAL verifier from
+- `phoenixastar/critic.py`: (a) verifies every `FOUND_*` artifact by running the OFFICIAL verifier from
   `problems/<slug>/verifier.py` in a subprocess with a timeout (never trust the search's own claim); a record is
   only declared if `evaluate()` beats the leaderboard top by more than `minImprovement` (from meta.json);
   (b) scores past predictions: for each decision whose horizon has passed, compares predicted vs observed metric
   -> verdict `confirmed|refuted`, writes a lesson fact to memory.
-- `ltd/sandboxes.py` (**Modal**, agent sandboxes): the proposer can emit `action: "sandbox"` with Python code
+- `phoenixastar/sandboxes.py` (**Modal**, agent sandboxes): the proposer can emit `action: "sandbox"` with Python code
   (a self-contained search program printing one JSON solution on its last stdout line) for cheap problems
   (sidon-45-set, spencer-discrepancy n<=20, ring-loading-15). Run N programs in parallel in
   `modal.Sandbox.create(...)` (image: debian_slim + numpy + numba), 120 s timeout each, no network, no secrets;
   verify outputs locally with the official verifier; log every program + score as decisions.
-- `ltd/learning.py` (**Tinker**, self-improvement): RL fine-tuning of an open model (default
+- `phoenixastar/learning.py` (**Tinker**, self-improvement): RL fine-tuning of an open model (default
   `Qwen/Qwen3-8B` LoRA, fallback `openai/gpt-oss-20b`) to output constructions for a cheap verifiable problem
   (sidon-45-set: integer sets; reward = official verifier score transformed so lower h/|A| is better, invalid
   = 0). GRPO-style: per step sample G=16 completions per prompt, advantages = reward - mean, importance-sampling
@@ -121,11 +121,11 @@ restart keeps history. `ROOT/data/` is git-ignored except `ROOT/data/snapshot/` 
   best, valid-rate per step to the `learning` table. Also a transfer eval: evaluate gen-0 vs gen-N sampler on a
   held-out variant (e.g. spencer-discrepancy small n) with the same budget. Endpoint starts it in a background
   thread; status/progress via `/api/learning`.
-- `ltd/loop.py`: the cycle: `telemetry -> critic(found + predictions) -> memory recall -> literature (if
+- `phoenixastar/loop.py`: the cycle: `telemetry -> critic(found + predictions) -> memory recall -> literature (if
   stalled/new) -> proposer -> planner -> execute (box/sandboxes) -> memory write -> ledger`. Phase is published
   to SSE. Pause/resume/run-now supported. A cycle must never crash the server (catch, log as decision
   `agent:"system", action:"error"`).
-- `ltd/server.py`: FastAPI app (section 4), SSE via sse-starlette, CORS for localhost:5173.
+- `phoenixastar/server.py`: FastAPI app (section 4), SSE via sse-starlette, CORS for localhost:5173.
 
 ## 4. HTTP API contract (frontend and backend must match exactly)
 
@@ -223,7 +223,7 @@ Pages (all must work against the real API, and in STATIC mode, see 6):
 
 ## 6. Static replay (public demo link)
 
-`python3 -m ltd.snapshot` writes `web/public/data/*.json` (state.json, problems/<slug>.json, decisions.json,
+`python3 -m phoenixastar.snapshot` writes `web/public/data/*.json` (state.json, problems/<slug>.json, decisions.json,
 memory.json, literature.json, learning.json, sandboxes.json, gallery.json) from the live DB. Building the web
 app with `VITE_STATIC=1` makes it read those files instead of `/api`, disables mutating buttons (shows "replay
 of a live run, <timestamp>"), and uses `HashRouter` so it works on GitHub Pages under `/phoenixastar/`

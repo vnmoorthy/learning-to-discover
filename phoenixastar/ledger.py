@@ -1,4 +1,4 @@
-"""SQLite event store (ROOT/data/ltd.sqlite). One connection guarded by a lock; every agent action is a decision row."""
+"""SQLite event store (ROOT/data/phoenixastar.sqlite). One connection guarded by a lock; every agent action is a decision row."""
 import datetime as _dt
 import json
 import os

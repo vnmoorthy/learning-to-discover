@@ -11,15 +11,15 @@ For each tool: what it does in this lab, where the code is, and what we can show
 
 | | Role | Code |
 |---|---|---|
-| [OpenAI](#openai) | Proposer, program writer, technical artist, image model | `ltd/proposer.py`, `ltd/sandboxes.py`, `viz/astra.py` |
-| [Tinker](#tinker) | RL self-improvement | `ltd/learning.py` |
-| [Exa](#exa) | Literature search in the loop | `ltd/literature.py` |
-| [past.dev](#pastdev) | Shared multi-agent memory | `ltd/memory.py`, `ltd/memory_bench.py` |
-| [Modal](#modal) | Agent sandboxes and CPU fleet | `ltd/sandboxes.py`, `ltd/modal_fleet.py` |
-| [Devin](#devin) | Toolsmith | `ltd/toolsmith.py` |
-| [Claude Fable 5.2](#claude-fable-52) | Referee | `ltd/referee.py` |
+| [OpenAI](#openai) | Proposer, program writer, technical artist, image model | `phoenixastar/proposer.py`, `phoenixastar/sandboxes.py`, `viz/astra.py` |
+| [Tinker](#tinker) | RL self-improvement | `phoenixastar/learning.py` |
+| [Exa](#exa) | Literature search in the loop | `phoenixastar/literature.py` |
+| [past.dev](#pastdev) | Shared multi-agent memory | `phoenixastar/memory.py`, `phoenixastar/memory_bench.py` |
+| [Modal](#modal) | Agent sandboxes and CPU fleet | `phoenixastar/sandboxes.py`, `phoenixastar/modal_fleet.py` |
+| [Devin](#devin) | Toolsmith | `phoenixastar/toolsmith.py` |
+| [Claude Fable 5.2](#claude-fable-52) | Referee | `phoenixastar/referee.py` |
 | [Originator](#originator) | Sponsor challenge | |
-| [Lambda](#lambda) | GPU box | `ltd/box.py`, `scripts/` |
+| [Lambda](#lambda) | GPU box | `phoenixastar/box.py`, `scripts/` |
 
 ## OpenAI
 
@@ -47,7 +47,7 @@ trained model has not produced a record construction.
 ## Exa
 
 Exa is a phase of the main loop, not a side tool. When a problem is stalled (or has no sources yet), a fast model
-writes queries from the problem's current situation, `ltd/literature.py` calls `https://api.exa.ai/search` with
+writes queries from the problem's current situation, `phoenixastar/literature.py` calls `https://api.exa.ai/search` with
 highlights, and the results become literature cards stored in the ledger. Cards are passed to the proposer;
 a decision that cites one links to it, and the Literature page shows which decisions cited which source.
 Searches are cached by query and limited to one round per problem per hour.
@@ -66,18 +66,18 @@ context, which favours the baseline.
 
 ## Modal
 
-- **Agent sandboxes** (`ltd/sandboxes.py`). N model-written programs run in parallel `modal.Sandbox`es built from
+- **Agent sandboxes** (`phoenixastar/sandboxes.py`). N model-written programs run in parallel `modal.Sandbox`es built from
   a slim image with numpy and numba: networking blocked, no secrets, killed after 110 s. The last stdout line is
   parsed as a solution and verified locally with the official verifier. Every program and its score is a
   decision in the ledger.
-- **CPU fleet** (`ltd/modal_fleet.py`). The app `ltd-fleet` runs each search strategy as a 1-core container that
-  logs to the shared Volume `ltd-runs`; a `telemetry` function parses the logs with the same parser as the GPU
+- **CPU fleet** (`phoenixastar/modal_fleet.py`). The app `phoenixastar-fleet` runs each search strategy as a 1-core container that
+  logs to the shared Volume `phoenixastar-runs`; a `telemetry` function parses the logs with the same parser as the GPU
   box. GPU strategies stay on the Lambda box.
 - **Toolsmith smoke tests** run in a sandbox as well.
 
 ## Devin
 
-`ltd/toolsmith.py` opens a Devin session with a precise spec: the problem statement, the official verifier's
+`phoenixastar/toolsmith.py` opens a Devin session with a precise spec: the problem statement, the official verifier's
 source, the record, the CLI and log conventions every strategy follows, and a structured-output schema. When
 Devin returns code, it is saved under `search/devin/`, run in a Modal sandbox on a short budget, and its printed
 solution is scored by the official verifier. Only a strategy that produces a valid solution is appended to
@@ -86,7 +86,7 @@ solution is scored by the official verifier. Only a strategy that produces a val
 
 ## Claude Fable 5.2
 
-`ltd/referee.py` sends the proposer's actions and a compact view of the live evidence to Claude Fable 5.2
+`phoenixastar/referee.py` sends the proposer's actions and a compact view of the live evidence to Claude Fable 5.2
 through the local Claude Code CLI, run in an empty temporary directory so no project files leak in. It answers
 `approve`, `veto` or `amend` for each action, with a reason that cites the evidence. Two models from different
 labs then have to agree before compute moves. Any failure is an abstention, so the loop never waits on it.

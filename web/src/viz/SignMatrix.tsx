@@ -23,7 +23,7 @@ export default function SignMatrix({ art }: { art: SignMatrixArtifact }) {
     if (!c || size <= 0 || !rows) return
     const ctx = prepCanvas(c, size, h)
     if (!ctx) return
-    ctx.fillStyle = '#06070A'
+    ctx.fillStyle = '#0E1014'
     ctx.fillRect(0, 0, size, h)
     const gap = cell > 6 ? 1 : 0
     for (let i = 0; i < rows; i++)
@@ -31,12 +31,12 @@ export default function SignMatrix({ art }: { art: SignMatrixArtifact }) {
         const v = M[i][j]
         const inRow = hover && hover[0] === i
         const inCol = hover && hover[1] === j
-        if (v === 1) ctx.fillStyle = inRow || inCol ? '#A6FBFF' : '#3DF5FF'
+        if (v === 1) ctx.fillStyle = inRow || inCol ? '#A6FBFF' : '#4FD1E0'
         else ctx.fillStyle = inRow || inCol ? '#2A3444' : '#121821'
         ctx.fillRect(j * cell + gap / 2, i * cell + gap / 2, cell - gap, cell - gap)
       }
     if (hover) {
-      ctx.strokeStyle = '#FFB547'
+      ctx.strokeStyle = '#E2B25C'
       ctx.lineWidth = 1.5
       ctx.strokeRect(0.75, hover[0] * cell + 0.75, size - 1.5, cell - 1.5)
       ctx.strokeRect(hover[1] * cell + 0.75, 0.75, cell - 1.5, h - 1.5)

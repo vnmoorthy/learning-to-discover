@@ -15,7 +15,7 @@ import traceback
 from . import config, critic, events, ledger, literature, memory, monitor, planner, proposer
 
 PHASES = ["idle", "telemetry", "critic", "memory", "literature", "propose", "referee", "plan", "execute"]
-TEST_MODE = os.environ.get("LTD_TEST_MODE", "0") == "1"   # launches get test- ids; stops of non-test runs are dry-run
+TEST_MODE = os.environ.get("PHOENIX_TEST_MODE", "0") == "1"   # launches get test- ids; stops of non-test runs are dry-run
 
 
 class Loop:
@@ -60,7 +60,7 @@ class Loop:
         except Exception as e:  # noqa: BLE001
             events.log(f"modal fleet bootstrap failed: {e}", "warn")
         if self._thread is None:
-            self._thread = threading.Thread(target=self._run, name="ltd-loop", daemon=True)
+            self._thread = threading.Thread(target=self._run, name="phoenixastar-loop", daemon=True)
             self._thread.start()
 
     def pause(self):

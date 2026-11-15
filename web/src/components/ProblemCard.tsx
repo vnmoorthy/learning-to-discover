@@ -14,11 +14,11 @@ export function ProblemCard({ p, series, index = 0 }: { p: ProblemSummary; serie
     <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.04 * index, duration: 0.35 }}>
       <Link
         to={`/problems/${p.slug}`}
-        className={cx('panel panel-hover group relative flex h-full flex-col overflow-hidden rounded-2xl p-4', record && '!border-amber/60 shadow-amber')}
+        className={cx('panel panel-hover group relative flex h-full flex-col overflow-hidden rounded-xl p-4', record && '!border-amber/60 shadow-amber')}
       >
-        <div className="absolute inset-x-0 top-0 h-[2px]" style={{ background: `linear-gradient(90deg, ${record ? '#FFB547' : color}, transparent)` }} />
+        <div className="absolute inset-x-0 top-0 h-[2px]" style={{ background: `linear-gradient(90deg, ${record ? '#E2B25C' : color}, transparent)` }} />
         {record && (
-          <div className="absolute right-3 top-3 rounded-full bg-amber px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider text-ink-900">new record</div>
+          <div className="absolute right-3 top-3 rounded-full bg-amber px-2 py-0.5 text-[10px] font-bold text-ink-900">new record</div>
         )}
         <div className="flex items-start justify-between gap-2">
           <div className="min-w-0">
@@ -32,14 +32,14 @@ export function ProblemCard({ p, series, index = 0 }: { p: ProblemSummary; serie
 
         <div className="mt-3 grid grid-cols-2 gap-3">
           <div className="min-w-0">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">Record</div>
+            <div className="label">Record</div>
             <div className="truncate font-mono text-[15px] font-semibold text-amber" title={String(p.record.score)}>
               {fmtScore(p.record.score)}
             </div>
             <div className="truncate text-[10.5px] text-fg-dim">{p.record.holder}</div>
           </div>
           <div className="min-w-0">
-            <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">Ours</div>
+            <div className="label">Ours</div>
             <div className={cx('truncate font-mono text-[15px] font-semibold', record ? 'text-amber glow-amber' : p.ours ? 'text-fg' : 'text-fg-dim')} title={p.ours ? String(p.ours.score) : ''}>
               {p.ours ? fmtScore(p.ours.score) : '--'}
             </div>

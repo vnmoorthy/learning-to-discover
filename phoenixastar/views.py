@@ -108,9 +108,9 @@ def learning():
         if isinstance(st, dict):
             return st
     except Exception as e:  # noqa: BLE001
-        err = f"ltd.learning unavailable: {type(e).__name__}: {e}"
+        err = f"phoenixastar.learning unavailable: {type(e).__name__}: {e}"
     else:
-        err = "ltd.learning.status() returned no data"
+        err = "phoenixastar.learning.status() returned no data"
     saved = ledger.learning_get("learning_status")
     if saved:
         return saved

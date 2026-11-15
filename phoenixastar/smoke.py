@@ -1,4 +1,4 @@
-"""Read-only smoke test against a running server: python3 -m ltd.smoke [base_url]
+"""Read-only smoke test against a running server: python3 -m phoenixastar.smoke [base_url]
 
 Hits every GET endpoint, checks the contract keys, reads 3 SSE events. Never mutates anything.
 """

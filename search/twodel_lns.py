@@ -68,7 +68,7 @@ def main():
     best_file = os.path.join(here, "..", "problems", "two-deletion-code-16", "best_solutions.json")
     best = json.load(open(best_file)); best = best if isinstance(best, list) else best.get("solutions", best)
     code = [to_int(s) for s in best[min(a.rank, len(best) - 1)]["data"]["words"]]
-    sid = os.environ.get("LTD_STRATEGY_ID", f"s{a.seed}")
+    sid = os.environ.get("PHOENIX_STRATEGY_ID", f"s{a.seed}")
     D = descendants_table()
     t0 = time.time(); it = sat = unsat = tout = 0
     record = 226

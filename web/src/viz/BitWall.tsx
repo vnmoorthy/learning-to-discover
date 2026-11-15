@@ -3,7 +3,7 @@ import type { CodeArtifact } from '../types'
 import { prepCanvas, useWidth } from './useCanvas'
 
 /** Wall of codewords: each row of cells is one 16-bit word, words are laid out in columns. */
-export default function BitWall({ art, color = '#5B8CFF' }: { art: CodeArtifact; color?: string }) {
+export default function BitWall({ art, color = '#7096E0' }: { art: CodeArtifact; color?: string }) {
   const [wrap, width] = useWidth<HTMLDivElement>()
   const canvas = useRef<HTMLCanvasElement>(null)
   const [hover, setHover] = useState<number | null>(null)
@@ -30,7 +30,7 @@ export default function BitWall({ art, color = '#5B8CFF' }: { art: CodeArtifact;
       const y0 = row * rowH
       const hot = hover === k
       for (let b = 0; b < w.length; b++) {
-        ctx.fillStyle = w[b] === '1' ? (hot ? '#FFFFFF' : color) : hot ? '#3A4252' : '#161B24'
+        ctx.fillStyle = w[b] === '1' ? (hot ? '#FFFFFF' : color) : hot ? '#3A424F' : '#161B24'
         ctx.fillRect(x0 + b * cellPx, y0, cellPx - 1, cellPx)
       }
     })

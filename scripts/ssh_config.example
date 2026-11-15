@@ -1,4 +1,4 @@
-Host ltd
+Host gpubox
   HostName <your-gpu-box-ip>
   User ubuntu
   IdentityFile ~/.ssh/<your-key>

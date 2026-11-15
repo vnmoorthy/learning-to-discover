@@ -1,7 +1,7 @@
 """Modal fleet bookkeeping: the lab's elastic CPU capacity next to the GPU box.
 
 Runs launched on Modal (by the planner, or bootstrapped from data/modal_fleet_launched.json) are ledger strategies with
-ids "modal-<sid>". Their logs live on the Modal Volume `ltd-runs`; a background refresh pulls the parsed logs every
+ids "modal-<sid>". Their logs live on the Modal Volume `phoenixastar-runs`; a background refresh pulls the parsed logs every
 MODAL_POLL_S via the deployed `telemetry` function and checks each FunctionCall for completion.
 """
 from __future__ import annotations
@@ -13,8 +13,8 @@ import time
 
 from . import config, events, ledger, strategies
 
-MODAL_POLL_S = int(os.environ.get("LTD_MODAL_POLL", "120"))
-MODAL_MAX = int(os.environ.get("LTD_MODAL_MAX", "140"))          # max concurrent planner-managed containers
+MODAL_POLL_S = int(os.environ.get("PHOENIX_MODAL_POLL", "120"))
+MODAL_MAX = int(os.environ.get("PHOENIX_MODAL_MAX", "140"))          # max concurrent planner-managed containers
 LAUNCHED = os.path.join(config.DATA, "modal_fleet_launched.json")
 _lock = threading.Lock()
 _cache = {"t": 0.0, "logs": {}, "found": [], "error": None, "refreshing": False, "done": {}}
@@ -105,7 +105,7 @@ def fetch(path: str, max_bytes: int = 5_000_000) -> str:
     rel = path.removeprefix("modal:").removeprefix("/runs/").lstrip("/")
     if ".." in rel:
         raise ValueError("refusing path")
-    vol = modal.Volume.from_name("ltd-runs")
+    vol = modal.Volume.from_name("phoenixastar-runs")
     buf = b""
     for chunk in vol.read_file(rel):
         buf += chunk

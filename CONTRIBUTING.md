@@ -12,10 +12,10 @@ keep it working.
 3. **Label what is not live.** Snapshots, fixtures and illustrations must say what they are, in the UI and in docs.
 4. **No secrets, anywhere.** Keys stay in `.env` (git-ignored) and are loaded with `envload.load()`. Never print,
    log or commit one, and never send one to the GPU box, a Modal container or a sandbox.
-5. **No LLM output in a shell.** Launch command lines are built only in `ltd/strategies.py` from validated
+5. **No LLM output in a shell.** Launch command lines are built only in `phoenixastar/strategies.py` from validated
    template parameters.
 6. **Be careful with other people's compute.** Never stop a process you did not start. Test launches carry an id
-   that starts with `test-`. Use `LTD_TEST_MODE=1` while developing.
+   that starts with `test-`. Use `PHOENIX_TEST_MODE=1` while developing.
 
 ## Good first contributions
 
@@ -32,7 +32,7 @@ keep it working.
 
 1. Create `problems/<slug>/` with `verifier.py` (`evaluate(solution: dict) -> float`, raising on invalid input),
    `meta.json`, `description.md` and `best_solutions.json`.
-2. Register it in `ltd/config.py` (`_REG`, and `ACTIVE` if the loop should attack it) with its live metric.
+2. Register it in `phoenixastar/config.py` (`_REG`, and `ACTIVE` if the loop should attack it) with its live metric.
 3. Teach `scripts/telemetry.py` to parse the strategy's log line.
 
 Any domain works if it has an exact verifier. See the roadmap in the README.
@@ -42,8 +42,8 @@ Any domain works if it has an exact verifier. See the roadmap in the README.
 ```bash
 python3 search/test_strategies.py
 python3 search/test_strategies_cli.py
-python3 -m pytest -q ltd/tests_labs                 # offline tests: sandboxes, learning, memory benchmark
-python3 -m ltd.smoke                                # against a running server; read-only
+python3 -m pytest -q phoenixastar/tests_labs                 # offline tests: sandboxes, learning, memory benchmark
+python3 -m phoenixastar.smoke                                # against a running server; read-only
 cd web && npm run typecheck && npm run build
 python3 e2e/smoke.py --url http://127.0.0.1:8787    # from web/; never pass --mutate against a real server
 python3 docs/update_results.py --check
@@ -62,7 +62,7 @@ backend must match exactly.
 ## Reporting a problem with a result
 
 If you believe a reported score is wrong, open an issue with the solution JSON and the output of
-`python3 -m ltd.verify_worker <slug> < solution.json`. That is the fastest way to settle it.
+`python3 -m phoenixastar.verify_worker <slug> < solution.json`. That is the fastest way to settle it.
 
 ## License
 

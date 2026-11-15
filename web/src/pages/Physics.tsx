@@ -40,7 +40,7 @@ function Cycle({ c, i }: { c: EHCycle; i: number }) {
     <div className="rounded-xl border border-white/[0.07] bg-white/[0.02]">
       <button onClick={() => setOpen(!open)} className="flex w-full items-start justify-between gap-3 px-4 py-3 text-left">
         <div className="min-w-0">
-          <div className="font-mono text-[10px] uppercase tracking-[0.14em] text-fg-dim">cycle {String(c.id ?? i + 1)}</div>
+          <div className="font-mono text-[11px] font-medium text-fg-dim">cycle {String(c.id ?? i + 1)}</div>
           <div className="mt-0.5 text-sm text-fg">{txt(c.question)}</div>
         </div>
         {c.classification != null && (
@@ -51,7 +51,7 @@ function Cycle({ c, i }: { c: EHCycle; i: number }) {
         <dl className="grid gap-2 border-t border-white/[0.06] px-4 py-3 text-[13px] sm:grid-cols-[170px_1fr]">
           {rows.filter(([, v]) => txt(v)).map(([k, v]) => (
             <div key={k} className="contents">
-              <dt className="text-[11px] uppercase tracking-[0.1em] text-fg-dim">{k}</dt>
+              <dt className="text-[11px] text-fg-dim">{k}</dt>
               <dd className="whitespace-pre-wrap text-fg-muted">{txt(v)}</dd>
             </div>
           ))}
@@ -144,7 +144,7 @@ export default function PhysicsPage() {
                   ))}
                 </div>
                 <div className="space-y-2">
-                  <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">Research cycles</div>
+                  <div className="label">Research cycles</div>
                   {(eh.cycles ?? []).map((c, i) => <Cycle key={i} c={c} i={i} />)}
                 </div>
               </div>

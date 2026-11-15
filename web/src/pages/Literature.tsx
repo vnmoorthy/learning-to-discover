@@ -47,7 +47,7 @@ export default function LiteraturePage() {
         </div>
         <div className="flex items-center gap-4">
           <span className="font-mono text-[11px] text-fg-muted">
-            <span className="text-fg">{total}</span> sources | <span className="text-[#E9E36B]">{cited}</span> cited
+            <span className="text-fg">{total}</span> sources | <span className="text-[#CDB866]">{cited}</span> cited
           </span>
           <Select
             label="problem"
@@ -97,7 +97,7 @@ export default function LiteraturePage() {
                     <span>{l.published ? `published ${l.published.slice(0, 10)}` : 'no publish date'}</span>
                     <span>#{l.id}</span>
                   </div>
-                  {l.highlight && <p className="mt-2.5 border-l-2 border-[#E9E36B]/40 pl-3 text-[12.5px] leading-relaxed text-fg-muted">{l.highlight}</p>}
+                  {l.highlight && <p className="mt-2.5 border-l-2 border-[#CDB866]/40 pl-3 text-[12.5px] leading-relaxed text-fg-muted">{l.highlight}</p>}
                   <div className="mt-auto pt-3">
                     <div className="truncate font-mono text-[10.5px] text-fg-dim" title={l.query}>
                       query: <span className="text-fg-muted">{l.query}</span>
@@ -107,7 +107,7 @@ export default function LiteraturePage() {
                         <>
                           cited by
                           {l.cited_by.map((id) => (
-                            <Link key={id} to={`/decisions?focus=${id}`} className="rounded border border-[#E9E36B]/30 bg-[#E9E36B]/10 px-1.5 py-0.5 font-mono text-[#E9E36B] hover:bg-[#E9E36B]/20">
+                            <Link key={id} to={`/decisions?focus=${id}`} className="rounded border border-[#CDB866]/30 bg-[#CDB866]/10 px-1.5 py-0.5 font-mono text-[#CDB866] hover:bg-[#CDB866]/20">
                               decision #{id}
                             </Link>
                           ))}

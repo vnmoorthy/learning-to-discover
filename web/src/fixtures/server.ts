@@ -112,7 +112,7 @@ async function runCycle() {
     if (ph === 'memory') {
       pushDecision({
         agent: 'memory', problem: null, action: 'recall', params: { k: 6 },
-        rationale: 'Recalled 6 facts from shared space ltd-lab (fixture).', prediction: null, outcome: null, sources: [],
+        rationale: 'Recalled 6 facts from shared space phoenixastar-lab (fixture).', prediction: null, outcome: null, sources: [],
         memory_reads: db.memory.facts.slice(0, 4).map((f) => f.id), memory_writes: [], model: null, tokens: null, latency_ms: 380,
       })
     }

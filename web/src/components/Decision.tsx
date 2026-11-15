@@ -9,7 +9,7 @@ import { Chip, Verdict } from './ui'
 function AgentTag({ agent }: { agent: string }) {
   const c = agentColor(agent)
   return (
-    <span className="inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 font-mono text-[10.5px] font-semibold uppercase tracking-wider" style={{ color: c, background: c + '14', border: `1px solid ${c}33` }}>
+    <span className="inline-flex items-center gap-1.5 rounded-md px-1.5 py-0.5 font-mono text-[10.5px] font-semibold" style={{ color: c, background: c + '14', border: `1px solid ${c}33` }}>
       {agent}
     </span>
   )
@@ -73,7 +73,7 @@ export function DecisionCard({ d, defaultOpen = false, highlight = false }: { d:
               </Chip>
             )}
             {out && out.verdict !== 'n/a' && <Verdict verdict={out.verdict} />}
-            {d.sources.length > 0 && <span className="font-mono text-[10px] text-[#E9E36B]">{d.sources.length} src</span>}
+            {d.sources.length > 0 && <span className="font-mono text-[10px] text-[#CDB866]">{d.sources.length} src</span>}
             <span className="ml-auto font-mono text-[10.5px] text-fg-dim" title={d.time}>
               cycle {d.cycle} | {clockTime(d.time)} | {timeAgo(d.time)}
             </span>
@@ -94,7 +94,7 @@ export function DecisionCard({ d, defaultOpen = false, highlight = false }: { d:
                 <Section label="Prediction vs outcome">
                   <div className="grid gap-2 sm:grid-cols-2">
                     <div className="rounded-lg border border-white/[0.06] bg-black/20 p-3">
-                      <div className="text-[10px] uppercase tracking-wider text-fg-dim">predicted</div>
+                      <div className="label">predicted</div>
                       {pred ? (
                         <div className="mt-1 font-mono text-[12.5px] text-fg">
                           {pred.metric} = <span className="text-cyan">{fmtScore(pred.expected)}</span>
@@ -105,7 +105,7 @@ export function DecisionCard({ d, defaultOpen = false, highlight = false }: { d:
                       )}
                     </div>
                     <div className="rounded-lg border border-white/[0.06] bg-black/20 p-3">
-                      <div className="flex items-center gap-2 text-[10px] uppercase tracking-wider text-fg-dim">
+                      <div className="flex items-center gap-2 label">
                         observed <Verdict verdict={out?.verdict ?? 'pending'} />
                       </div>
                       <div className="mt-1 font-mono text-[12.5px] text-fg">{out?.observed != null ? fmtScore(out.observed) : '--'}</div>
@@ -134,12 +134,12 @@ export function DecisionCard({ d, defaultOpen = false, highlight = false }: { d:
                   <div className="flex flex-wrap items-center gap-1.5">
                     {d.memory_reads.map((f) => (
                       <Link key={'r' + f} to={`/memory?fact=${encodeURIComponent(f)}`}>
-                        <Chip color="#A98BFF">read {f}</Chip>
+                        <Chip color="#A99BEA">read {f}</Chip>
                       </Link>
                     ))}
                     {d.memory_writes.map((f) => (
                       <Link key={'w' + f} to={`/memory?fact=${encodeURIComponent(f)}`}>
-                        <Chip color="#6CF29A">wrote {f}</Chip>
+                        <Chip color="#6FBF8E">wrote {f}</Chip>
                       </Link>
                     ))}
                   </div>
@@ -168,7 +168,7 @@ export function DecisionCard({ d, defaultOpen = false, highlight = false }: { d:
 function Section({ label, children }: { label: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="mb-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">{label}</div>
+      <div className="mb-1.5 label">{label}</div>
       {children}
     </div>
   )

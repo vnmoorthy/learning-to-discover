@@ -408,7 +408,7 @@ def main():
             setattr(a, k, v)
     torch.manual_seed(a.seed); np.random.seed(a.seed)
     dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-    sid = os.environ.get("LTD_STRATEGY_ID", f"s{a.seed}")
+    sid = os.environ.get("PHOENIX_STRATEGY_ID", f"s{a.seed}")
     tag = f"[{fam} s{a.seed}]"
     V = load_verifier(slug)
     meta = json.load(open(os.path.join(ROOT, "problems", slug, "meta.json")))

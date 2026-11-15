@@ -170,7 +170,7 @@ The same log shows the planner saying no. Decision #26 (cycle 1): `Planner rejec
 
 ## Self-improvement
 
-`ltd/learning.py` runs GRPO-style reinforcement learning on [Tinker](docs/SPONSORS.md#tinker): a LoRA on an open
+`phoenixastar/learning.py` runs GRPO-style reinforcement learning on [Tinker](docs/SPONSORS.md#tinker): a LoRA on an open
 model samples integer sets, the official `sidon-45-set` verifier scores each one, and the advantage
 (reward minus the group mean) drives an importance-sampling policy-gradient step.
 
@@ -202,7 +202,7 @@ Best construction sampled during training: score 0.6667 (step 4); it does **not*
 
 ## Memory benchmark
 
-`ltd/memory_bench.py` builds a question set from the lab's own memory facts and has three memory systems answer
+`phoenixastar/memory_bench.py` builds a question set from the lab's own memory facts and has three memory systems answer
 it from only what their lookup returned: past.dev, a markdown file kept whole in context, and a small RAG
 (OpenAI embeddings, cosine top-k). We report what we measured, including where the simple baselines win.
 
@@ -248,11 +248,11 @@ VITE_STATIC=1 npx vite preview --outDir dist-static
 ```bash
 python3 -m pip install fastapi uvicorn sse-starlette httpx openai modal tinker numpy numba sympy python-sat torch
 cd web && npm install && npm run build && cd ..
-python3 -m ltd.server                # http://127.0.0.1:8787 (API under /api, UI at /)
+python3 -m phoenixastar.server                # http://127.0.0.1:8787 (API under /api, UI at /)
 ```
 
-Useful switches: `LTD_LOOP_AUTOSTART=0` starts with the loop paused, `LTD_TEST_MODE=1` gives launches `test-` ids
-and dry-runs every stop. `python3 -m ltd.snapshot` exports the run to `web/public/data/` for the replay.
+Useful switches: `PHOENIX_LOOP_AUTOSTART=0` starts with the loop paused, `PHOENIX_TEST_MODE=1` gives launches `test-` ids
+and dry-runs every stop. `python3 -m phoenixastar.snapshot` exports the run to `web/public/data/` for the replay.
 Step-by-step instructions, including how to re-verify every solution: [docs/REPRODUCE.md](docs/REPRODUCE.md).
 
 ## Configuration
@@ -262,17 +262,17 @@ printed, logged, or copied to the GPU box, the Modal containers or the sandboxes
 
 | Variable | Used by | For |
 |---|---|---|
-| `OPENAI_API_KEY` | `ltd/proposer.py`, `ltd/sandboxes.py`, `ltd/memory_bench.py`, `viz/astra.py` | GPT-6 Astra proposer, program writing, benchmark answers and embeddings, Blender scripts, gpt-image-2 |
-| `EXA_API_KEY` | `ltd/literature.py` | literature search in the loop |
-| `PAST_API_KEY` | `ltd/memory.py`, `ltd/memory_bench.py` | shared multi-agent memory |
-| `TINKER_API_KEY` | `ltd/learning.py` | RL fine-tuning and sampling |
-| `DEVIN_API_KEY` | `ltd/toolsmith.py` | commissioning new search strategies |
+| `OPENAI_API_KEY` | `phoenixastar/proposer.py`, `phoenixastar/sandboxes.py`, `phoenixastar/memory_bench.py`, `viz/astra.py` | GPT-6 Astra proposer, program writing, benchmark answers and embeddings, Blender scripts, gpt-image-2 |
+| `EXA_API_KEY` | `phoenixastar/literature.py` | literature search in the loop |
+| `PAST_API_KEY` | `phoenixastar/memory.py`, `phoenixastar/memory_bench.py` | shared multi-agent memory |
+| `TINKER_API_KEY` | `phoenixastar/learning.py` | RL fine-tuning and sampling |
+| `DEVIN_API_KEY` | `phoenixastar/toolsmith.py` | commissioning new search strategies |
 
 | Compute | Setup |
 |---|---|
-| GPU box (Lambda, 8x A100) | Put your host in `scripts/ssh_config` under the alias `ltd`. All access goes through `ssh -F scripts/ssh_config ltd`; code is synced to `~/ltd`. |
-| Modal CPU fleet | `modal deploy ltd/modal_fleet.py` once, and again after search code changes. |
-| Modal sandboxes | Nothing to deploy: the app `ltd-sandboxes` is created on first use. Needs `modal token new`. |
+| GPU box (Lambda, 8x A100) | Put your host in `scripts/ssh_config` under the alias `ltd`. All access goes through `ssh -F scripts/ssh_config gpubox`; code is synced to `~/ltd`. |
+| Modal CPU fleet | `modal deploy phoenixastar/modal_fleet.py` once, and again after search code changes. |
+| Modal sandboxes | Nothing to deploy: the app `phoenixastar-sandboxes` is created on first use. Needs `modal token new`. |
 | Referee | The `claude` CLI on `PATH`. Without it the referee abstains and the planner's hard limits still apply. |
 
 <details>
@@ -280,18 +280,18 @@ printed, logged, or copied to the GPU box, the Modal containers or the sandboxes
 
 | Variable | Default | Meaning |
 |---|---|---|
-| `LTD_PORT` | `8787` | server port (binds 127.0.0.1) |
-| `LTD_LOOP_INTERVAL` | `300` | seconds between cycles |
-| `LTD_FIRST_CYCLE_DELAY` | `30` | seconds before the first cycle |
-| `LTD_LOOP_AUTOSTART` | `1` | `0` starts paused |
-| `LTD_TEST_MODE` | `0` | `1`: `test-` ids, stops are dry runs |
-| `LTD_TELEMETRY_POLL` | `30` | seconds between telemetry polls |
-| `LTD_PROPOSER_MODEL` | `gpt-6-astra` | proposer model (fallback `gpt-5.5`) |
-| `LTD_REFEREE_MODEL` | `claude-fable-5-2` | referee model |
-| `LTD_REFEREE_TIMEOUT` | `150` | referee timeout in seconds |
-| `LTD_TINKER_MODEL` | `Qwen/Qwen3-8B` | base model for the RL run |
-| `LTD_PAST_IDENTITY` | `ltd-lab` | shared past.dev identity |
-| `LTD_DB` | `data/ltd.sqlite` | ledger path |
+| `PHOENIX_PORT` | `8787` | server port (binds 127.0.0.1) |
+| `PHOENIX_LOOP_INTERVAL` | `300` | seconds between cycles |
+| `PHOENIX_FIRST_CYCLE_DELAY` | `30` | seconds before the first cycle |
+| `PHOENIX_LOOP_AUTOSTART` | `1` | `0` starts paused |
+| `PHOENIX_TEST_MODE` | `0` | `1`: `test-` ids, stops are dry runs |
+| `PHOENIX_TELEMETRY_POLL` | `30` | seconds between telemetry polls |
+| `PHOENIX_PROPOSER_MODEL` | `gpt-6-astra` | proposer model (fallback `gpt-5.5`) |
+| `PHOENIX_REFEREE_MODEL` | `claude-fable-5-2` | referee model |
+| `PHOENIX_REFEREE_TIMEOUT` | `150` | referee timeout in seconds |
+| `PHOENIX_TINKER_MODEL` | `Qwen/Qwen3-8B` | base model for the RL run |
+| `PHOENIX_PAST_IDENTITY` | `phoenixastar-lab` | shared past.dev identity |
+| `PHOENIX_DB` | `data/phoenixastar.sqlite` | ledger path |
 
 </details>
 
@@ -300,7 +300,7 @@ printed, logged, or copied to the GPU box, the Modal containers or the sandboxes
 ```text
 phoenixastar/
 ├── SPEC.md                 build spec: API contract, module list, design rules
-├── ltd/                    the lab (Python package)
+├── phoenixastar/                    the lab (Python package)
 │   ├── server.py           FastAPI: /api, SSE events, serves web/dist
 │   ├── loop.py             the autonomous cycle
 │   ├── monitor.py box.py   telemetry and SSH to the GPU box; adopts running searches
@@ -333,7 +333,7 @@ phoenixastar/
 - **Official verifiers only.** `problems/<slug>/verifier.py` is the EinsteinArena verifier: exact, integer math.
   The critic runs it in a subprocess with a timeout on every `FOUND_*` and `best_*` file. The search's own claim
   is never trusted.
-- **A record has a definition.** `ltd/config.py: beats_record` requires a strict improvement of at least the
+- **A record has a definition.** `phoenixastar/config.py: beats_record` requires a strict improvement of at least the
   problem's `minImprovement`. Reproducing the record, or starting from it, is logged as exactly that.
 - **Predictions are scored.** A decision with a prediction gets a verdict once its horizon passes. Predictions
   attached to actions that never ran are marked `n/a`, not counted as hits.
@@ -346,7 +346,7 @@ phoenixastar/
   best solutions and on random inputs.
 - **Untrusted code is contained.** LLM-written programs run in Modal sandboxes with networking blocked, no
   secrets and a hard kill. Launch parameters are validated against typed ranges before any command line exists.
-- **Everything is replayable.** The ledger is exported by `python3 -m ltd.snapshot`; the public demo is that
+- **Everything is replayable.** The ledger is exported by `python3 -m phoenixastar.snapshot`; the public demo is that
   export. Simulated or snapshotted data is labelled as such in the UI.
 
 More: [docs/REPRODUCE.md](docs/REPRODUCE.md).

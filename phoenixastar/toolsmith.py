@@ -140,7 +140,7 @@ def run_in_modal(code: str, args: list[str], files: dict[str, str], seconds: int
     """Run untrusted (AI-written) code in a Modal sandbox: no network, no secrets, hard timeout."""
     import base64
     import modal
-    app = modal.App.lookup("ltd-sandboxes", create_if_missing=True)
+    app = modal.App.lookup("phoenixastar-sandboxes", create_if_missing=True)
     image = modal.Image.debian_slim(python_version="3.11").pip_install("numpy", "numba")
     setup = [f"echo {base64.b64encode(code.encode()).decode()} | base64 -d > /tmp/prog.py"]
     for name, content in files.items():

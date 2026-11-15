@@ -1,6 +1,6 @@
 """Adversarial tests added in review (offline, no paid calls; never touch the live data files or ledger).
 
-Run:  cd ROOT && python3 -m pytest -q -p no:cacheprovider ltd/tests_labs
+Run:  cd ROOT && python3 -m pytest -q -p no:cacheprovider phoenixastar/tests_labs
 """
 import json
 import os
@@ -10,12 +10,12 @@ import time
 
 import pytest
 
-os.environ["LTD_LABS_LEDGER"] = "0"
+os.environ["PHOENIX_LABS_LEDGER"] = "0"
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from ltd import learning, memory_bench, sandboxes  # noqa: E402
+from phoenixastar import learning, memory_bench, sandboxes  # noqa: E402
 
 LIVE_FILES = [os.path.join(ROOT, "data", f) for f in ("learning.json", "sandboxes.jsonl", "memory_benchmark.json")]
 
@@ -32,8 +32,8 @@ def _live_files_untouched():
 @pytest.fixture
 def temp_ledger(tmp_path, monkeypatch):
     """A throwaway SQLite ledger, so decision logging can be exercised without the live DB."""
-    from ltd import config, ledger
-    monkeypatch.setenv("LTD_LABS_LEDGER", "1")
+    from phoenixastar import config, ledger
+    monkeypatch.setenv("PHOENIX_LABS_LEDGER", "1")
     monkeypatch.setattr(config, "DB_PATH", str(tmp_path / "ledger.sqlite"))
     monkeypatch.setattr(ledger, "_conn", None)
     yield ledger
@@ -275,7 +275,7 @@ def test_start_async_rejects_too_few_facts():
 
 class _FakeSys:
     def __init__(self, name, facts, *a, **k):
-        self.name, self.facts, self.cost_usd, self.setup, self.identity = name, facts, 0.0, {}, "ltd-bench-test"
+        self.name, self.facts, self.cost_usd, self.setup, self.identity = name, facts, 0.0, {}, "phoenixastar-bench-test"
 
     def lookup(self, q):
         return "\n".join(f["text"] for f in self.facts)

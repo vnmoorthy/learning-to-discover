@@ -59,7 +59,7 @@ export default function GalleryPage() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: Math.min(i, 9) * 0.04 }}
               onClick={() => setOpen(item)}
-              className="panel panel-hover group overflow-hidden rounded-2xl text-left"
+              className="panel panel-hover group overflow-hidden rounded-xl text-left"
             >
               <div className="aspect-[4/3] overflow-hidden bg-black">
                 <Media item={item} />
@@ -67,7 +67,7 @@ export default function GalleryPage() {
               <div className="p-4">
                 <div className="flex items-center justify-between gap-2">
                   <div className="truncate text-[13.5px] font-semibold text-fg">{item.title}</div>
-                  <span className="shrink-0 rounded-md border border-white/10 px-1.5 py-0.5 font-mono text-[10px] uppercase text-fg-dim">{item.kind}</span>
+                  <span className="shrink-0 rounded-md border border-white/10 px-1.5 py-0.5 font-mono text-[10px] text-fg-dim">{item.kind}</span>
                 </div>
                 <div className="mt-0.5 font-mono text-[10.5px] text-cyan/80">{item.made_with}</div>
                 {item.caption && <p className="mt-1.5 line-clamp-2 text-[12px] text-fg-muted">{item.caption}</p>}

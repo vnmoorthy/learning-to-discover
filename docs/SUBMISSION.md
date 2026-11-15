@@ -51,9 +51,9 @@ decision, source, memory read/write, verdict and verification is in the replayab
 ## Sponsor challenges
 
 ### Exa: research agents that search
-- **Where Exa runs in the main loop:** `ltd/literature.py` (`search()`, Exa `/search` with contents and highlights,
-  cached by query), called from the loop's literature phase (`ltd/loop.py`, `_literature`) for every stalled or new problem
-  and from proposer-requested research actions (`ltd/planner.py`, `execute`, kind `research`).
+- **Where Exa runs in the main loop:** `phoenixastar/literature.py` (`search()`, Exa `/search` with contents and highlights,
+  cached by query), called from the loop's literature phase (`phoenixastar/loop.py`, `_literature`) for every stalled or new problem
+  and from proposer-requested research actions (`phoenixastar/planner.py`, `execute`, kind `research`).
 - **How results are used:** cards (title, URL, published date, highlight) go into the proposer's state; decisions cite
   card ids (`cite`), which the ledger links back (`cited_by`). The Literature page shows every source and which decisions
   cited it. So far: 188 sources across the problems.
@@ -61,25 +61,25 @@ decision, source, memory read/write, verdict and verification is in the replayab
 
 ### past.dev: multi-agent memory
 - **More than one agent writes:** one agent per problem (`agent:<slug>`), plus `proposer` and `planner`
-  (`ltd/memory.py` `write`, called from `ltd/loop.py` and `ltd/planner.py`).
+  (`phoenixastar/memory.py` `write`, called from `phoenixastar/loop.py` and `phoenixastar/planner.py`).
 - **More than one agent reads, and reads others' data:** each problem agent recalls from the shared space (identity
-  `ltd-lab`) before every proposal (`ltd/loop.py`, `_memory` -> `memory.recall`); the proposer uses facts written by
+  `phoenixastar-lab`) before every proposal (`phoenixastar/loop.py`, `_memory` -> `memory.recall`); the proposer uses facts written by
   other agents and lists their ids in `memory_used`, recorded as `read_by`. Live: 387 facts, 13 agents, 509 cross-agent
   read links (Memory page graph).
 - **Which memory holds what:** past.dev holds the shared, cross-agent observations and plans; `data/memory.md` is an
   append-only markdown log of the same facts; the RAG baseline embeds the same facts with OpenAI embeddings.
-- **Benchmark (`ltd/memory_bench.py`, `data/snapshot/memory_benchmark.json`):** on a small set of lab facts, past.dev
+- **Benchmark (`phoenixastar/memory_bench.py`, `data/snapshot/memory_benchmark.json`):** on a small set of lab facts, past.dev
   scored 74% accuracy against markdown 100% and RAG 97%, using the fewest context tokens. Why it lost: the whole memory
   is small enough to fit in one prompt, which favours the markdown baseline, and past.dev's recall was weakest on
   cross-agent questions. We report it as measured.
 
 ### Best use of Modal
-- **Planner-controlled fleet:** `ltd/fleet.py` + `ltd/modal_fleet.py`. The proposer chooses `where: "modal"`, the planner
+- **Planner-controlled fleet:** `phoenixastar/fleet.py` + `phoenixastar/modal_fleet.py`. The proposer chooses `where: "modal"`, the planner
   launches and cancels containers (up to 140), the monitor merges the fleet's logs into telemetry, and the critic verifies
   FOUND files read from the fleet Volume.
-- **Agent sandboxes:** `ltd/sandboxes.py`, where GPT writes search programs that run in parallel in network-blocked Modal
+- **Agent sandboxes:** `phoenixastar/sandboxes.py`, where GPT writes search programs that run in parallel in network-blocked Modal
   sandboxes with no secrets, then get verified locally (28 so far).
-- **Toolsmith bench:** Devin's code is smoke-tested in a Modal sandbox (`ltd/toolsmith.py`, `run_in_modal`).
+- **Toolsmith bench:** Devin's code is smoke-tested in a Modal sandbox (`phoenixastar/toolsmith.py`, `run_in_modal`).
 
 ### Originator
 Agent sessions from the build are uploaded with the submission.

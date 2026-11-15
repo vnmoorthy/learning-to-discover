@@ -618,7 +618,7 @@ def execute(actions, cycle, proposer_ids=None):
                 sandboxes.start_batch_async(a["problem"], a["n"], context=a.get("rationale", ""))
                 ok, err = True, None
             except Exception as e:  # noqa: BLE001
-                ok, err = False, f"ltd.sandboxes unavailable or failed: {type(e).__name__}: {e}"
+                ok, err = False, f"phoenixastar.sandboxes unavailable or failed: {type(e).__name__}: {e}"
             did = ledger.add_decision(cycle, "sandbox", "start_batch", a["problem"], {"n": a["n"], "proposer_decision": src, "error": err},
                                       f"{'Started' if ok else 'Could not start'} {a['n']} Modal sandbox programs for {a['problem']}"
                                       f"{'' if ok else ': ' + err}.")

@@ -449,7 +449,7 @@ def main():
     ap.add_argument("--record", type=int, default=226, help="leaderboard top; FOUND when verified size beats it")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
-    sid = os.environ.get("LTD_STRATEGY_ID", f"s{a.seed}")
+    sid = os.environ.get("PHOENIX_STRATEGY_ID", f"s{a.seed}")
     tag = f"[{FAM} s{a.seed}]"
     ver = load_verifier()
     try:

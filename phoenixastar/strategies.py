@@ -162,7 +162,7 @@ def command(name, params, sid, gpu=None):
         raise ValueError(f"bad strategy id {sid!r}")
     log = log_path(name, sid, params)
     out = t.get("out") or "runs/misc"
-    env = f"LTD_STRATEGY_ID={shlex.quote(sid)}"
+    env = f"PHOENIX_STRATEGY_ID={shlex.quote(sid)}"
     # Per-template environment. Default for GPU (torch) templates: ignore ~/.local site-packages, because numpy 2.x
     # installed there breaks the system torch build ("Numpy is not available"); system numpy 1.x works with it.
     tenv = t.get("env")

@@ -32,13 +32,13 @@ function Brand() {
   return (
     <NavLink to="/" className="group flex items-center gap-2.5">
       <svg viewBox="0 0 32 32" className="h-7 w-7 shrink-0 sm:h-8 sm:w-8" aria-hidden>
-        <rect width="32" height="32" rx="9" fill="#0E1116" stroke="rgba(61,245,255,0.25)" />
-        <g fill="#3DF5FF">
+        <rect width="32" height="32" rx="9" fill="#111418" stroke="rgba(79,209,224,0.25)" />
+        <g fill="#4FD1E0">
           <circle cx="9.5" cy="9.5" r="2.1" />
           <circle cx="22.5" cy="12" r="2.1" />
           <circle cx="12.5" cy="22" r="2.1" />
         </g>
-        <circle cx="22" cy="22.5" r="2.6" fill="#FFB547" />
+        <circle cx="22" cy="22.5" r="2.6" fill="#E2B25C" />
       </svg>
       <div className="leading-tight">
         <div className="whitespace-nowrap font-display text-[14px] font-semibold tracking-tight text-fg sm:text-[15px]">Phoenixastar</div>
@@ -58,14 +58,14 @@ function ModeBanner() {
     )
   if (MODE === 'fixtures')
     return (
-      <div className="border-b border-[#A98BFF]/30 bg-[#A98BFF]/[0.08] px-4 py-2 text-center text-xs text-[#C9A8FF]">
+      <div className="border-b border-[#A99BEA]/30 bg-[#A99BEA]/[0.08] px-4 py-2 text-center text-xs text-[#B9AEEF]">
         Fixture mode (VITE_FIXTURES=1): simulated backend for development. These are not live results.
       </div>
     )
   if (error)
     return (
       <div className="border-b border-bad/30 bg-bad/[0.08] px-4 py-2 text-center text-xs text-bad">
-        Backend unreachable ({error}). Retrying every 5 s; start it with <code className="font-mono">python3 -m ltd.server</code>.
+        Backend unreachable ({error}). Retrying every 5 s; start it with <code className="font-mono">python3 -m phoenixastar.server</code>.
       </div>
     )
   return null
@@ -106,7 +106,7 @@ function Sidebar() {
         ))}
       </nav>
       <div className="mt-6 border-t border-white/[0.06] pt-4">
-        <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.16em] text-fg-dim">Problems</div>
+        <div className="mb-2 label">Problems</div>
         <div className="flex flex-col gap-0.5">
           {state?.problems.map((p) => (
             <NavLink

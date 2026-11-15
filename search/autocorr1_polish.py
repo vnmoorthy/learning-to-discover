@@ -74,7 +74,7 @@ def main():
     a = ap.parse_args()
 
     os.makedirs(a.out, exist_ok=True)
-    sid = os.environ.get("LTD_STRATEGY_ID") or f"s{a.seed}"
+    sid = os.environ.get("PHOENIX_STRATEGY_ID") or f"s{a.seed}"
     tag = f"[{FAMILY} s{a.seed}]"
     dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.manual_seed(a.seed)

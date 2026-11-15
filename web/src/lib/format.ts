@@ -1,18 +1,18 @@
 import type { ProblemSummary } from '../types'
 
 export const PROBLEM_COLORS: Record<string, string> = {
-  'no-three-in-line-75': '#3DF5FF',
-  'spencer-discrepancy': '#A98BFF',
-  'hadamard-det-51': '#6CF29A',
-  'sidon-45-set': '#FF5DA8',
-  'two-deletion-code-16': '#5B8CFF',
-  'snake-in-the-box-13': '#E9E36B',
-  'ring-loading-15': '#3FD0C9',
+  'no-three-in-line-75': '#4FD1E0',
+  'spencer-discrepancy': '#A99BEA',
+  'hadamard-det-51': '#6FBF8E',
+  'sidon-45-set': '#D684A9',
+  'two-deletion-code-16': '#7096E0',
+  'snake-in-the-box-13': '#CDB866',
+  'ring-loading-15': '#DE9A6E',
 }
-const FALLBACK = ['#7DD3FC', '#C084FC', '#F472B6', '#34D399', '#FBBF24', '#60A5FA']
+const FALLBACK = ['#7FB8D8', '#B490D8', '#D48AAE', '#62B894', '#D6AE5A', '#7096E0']
 
 export function problemColor(slug: string | null | undefined): string {
-  if (!slug) return '#3A4252'
+  if (!slug) return '#3A424F'
   if (PROBLEM_COLORS[slug]) return PROBLEM_COLORS[slug]
   let h = 0
   for (const c of slug) h = (h * 31 + c.charCodeAt(0)) >>> 0
@@ -117,29 +117,29 @@ export function gapToRecord(p: ProblemSummary): number | null {
 }
 
 export const STATUS_STYLE: Record<string, { label: string; cls: string; dot: string }> = {
-  searching: { label: 'searching', cls: 'text-cyan border-cyan/30 bg-cyan/5', dot: 'bg-cyan' },
-  stalled: { label: 'stalled', cls: 'text-fg-muted border-ink-400 bg-ink-700', dot: 'bg-fg-muted' },
-  record: { label: 'record', cls: 'text-amber border-amber/50 bg-amber/10', dot: 'bg-amber' },
-  idle: { label: 'idle', cls: 'text-fg-dim border-ink-500 bg-ink-800', dot: 'bg-fg-dim' },
-  'proved-negative': { label: 'proved negative', cls: 'text-[#C9A8FF] border-[#A98BFF]/40 bg-[#A98BFF]/10', dot: 'bg-[#A98BFF]' },
+  searching: { label: 'Searching', cls: 'text-fg border-white/10 bg-white/[0.03]', dot: 'bg-cyan' },
+  stalled: { label: 'Stalled', cls: 'text-fg-muted border-white/10 bg-white/[0.03]', dot: 'bg-amber' },
+  record: { label: 'Record', cls: 'text-amber border-amber/30 bg-amber/[0.08]', dot: 'bg-amber' },
+  idle: { label: 'Idle', cls: 'text-fg-dim border-white/[0.08] bg-transparent', dot: 'bg-ink-400' },
+  'proved-negative': { label: 'Proved negative', cls: 'text-violet border-violet/30 bg-violet/[0.08]', dot: 'bg-violet' },
 }
 
 export const AGENT_COLORS: Record<string, string> = {
-  planner: '#5B8CFF',
-  proposer: '#3DF5FF',
-  critic: '#FF8A5B',
-  executor: '#6CF29A',
-  literature: '#E9E36B',
-  memory: '#A98BFF',
-  sandbox: '#3FD0C9',
-  learning: '#FF5DA8',
-  referee: '#FFB547',
-  toolsmith: '#B8F55B',
-  system: '#8B95A7',
+  planner: '#7096E0',
+  proposer: '#4FD1E0',
+  critic: '#DE9A6E',
+  executor: '#6FBF8E',
+  literature: '#CDB866',
+  memory: '#A99BEA',
+  sandbox: '#5FB8AE',
+  learning: '#D684A9',
+  referee: '#E2B25C',
+  toolsmith: '#A5C76B',
+  system: '#9BA3AF',
 }
 export function agentColor(a: string): string {
   if (a.startsWith('agent:')) return problemColor(a.slice(6))
-  return AGENT_COLORS[a] ?? '#8B95A7'
+  return AGENT_COLORS[a] ?? '#9BA3AF'
 }
 
 export function cx(...xs: (string | false | null | undefined)[]): string {

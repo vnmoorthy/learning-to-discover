@@ -304,7 +304,7 @@ def main():
     Larr = np.array([L0], np.int64); stats = np.zeros(3, np.int64)
     out = np.zeros(NV, np.int64); tmp = np.zeros(NV, np.int64)
     best = L0
-    sid = os.environ.get("LTD_STRATEGY_ID")      # set by the backend launcher: unique file names per strategy
+    sid = os.environ.get("PHOENIX_STRATEGY_ID")      # set by the backend launcher: unique file names per strategy
     best_file = os.path.join(a.out, f"best_{sid}.json" if sid else f"best_s{a.seed}.json")
 
     def save(final=False):

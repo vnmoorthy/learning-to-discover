@@ -1,7 +1,7 @@
 """Offline tests for the sponsor-lab modules (no paid API calls).
 
-Run:  cd ROOT && python3 -m pytest -q ltd/tests_labs
-Live smoke (one tiny Modal sandbox, ~15 s):  LTD_LIVE=1 python3 -m pytest -q ltd/tests_labs -k live
+Run:  cd ROOT && python3 -m pytest -q phoenixastar/tests_labs
+Live smoke (one tiny Modal sandbox, ~15 s):  PHOENIX_LIVE=1 python3 -m pytest -q phoenixastar/tests_labs -k live
 """
 import json
 import os
@@ -9,12 +9,12 @@ import sys
 
 import pytest
 
-os.environ["LTD_LABS_LEDGER"] = "0"   # offline tests never write decisions into the live ledger
+os.environ["PHOENIX_LABS_LEDGER"] = "0"   # offline tests never write decisions into the live ledger
 ROOT = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 if ROOT not in sys.path:
     sys.path.insert(0, ROOT)
 
-from ltd import learning, memory_bench, sandboxes  # noqa: E402
+from phoenixastar import learning, memory_bench, sandboxes  # noqa: E402
 
 MA_TANG = [0, 136, 200, 243, 246, 249, 272, 286, 298, 323, 400, 528, 596, 1056]
 
@@ -65,7 +65,7 @@ def test_list_runs_newest_first(tmp_path, monkeypatch):
     assert [r["id"] for r in sandboxes.list_runs(2)] == [3, 2]
 
 
-@pytest.mark.skipif(os.environ.get("LTD_LIVE") != "1", reason="set LTD_LIVE=1 for the Modal smoke test")
+@pytest.mark.skipif(os.environ.get("PHOENIX_LIVE") != "1", reason="set PHOENIX_LIVE=1 for the Modal smoke test")
 def test_live_modal_sandbox():
     run = sandboxes.run_in_sandbox('import json, numpy, numba; print(json.dumps({"elements": %s}))' % MA_TANG)
     assert run["rc"] == 0

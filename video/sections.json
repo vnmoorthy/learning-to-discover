@@ -32,55 +32,103 @@
    "id": "s1_intro",
    "shot": "B-roll: web/public/gallery/lattice_orbit.mp4 (Blender render of the live no-three-in-line SAT snapshot), title card overlay.",
    "caption": "Phoenixastar  |  an autonomous AI lab for open math problems",
-   "text": "This is Phoenixastar: an autonomous AI lab that hunts for records on open math problems, and improves by doing it."
+   "text": "This is Phoenixastar: an autonomous AI lab that hunts for records on open math problems, and improves by doing it.",
+   "dur": 8.352,
+   "tts_model": "gpt-4o-mini-tts",
+   "adur": 7.089729,
+   "vdur": 7.64,
+   "start": 0
   },
   {
    "id": "s2_loop",
    "shot": "Mission Control /: hero and totals counters, then slow scroll so the Autonomous Loop phase stepper is centred; cursor sweeps the eight phases left to right.",
    "caption": "One loop every 3 min  |  40+ cycles, 950+ logged decisions, all auditable",
-   "text": "This is the live lab. Every 3 minutes, with no human in the loop, it reads telemetry, re-verifies every claim, recalls memory, searches papers with Exa, proposes experiments with GPT-6 Astra, has Claude Fable referee them, then executes. Over 40 cycles and 950 logged decisions so far."
+   "text": "This is the live lab. Every 3 minutes, with no human in the loop, it reads telemetry, re-verifies every claim, recalls memory, searches papers with Exa, proposes experiments with GPT-6 Astra, has Claude Fable referee them, then executes. Over 40 cycles and 950 logged decisions so far.",
+   "dur": 21.816,
+   "tts_model": "gpt-4o-mini-tts",
+   "adur": 17.532458,
+   "vdur": 18.08,
+   "start": 7.64
   },
   {
    "id": "s3_compute",
    "shot": "Mission Control /: scroll to the Compute Map; hover GPU tiles, then the CPU core grid, then the Modal fleet row.",
    "caption": "8 x A100  |  124 CPU cores  |  Modal fleet 140/140 containers",
-   "text": "It runs on 8 A100 GPUs and 124 CPU cores, coloured by the problem that owns them, plus an elastic Modal fleet: 140 containers right now."
+   "text": "It runs on 8 A100 GPUs and 124 CPU cores, coloured by the problem that owns them, plus an elastic Modal fleet: 140 containers right now.",
+   "dur": 11.712,
+   "tts_model": "gpt-4o-mini-tts",
+   "adur": 9.917458,
+   "vdur": 10.47,
+   "start": 25.72
   },
   {
    "id": "s4_problem",
    "shot": "/problems/no-three-in-line-75: header (record vs ours), then the 75x75 construction canvas with red violated lines; hover two points to isolate their lines.",
    "caption": "No-three-in-line 75x75  |  record 148  |  ours: 150 points, 100+ violated lines (not valid yet)",
-   "text": "The flagship problem: no three in line, on a 75 by 75 grid. The record is 148 points. Our best candidate places 150, but over 100 lines, in red, still cross three or more. Zero would be a new record. We are not there yet."
+   "text": "The flagship problem: no three in line, on a 75 by 75 grid. The record is 148 points. Our best candidate places 150, but over 100 lines, in red, still cross three or more. Zero would be a new record. We are not there yet.",
+   "dur": 17.808,
+   "tts_model": "gpt-4o-mini-tts",
+   "adur": 15.241542,
+   "vdur": 15.79,
+   "start": 36.19
   },
   {
    "id": "s5_decisions",
    "shot": "/decisions filtered to proposer, decision #211 expanded (rationale, queries, 3 Exa sources); cut to referee filter, #219 expanded (Claude Fable approve); cut to #191 expanded (prediction vs outcome, REFUTED).",
    "caption": "Decision #211: GPT-6 Astra proposes, 3 Exa sources  |  #219: Claude Fable 5.2 approves  |  #191: prediction refuted",
-   "text": "Every action is a card in the audit log. Here GPT-6 Astra asks for research, citing three Exa sources. Claude Fable reviews and approves it, with its own reasoning. Launches carry a falsifiable prediction: this one expected 16 collinear triples in 30 minutes. The critic observed 17, and marked it refuted."
+   "text": "Every action is a card in the audit log. Here GPT-6 Astra asks for research, citing three Exa sources. Claude Fable reviews and approves it, with its own reasoning. Launches carry a falsifiable prediction: this one expected 16 collinear triples in 30 minutes. The critic observed 17, and marked it refuted.",
+   "dur": 21.264,
+   "tts_model": "gpt-4o-mini-tts",
+   "adur": 18.295688,
+   "vdur": 18.85,
+   "start": 51.98
   },
   {
    "id": "s6_memory",
    "shot": "/memory: agent graph (hover the proposer node), then scroll to the Memory Benchmark bars and table.",
    "caption": "past.dev shared memory: 420+ facts  |  benchmark on 31 questions: past.dev 74%, markdown 100%, RAG 97%",
-   "text": "Agents share memory through past.dev: over 420 facts. Benchmarked honestly, it scores 74 percent, against 100 for plain markdown and 97 for RAG."
+   "text": "Agents share memory through past.dev: over 420 facts. Benchmarked honestly, it scores 74 percent, against 100 for plain markdown and 97 for RAG.",
+   "dur": 13.56,
+   "tts_model": "gpt-4o-mini-tts",
+   "adur": 11.423854,
+   "vdur": 11.97,
+   "start": 70.83
   },
   {
    "id": "s7_learning",
    "shot": "/learning: Tinker RL reward curve and valid-construction curve, gen-0 vs gen-N panel, then scroll to the Modal sandboxes table.",
    "caption": "Tinker RL, reward = official verifier  |  held-out valid rate 0% -> 50% in 40 steps  |  28 Modal sandbox runs",
-   "text": "The lab also trains itself. Tinker fine-tunes an open Qwen model with the verifier as reward: valid constructions on held-out prompts went from 0 to 50 percent in 40 steps. Devin writes new search programs, tested in Modal sandboxes; so far none has passed."
+   "text": "The lab also trains itself. Tinker fine-tunes an open Qwen model with the verifier as reward: valid constructions on held-out prompts went from 0 to 50 percent in 40 steps. Devin writes new search programs, tested in Modal sandboxes; so far none has passed.",
+   "dur": 18.36,
+   "tts_model": "gpt-4o-mini-tts",
+   "adur": 15.703896,
+   "vdur": 16.25,
+   "start": 82.8
   },
   {
    "id": "s8_gallery",
    "shot": "/gallery: Blender renders (Lattice, Hadamard City, Snake), then scroll to the three-body orbit plots (figure-eight, moth II, candidates, 7 families).",
    "caption": "Three-body domain: known families rediscovered  |  candidate orbits not found in the catalogs we checked",
-   "text": "The same loop now runs astrophysics: periodic three-body orbits. Our GPU search rediscovered the figure-eight and other known families, and reports candidate orbits not found in the catalogs we checked."
+   "text": "The same loop now runs astrophysics: periodic three-body orbits. Our GPU search rediscovered the figure-eight and other known families, and reports candidate orbits not found in the catalogs we checked.",
+   "dur": 13.92,
+   "tts_model": "gpt-4o-mini-tts",
+   "adur": 11.91175,
+   "vdur": 12.46,
+   "start": 99.05
   },
   {
    "id": "s9_close",
    "shot": "B-roll: lattice_orbit.mp4 again, closing card with the replay URL.",
    "caption": "No math record beaten yet; three-body orbits are candidates  |  replay: vnmoorthy.github.io/phoenixastar",
-   "text": "No math record is beaten yet, and the three-body orbits are candidates, not discoveries. Every decision, source and prediction is logged and replayable. Phoenixastar."
+   "text": "No math record is beaten yet, and the three-body orbits are candidates, not discoveries. Every decision, source and prediction is logged and replayable. Phoenixastar.",
+   "dur": 10.656,
+   "tts_model": "gpt-4o-mini-tts",
+   "adur": 8.949458,
+   "vdur": 10.5,
+   "start": 111.51
   }
- ]
+ ],
+ "tempo": 1.1541147672413794,
+ "total": 122.00999999999999,
+ "pad_in": 0.25
 }

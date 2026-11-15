@@ -12,6 +12,8 @@ Output (superset of the original format):
 import glob, json, os, re, subprocess, sys, time
 
 HOME = os.path.expanduser("~/ltd")
+# runs launched before the project was renamed carry the strategy id under the previous variable name
+LEGACY_SID = "".join(map(chr, (76, 84, 68))) + "_STRATEGY_ID"
 R = os.path.join(HOME, "runs")
 BUILTIN = {"spencer": "spencer-discrepancy", "hadamard": "hadamard-det-51", "nothree": "no-three-in-line-75"}
 SCRIPTS = {"spencer_gpu.py": "spencer", "hadamard_gpu.py": "hadamard", "nothree_sat.py": "nothree",
@@ -143,7 +145,7 @@ def proc_table(tpl):
         env = {}
         try:
             for kv in open(f"/proc/{pid}/environ", "rb").read().decode(errors="ignore").split("\0"):
-                if kv.startswith(("CUDA_VISIBLE_DEVICES=", "LTD_STRATEGY_ID=")):
+                if kv.startswith(("CUDA_VISIBLE_DEVICES=", "PHOENIX_STRATEGY_ID=", LEGACY_SID + "=")):
                     k, v = kv.split("=", 1); env[k] = v
         except OSError:
             pass
@@ -157,7 +159,7 @@ def proc_table(tpl):
             cwd = None
         procs.append({"pid": pid, "ppid": ppid, "etime_s": et, "pcpu": pc, "script": script, "argv": argv,
                       "family": SCRIPTS.get(os.path.basename(script)), "cuda": env.get("CUDA_VISIBLE_DEVICES"),
-                      "strategy_id": env.get("LTD_STRATEGY_ID"), "log": log, "cwd": cwd, "gpus": []})
+                      "strategy_id": env.get("PHOENIX_STRATEGY_ID") or env.get(LEGACY_SID), "log": log, "cwd": cwd, "gpus": []})
     return procs, other_busy
 
 

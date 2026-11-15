@@ -152,7 +152,7 @@ export default function DecisionsPage() {
                 key={a}
                 onClick={() => setParam('agent', on ? '' : a)}
                 className="rounded-md border px-2 py-1 font-mono text-[11px] transition-colors"
-                style={on ? { color: c, borderColor: c + '66', background: c + '18' } : { color: '#8B95A7', borderColor: 'rgba(255,255,255,0.1)' }}
+                style={on ? { color: c, borderColor: c + '66', background: c + '18' } : { color: '#9BA3AF', borderColor: 'rgba(255,255,255,0.1)' }}
               >
                 {a}
               </button>

@@ -386,7 +386,7 @@ def main():
     st = np.array([0, E, 0, 0], np.int64); Ecur = np.array([E], np.int64); bestv = vals.copy()
     best_h = h; best_set = sorted(vals.tolist()); best_E = E     # best exact score seen (ties: lower excess)
     print(f"{tag} setup n={a.n} target_h={t} M={M} init={a.init} h0={h} E0={E} t={time.time()-t0:.1f}s", flush=True)
-    sid = os.environ.get("LTD_STRATEGY_ID")      # set by the backend launcher: unique file names per strategy
+    sid = os.environ.get("PHOENIX_STRATEGY_ID")      # set by the backend launcher: unique file names per strategy
     best_file = os.path.join(a.out, f"best_{sid}.json" if sid else f"best_n{a.n}_s{a.seed}.json")
 
     def save(sa_elements, sa_h, sa_E):

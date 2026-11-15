@@ -58,11 +58,11 @@ async function liveRequest<T>(method: Method, path: string, body?: unknown, time
     } catch {
       data = null
     }
-    // Something that is not ltd.server answered (e.g. another dev app bound to :8787 returns an HTML 404).
+    // Something that is not phoenixastar.server answered (e.g. another dev app bound to :8787 returns an HTML 404).
     if (!isJson || data === null) {
       const ct = res.headers.get('content-type') || 'no content type'
       throw new ApiError(
-        `${method} ${path}: HTTP ${res.status}, not a JSON reply (${ct.split(';')[0]}). Is ltd.server running on 127.0.0.1:8787, or is another app answering on that port?`,
+        `${method} ${path}: HTTP ${res.status}, not a JSON reply (${ct.split(';')[0]}). Is phoenixastar.server running on 127.0.0.1:8787, or is another app answering on that port?`,
         res.status,
       )
     }

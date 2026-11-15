@@ -594,7 +594,7 @@ def run_tabu(a, tag, t0, dptr, didx, pptr, pidx, wt, init_items, words_of, ver):
 
     grow()
     tst = np.array([0, k, F[0], 1], np.int64)
-    sid = os.environ.get("LTD_STRATEGY_ID")      # set by the backend launcher: unique file names per strategy
+    sid = os.environ.get("PHOENIX_STRATEGY_ID")      # set by the backend launcher: unique file names per strategy
     best_file = os.path.join(a.out, f"best_{sid}.json" if sid else f"best_{a.mode}_tabu_s{a.seed}.json")
 
     def save(items):
@@ -718,7 +718,7 @@ def main():
     if a.algo == "tabu":
         run_tabu(a, tag, t0, dptr, didx, pptr, pidx, wt, sol[:SC[S_NSOL]].copy(), words_of, ver)
         return
-    sid = os.environ.get("LTD_STRATEGY_ID")      # set by the backend launcher: unique file names per strategy
+    sid = os.environ.get("PHOENIX_STRATEGY_ID")      # set by the backend launcher: unique file names per strategy
     best_file = os.path.join(a.out, f"best_{sid}.json" if sid else
                              f"best_{a.mode}{'_' + a.group if members is not None else ''}_s{a.seed}.json")
     last_saved = -1

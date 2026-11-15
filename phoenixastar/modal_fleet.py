@@ -1,10 +1,10 @@
 """Modal fleet: the lab's elastic compute. Every search strategy runs as a Modal container (A100 or CPU),
-logs to the shared Modal Volume `ltd-runs`, and is launched / cancelled by the planner.
+logs to the shared Modal Volume `phoenixastar-runs`, and is launched / cancelled by the planner.
 
-  modal deploy ltd/modal_fleet.py           # once (and after search code changes)
-  python3 -m ltd.modal_fleet launch nothree_gpu '{"seed":1}'
-  python3 -m ltd.modal_fleet telemetry
-  python3 -m ltd.modal_fleet cancel <call_id>
+  modal deploy phoenixastar/modal_fleet.py           # once (and after search code changes)
+  python3 -m phoenixastar.modal_fleet launch nothree_gpu '{"seed":1}'
+  python3 -m phoenixastar.modal_fleet telemetry
+  python3 -m phoenixastar.modal_fleet cancel <call_id>
 
 Containers get no secrets: the strategies only need numpy/torch/numba/pysat and the problem files.
 """
@@ -20,9 +20,9 @@ import time
 import modal
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-APP_NAME = "ltd-fleet"
+APP_NAME = "phoenixastar-fleet"
 app = modal.App(APP_NAME)
-vol = modal.Volume.from_name("ltd-runs", create_if_missing=True)
+vol = modal.Volume.from_name("phoenixastar-runs", create_if_missing=True)
 
 
 def _with_code(img: modal.Image) -> modal.Image:
@@ -46,7 +46,7 @@ def _run(sid: str, script: str, args: list[str], family: str, seconds: float) ->
     os.makedirs(f"/runs/{family}", exist_ok=True)
     logp = f"/runs/{family}/{sid}.log"
     log = open(logp, "a", buffering=1)
-    env = {**os.environ, "LTD_STRATEGY_ID": sid, "PYTHONUNBUFFERED": "1"}
+    env = {**os.environ, "PHOENIX_STRATEGY_ID": sid, "PYTHONUNBUFFERED": "1"}
     t0 = time.time()
     p = subprocess.Popen([sys.executable, "-u", "-B", script] + args, stdout=log, stderr=subprocess.STDOUT, env=env)
     stop = threading.Event()

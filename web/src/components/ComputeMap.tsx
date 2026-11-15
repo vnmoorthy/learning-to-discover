@@ -18,7 +18,7 @@ function GpuTile({ g }: { g: ComputeState['gpus'][number] }) {
       style={{ borderColor: g.problem ? color + '38' : 'rgba(255,255,255,0.06)', background: g.problem ? `linear-gradient(160deg, ${color}14, transparent 60%)` : 'rgba(255,255,255,0.015)' }}
     >
       <div className="flex items-start justify-between gap-2">
-        <div className="font-mono text-[10px] uppercase tracking-wider text-fg-dim">GPU {g.idx}</div>
+        <div className="font-mono label">GPU {g.idx}</div>
         <svg viewBox="0 0 48 48" className="-mr-1 -mt-1 h-11 w-11 shrink-0">
           <circle cx="24" cy="24" r={r} fill="none" stroke="rgba(255,255,255,0.07)" strokeWidth="4" />
           <motion.circle
@@ -26,7 +26,7 @@ function GpuTile({ g }: { g: ComputeState['gpus'][number] }) {
             cy="24"
             r={r}
             fill="none"
-            stroke={g.problem ? color : '#5A6375'}
+            stroke={g.problem ? color : '#7A838F'}
             strokeWidth="4"
             strokeLinecap="round"
             transform="rotate(-90 24 24)"
@@ -41,7 +41,7 @@ function GpuTile({ g }: { g: ComputeState['gpus'][number] }) {
           </text>
         </svg>
       </div>
-      <div className="-mt-2 truncate text-[12px] font-semibold" style={{ color: g.problem ? color : '#5A6375' }}>
+      <div className="-mt-2 truncate text-[12px] font-semibold" style={{ color: g.problem ? color : '#7A838F' }}>
         {g.problem ? shortName(g.problem) : 'free'}
       </div>
       <div className="mt-0.5 truncate font-mono text-[10px] text-fg-dim" title={(g.strategy_ids ?? [g.strategy_id]).filter(Boolean).join(', ')}>
@@ -50,7 +50,7 @@ function GpuTile({ g }: { g: ComputeState['gpus'][number] }) {
       </div>
       <div className="mt-2">
         <div className="h-1 overflow-hidden rounded-full bg-white/[0.06]">
-          <motion.div className="h-full rounded-full" style={{ background: g.problem ? color : '#5A6375' }} initial={false} animate={{ width: `${Math.min(100, (mem / A100_MB) * 100)}%` }} />
+          <motion.div className="h-full rounded-full" style={{ background: g.problem ? color : '#7A838F' }} initial={false} animate={{ width: `${Math.min(100, (mem / A100_MB) * 100)}%` }} />
         </div>
         <div className="mt-1 font-mono text-[10px] text-fg-dim">{(mem / 1024).toFixed(1)} / 40 GB</div>
       </div>
@@ -141,7 +141,7 @@ export function ModalFleet({ compute }: { compute: ComputeState }) {
   while (cells.length < m.max) cells.push(null)
   return (
     <div>
-      <div className="mb-2 flex items-baseline justify-between text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">
+      <div className="mb-2 flex items-baseline justify-between label">
         <span>Modal fleet (elastic, planner-controlled)</span>
         <span className="font-mono normal-case tracking-normal text-fg">{m.containers}/{m.max} containers</span>
       </div>
@@ -163,7 +163,7 @@ export function ModalFleet({ compute }: { compute: ComputeState }) {
             {slug} <span className="font-mono text-fg">{n}</span>
           </span>
         ))}
-        {m.error ? <span className="text-amber-300">telemetry: {m.error}</span> : null}
+        {m.error ? <span className="text-amber">telemetry: {m.error}</span> : null}
       </div>
     </div>
   )

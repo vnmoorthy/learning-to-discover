@@ -30,7 +30,7 @@ export default function NoThreeCanvas({ art }: { art: GridArtifact }) {
     const X = (x: number) => pad + x * cell
     const Y = (y: number) => size - pad - y * cell
     ctx.clearRect(0, 0, size, size)
-    ctx.fillStyle = '#080A0E'
+    ctx.fillStyle = '#0E1014'
     ctx.fillRect(0, 0, size, size)
 
     // lattice
@@ -87,7 +87,7 @@ export default function NoThreeCanvas({ art }: { art: GridArtifact }) {
       ctx.save()
       ctx.strokeStyle = 'rgba(255,90,110,0.95)'
       ctx.lineWidth = 1.8
-      ctx.shadowColor = '#FF4D5E'
+      ctx.shadowColor = '#E5676B'
       ctx.shadowBlur = 8
       for (const l of hoverLines) {
         if (!l.seg) continue
@@ -106,7 +106,7 @@ export default function NoThreeCanvas({ art }: { art: GridArtifact }) {
     art.points.forEach(([x, y], i) => {
       const bad = conf[i] > 0
       const g = ctx.createRadialGradient(X(x), Y(y), 0, X(x), Y(y), pr * 3.2)
-      g.addColorStop(0, bad ? 'rgba(255,120,130,0.55)' : 'rgba(61,245,255,0.55)')
+      g.addColorStop(0, bad ? 'rgba(255,120,130,0.55)' : 'rgba(79,209,224,0.55)')
       g.addColorStop(1, 'rgba(0,0,0,0)')
       ctx.fillStyle = g
       ctx.beginPath()
@@ -160,10 +160,10 @@ export default function NoThreeCanvas({ art }: { art: GridArtifact }) {
         </span>
         <span className="ml-auto flex gap-3">
           <label className="flex cursor-pointer items-center gap-1.5">
-            <input type="checkbox" checked={showLines} onChange={(e) => setShowLines(e.target.checked)} className="accent-[#FF4D5E]" /> lines
+            <input type="checkbox" checked={showLines} onChange={(e) => setShowLines(e.target.checked)} className="accent-[#E5676B]" /> lines
           </label>
           <label className="flex cursor-pointer items-center gap-1.5">
-            <input type="checkbox" checked={showAxis} onChange={(e) => setShowAxis(e.target.checked)} className="accent-[#FFB547]" /> axis
+            <input type="checkbox" checked={showAxis} onChange={(e) => setShowAxis(e.target.checked)} className="accent-[#E2B25C]" /> axis
           </label>
         </span>
       </div>

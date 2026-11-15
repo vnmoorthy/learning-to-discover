@@ -36,9 +36,9 @@ export function LoopPill({ compact }: { compact?: boolean }) {
   const { loop } = state
   if (MODE === 'static')
     return (
-      <span className="inline-flex h-7 items-center gap-2 whitespace-nowrap rounded-full border border-amber/40 bg-amber/10 px-2.5 font-mono text-[10.5px] uppercase tracking-wider text-amber sm:px-3 sm:text-[11px]">
-        <span className="h-2 w-2 rounded-full bg-amber" />
-        {compact ? 'replay' : `recorded run | ${state.totals.cycles} cycles`}
+      <span className="inline-flex h-7 items-center gap-2 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.03] px-2.5 text-[12px] font-medium text-fg-muted">
+        <span className="h-1.5 w-1.5 rounded-full bg-amber" />
+        {compact ? 'Replay' : <>Recorded run<span className="text-ink-400">/</span><span className="font-mono text-[11.5px] text-fg">{state.totals.cycles} cycles</span></>}
       </span>
     )
   const running = loop.status === 'running'
@@ -46,31 +46,27 @@ export function LoopPill({ compact }: { compact?: boolean }) {
   return (
     <span
       className={cx(
-        'inline-flex h-7 items-center gap-2 whitespace-nowrap rounded-full border px-2.5 font-mono text-[10.5px] uppercase tracking-wider sm:px-3 sm:text-[11px]',
-        running ? 'border-cyan/30 bg-cyan/[0.07] text-cyan' : 'border-amber/40 bg-amber/10 text-amber',
+        'inline-flex h-7 items-center gap-2 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.03] px-2.5 text-[12px] font-medium text-fg-muted',
       )}
     >
-      <span className="relative flex h-2 w-2">
-        {running && <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan opacity-60" />}
-        <span className={cx('relative inline-flex h-2 w-2 rounded-full', running ? 'bg-cyan' : 'bg-amber')} />
-      </span>
-      {compact ? (running ? 'running' : 'paused') : running ? 'loop running' : 'loop paused'}
+      <span className={cx('h-1.5 w-1.5 rounded-full', running ? 'bg-good' : 'bg-amber')} />
+      <span className="text-fg">{compact ? (running ? 'Running' : 'Paused') : running ? 'Loop running' : 'Loop paused'}</span>
       {!compact && (
         <>
-          <span className="text-fg-dim">|</span>
-          <span className="text-fg">cycle {loop.cycle}</span>
+          <span className="text-ink-400">/</span>
+          <span>Cycle <span className="font-mono text-[11.5px] text-fg">{loop.cycle}</span></span>
           {loop.test_mode && (
             <>
-              <span className="text-fg-dim">|</span>
-              <span className="text-[#C9A8FF]" title="Server runs with LTD_TEST_MODE=1: launches get test- ids, stops of non-test runs are dry runs">
-                test mode
+              <span className="text-ink-400">/</span>
+              <span className="text-violet" title="Server runs with PHOENIX_TEST_MODE=1: launches get test- ids, stops of non-test runs are dry runs">
+                Test mode
               </span>
             </>
           )}
           {active && (
             <>
-              <span className="text-fg-dim">|</span>
-              <span className="text-fg">{loop.phase}</span>
+              <span className="text-ink-400">/</span>
+              <span className="capitalize text-cyan">{loop.phase}</span>
             </>
           )}
         </>
@@ -82,37 +78,37 @@ export function LoopPill({ compact }: { compact?: boolean }) {
 export function ConnectionBadge() {
   const { stream, error, state } = useLive()
   let label = 'SSE live'
-  let cls = 'text-good border-good/30 bg-good/[0.06]'
+  let dot = 'bg-good'
   if (MODE === 'static') {
-    label = 'replay'
-    cls = 'text-amber border-amber/40 bg-amber/10'
+    label = 'Replay'
+    dot = 'bg-amber'
   } else if (MODE === 'fixtures') {
-    label = 'fixtures'
-    cls = 'text-[#C9A8FF] border-[#A98BFF]/40 bg-[#A98BFF]/10'
+    label = 'Fixtures'
+    dot = 'bg-violet'
   } else if (error) {
-    label = 'backend offline'
-    cls = 'text-bad border-bad/40 bg-bad/10'
+    label = 'Backend offline'
+    dot = 'bg-bad'
   } else if (stream !== 'live') {
-    label = 'polling 5s'
-    cls = 'text-amber border-amber/40 bg-amber/10'
+    label = 'Polling 5s'
+    dot = 'bg-amber'
   }
   // the snapshot marks the box offline (it is a recording); do not show a red "box offline" in the replay
   const box = MODE === 'static' ? undefined : state?.compute.box
   return (
     <span className="flex items-center gap-1.5">
-      <span className={cx('inline-flex h-7 items-center gap-1.5 whitespace-nowrap rounded-full border px-2.5 font-mono text-[10.5px] uppercase tracking-wider', cls)}>
-        <span className="h-1.5 w-1.5 rounded-full bg-current" />
+      <span className="inline-flex h-7 items-center gap-2 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.03] px-2.5 text-[12px] font-medium text-fg-muted">
+        <span className={cx('h-1.5 w-1.5 rounded-full', dot)} />
         {label}
       </span>
       {box && (
         <span
           className={cx(
-            'hidden h-7 items-center gap-1.5 rounded-full border px-2.5 font-mono text-[10.5px] uppercase tracking-wider sm:inline-flex',
-            box === 'online' ? 'border-white/10 text-fg-muted' : 'border-bad/40 text-bad',
+            'hidden h-7 items-center gap-2 whitespace-nowrap rounded-full border border-white/10 bg-white/[0.03] px-2.5 text-[12px] font-medium text-fg-muted sm:inline-flex',
           )}
           title="GPU box SSH reachability"
         >
-          box {box}
+          <span className={cx('h-1.5 w-1.5 rounded-full', box === 'online' ? 'bg-good' : 'bg-bad')} />
+          Box {box}
         </span>
       )}
     </span>
@@ -142,7 +138,7 @@ export function PhaseStepper() {
   return (
     <div>
       <div ref={scroller} className="no-scrollbar relative -mx-1 overflow-x-auto px-1">
-        <ol className="flex min-w-[620px] items-stretch gap-1.5">
+        <ol className="flex min-w-[680px] items-stretch gap-2">
           {PHASES.map((p, i) => {
             const done = !idle && i < idx
             const current = !idle && i === idx
@@ -150,38 +146,32 @@ export function PhaseStepper() {
               <li key={p.key} data-phase={p.key} className="relative min-w-0 flex-1">
                 <div
                   className={cx(
-                    'relative h-full overflow-hidden rounded-xl border px-2.5 py-2.5 transition-colors duration-300',
-                    current ? 'border-cyan/50 bg-cyan/[0.08]' : done ? 'border-cyan/15 bg-cyan/[0.03]' : 'border-white/[0.06] bg-white/[0.015]',
+                    'relative h-full overflow-hidden rounded-lg border px-3 py-2.5 transition-colors duration-200',
+                    current ? 'border-cyan/40 bg-cyan/[0.06]' : 'border-white/[0.07] bg-white/[0.015]',
                   )}
                 >
                   {current && (
-                    <motion.div
-                      layoutId="phase-glow"
-                      className="pointer-events-none absolute inset-0 rounded-xl"
-                      style={{ boxShadow: 'inset 0 0 24px rgba(61,245,255,0.25), 0 0 22px rgba(61,245,255,0.25)' }}
-                      transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-                    />
+                    <motion.div layoutId="phase-glow" className="pointer-events-none absolute inset-x-0 top-0 h-[2px] bg-cyan" transition={{ duration: 0.2, ease: 'easeOut' }} />
                   )}
-                  {current && <div className="pointer-events-none absolute inset-y-0 left-0 w-1/2 animate-scan bg-gradient-to-r from-transparent via-cyan/10 to-transparent" />}
                   <div className="relative flex items-center gap-2">
                     <span
                       className={cx(
-                        'flex h-5 w-5 shrink-0 items-center justify-center rounded-full border font-mono text-[10px]',
-                        current ? 'border-cyan bg-cyan text-ink-900' : done ? 'border-cyan/40 text-cyan' : 'border-white/15 text-fg-dim',
+                        'flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full border font-mono text-[10px]',
+                        current ? 'border-cyan bg-cyan text-ink-900' : done ? 'border-white/15 bg-white/[0.06] text-fg' : 'border-white/10 text-fg-dim',
                       )}
                     >
                       {done ? '✓' : i + 1}
                     </span>
-                    <span className={cx('truncate text-[12.5px] font-semibold', current ? 'text-cyan glow-text' : done ? 'text-fg' : 'text-fg-muted')}>{p.label}</span>
+                    <span className={cx('truncate text-[12.5px] font-medium', current || done ? 'text-fg' : 'text-fg-muted')}>{p.label}</span>
                   </div>
-                  <div className="relative mt-1 truncate pl-7 text-[10.5px] text-fg-dim" title={p.hint}>{p.hint}</div>
+                  <div className="relative mt-1 truncate pl-[26px] text-[11px] text-fg-dim" title={p.hint}>{p.hint}</div>
                 </div>
               </li>
             )
           })}
         </ol>
       </div>
-      <div className="mt-2.5 flex flex-wrap items-center gap-x-4 gap-y-1 font-mono text-[11px] text-fg-muted">
+      <div className="mt-3 flex flex-wrap items-center gap-x-5 gap-y-1 font-mono text-[11px] text-fg-dim">
         {MODE === 'static' ? (
           <span className="text-amber">
             Recorded run: {state.totals.cycles} cycles, {state.totals.decisions} decisions (snapshot {dateTime(state.snapshot?.generated_at ?? state.now)})
@@ -192,9 +182,9 @@ export function PhaseStepper() {
           ) : remaining != null ? (
             <span className="flex items-center gap-2">
               <span>next cycle in</span>
-              <span className="text-cyan">{remaining > 0 ? dur(remaining) : 'starting...'}</span>
+              <span className="text-fg">{remaining > 0 ? dur(remaining) : 'starting...'}</span>
               <span className="relative inline-block h-1 w-28 overflow-hidden rounded-full bg-white/10">
-                <span className="absolute inset-y-0 left-0 rounded-full bg-cyan/70" style={{ width: `${progress * 100}%` }} />
+                <span className="absolute inset-y-0 left-0 rounded-full bg-cyan" style={{ width: `${progress * 100}%` }} />
               </span>
             </span>
           ) : (
@@ -202,7 +192,7 @@ export function PhaseStepper() {
           )
         ) : (
           <span>
-            cycle <span className="text-cyan">{loop.cycle}</span> in progress: <span className="text-fg">{loop.phase}</span>
+            cycle <span className="text-fg">{loop.cycle}</span> in progress: <span className="text-fg">{loop.phase}</span>
           </span>
         )}
         <span>interval {dur(loop.interval_s)}</span>

@@ -5,6 +5,7 @@
 # Never commits secrets: .env, scripts/ssh_config, data/* (except data/snapshot), runs/ and scratch are git-ignored,
 # and a scan refuses to push if anything key-shaped is staged.
 set -uo pipefail
+export PATH=/opt/anaconda3/bin:$PATH
 cd "$(dirname "$0")/.."
 ROOT=$PWD
 PAGES=${PAGES_DIR:-$ROOT/../ltd-pages}
@@ -17,9 +18,9 @@ sync_once() {
   trap 'rmdir "$LOCK" 2>/dev/null' RETURN
   echo "== $(date '+%Y-%m-%d %H:%M:%S') sync"
   # 1. fresh snapshot of the live run (the server runs on the GPU box)
-  if ssh -F scripts/ssh_config -o ConnectTimeout=15 ltd 'cd ~/ltd && python3 -B -m ltd.snapshot' >/dev/null 2>&1; then
-    rsync -az -e "ssh -F scripts/ssh_config" ltd:ltd/web/public/data/ web/public/data/ || true
-    rsync -az -e "ssh -F scripts/ssh_config" ltd:ltd/data/snapshot/ data/snapshot/ 2>/dev/null || true
+  if ssh -F scripts/ssh_config -o ConnectTimeout=15 ltd 'cd ~/ltd && python3 -B -m phoenixastar.snapshot' >/dev/null 2>&1; then
+    rsync -az -e "ssh -F scripts/ssh_config" gpubox:ltd/web/public/data/ web/public/data/ || true
+    rsync -az -e "ssh -F scripts/ssh_config" gpubox:ltd/data/snapshot/ data/snapshot/ 2>/dev/null || true
     echo "snapshot pulled"
   else
     echo "box unreachable: keeping the previous snapshot"

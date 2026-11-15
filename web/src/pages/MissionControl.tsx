@@ -30,7 +30,7 @@ function Totals() {
     <div className="grid grid-cols-3 gap-x-4 gap-y-3 sm:grid-cols-4 2xl:grid-cols-7">
       {items.map((it) => (
         <div key={it.label} className="min-w-0">
-          <div className="truncate text-[9.5px] font-semibold uppercase tracking-[0.1em] text-fg-dim">{it.label}</div>
+          <div className="truncate text-[9.5px] font-semibold text-fg-dim">{it.label}</div>
           <div className={`mt-0.5 font-mono text-lg font-semibold sm:text-xl ${it.accent && (it.value ?? 0) > 0 ? 'text-amber glow-amber' : 'text-fg'}`}>
             {it.value === undefined ? <span className="text-fg-dim">--</span> : <Counter value={it.value} />}
           </div>
@@ -52,11 +52,11 @@ function Hero() {
   const recordCount = state?.problems.filter((p) => p.beats_record).length ?? 0
 
   return (
-    <section className="panel relative overflow-hidden rounded-3xl">
+    <section className="panel relative overflow-hidden rounded-xl">
       <div className="grid lg:grid-cols-[1.05fr_1fr]">
         <div className="relative z-10 flex flex-col justify-between gap-6 p-5 sm:p-7">
           <div>
-            <div className="flex flex-wrap items-center gap-2 font-mono text-[10.5px] uppercase tracking-[0.18em] text-cyan/80">
+            <div className="flex flex-wrap items-center gap-2 font-mono text-[10.5px] text-cyan/80">
               <span>Mission control</span>
               <span className="text-fg-dim">/</span>
               <span className="text-fg-dim">{state ? `${state.problems.length} open problems` : 'connecting'}</span>
@@ -78,7 +78,7 @@ function Hero() {
           </div>
         </div>
         <div className="relative min-h-[260px] border-t border-white/[0.05] sm:min-h-[320px] lg:border-l lg:border-t-0">
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(61,245,255,0.08),transparent_65%)]" />
+          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,rgba(79,209,224,0.08),transparent_65%)]" />
           <ErrorBoundary fallback={<div className="flex h-full items-center justify-center text-xs text-fg-dim">3D view unavailable (WebGL disabled)</div>}>
             <Suspense fallback={<div className="absolute inset-0 skeleton" />}>
               <LatticeHero art={art} />
@@ -175,11 +175,11 @@ export default function MissionControl() {
             {state ? (
               <div className="grid gap-5 2xl:grid-cols-[1.1fr_1fr]">
                 <div>
-                  <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">GPUs</div>
+                  <div className="mb-2 label">GPUs</div>
                   <GpuGrid compute={state.compute} />
                 </div>
                 <div>
-                  <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">CPU cores</div>
+                  <div className="mb-2 label">CPU cores</div>
                   <CpuGrid compute={state.compute} />
                 </div>
                 <div className="2xl:col-span-2">
@@ -194,7 +194,7 @@ export default function MissionControl() {
           <div>
             <div className="mb-3 flex items-end justify-between px-1">
               <div>
-                <h2 className="font-display text-[13px] font-semibold uppercase tracking-[0.14em]">Problem portfolio</h2>
+                <h2 className="font-display text-[13px] font-semibold">Problem portfolio</h2>
                 <p className="mt-0.5 text-xs text-fg-muted">Best-known record vs our best verified score, with the live progress metric</p>
               </div>
             </div>

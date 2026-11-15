@@ -127,7 +127,7 @@ function StrategiesTable({ strategies, onChange }: { strategies: Strategy[]; onC
       <div className="-mx-4 overflow-x-auto sm:-mx-5">
         <table className="w-full min-w-[540px] text-left text-[12px]">
           <thead>
-            <tr className="border-b border-white/[0.06] text-[10px] uppercase tracking-[0.12em] text-fg-dim">
+            <tr className="border-b border-white/[0.06] text-[11px] font-medium text-fg-dim">
               <th className="px-4 py-2 font-semibold sm:px-5">Strategy</th>
               <th className="px-2 py-2 font-semibold">Params</th>
               <th className="px-2 py-2 font-semibold">Started</th>
@@ -142,7 +142,7 @@ function StrategiesTable({ strategies, onChange }: { strategies: Strategy[]; onC
                   <div className="break-all font-mono text-[11.5px] text-fg">{s.id}</div>
                   <div className="mt-0.5 flex items-center gap-1.5 text-[10.5px] text-fg-dim">
                     {s.template}
-                    {s.adopted && <Chip color="#8B95A7">adopted</Chip>}
+                    {s.adopted && <Chip color="#9BA3AF">adopted</Chip>}
                   </div>
                 </td>
                 <td className="max-w-[260px] px-2 py-2">
@@ -362,7 +362,7 @@ export default function ProblemPage() {
   return (
     <div className="space-y-5">
       <BackLink />
-      <section className={cx('panel relative overflow-hidden rounded-2xl p-5 sm:p-6', p.beats_record && '!border-amber/60 shadow-amber')}>
+      <section className={cx('panel relative overflow-hidden rounded-xl p-5 sm:p-6', p.beats_record && '!border-amber/60 shadow-amber')}>
         <div className="absolute inset-x-0 top-0 h-[2px]" style={{ background: `linear-gradient(90deg, ${color}, transparent 70%)` }} />
         <div className="flex flex-wrap items-start justify-between gap-5">
           <div className="min-w-0">
@@ -376,12 +376,12 @@ export default function ProblemPage() {
             <h1 className="mt-1.5 font-display text-2xl font-semibold tracking-tight sm:text-[28px]">{p.title}</h1>
             <div className="mt-4 flex flex-wrap gap-x-8 gap-y-3">
               <div>
-                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">Record</div>
+                <div className="label">Record</div>
                 <div className="font-mono text-xl font-semibold text-amber">{fmtScore(p.record.score)}</div>
                 <div className="text-[11px] text-fg-dim">{p.record.holder}</div>
               </div>
               <div>
-                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">Ours</div>
+                <div className="label">Ours</div>
                 <div className={cx('font-mono text-xl font-semibold', p.beats_record ? 'text-amber glow-amber' : 'text-fg')}>{p.ours ? fmtScore(p.ours.score) : '--'}</div>
                 <div className="text-[11px] text-fg-dim">
                   {p.ours ? `${p.ours.verified ? 'verified' : 'unverified'} ${dateTime(p.ours.at)}` : 'no valid solution yet'}
@@ -389,7 +389,7 @@ export default function ProblemPage() {
                 </div>
               </div>
               <div>
-                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">{p.metric.name}</div>
+                <div className="label">{p.metric.name}</div>
                 <div className="font-mono text-xl font-semibold" style={{ color }}>
                   {fmtScore(p.metric.value)}
                 </div>
@@ -398,7 +398,7 @@ export default function ProblemPage() {
                 </div>
               </div>
               <div>
-                <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">Compute</div>
+                <div className="label">Compute</div>
                 <div className="font-mono text-xl font-semibold text-fg">
                   {p.compute.gpus} <span className="text-sm text-fg-dim">GPU</span> {p.compute.cpu_procs} <span className="text-sm text-fg-dim">cores</span>
                 </div>
@@ -439,7 +439,7 @@ export default function ProblemPage() {
           >
             <div className={cx('relative', !descOpen && 'max-h-[340px] overflow-hidden')}>
               <Markdown>{p.description_md || '_No description._'}</Markdown>
-              {!descOpen && <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0d1015] to-transparent" />}
+              {!descOpen && <div className="pointer-events-none absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#111418] to-transparent" />}
             </div>
           </Panel>
           <Panel title="Decisions on this problem" right={<Link to={`/decisions?problem=${slug}`} className="text-xs text-cyan hover:underline">All</Link>}>

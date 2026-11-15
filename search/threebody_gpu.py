@@ -187,7 +187,7 @@ def main():
     ap.add_argument("--rounds", type=int, default=0, help="stop after this many rounds (0 = until --seconds)")
     a = ap.parse_args()
     os.makedirs(a.out, exist_ok=True)
-    sid = os.environ.get("LTD_STRATEGY_ID") or f"s{a.seed}"
+    sid = os.environ.get("PHOENIX_STRATEGY_ID") or f"s{a.seed}"
     tag = f"[threebody s{a.seed}]"
     dev = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     torch.set_num_threads(2)

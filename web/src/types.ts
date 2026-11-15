@@ -10,7 +10,7 @@ export interface LoopState {
   interval_s: number
   proposer_model: string
   started_at: string
-  /** optional extra: LTD_TEST_MODE=1 on the server (launches get test- ids, stops of adopted runs are dry runs) */
+  /** optional extra: PHOENIX_TEST_MODE=1 on the server (launches get test- ids, stops of adopted runs are dry runs) */
   test_mode?: boolean
 }
 
@@ -78,7 +78,7 @@ export interface StateResponse {
   compute: ComputeState
   problems: ProblemSummary[]
   totals: Totals
-  /** present only in static snapshots written by `python3 -m ltd.snapshot` */
+  /** present only in static snapshots written by `python3 -m phoenixastar.snapshot` */
   snapshot?: { generated_at: string; label?: string; telemetry_at?: string | null }
 }
 

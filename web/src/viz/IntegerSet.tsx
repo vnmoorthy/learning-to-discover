@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { fmtScore } from '../lib/format'
 
 /** Number line of an integer set, with pairwise-difference histogram of the set below. */
-export default function IntegerSet({ elements, h, score, color = '#FF5DA8' }: { elements: number[]; h?: number | null; score?: number | null; color?: string }) {
+export default function IntegerSet({ elements, h, score, color = '#D684A9' }: { elements: number[]; h?: number | null; score?: number | null; color?: string }) {
   const els = useMemo(() => [...elements].sort((a, b) => a - b), [elements])
   const [hover, setHover] = useState<number | null>(null)
   const lo = els[0] ?? 0

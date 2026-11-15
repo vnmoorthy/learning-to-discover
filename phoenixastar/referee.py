@@ -15,8 +15,8 @@ import subprocess
 import tempfile
 import time
 
-MODEL = os.environ.get("LTD_REFEREE_MODEL", "claude-fable-5-2")
-TIMEOUT_S = int(os.environ.get("LTD_REFEREE_TIMEOUT", "150"))
+MODEL = os.environ.get("PHOENIX_REFEREE_MODEL", "claude-fable-5-2")
+TIMEOUT_S = int(os.environ.get("PHOENIX_REFEREE_TIMEOUT", "150"))
 
 PROMPT = """You are the REFEREE of an autonomous mathematics research lab. A different model (the proposer) has
 proposed actions for this cycle. Your job: protect the lab's compute and its scientific integrity.
@@ -40,7 +40,7 @@ def available() -> bool:
     return shutil.which("claude") is not None
 
 
-REMOTE = os.environ.get("LTD_REFEREE_URL")   # e.g. http://127.0.0.1:8899/review via a reverse tunnel to the laptop
+REMOTE = os.environ.get("PHOENIX_REFEREE_URL")   # e.g. http://127.0.0.1:8899/review via a reverse tunnel to the laptop
 
 
 def _remote(state_summary, decisions, t0):

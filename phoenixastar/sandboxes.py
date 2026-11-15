@@ -10,11 +10,11 @@ Public interface (wired to HTTP by the backend, do not change):
     start_batch_async(problem, n, context='') -> None # background thread (raises if too many batches run)
     list_runs(limit=100) -> list[dict]                # newest first
 
-Every program is logged as a decision (agent "sandbox", action "sandbox_run") through `ltd.ledger` and its id is
-stored as the run's `decision_id`. Set LTD_LABS_LEDGER=0 to skip the ledger (tests, offline runs).
+Every program is logged as a decision (agent "sandbox", action "sandbox_run") through `phoenixastar.ledger` and its id is
+stored as the run's `decision_id`. Set PHOENIX_LABS_LEDGER=0 to skip the ledger (tests, offline runs).
 
-CLI test:  python3 -m ltd.sandboxes sidon-45-set 8
-           python3 -m ltd.sandboxes --backfill   # log decisions for stored runs that have none yet
+CLI test:  python3 -m phoenixastar.sandboxes sidon-45-set 8
+           python3 -m phoenixastar.sandboxes --backfill   # log decisions for stored runs that have none yet
 """
 from __future__ import annotations
 
@@ -33,7 +33,7 @@ import traceback
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROBLEMS_DIR = os.path.join(ROOT, "problems")
 DATA_DIR = os.path.join(ROOT, "data")
-RUNS_PATH = os.environ.get("LTD_SANDBOX_RUNS", os.path.join(DATA_DIR, "sandboxes.jsonl"))
+RUNS_PATH = os.environ.get("PHOENIX_SANDBOX_RUNS", os.path.join(DATA_DIR, "sandboxes.jsonl"))
 
 SUPPORTED = ("sidon-45-set", "spencer-discrepancy", "ring-loading-15")
 MAX_N = 32
@@ -41,12 +41,12 @@ PROGRAM_BUDGET_S = 100      # what the programs are told
 KILL_AFTER_S = 110          # hard kill inside the sandbox (coreutils timeout)
 SANDBOX_TIMEOUT_S = 150     # Modal sandbox lifetime
 VERIFY_TIMEOUT_S = 180      # local official-verifier subprocess
-APP_NAME = "ltd-sandboxes"
+APP_NAME = "phoenixastar-sandboxes"
 MAX_ACTIVE_BATCHES = 2      # guards the OpenAI + Modal bill against repeated clicks / proposer bursts
 MAX_CODE_CHARS = 100_000    # the program goes through argv (Linux caps one argument at 128 KiB)
 
 try:  # model names come from the shared config when the backend has written it
-    from ltd import config as _cfg  # type: ignore
+    from phoenixastar import config as _cfg  # type: ignore
     PROPOSER_MODEL = getattr(_cfg, "PROPOSER_MODEL", "gpt-6-astra")
 except Exception:  # pragma: no cover - config not present yet
     PROPOSER_MODEL = "gpt-6-astra"
@@ -85,7 +85,7 @@ def _scrub(text) -> str:
 
 # ----------------------------------------------------------------------------------------------- ledger glue
 def _ledger_on() -> bool:
-    return os.environ.get("LTD_LABS_LEDGER", "1") != "0"
+    return os.environ.get("PHOENIX_LABS_LEDGER", "1") != "0"
 
 
 def _log_decision(rec: dict, info: dict) -> int | None:
@@ -94,7 +94,7 @@ def _log_decision(rec: dict, info: dict) -> int | None:
     if not _ledger_on():
         return None
     try:
-        from ltd import ledger  # type: ignore
+        from phoenixastar import ledger  # type: ignore
         rec_score = (info.get("record") or {}).get("score")
         score = rec.get("score")
         if score is None:
@@ -121,7 +121,7 @@ def _log_decision(rec: dict, info: dict) -> int | None:
             except Exception:
                 pass
         try:
-            from ltd import events  # type: ignore
+            from phoenixastar import events  # type: ignore
             events.publish("decision", ledger.get_decision(did))
             if rec.get("beats_record"):
                 best = ledger.get_best(rec["problem"])

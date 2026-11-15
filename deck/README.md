@@ -11,7 +11,7 @@
 ## Rebuild
 
 ```
-python3 -m ltd.snapshot              # refresh web/public/data/*.json (from the repo root)
+python3 -m phoenixastar.snapshot              # refresh web/public/data/*.json (from the repo root)
 python3 deck/build_deck.py           # build + validate, about 10 s
 python3 deck/build_deck.py --preview # also render deck/build/preview/slide-NN.png
 ```

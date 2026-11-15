@@ -1,7 +1,7 @@
 """Tiny HTTP front for the referee so a server running elsewhere (the GPU box) can use the Claude CLI on this laptop.
 
-  python3 -m ltd.referee_service            # listens on 127.0.0.1:8899
-  ssh -R 8899:127.0.0.1:8899 <box>          # the box then sets LTD_REFEREE_URL=http://127.0.0.1:8899/review
+  python3 -m phoenixastar.referee_service            # listens on 127.0.0.1:8899
+  ssh -R 8899:127.0.0.1:8899 <box>          # the box then sets PHOENIX_REFEREE_URL=http://127.0.0.1:8899/review
 Only localhost binds; the reverse tunnel is the only way in.
 """
 import json

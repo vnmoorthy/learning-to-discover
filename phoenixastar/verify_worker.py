@@ -1,6 +1,6 @@
 """Subprocess entry: run the OFFICIAL verifier problems/<slug>/verifier.py on a solution read from stdin.
 
-python3 -m ltd.verify_worker <slug>  < solution.json   ->  {"ok": bool, "score": float|null, "error": str|null, "seconds": float}
+python3 -m phoenixastar.verify_worker <slug>  < solution.json   ->  {"ok": bool, "score": float|null, "error": str|null, "seconds": float}
 """
 import importlib.util
 import json

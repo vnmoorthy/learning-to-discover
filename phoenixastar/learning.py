@@ -16,7 +16,7 @@ Algorithm (one step):
 Eval: base sampler (gen0) vs trained sampler (genN), same number of samples, on the training prompts and on a
 held-out prompt (16-element sets, phrasing never seen in training).
 
-CLI:  python3 -m ltd.learning 12      # runs 12 steps in the foreground and prints the curve
+CLI:  python3 -m phoenixastar.learning 12      # runs 12 steps in the foreground and prints the curve
 """
 from __future__ import annotations
 
@@ -32,10 +32,10 @@ import time
 import traceback
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DATA_PATH = os.environ.get("LTD_LEARNING_PATH", os.path.join(ROOT, "data", "learning.json"))
+DATA_PATH = os.environ.get("PHOENIX_LEARNING_PATH", os.path.join(ROOT, "data", "learning.json"))
 SIDON_DIR = os.path.join(ROOT, "problems", "sidon-45-set")
 
-BASE_MODEL = os.environ.get("LTD_TINKER_MODEL", "Qwen/Qwen3-8B")
+BASE_MODEL = os.environ.get("PHOENIX_TINKER_MODEL", "Qwen/Qwen3-8B")
 PROBLEM = "sidon-45-set"
 RECORD = 4 / 7
 CFG = {
@@ -232,7 +232,7 @@ def _persist():
 
 # ------------------------------------------------------------------------------------------------- ledger
 def _ledger_on() -> bool:
-    return os.environ.get("LTD_LABS_LEDGER", "1") != "0"
+    return os.environ.get("PHOENIX_LABS_LEDGER", "1") != "0"
 
 
 def _ledger_learning(snap: dict):
@@ -240,7 +240,7 @@ def _ledger_learning(snap: dict):
     if not _ledger_on():
         return
     try:
-        from ltd import ledger  # type: ignore
+        from phoenixastar import ledger  # type: ignore
         ledger.learning_set("learning_status", {k: v for k, v in snap.items() if k != "previous"})
     except Exception:
         pass
@@ -251,11 +251,11 @@ def _decision(action: str, rationale: str, params: dict | None = None, outcome: 
     if not _ledger_on():
         return None
     try:
-        from ltd import ledger  # type: ignore
+        from phoenixastar import ledger  # type: ignore
         did = ledger.add_decision(ledger.max_cycle(), "learning", action, PROBLEM, params or {}, rationale,
                                   outcome=outcome, model=BASE_MODEL)
         try:
-            from ltd import events  # type: ignore
+            from phoenixastar import events  # type: ignore
             events.publish("decision", ledger.get_decision(did))
         except Exception:
             pass

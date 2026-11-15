@@ -22,7 +22,7 @@
 <text x="292" y="189" fill="#8B96A5" font-size="13.5">GPU tabu + min-conflicts, SAT (CaDiCaL)</text>
 </g>
 <g><rect x="630" y="100" width="340" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="630" y="114" width="4" height="76" rx="2" fill="#FFB547"/><text x="650" y="127" fill="#FFB547" font-size="12" font-weight="700" letter-spacing="1.2">MODAL</text><text x="650" y="150" fill="#E8EDF2" font-size="18" font-weight="650">CPU fleet</text>
-<text x="650" y="171" fill="#8B96A5" font-size="13.5">1-core containers, shared Volume ltd-runs</text>
+<text x="650" y="171" fill="#8B96A5" font-size="13.5">1-core containers, shared Volume phoenixastar-runs</text>
 <text x="650" y="189" fill="#8B96A5" font-size="13.5">SAT, local search, annealing, LNS</text>
 </g>
 <g><rect x="988" y="100" width="340" height="104" rx="12" fill="#0D1118" stroke="#222B38"/><rect x="988" y="114" width="4" height="76" rx="2" fill="#FFB547"/><text x="1008" y="127" fill="#FFB547" font-size="12" font-weight="700" letter-spacing="1.2">MODAL</text><text x="1008" y="150" fill="#E8EDF2" font-size="18" font-weight="650">Agent sandboxes</text>

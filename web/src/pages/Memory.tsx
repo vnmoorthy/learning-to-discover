@@ -101,7 +101,7 @@ function AgentGraph({ mem, selected, onSelect }: { mem: MemoryResponse; selected
               <text y={4} textAnchor="middle" fontSize="11" className="font-mono" fill={c} fontWeight={600}>
                 {n.written}
               </text>
-              <text y={r + 15} textAnchor="middle" fontSize="11" className="font-mono" fill="#C9D3E0" stroke="#0B0E13" strokeWidth={4} paintOrder="stroke">
+              <text y={r + 15} textAnchor="middle" fontSize="11" className="font-mono" fill="#C5CAD1" stroke="#0E1014" strokeWidth={4} paintOrder="stroke">
                 {n.id.replace('agent:', '')}
               </text>
             </g>
@@ -146,7 +146,7 @@ function Benchmark({ mem, onRefresh }: { mem: MemoryResponse; onRefresh: () => P
     return () => clearInterval(t)
   }, [waiting, onRefresh, toast])
 
-  const sysColor = (n: string) => (n === 'past.dev' ? '#3DF5FF' : n === 'rag' ? '#A98BFF' : '#8B95A7')
+  const sysColor = (n: string) => (n === 'past.dev' ? '#4FD1E0' : n === 'rag' ? '#A99BEA' : '#9BA3AF')
   const charts: { key: 'accuracy' | 'latency_ms' | 'cost_usd'; label: string; fmt: (v: number) => string; better: string }[] = [
     { key: 'accuracy', label: 'Accuracy', fmt: (v) => fmtPct(v, 0), better: 'higher is better' },
     { key: 'latency_ms', label: 'Latency', fmt: fmtMs, better: 'lower is better' },
@@ -176,7 +176,7 @@ function Benchmark({ mem, onRefresh }: { mem: MemoryResponse; onRefresh: () => P
             {charts.map((c) => (
               <div key={c.key} className="rounded-xl border border-white/[0.05] bg-black/20 p-3">
                 <div className="flex items-baseline justify-between">
-                  <div className="text-[11px] font-semibold uppercase tracking-[0.12em] text-fg">{c.label}</div>
+                  <div className="text-[11px] font-semibold text-fg">{c.label}</div>
                   <div className="text-[10px] text-fg-dim">{c.better}</div>
                 </div>
                 <div className="mt-2 h-40">
@@ -185,7 +185,7 @@ function Benchmark({ mem, onRefresh }: { mem: MemoryResponse; onRefresh: () => P
                       <XAxis dataKey="name" {...axisProps} />
                       <YAxis {...axisProps} width={48} tickFormatter={(v) => c.fmt(v)} />
                       <Tooltip {...tooltipStyle} cursor={{ fill: 'rgba(255,255,255,0.03)' }} formatter={(v: number) => [c.fmt(v), c.label]} />
-                      <Bar dataKey={c.key} radius={[6, 6, 0, 0]} isAnimationActive label={{ position: 'top', fill: '#C9D3E0', fontSize: 10.5, formatter: (v: number) => c.fmt(v) }}>
+                      <Bar dataKey={c.key} radius={[6, 6, 0, 0]} isAnimationActive label={{ position: 'top', fill: '#C5CAD1', fontSize: 10.5, formatter: (v: number) => c.fmt(v) }}>
                         {b.systems.map((s) => (
                           <Cell key={s.name} fill={sysColor(s.name)} fillOpacity={s.name === 'past.dev' ? 0.95 : 0.55} />
                         ))}
@@ -199,7 +199,7 @@ function Benchmark({ mem, onRefresh }: { mem: MemoryResponse; onRefresh: () => P
           <div className="mt-4 overflow-x-auto">
             <table className="w-full min-w-[460px] text-left text-[12.5px]">
               <thead>
-                <tr className="border-b border-white/[0.06] text-[10px] uppercase tracking-[0.12em] text-fg-dim">
+                <tr className="border-b border-white/[0.06] text-[11px] font-medium text-fg-dim">
                   <th className="py-2 font-semibold">System</th>
                   <th className="py-2 text-right font-semibold">Accuracy</th>
                   <th className="py-2 text-right font-semibold">Latency</th>

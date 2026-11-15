@@ -1,6 +1,6 @@
 """End-to-end CLI tests for twodel_ils / sidon_sa / snake_beam (reviewer additions to test_strategies.py).
 
-Runs each script as the backend does (same flags, LTD_STRATEGY_ID=test-*) in a throwaway working directory, then
+Runs each script as the backend does (same flags, PHOENIX_STRATEGY_ID=test-*) in a throwaway working directory, then
 checks: no crash on edge-case params the template accepts, the best_<id>.json and FOUND_*.json shapes, every saved
 solution against the OFFICIAL verifier, and that scripts/telemetry.py's log parser reads the expected metric.
 
@@ -25,7 +25,7 @@ VER = {s: _load(os.path.join(ROOT, "problems", s, "verifier.py"), "v_" + s.repla
 
 def run(cwd, sid, script, args, timeout=900, pre=None):
     """Run one search like the launcher does; returns (returncode, log text)."""
-    env = dict(os.environ, LTD_STRATEGY_ID=sid)
+    env = dict(os.environ, PHOENIX_STRATEGY_ID=sid)
     cmd = [sys.executable, "-B"] + ([pre] if pre else [os.path.join(HERE, script)]) + args
     t = time.time()
     p = subprocess.run(cmd, cwd=cwd, env=env, capture_output=True, text=True, timeout=timeout)
@@ -53,7 +53,7 @@ def check_found(cwd, fam, slug, sid, key):
 
 def best_file(cwd, fam, sid, slug):
     d = json.load(open(os.path.join(cwd, "runs", fam, f"best_{sid}.json")))
-    sol = d.get("solution", d)       # exactly how ltd/critic.py reads a candidate file
+    sol = d.get("solution", d)       # exactly how phoenixastar/critic.py reads a candidate file
     return d, VER[slug].evaluate(sol)
 
 

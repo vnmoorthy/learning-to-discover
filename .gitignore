@@ -14,7 +14,7 @@ runs/
 arena/
 search/templates_add/
 web/e2e/__pycache__/
-ltd/tests_labs/__pycache__/
+phoenixastar/tests_labs/__pycache__/
 *.log
 web/dist-static/
 viz/logs/

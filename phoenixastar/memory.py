@@ -1,7 +1,7 @@
 """Multi-agent memory (past.dev) + two baselines for the benchmark: an append-only markdown file and a small RAG.
 
 Agents: planner, proposer, critic, literature, and one agent:<slug> per problem. All agents share one past.dev
-identity ("ltd-lab"), so each reads what the others wrote; the writer agent travels in metadata. Every read is
+identity ("phoenixastar-lab"), so each reads what the others wrote; the writer agent travels in metadata. Every read is
 recorded (fact_reads + facts.read_by), which is what the Memory page draws as agent -> agent links.
 """
 import json
@@ -15,7 +15,7 @@ import uuid
 from . import config, events, ledger
 
 PAST_URL = "https://app.past.dev/api/v1"
-IDENTITY = os.environ.get("LTD_PAST_IDENTITY", "ltd-lab")
+IDENTITY = os.environ.get("PHOENIX_PAST_IDENTITY", "phoenixastar-lab")
 _q = queue.Queue()
 _worker = {"t": None}
 _md_lock = threading.Lock()

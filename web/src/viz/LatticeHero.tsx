@@ -50,8 +50,8 @@ function Lattice({ art }: { art: GridArtifact | null }) {
     const pts = new Float32Array(points.length * 3)
     const ptsColor = new Float32Array(points.length * 3)
     const pins: number[] = []
-    const cyan = new THREE.Color('#3DF5FF')
-    const red = new THREE.Color('#FF4D5E')
+    const cyan = new THREE.Color('#4FD1E0')
+    const red = new THREE.Color('#E5676B')
     points.forEach(([x, y], i) => {
       const h = 0.06 + Math.min(conf[i], 6) * 0.12
       const [a, b, c] = toWorld(x, y, n, h)
@@ -92,7 +92,7 @@ function Lattice({ art }: { art: GridArtifact | null }) {
           <bufferGeometry>
             <bufferAttribute attach="attributes-position" count={lines.length / 3} array={lines} itemSize={3} />
           </bufferGeometry>
-          <lineBasicMaterial color="#FF4D5E" transparent opacity={0.16} depthWrite={false} blending={THREE.AdditiveBlending} />
+          <lineBasicMaterial color="#E5676B" transparent opacity={0.16} depthWrite={false} blending={THREE.AdditiveBlending} />
         </lineSegments>
       )}
       {pins.length > 0 && (
@@ -100,7 +100,7 @@ function Lattice({ art }: { art: GridArtifact | null }) {
           <bufferGeometry>
             <bufferAttribute attach="attributes-position" count={pins.length / 3} array={pins} itemSize={3} />
           </bufferGeometry>
-          <lineBasicMaterial color="#3DF5FF" transparent opacity={0.28} depthWrite={false} />
+          <lineBasicMaterial color="#4FD1E0" transparent opacity={0.28} depthWrite={false} />
         </lineSegments>
       )}
       {axis.length > 0 && (
@@ -108,7 +108,7 @@ function Lattice({ art }: { art: GridArtifact | null }) {
           <bufferGeometry>
             <bufferAttribute attach="attributes-position" count={axis.length / 3} array={axis} itemSize={3} />
           </bufferGeometry>
-          <lineBasicMaterial color="#FFB547" transparent opacity={0.8} />
+          <lineBasicMaterial color="#E2B25C" transparent opacity={0.8} />
         </lineSegments>
       )}
       {pts.length > 0 && (
@@ -157,7 +157,7 @@ export default function LatticeHero({ art }: { art: GridArtifact | null }) {
         camera={{ position: [0, 5.6, 8.3], fov: 40, near: 0.1, far: 100 }}
         onCreated={({ camera }) => camera.lookAt(0, -0.6, 0)}
       >
-        <fog attach="fog" args={['#07080B', 8.5, 15]} />
+        <fog attach="fog" args={['#0B0D10', 8.5, 15]} />
         <Lattice art={art} />
       </Canvas>
     </div>

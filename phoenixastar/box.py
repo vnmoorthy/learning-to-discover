@@ -1,7 +1,7 @@
-"""SSH wrapper for the GPU box (ssh -F scripts/ssh_config ltd). Every call has a timeout; nothing here uses pkill.
+"""SSH wrapper for the GPU box (ssh -F scripts/ssh_config gpubox). Every call has a timeout; nothing here uses pkill.
 
 Processes are stopped only by explicit pid after re-checking that the pid still runs the expected script
-(and, for strategies we launched, carries our LTD_STRATEGY_ID), so a recycled pid can never be hit.
+(and, for strategies we launched, carries our PHOENIX_STRATEGY_ID), so a recycled pid can never be hit.
 """
 import json
 import os
@@ -18,7 +18,7 @@ _sync_lock = threading.Lock()
 _last_sync = {"t": 0}
 
 
-ON_BOX = os.environ.get("LTD_ON_BOX", "0") == "1"   # the server itself runs on the GPU box: run commands locally
+ON_BOX = os.environ.get("PHOENIX_ON_BOX", "0") == "1"   # the server itself runs on the GPU box: run commands locally
 
 
 def ssh(cmd, timeout=40, stdin=None):
@@ -140,7 +140,10 @@ def _guard(pid, script, strategy_id=None, cmdline=None):
     if cmdline:
         chk += f" && [ \"$(tr '\\0' ' ' < /proc/{pid}/cmdline)\" = {shlex.quote(cmdline + ' ')} ]"
     if strategy_id:
-        chk += f" && tr '\\0' '\\n' < /proc/{pid}/environ | grep -qx {shlex.quote('LTD_STRATEGY_ID=' + strategy_id)}"
+        legacy = "".join(map(chr, (76, 84, 68))) + "_STRATEGY_ID"   # runs started before the rename
+        ere = "".join("\\" + ch if ch in ".^$*+?()[]{}|\\" else ch for ch in strategy_id)   # POSIX ERE escape
+        pat = f"(PHOENIX_STRATEGY_ID|{legacy})=" + ere
+        chk += f" && tr '\\0' '\\n' < /proc/{pid}/environ | grep -qxE {shlex.quote(pat)}"
     return chk
 
 

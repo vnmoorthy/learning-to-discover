@@ -20,7 +20,7 @@ def verify(slug, solution, timeout=None):
     timeout = timeout or (600 if slug in ("hadamard-det-51", "spencer-discrepancy", "two-deletion-code-16") else 180)
     t0 = time.time()
     try:
-        p = subprocess.run([sys.executable, "-m", "ltd.verify_worker", slug], input=json.dumps(solution),
+        p = subprocess.run([sys.executable, "-m", "phoenixastar.verify_worker", slug], input=json.dumps(solution),
                            capture_output=True, text=True, timeout=timeout, cwd=config.ROOT)
     except subprocess.TimeoutExpired:
         return {"ok": False, "score": None, "error": f"verifier timeout after {timeout}s", "seconds": round(time.time() - t0, 2)}

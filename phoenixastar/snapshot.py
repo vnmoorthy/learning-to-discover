@@ -1,4 +1,4 @@
-"""Static replay export: python3 -m ltd.snapshot  ->  web/public/data/*.json (same shapes as the live API).
+"""Static replay export: python3 -m phoenixastar.snapshot  ->  web/public/data/*.json (same shapes as the live API).
 
 Reads only the local DB (no SSH), so it works with the box offline. The state is marked as a snapshot.
 """

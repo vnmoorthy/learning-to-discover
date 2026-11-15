@@ -7,7 +7,7 @@ data requests, horizontal page scroll, or a page that never renders its heading.
     python3 web/e2e/smoke.py --url http://localhost:5173 --mutate     # fixtures / replay backends only: also clicks buttons
     python3 web/e2e/smoke.py --url http://localhost:4173/phoenixastar/ --static
 
-Never pass --mutate against the real ltd.server: it would pause the loop, launch/stop strategies on the GPU box, etc.
+Never pass --mutate against the real phoenixastar.server: it would pause the loop, launch/stop strategies on the GPU box, etc.
 """
 import argparse
 import json

@@ -4,37 +4,37 @@ import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA = os.path.join(ROOT, "data")
-DB_PATH = os.environ.get("LTD_DB", os.path.join(DATA, "ltd.sqlite"))
-MEMORY_MD = os.environ.get("LTD_MEMORY_MD", os.path.join(DATA, "memory.md"))
+DB_PATH = os.environ.get("PHOENIX_DB", os.path.join(DATA, "phoenixastar.sqlite"))
+MEMORY_MD = os.environ.get("PHOENIX_MEMORY_MD", os.path.join(DATA, "memory.md"))
 PROBLEMS_DIR = os.path.join(ROOT, "problems")
 SEARCH_DIR = os.path.join(ROOT, "search")
 SCRIPTS_DIR = os.path.join(ROOT, "scripts")
 TEMPLATES_PATH = os.path.join(SEARCH_DIR, "TEMPLATES.json")
 SSH_CONFIG = os.path.join(SCRIPTS_DIR, "ssh_config")
-SSH_HOST = "ltd"
+SSH_HOST = "gpubox"
 BOX_ROOT = "~/ltd"                      # code + runs on the GPU box
 WEB_DIST = os.path.join(ROOT, "web", "dist")
 GALLERY_DIR = os.path.join(ROOT, "web", "public", "gallery")
 SNAPSHOT_OUT = os.path.join(ROOT, "web", "public", "data")
 DATA_SNAPSHOT = os.path.join(DATA, "snapshot")
 
-PROPOSER_MODEL = os.environ.get("LTD_PROPOSER_MODEL", "gpt-6-astra")
+PROPOSER_MODEL = os.environ.get("PHOENIX_PROPOSER_MODEL", "gpt-6-astra")
 PROPOSER_FALLBACK = "gpt-5.5"
 FAST_MODEL = "gpt-5.4-mini"
 EMBED_MODEL = "text-embedding-3-small"
 
-LOOP_INTERVAL_S = int(os.environ.get("LTD_LOOP_INTERVAL", "300"))
-FIRST_CYCLE_DELAY_S = int(os.environ.get("LTD_FIRST_CYCLE_DELAY", "30"))
-LOOP_AUTOSTART = os.environ.get("LTD_LOOP_AUTOSTART", "1") == "1"   # 0 -> server starts with the loop paused
-TELEMETRY_POLL_S = int(os.environ.get("LTD_TELEMETRY_POLL", "30"))
+LOOP_INTERVAL_S = int(os.environ.get("PHOENIX_LOOP_INTERVAL", "300"))
+FIRST_CYCLE_DELAY_S = int(os.environ.get("PHOENIX_FIRST_CYCLE_DELAY", "30"))
+LOOP_AUTOSTART = os.environ.get("PHOENIX_LOOP_AUTOSTART", "1") == "1"   # 0 -> server starts with the loop paused
+TELEMETRY_POLL_S = int(os.environ.get("PHOENIX_TELEMETRY_POLL", "30"))
 ARTIFACT_POLL_S = 120
 HOST = "127.0.0.1"
-PORT = int(os.environ.get("LTD_PORT", "8787"))
+PORT = int(os.environ.get("PHOENIX_PORT", "8787"))
 
 # Box capacity targets (8x A100, 124 cores; keep ~6 cores for the OS, ssh, telemetry).
 GPU_COUNT = 8
 # GPUs lent to other lab projects (EVENT HORIZON physics runs); never counted as free by the planner
-RESERVED_GPUS = [int(x) for x in os.environ.get("LTD_RESERVED_GPUS", "0").split(",") if x.strip()]
+RESERVED_GPUS = [int(x) for x in os.environ.get("PHOENIX_RESERVED_GPUS", "0").split(",") if x.strip()]
 CPU_TOTAL = 124
 CPU_TARGET = 118
 # Planner knobs.

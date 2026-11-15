@@ -13,7 +13,7 @@ Blocks are delimited by HTML comments and replaced in place (everything else in 
     <!-- DETAIL:START -->   ... <!-- DETAIL:END -->      per-problem detail, predictions, sandboxes, toolsmith
 
 Inputs (first existing file wins; nothing here talks to a network or reads .env):
-    web/public/data/state.json                                   snapshot of the live run (python3 -m ltd.snapshot)
+    web/public/data/state.json                                   snapshot of the live run (python3 -m phoenixastar.snapshot)
     data/learning.json          | web/public/data/learning.json
     data/memory_benchmark.json  | data/snapshot/memory_benchmark.json | web/public/data/memory.json["benchmark"]
     data/toolsmith.json                                          optional
@@ -119,7 +119,7 @@ def signal_text(p):
 def block_results(d):
     st = d["state"]
     if not st:
-        return "_No snapshot found (`web/public/data/state.json`). Run `python3 -m ltd.snapshot`, then this script._"
+        return "_No snapshot found (`web/public/data/state.json`). Run `python3 -m phoenixastar.snapshot`, then this script._"
     snap = (st.get("snapshot") or {}).get("generated_at") or st.get("now")
     probs, tot = st["problems"], st.get("totals", {})
     won = [p for p in probs if p.get("beats_record")]

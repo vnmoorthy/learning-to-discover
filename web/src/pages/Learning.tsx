@@ -26,7 +26,7 @@ function StatusPill({ status }: { status: LearningResponse['status'] }) {
     error: 'border-bad/40 bg-bad/10 text-bad',
   }
   return (
-    <span className={cx('inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[11px] uppercase tracking-wider', map[status])}>
+    <span className={cx('inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 font-mono text-[11px]', map[status])}>
       {status === 'running' && <span className="h-1.5 w-1.5 animate-pulseDot rounded-full bg-cyan" />}
       {status}
     </span>
@@ -100,9 +100,9 @@ function Training() {
       >
         <div className="grid gap-4 sm:grid-cols-4">
           <MiniStat label="steps" value={L.steps.length ? String(last.step) : '--'} />
-          <MiniStat label="reward mean" value={last ? fmtScore(last.reward_mean, 3) : '--'} color="#3DF5FF" />
-          <MiniStat label="reward best" value={last ? fmtScore(last.reward_best, 3) : '--'} color="#FFB547" />
-          <MiniStat label="valid rate" value={last ? fmtPct(last.valid_rate, 0) : '--'} color="#6CF29A" />
+          <MiniStat label="reward mean" value={last ? fmtScore(last.reward_mean, 3) : '--'} color="#4FD1E0" />
+          <MiniStat label="reward best" value={last ? fmtScore(last.reward_best, 3) : '--'} color="#E2B25C" />
+          <MiniStat label="valid rate" value={last ? fmtPct(last.valid_rate, 0) : '--'} color="#6FBF8E" />
         </div>
         {L.steps.length < 2 ? (
           <div className="mt-4">
@@ -111,7 +111,7 @@ function Training() {
         ) : (
           <div className="mt-5 grid gap-5 lg:grid-cols-2">
             <div>
-              <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">Reward per step</div>
+              <div className="mb-2 label">Reward per step</div>
               <div className="h-60">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={L.steps} margin={{ top: 6, right: 8, left: -12, bottom: 0 }}>
@@ -120,14 +120,14 @@ function Training() {
                     <YAxis {...axisProps} domain={[0, 'auto']} />
                     <Tooltip {...tooltipStyle} formatter={(v: number, n: string) => [fmtScore(v, 4), n]} labelFormatter={(s) => `step ${s}`} />
                     <Legend wrapperStyle={{ fontSize: 11, fontFamily: 'JetBrains Mono, monospace' }} />
-                    <Line type="monotone" dataKey="reward_mean" name="mean" stroke="#3DF5FF" strokeWidth={2} dot={false} isAnimationActive={false} />
-                    <Line type="monotone" dataKey="reward_best" name="best" stroke="#FFB547" strokeWidth={1.5} strokeDasharray="4 3" dot={false} isAnimationActive={false} />
+                    <Line type="monotone" dataKey="reward_mean" name="mean" stroke="#4FD1E0" strokeWidth={2} dot={false} isAnimationActive={false} />
+                    <Line type="monotone" dataKey="reward_best" name="best" stroke="#E2B25C" strokeWidth={1.5} strokeDasharray="4 3" dot={false} isAnimationActive={false} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
             </div>
             <div>
-              <div className="mb-2 text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">Valid-construction rate</div>
+              <div className="mb-2 label">Valid-construction rate</div>
               <div className="h-60">
                 <ResponsiveContainer width="100%" height="100%">
                   <LineChart data={L.steps} margin={{ top: 6, right: 8, left: -12, bottom: 0 }}>
@@ -135,7 +135,7 @@ function Training() {
                     <XAxis dataKey="step" {...axisProps} />
                     <YAxis {...axisProps} domain={[0, 1]} tickFormatter={(v) => fmtPct(v)} />
                     <Tooltip {...tooltipStyle} formatter={(v: number) => [fmtPct(v, 1), 'valid']} labelFormatter={(s) => `step ${s}`} />
-                    <Line type="monotone" dataKey="valid_rate" name="valid" stroke="#6CF29A" strokeWidth={2} dot={false} isAnimationActive={false} />
+                    <Line type="monotone" dataKey="valid_rate" name="valid" stroke="#6FBF8E" strokeWidth={2} dot={false} isAnimationActive={false} />
                   </LineChart>
                 </ResponsiveContainer>
               </div>
@@ -161,12 +161,12 @@ function Training() {
                 return (
                   <div key={label}>
                     <div className="mb-1.5 flex items-baseline justify-between text-[11px]">
-                      <span className="font-semibold uppercase tracking-[0.12em] text-fg-dim">{label}</span>
+                      <span className="font-semibold text-fg-dim">{label}</span>
                       <span className={cx('font-mono', b >= a ? 'text-good' : 'text-bad')}>{delta(a, b)}</span>
                     </div>
                     {[
-                      ['gen-0', a, '#5A6375'],
-                      ['gen-N', b, '#3DF5FF'],
+                      ['gen-0', a, '#7A838F'],
+                      ['gen-N', b, '#4FD1E0'],
                     ].map(([n, v, c]) => (
                       <div key={n as string} className="mb-1 flex items-center gap-3">
                         <span className="w-12 font-mono text-[11px] text-fg-muted">{n}</span>
@@ -193,7 +193,7 @@ function Training() {
 function MiniStat({ label, value, color }: { label: string; value: string; color?: string }) {
   return (
     <div className="rounded-xl border border-white/[0.05] bg-black/20 px-3 py-2.5">
-      <div className="text-[10px] font-semibold uppercase tracking-[0.14em] text-fg-dim">{label}</div>
+      <div className="label">{label}</div>
       <div className="mt-0.5 font-mono text-lg font-semibold" style={color ? { color } : undefined}>
         {value}
       </div>
@@ -204,7 +204,7 @@ function MiniStat({ label, value, color }: { label: string; value: string; color
 const SB_STATUS: Record<SandboxRun['status'], string> = {
   ok: 'text-good border-good/30 bg-good/[0.06]',
   invalid: 'text-amber border-amber/30 bg-amber/[0.06]',
-  timeout: 'text-[#C9A8FF] border-[#A98BFF]/30 bg-[#A98BFF]/[0.06]',
+  timeout: 'text-[#B9AEEF] border-[#A99BEA]/30 bg-[#A99BEA]/[0.06]',
   error: 'text-bad border-bad/30 bg-bad/[0.06]',
 }
 
@@ -222,11 +222,11 @@ function CodeViewer({ run, onClose }: { run: SandboxRun; onClose: () => void }) 
         animate={{ y: 0, scale: 1 }}
         exit={{ y: 10, opacity: 0 }}
         onClick={(e) => e.stopPropagation()}
-        className="panel flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden rounded-2xl"
+        className="panel flex max-h-[88vh] w-full max-w-4xl flex-col overflow-hidden rounded-xl"
       >
         <div className="flex flex-wrap items-center gap-3 border-b border-white/[0.06] px-4 py-3">
           <span className="font-mono text-sm text-fg">sandbox #{run.id}</span>
-          <span className={cx('rounded-full border px-2 py-0.5 font-mono text-[10.5px] uppercase', SB_STATUS[run.status])}>{run.status}</span>
+          <span className={cx('rounded-full border px-2 py-0.5 text-[11px] font-medium capitalize', SB_STATUS[run.status])}>{run.status}</span>
           <span className="font-mono text-[11px]" style={{ color: problemColor(run.problem) }}>
             {run.problem}
           </span>
@@ -240,7 +240,7 @@ function CodeViewer({ run, onClose }: { run: SandboxRun; onClose: () => void }) 
             <IconClose />
           </button>
         </div>
-        <div className="overflow-auto bg-[#080A0E] p-4">
+        <div className="overflow-auto bg-[#0E1014] p-4">
           <pre className="code-view">
             <code dangerouslySetInnerHTML={{ __html: html }} />
           </pre>
@@ -336,7 +336,7 @@ function Sandboxes() {
           <span className="text-amber">{stats.invalid}</span> invalid
         </span>
         <span>
-          <span className="text-[#C9A8FF]">{stats.timeout}</span> timeout
+          <span className="text-[#B9AEEF]">{stats.timeout}</span> timeout
         </span>
         <span>
           <span className="text-bad">{stats.error}</span> error
@@ -350,8 +350,8 @@ function Sandboxes() {
       ) : (
         <div className="-mx-4 max-h-[460px] overflow-auto sm:-mx-5">
           <table className="w-full min-w-[640px] text-left text-[12px]">
-            <thead className="sticky top-0 bg-[#0e1116]">
-              <tr className="border-b border-white/[0.06] text-[10px] uppercase tracking-[0.12em] text-fg-dim">
+            <thead className="sticky top-0 bg-[#111418]">
+              <tr className="border-b border-white/[0.06] text-[11px] font-medium text-fg-dim">
                 <th className="px-4 py-2 font-semibold sm:px-5">Run</th>
                 <th className="px-2 py-2 font-semibold">Problem</th>
                 <th className="px-2 py-2 font-semibold">Status</th>
@@ -364,13 +364,13 @@ function Sandboxes() {
             <tbody>
               <AnimatePresence initial={false}>
                 {rows.map((r) => (
-                  <motion.tr key={r.id} initial={{ opacity: 0, backgroundColor: 'rgba(61,245,255,0.12)' }} animate={{ opacity: 1, backgroundColor: 'rgba(0,0,0,0)' }} transition={{ duration: 1.2 }} className="cursor-pointer border-b border-white/[0.04] hover:!bg-white/[0.02]" onClick={() => setOpen(r)}>
+                  <motion.tr key={r.id} initial={{ opacity: 0, backgroundColor: 'rgba(79,209,224,0.12)' }} animate={{ opacity: 1, backgroundColor: 'rgba(0,0,0,0)' }} transition={{ duration: 1.2 }} className="cursor-pointer border-b border-white/[0.04] hover:!bg-white/[0.02]" onClick={() => setOpen(r)}>
                     <td className="px-4 py-2 font-mono text-fg sm:px-5">#{r.id}</td>
                     <td className="px-2 py-2 font-mono text-[11px]" style={{ color: problemColor(r.problem) }}>
                       {r.problem}
                     </td>
                     <td className="px-2 py-2">
-                      <span className={cx('rounded-full border px-2 py-0.5 font-mono text-[10px] uppercase', SB_STATUS[r.status])}>{r.status}</span>
+                      <span className={cx('rounded-full border px-2 py-0.5 text-[11px] font-medium capitalize', SB_STATUS[r.status])}>{r.status}</span>
                     </td>
                     <td className="px-2 py-2 text-right font-mono text-fg">{fmtScore(r.score)}</td>
                     <td className="px-2 py-2 text-right font-mono text-fg-muted">{r.seconds.toFixed(1)}</td>

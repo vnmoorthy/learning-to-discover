@@ -4,7 +4,7 @@ import react from '@vitejs/plugin-react'
 const STATIC = process.env.VITE_STATIC === '1'
 // In fixture mode there is no backend: serve /gallery from public/ instead of proxying.
 const FIXTURES = process.env.VITE_FIXTURES === '1'
-const BACKEND = process.env.LTD_BACKEND || 'http://127.0.0.1:8787'
+const BACKEND = process.env.PHOENIX_BACKEND || 'http://127.0.0.1:8787'
 
 export default defineConfig({
   plugins: [react()],

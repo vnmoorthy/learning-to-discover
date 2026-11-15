@@ -3,7 +3,7 @@
   1. QA set auto-built from the facts by an LLM: one question per fact (answer contained in that fact) plus a
      few cross-fact questions (answer needs two or more facts, incl. "latest value" questions).
   2. Three memory systems answer every question from ONLY what their lookup returned:
-       past.dev  facts ingested under a dedicated identity `ltd-bench-<ts>` (POST /api/v1/ingest/batch, polled
+       past.dev  facts ingested under a dedicated identity `phoenixastar-bench-<ts>` (POST /api/v1/ingest/batch, polled
                  until completed), looked up with POST /api/v1/recall (limit k, restricted to this run's
                  occurrence window so other project memory cannot leak in)
        markdown  every fact in one markdown document, always the whole file in context
@@ -21,7 +21,7 @@ At most MAX_INDEX_FACTS (most recent) facts are indexed by all three systems, an
 them get a single-fact question, so a click on "Run benchmark" stays a few minutes long however big memory grows.
 
 A fact is {"text": str, "id"?: str, "agent"?: str, "problem"?: str, "time"?: iso str}.
-CLI:  python3 -m ltd.memory_bench ltd/tests_labs/sample_facts.json
+CLI:  python3 -m phoenixastar.memory_bench phoenixastar/tests_labs/sample_facts.json
 """
 from __future__ import annotations
 
@@ -35,11 +35,11 @@ import time
 import traceback
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-OUT_PATH = os.environ.get("LTD_BENCH_PATH", os.path.join(ROOT, "data", "memory_benchmark.json"))
-PAST_BASE = os.environ.get("LTD_PAST_BASE", "https://app.past.dev/api/v1")
+OUT_PATH = os.environ.get("PHOENIX_BENCH_PATH", os.path.join(ROOT, "data", "memory_benchmark.json"))
+PAST_BASE = os.environ.get("PHOENIX_PAST_BASE", "https://app.past.dev/api/v1")
 
 try:
-    from ltd import config as _cfg  # type: ignore
+    from phoenixastar import config as _cfg  # type: ignore
     FAST_MODEL = getattr(_cfg, "FAST_MODEL", "gpt-5.4-mini")
     EMBED_MODEL = getattr(_cfg, "EMBED_MODEL", "text-embedding-3-small")
 except Exception:  # pragma: no cover
@@ -257,9 +257,9 @@ class PastDev:
         self.facts = facts
         self.by_id = {f["id"]: f for f in facts}
         stamp = dt.datetime.now(dt.timezone.utc).strftime("%Y%m%d-%H%M%S")
-        self.identity = f"ltd-bench-{stamp}"
+        self.identity = f"phoenixastar-bench-{stamp}"
         # A private occurrence window per run (facts keep their order, 10 s apart) so that recall cannot
-        # return other project memory, e.g. the live lab's own facts under identity ltd-lab.
+        # return other project memory, e.g. the live lab's own facts under identity phoenixastar-lab.
         # one private 20-minute slot per benchmark second (repeats after ~7.5 days; slots end before 2026), so
         # two runs started in the same minute (server button + CLI) cannot read each other's items either
         slot = int(time.time()) % 650_000
@@ -468,10 +468,10 @@ def _scrub(text: str) -> str:
 
 def _to_ledger(bench: dict):
     """SPEC: results also go to the ledger (`learning` table, key memory_benchmark) + one decision. Best-effort."""
-    if os.environ.get("LTD_LABS_LEDGER", "1") == "0":
+    if os.environ.get("PHOENIX_LABS_LEDGER", "1") == "0":
         return
     try:
-        from ltd import ledger  # type: ignore
+        from phoenixastar import ledger  # type: ignore
         ledger.learning_set("memory_benchmark", bench)
         line = "; ".join(f"{s['name']} {s['accuracy']:.0%} correct, {s['latency_ms']:.0f} ms lookup, ${s['cost_usd']:.4f}"
                          for s in bench["systems"])
@@ -483,7 +483,7 @@ def _to_ledger(bench: dict):
             f"graded by {bench['models']['judge']}: {line}.",
             outcome={"observed": None, "verdict": "n/a", "note": "benchmark"}, model=bench["models"]["answer"])
         try:
-            from ltd import events  # type: ignore
+            from phoenixastar import events  # type: ignore
             events.publish("decision", ledger.get_decision(did))
         except Exception:
             pass

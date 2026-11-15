@@ -273,7 +273,7 @@ D_(4, 95, 'executor', 'two-deletion-code-16', 'launch', 'Launched td-c4-ils-s0..
 D_(4, 94, 'executor', 'no-three-in-line-75', 'stop', 'Stopped 8 diag-150 seeds (no model after 2h, lowest priority class).', params={'count': 8})
 D_(5, 54, 'proposer', 'no-three-in-line-75', 'research', 'rot180-150 has the steepest violated-lines decline; Flammenkamp reports most large 2n solutions are rotation-symmetric. Ask literature agent for slope-presolve tricks.',
    sources=[2, 4], reads=['f_001', 'f_010'], model=P, tokens=6650, latency=8800)
-D_(5, 53, 'memory', None, 'recall', 'Recalled 6 facts for proposer from past.dev shared space ltd-lab (level high).', params={'k': 6, 'latency_ms': 388}, reads=['f_001', 'f_002', 'f_003', 'f_004', 'f_006', 'f_010'])
+D_(5, 53, 'memory', None, 'recall', 'Recalled 6 facts for proposer from past.dev shared space phoenixastar-lab (level high).', params={'k': 6, 'latency_ms': 388}, reads=['f_001', 'f_002', 'f_003', 'f_004', 'f_006', 'f_010'])
 D_(5, 50, 'sandbox', 'sidon-45-set', 'sandbox', 'Proposer wrote 8 Sidon search programs; ran 8 Modal sandboxes in parallel (120 s each). Best valid score 0.6 (9/15), worse than record.', params={'n': 8, 'ok': 6, 'invalid': 1, 'timeout': 1})
 D_(5, 48, 'critic', 'hadamard-det-51', 'score_prediction', 'Prediction confirmed: no gain on hadamard over 90 min.', writes=['f_011'])
 D_(6, 17, 'planner', 'spencer-discrepancy', 'reallocate', 'Spencer gap closed per GPU-hour is 0 for 4 cycles. Keep 2 GPUs exploring, mark 2 for release next cycle.', writes=['f_012'])

@@ -41,14 +41,14 @@ problems/<slug>/description.md
 Score any solution the same way the critic does (a subprocess, JSON on stdin):
 
 ```bash
-python3 -m ltd.verify_worker sidon-45-set < my_solution.json
+python3 -m phoenixastar.verify_worker sidon-45-set < my_solution.json
 # {"ok": true, "score": 0.5714285714285714, "error": null, "seconds": 0.025}
 ```
 
 For example, re-verify the current record for a problem:
 
 ```bash
-python3 - <<'EOF' | python3 -m ltd.verify_worker sidon-45-set
+python3 - <<'EOF' | python3 -m phoenixastar.verify_worker sidon-45-set
 import json
 rows = json.load(open("problems/sidon-45-set/best_solutions.json"))
 print(json.dumps(min(rows, key=lambda r: float(r["score"]))["data"]))   # use max(...) for maximize problems
@@ -56,7 +56,7 @@ EOF
 ```
 
 A solution is a record only if it is strictly better than the top of the leaderboard by at least `minImprovement`
-(`ltd/config.py: beats_record`).
+(`phoenixastar/config.py: beats_record`).
 
 The exact negative result for Sidon sets takes about a minute on one core:
 
@@ -122,19 +122,19 @@ Each part degrades on its own: without a key, that part of the lab is unavailabl
 ### Compute
 
 1. **GPU box.** Edit `scripts/ssh_config` so the host alias `ltd` points at your machine (user, address, key
-   path). The lab only ever runs `ssh -F scripts/ssh_config ltd '<cmd>'`. Code is synced to `~/ltd` on the box
+   path). The lab only ever runs `ssh -F scripts/ssh_config gpubox '<cmd>'`. Code is synced to `~/ltd` on the box
    (`search/` and `scripts/`); the box needs Python 3.10+, numpy, numba, python-sat and torch with CUDA.
-   Capacity constants (8 GPUs, 124 cores, target 118 busy) are in `ltd/config.py`.
-2. **Modal.** `modal token new`, then `modal deploy ltd/modal_fleet.py` for the CPU fleet (redeploy after
+   Capacity constants (8 GPUs, 124 cores, target 118 busy) are in `phoenixastar/config.py`.
+2. **Modal.** `modal token new`, then `modal deploy phoenixastar/modal_fleet.py` for the CPU fleet (redeploy after
    changing search code). The sandbox app is created on first use.
 3. **Referee.** Install the Claude Code CLI so that `claude` is on `PATH`.
 
 ### Start
 
 ```bash
-LTD_LOOP_AUTOSTART=0 LTD_TEST_MODE=1 python3 -m ltd.server    # first run: paused, stops are dry runs
-python3 -m ltd.smoke                                          # read-only check of every GET endpoint
-python3 -m ltd.server                                         # for real: http://127.0.0.1:8787
+PHOENIX_LOOP_AUTOSTART=0 PHOENIX_TEST_MODE=1 python3 -m phoenixastar.server    # first run: paused, stops are dry runs
+python3 -m phoenixastar.smoke                                          # read-only check of every GET endpoint
+python3 -m phoenixastar.server                                         # for real: http://127.0.0.1:8787
 ```
 
 Searches that are already running on the box are adopted, not restarted. Pause, resume and "run cycle now" are
@@ -143,18 +143,18 @@ buttons on Mission Control (and `POST /api/loop/pause | resume | run-now`).
 ### The side systems
 
 ```bash
-python3 -m ltd.sandboxes sidon-45-set 8                       # 8 LLM-written programs in Modal sandboxes
-python3 -m ltd.learning 12                                    # 12 Tinker RL steps in the foreground
-python3 -m ltd.modal_fleet launch nothree_sat '{"sym":"rot180-150","seed":1}'
-python3 -m ltd.modal_fleet telemetry
-python3 -m ltd.referee                                        # referee demo on two sample proposals
+python3 -m phoenixastar.sandboxes sidon-45-set 8                       # 8 LLM-written programs in Modal sandboxes
+python3 -m phoenixastar.learning 12                                    # 12 Tinker RL steps in the foreground
+python3 -m phoenixastar.modal_fleet launch nothree_sat '{"sym":"rot180-150","seed":1}'
+python3 -m phoenixastar.modal_fleet telemetry
+python3 -m phoenixastar.referee                                        # referee demo on two sample proposals
 curl -X POST http://127.0.0.1:8787/api/memory/benchmark       # past.dev vs markdown vs RAG
 ```
 
 ### Export and publish
 
 ```bash
-python3 -m ltd.snapshot               # live DB -> web/public/data/*.json
+python3 -m phoenixastar.snapshot               # live DB -> web/public/data/*.json
 python3 docs/update_results.py        # refresh the result blocks in README.md and docs/RESULTS.md
 cd web && npm run build:static        # -> web/dist-static, the GitHub Pages site
 ```
@@ -179,7 +179,7 @@ Every prompt, script version and model reply is kept next to the script (`viz/sc
 
 ## Troubleshooting
 
-- **The UI says "not a JSON reply".** Something else is listening on port 8787. Set `LTD_PORT`.
+- **The UI says "not a JSON reply".** Something else is listening on port 8787. Set `PHOENIX_PORT`.
 - **`Numba needs NumPy 2.4 or less`.** Downgrade numpy or upgrade numba; the CPU strategies need numba.
-- **The referee always abstains.** `claude` is not on `PATH`, or the call exceeded `LTD_REFEREE_TIMEOUT`.
-- **A GPU strategy refuses to launch on Modal.** By design: `GPU_AVAILABLE = False` in `ltd/modal_fleet.py`.
+- **The referee always abstains.** `claude` is not on `PATH`, or the call exceeded `PHOENIX_REFEREE_TIMEOUT`.
+- **A GPU strategy refuses to launch on Modal.** By design: `GPU_AVAILABLE = False` in `phoenixastar/modal_fleet.py`.

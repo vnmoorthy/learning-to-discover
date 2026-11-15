@@ -1,7 +1,7 @@
 """FastAPI server: the API of SPEC section 4, SSE events, the built frontend (web/dist) and /gallery.
 
-python3 -m ltd.server   ->  http://127.0.0.1:8787
-Env: LTD_LOOP_AUTOSTART=0 starts with the loop paused; LTD_TEST_MODE=1 gives launches test- ids and dry-runs stops.
+python3 -m phoenixastar.server   ->  http://127.0.0.1:8787
+Env: PHOENIX_LOOP_AUTOSTART=0 starts with the loop paused; PHOENIX_TEST_MODE=1 gives launches test- ids and dry-runs stops.
 """
 import asyncio
 import json
@@ -66,7 +66,7 @@ def _startup():
     lp = loopmod.get()
     if not _instance_lock():
         # read-only instance: serves the API from the DB, never polls/reconciles, launches, stops or runs cycles
-        lp.lock_out("another ltd.server already runs the loop on this database (this instance is read-only)")
+        lp.lock_out("another phoenixastar.server already runs the loop on this database (this instance is read-only)")
     else:
         threading.Thread(target=_poller, name="ltd-telemetry", daemon=True).start()
     lp.start()
@@ -307,7 +307,7 @@ def learning_start(body: dict = Body(default={})):
     try:
         from . import learning as lr
     except Exception as e:  # noqa: BLE001
-        return {"ok": False, "error": f"ltd.learning unavailable: {type(e).__name__}: {e}"}
+        return {"ok": False, "error": f"phoenixastar.learning unavailable: {type(e).__name__}: {e}"}
     try:
         ok = bool(lr.start(steps=steps))
     except Exception as e:  # noqa: BLE001
@@ -320,7 +320,7 @@ def memory_benchmark():
     try:
         from . import memory_bench
     except Exception as e:  # noqa: BLE001
-        return {"ok": False, "error": f"ltd.memory_bench unavailable: {type(e).__name__}: {e}"}
+        return {"ok": False, "error": f"phoenixastar.memory_bench unavailable: {type(e).__name__}: {e}"}
     try:
         ok = memory_bench.start_async(memory.all_facts())
     except Exception as e:  # noqa: BLE001 - e.g. too few facts yet
@@ -341,7 +341,7 @@ def sandboxes_run(body: dict = Body(...)):
     try:
         from . import sandboxes
     except Exception as e:  # noqa: BLE001
-        return {"ok": False, "error": f"ltd.sandboxes unavailable: {type(e).__name__}: {e}"}
+        return {"ok": False, "error": f"phoenixastar.sandboxes unavailable: {type(e).__name__}: {e}"}
     try:
         a = planner.analyze()["problems"][slug]
         ctx = f"{config.PROBLEMS[slug]['title']}: record {config.PROBLEMS[slug]['record']}; live {a['metric']}={a['value']}"
