@@ -17,14 +17,14 @@ ME = f"{HERE}/me"
 OUT = f"{HERE}/phoenixastar_demo_presenter.mp4"
 FONT = "/System/Library/Fonts/Helvetica.ttc"
 SECTIONS = [  # id, first words the presenter says, lower-third title
-    ("s1", "what if a research lab ran itself", "Phoenixastar"),
-    ("s2", "every three minutes with no human in the loop", "The autonomous loop"),
-    ("s3", "predictions get checked", "Predictions get checked"),
-    ("s4", "the same loop now does physics", "EVENT HORIZON · ray-traced live in the browser"),
-    ("s5", "starforge asks what matter inside a neutron star", "STARFORGE · neutron-star matter"),
+    ("s1", "so heres a question i wanted to answer", "Phoenixastar"),
+    ("s2", "heres how it works every three minutes", "The autonomous loop"),
+    ("s3", "and those predictions really do get checked", "Predictions get checked"),
+    ("s4", "now the same loop does physics too", "EVENT HORIZON · ray-traced live in the browser"),
+    ("s5", "starforge goes after neutron stars", "STARFORGE · neutron-star matter"),
     ("s6", "on the three-body problem", "Three-body periodic orbits"),
-    ("s7", "the lab also improves itself", "It learns: Tinker, Devin, Modal, past.dev"),
-    ("s8", "no breakthroughs claimed", "Research that verifies itself"),
+    ("s7", "the lab also gets better on its own", "It learns: Tinker, Devin, Modal, past.dev"),
+    ("s8", "so no breakthroughs claimed", "Research that verifies itself"),
 ]
 
 
@@ -138,27 +138,30 @@ def compose():
         t0, t1 = s["start"] + 0.4, s["start"] + 4.2
         overlays.append((3 + k, t0, t1))
     pip = 300
+    # circular mask and accent ring as static PNGs (much faster than a per-frame geq)
+    m = Image.new("L", (pip, pip), 0); ImageDraw.Draw(m).ellipse((0, 0, pip - 1, pip - 1), fill=255); m.save(f"{ME}/mask.png")
+    rg = Image.new("RGBA", (pip + 8, pip + 8), (0, 0, 0, 0)); ImageDraw.Draw(rg).ellipse((0, 0, pip + 7, pip + 7), fill=(79, 209, 224, 210)); rg.save(f"{ME}/ring.png")
+    base = 3 + len(secs)
+    title_inputs += ["-loop", "1", "-t", f"{meta['duration']:.2f}", "-i", f"{ME}/mask.png", "-loop", "1", "-t", f"{meta['duration']:.2f}", "-i", f"{ME}/ring.png"]
     fc = (
         f"[0:v]setpts=PTS-STARTPTS[scr];"
         f"[2:v]scale=1920:-1,pad=1920:1080:0:(1080-ih)/2:color=0x0B0D10,format=rgba,"
         f"fade=t=out:st=2.6:d=0.7:alpha=1[ban];"
-        f"[1:v]crop='min(iw,ih)':'min(iw,ih)',scale={pip}:{pip},format=yuva420p,"
-        f"geq=lum='p(X,Y)':cb='p(X,Y)':cr='p(X,Y)':a='if(lte(hypot(X-{pip/2},Y-{pip/2}),{pip/2 - 1}),255,0)'[cam];"
-        f"color=c=0x4FD1E0:s={pip + 8}x{pip + 8},format=yuva420p,"
-        f"geq=lum='p(X,Y)':cb='p(X,Y)':cr='p(X,Y)':a='if(lte(hypot(X-{(pip + 8)/2},Y-{(pip + 8)/2}),{(pip + 8)/2 - 1}),200,0)'[ring];"
-        f"[scr][ring]overlay=W-w-56:H-h-56:shortest=1[a];"
-        f"[a][cam]overlay=W-w-60:H-h-60:shortest=1[b];"
+        f"[1:v]crop='min(iw,ih)':'min(iw,ih)',scale={pip}:{pip},format=rgb24[camc];"
+        f"[{base}:v]format=gray[mk];[camc][mk]alphamerge[cam];"
+        f"[scr][{base + 1}:v]overlay=56:H-h-56:shortest=1[a];"
+        f"[a][cam]overlay=60:H-h-60:shortest=1[b];"
         f"[b][ban]overlay=0:0:enable='lte(t,3.4)'[t0];"
     )
     last = "t0"
     for k, (idx, t0, t1) in enumerate(overlays):
         fc += (f"[{idx}:v]format=rgba,fade=t=in:st={t0:.2f}:d=0.3:alpha=1,fade=t=out:st={t1 - 0.3:.2f}:d=0.3:alpha=1[ti{k}];"
-               f"[{last}][ti{k}]overlay=60:H-h-60:enable='between(t,{t0:.2f},{t1:.2f})'[t{k + 1}];")
+               f"[{last}][ti{k}]overlay=W-w-60:H-h-60:enable='between(t,{t0:.2f},{t1:.2f})'[t{k + 1}];")
         last = f"t{k + 1}"
     fc += f"[{last}]null[v]"
     sh("ffmpeg", "-y", "-v", "error", "-i", screen, "-i", take, "-loop", "1", "-t", "3.4", "-i", banner, *title_inputs,
        "-filter_complex", fc, "-map", "[v]", "-map", "1:a:0", "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
-       "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
+       "-c:v", "libx264", "-preset", "veryfast", "-crf", "20", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
        "-movflags", "+faststart", "-t", f"{meta['duration']:.2f}", OUT)
     print("wrote", OUT, round(probe_duration(OUT), 1), "s")
 

@@ -1,63 +1,67 @@
-# Phoenixastar: talk track (3 minutes)
+# Phoenixastar: talk track (3 minutes, spoken style)
 
-Read this aloud for the demo video, and use it as the click path for the live finals demo. About 430 spoken words at a
-calm 145 words per minute. Live counters keep moving, so numbers are said as floors ("over 1,500").
+Say this the way you would explain it to a friend at the table, not like reading. About 450 words, roughly 3 minutes.
+Live counters keep moving, so numbers are said as floors ("over seventeen hundred"). Sponsors named in the script:
+Lambda, Modal, past.dev, Exa, OpenAI (GPT-6 Astra), Anthropic (Claude Fable 5.2), Tinker and Devin.
 
 **How to record (for the demo video):** one take, landscape 1920x1080, face centred with some headroom, quiet room,
 look at the lens. **Pause for one full second between sections** (that is where the video cuts). Save the file as
-`video/me/take.mov` (or `.mp4`), or send me its path. I transcribe it with timestamps, cut the screen recording of each
-section to your timing, and place you as picture-in-picture over your own voice.
+`video/me/take.mov` (or `.mp4`). I transcribe it with timestamps, cut the screen recording of each section to your
+timing, and place you as picture-in-picture over your own voice. Small wording changes are fine; keep the first few
+words of each section, because that is how the video finds the cuts.
 
 ---
 
 ## 1. Hook (0:00-0:15) · screen: banner, then Mission Control hero
 
-> What if a research lab ran itself, and every claim it made had to survive an exact verifier before anyone saw it?
-> This is Phoenixastar: an autonomous AI lab for open problems in mathematics and physics.
+> So here's a question I wanted to answer: can an AI run a research lab by itself, and can you actually trust what it
+> tells you? I built Phoenixastar to find out. It works on open problems in math and physics, and nothing counts until
+> an exact verifier checks it.
 
-## 2. The loop (0:15-0:45) · screen: Mission Control, the autonomous loop stepper, then the compute map
+## 2. The loop and the sponsors (0:15-0:50) · screen: Mission Control, the loop stepper, then the compute map
 
-> Every three minutes, with no human in the loop, it reads telemetry from every running search, re-verifies every
-> claim with the official checkers, recalls what it learned through past.dev memory, reads papers with Exa, and asks
-> GPT-6 Astra for the next experiment, with a falsifiable prediction. Claude Fable 5.2 referees every proposal, and the
-> planner moves compute across eight A100s, 124 CPU cores and a Modal fleet of 140 containers.
-> Over 1,500 decisions in over 75 cycles, every one logged and replayable.
+> Here's how it works. Every three minutes the loop wakes up and looks at everything that's running: eight A100s on
+> Lambda, 124 CPU cores, and up to 140 containers on Modal. First it re-checks every result with the official
+> verifiers. It remembers what it learned with past.dev, and it pulls in papers with Exa. Then GPT-6 Astra proposes the
+> next experiment, and it has to make a prediction we can check later. Claude Fable 5.2 reviews every proposal and can
+> veto it. That's over seventeen hundred decisions so far, and every single one is logged.
 
-## 3. Honest math (0:45-1:00) · screen: Decisions page, a refuted prediction; then No-three-in-line 75
+## 3. Honest math (0:50-1:05) · screen: Decisions page, a refuted prediction; then No-three-in-line 75
 
-> Predictions get checked. Here the proposer expected 16 collinear triples; the critic measured 17 and marked it
-> refuted. On the EinsteinArena records we are close but have not beaten one, and the lab says so.
+> And those predictions really do get checked. Here it expected sixteen collinear triples, it got seventeen, and it
+> marked itself wrong. We haven't beaten an EinsteinArena record yet, and the dashboard shows you exactly how far off
+> we are.
 
-## 4. Event Horizon (1:00-1:40) · screen: home card black hole, drag it, zoom to the photon ring, toggle Lensing off and on
+## 4. Event Horizon (1:05-1:45) · screen: black hole, drag it, zoom to the photon ring, toggle Lensing off and on
 
-> The same loop now does physics. This black hole is not a video: your browser is ray-tracing light through curved
-> spacetime, one ray per pixel, live. Turn lensing off and you see what gravity is doing to the picture.
-> Behind it is EVENT HORIZON, a study of how information escapes an evaporating black hole: the Page curve to 24
-> qubits on an A100, Hayden-Preskill recovery, and this afternoon entanglement spectra, recovery fidelity and
-> error-correcting codes. An independent verifier re-derives the key claims, and it caught one of ours that was wrong.
+> Now, the same loop does physics too. This black hole isn't a video. Your browser is ray-tracing light through curved
+> spacetime, live. Watch what happens when I turn lensing off... that's what gravity is doing to the picture. Behind it
+> is Event Horizon, a study of how information gets out of an evaporating black hole. We reproduced the Page curve up
+> to 24 qubits on an A100, and this afternoon it added entanglement spectra, recovery fidelity and error-correcting
+> codes. A separate verifier re-derives the key numbers, and it actually caught one of our claims that was wrong.
 
-## 5. STARFORGE (1:40-2:05) · screen: Problems, STARFORGE: mass-radius and twin-star figures
+## 5. STARFORGE (1:45-2:10) · screen: STARFORGE page, the neutron-star cutaway, then the twin-star figure
 
-> STARFORGE asks what matter inside a neutron star is made of. It solves Einstein's stellar-structure equations for
-> candidate equations of state, and a second, independent solver agrees to one part in a million. It finds twin stars:
-> two stable stars with the same mass but radii of twelve and nine kilometres. And when its Bayesian inference ran out of
-> time before converging, it refused to report a posterior. The lab says what it does not know.
+> Starforge goes after neutron stars: what is matter actually made of in there? It solves Einstein's equations for the
+> star, and a second, independent solver agrees to about one part in a million. You can cut one open right here. It
+> found twin stars: same mass, but one is twelve kilometres across and the other is nine. And when its Bayesian
+> inference didn't converge in time, it just said so. No posterior. I really like that.
 
-## 6. Three-body (2:05-2:20) · screen: Physics, the interactive three-body orbits
+## 6. Three-body (2:10-2:22) · screen: Physics, the interactive three-body orbits
 
-> On the three-body problem, the GPU search found 17 periodic orbits, verified to one part in a hundred million, in 16
-> families that are not among the 2,060 catalogued orbits we checked. We call them candidates, not discoveries.
+> On the three-body problem, the GPU search found seventeen periodic orbits in sixteen families that aren't among the
+> 2,060 catalogued ones we checked. We call them candidates, not discoveries.
 
-## 7. It learns (2:20-2:45) · screen: Self-improvement, the Tinker curve; then Memory benchmark
+## 7. It learns (2:22-2:45) · screen: Self-improvement, the Tinker curve; then Memory benchmark
 
-> The lab also improves itself. Tinker fine-tunes an open model with the verifier as its reward: valid constructions
-> went from zero to fifty percent in forty steps. Devin writes new search tools that run in sealed Modal sandboxes, and
-> we benchmarked our own memory honestly: plain markdown still beats it.
+> The lab also gets better on its own. Tinker fine-tunes an open model with the verifier as the reward, and valid
+> answers went from zero to fifty percent. Devin writes new search tools, and they run sealed in Modal sandboxes before
+> we trust them. And we benchmarked our own memory honestly: plain markdown still beats it.
 
 ## 8. Close (2:45-3:00) · screen: banner, replay link
 
-> No breakthroughs claimed. Every number you saw was checked by a verifier and can be replayed step by step.
-> Phoenixastar: research that verifies itself.
+> So, no breakthroughs claimed. Just a lab that does the work, checks itself, and shows you everything. That's
+> Phoenixastar.
 
 ---
 
@@ -67,11 +71,11 @@ section to your timing, and place you as picture-in-picture over your own voice.
 2. Decisions: filter "critic", open a refuted prediction.
 3. Home card black hole: drag, scroll to zoom, toggle Lensing.
 4. Problems, EVENT HORIZON: Interactive tab, then one figure and its verification.
-5. Problems, STARFORGE: mass-radius figure and the verification table.
+5. Problems, STARFORGE: the neutron-star cutaway (switch to the maximum-mass star), then the twin-star figure.
 6. Physics: three-body orbits, drag to rotate.
 7. Self-improvement: Tinker curve. Close on the banner.
 
 **Backup lines if asked:** "Have you beaten a record?" No, and the dashboard shows the exact gap for each one. "Is the
-black hole real?" It is a physically based simulation of a Schwarzschild black hole; the gas texture is procedural.
-"What is new?" Classified per claim: most results are reproductions or new computational explorations (levels 1-3);
-the three-body orbits and a few hypotheses are level 4 candidates that need expert review.
+black hole real?" It's a physically based simulation of a Schwarzschild black hole; the gas texture is procedural.
+"What's new?" Every claim is classified: most results are reproductions or new computational explorations (levels
+1-3); the three-body orbits and a few hypotheses are candidates that need expert review.
