@@ -120,13 +120,18 @@ def compose():
     screen = f"{ME}/screen.mp4"
     sh("ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", screen)
     banner = f"{ROOT}/docs/assets/banner.png"
-    titles = []
-    for s in secs:
-        t0, t1 = s["start"] + 0.4, s["start"] + 4.0
-        txt = s["title"].replace(":", r"\:").replace("'", "")
-        titles.append(f"drawtext=fontfile={FONT}:text='{txt}':fontcolor=0xE7E9EC:fontsize=34:x=60:y=h-110:"
-                      f"box=1:boxcolor=0x0B0D10@0.72:boxborderw=18:enable='between(t,{t0:.2f},{t1:.2f})':"
-                      f"alpha='if(lt(t,{t0 + 0.3:.2f}),(t-{t0:.2f})/0.3,if(gt(t,{t1 - 0.3:.2f}),({t1:.2f}-t)/0.3,1))'")
+    from PIL import Image, ImageDraw, ImageFont
+    font = ImageFont.truetype(FONT, 34)
+    title_inputs, overlays = [], []
+    for k, s in enumerate(secs):   # lower-third titles as transparent PNGs (this ffmpeg build has no drawtext)
+        tw = int(font.getlength(s["title"])) + 44
+        im = Image.new("RGBA", (tw, 70), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+        d.rounded_rectangle((0, 0, tw - 1, 69), radius=10, fill=(11, 13, 16, 190))
+        d.rectangle((0, 14, 3, 55), fill=(79, 209, 224, 255))
+        d.text((22, 16), s["title"], font=font, fill=(231, 233, 236, 255))
+        fn = f"{ME}/title_{s['id']}.png"; im.save(fn); title_inputs += ["-loop", "1", "-t", f"{meta['duration']:.2f}", "-i", fn]
+        t0, t1 = s["start"] + 0.4, s["start"] + 4.2
+        overlays.append((3 + k, t0, t1))
     pip = 300
     fc = (
         f"[0:v]setpts=PTS-STARTPTS[scr];"
@@ -138,10 +143,15 @@ def compose():
         f"geq=lum='p(X,Y)':cb='p(X,Y)':cr='p(X,Y)':a='if(lte(hypot(X-{(pip + 8)/2},Y-{(pip + 8)/2}),{(pip + 8)/2 - 1}),200,0)'[ring];"
         f"[scr][ring]overlay=W-w-56:H-h-56:shortest=1[a];"
         f"[a][cam]overlay=W-w-60:H-h-60:shortest=1[b];"
-        f"[b][ban]overlay=0:0:enable='lte(t,3.4)'[c];"
-        f"[c]{','.join(titles)}[v]"
+        f"[b][ban]overlay=0:0:enable='lte(t,3.4)'[t0];"
     )
-    sh("ffmpeg", "-y", "-v", "error", "-i", screen, "-i", take, "-loop", "1", "-t", "3.4", "-i", banner,
+    last = "t0"
+    for k, (idx, t0, t1) in enumerate(overlays):
+        fc += (f"[{idx}:v]format=rgba,fade=t=in:st={t0:.2f}:d=0.3:alpha=1,fade=t=out:st={t1 - 0.3:.2f}:d=0.3:alpha=1[ti{k}];"
+               f"[{last}][ti{k}]overlay=60:H-h-60:enable='between(t,{t0:.2f},{t1:.2f})'[t{k + 1}];")
+        last = f"t{k + 1}"
+    fc += f"[{last}]null[v]"
+    sh("ffmpeg", "-y", "-v", "error", "-i", screen, "-i", take, "-loop", "1", "-t", "3.4", "-i", banner, *title_inputs,
        "-filter_complex", fc, "-map", "[v]", "-map", "1:a:0", "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
        "-c:v", "libx264", "-preset", "medium", "-crf", "18", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
        "-movflags", "+faststart", "-t", f"{meta['duration']:.2f}", OUT)
