@@ -65,6 +65,7 @@ export interface StageProps {
   /** enable right-drag / two-finger pan (default on) */
   pan?: boolean
   autoRotateSpeed?: number
+  zoomSpeed?: number
 }
 
 export function Stage({
@@ -87,6 +88,7 @@ export function Stage({
   hint,
   pan = true,
   autoRotateSpeed = 0.45,
+  zoomSpeed = 0.8,
 }: StageProps) {
   const wrap = useRef<HTMLDivElement>(null)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -146,7 +148,7 @@ export function Stage({
             enableDamping
             dampingFactor={0.08}
             rotateSpeed={0.7}
-            zoomSpeed={0.8}
+            zoomSpeed={zoomSpeed}
             enableZoom={!focusZoom || active}
             enablePan={pan}
             autoRotate={spinning}

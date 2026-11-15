@@ -322,7 +322,8 @@ export function BlackHoleViewer({ fallback, compact = false, spin = true }: { fa
       <Stage
         camera={[0, 2.6, 29.9]}
         target={[0, 0, 0]}
-        fov={38}
+        fov={26}
+        zoomSpeed={2.2}
         spin={spin}
         animating={opts.motion}
         autoRotateSpeed={0.25}
