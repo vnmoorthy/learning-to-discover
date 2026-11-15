@@ -11,6 +11,12 @@ and the observed bolometric intensity by g^4. That is why one side of the disk i
 Turbulent structure is a sheared noise texture (azimuthal arcs, as Keplerian shear produces). Rays that escape
 sample a star field, so the background stars are lensed too.
 
+--taper W makes the outermost W r_s of the disk thin out: opacity falls smoothly from 1 at rout - W to 0 at rout and
+rays that pass through keep the rest of their light (emission is weighted by opacity, the remainder by transmittance),
+so the faint outer rim no longer cuts a hard edge across the lensed image behind it. --taper 0 (default) is the
+original fully opaque disk. --star_seed picks the sky independently of the disk texture (default seed + 1); with
+seed 12 a star sits ~0.2 deg from the line of sight through the hole, and its Einstein ring is the faint full circle.
+
   python3 viz/blackhole/raytrace.py --w 2400 --h 1100 --ss 3 --out viz/blackhole/out/blackhole_rt.png
 """
 import argparse, json, math, os, time
@@ -92,7 +98,15 @@ def sample_stars(stars, d):
     return F.grid_sample(stars[None], grid, mode="bilinear", align_corners=False)[0, :, 0, :].T
 
 
-def trace(cam, dirs, P):
+def opacity(rr, P):
+    """1 inside the disk, falling smoothly to 0 over the outer P.taper r_s (all ones when taper is 0)."""
+    if P.taper <= 0:
+        return torch.ones_like(rr)
+    t = ((P.rout - rr) / P.taper).clamp(0, 1)
+    return t * t * (3 - 2 * t)
+
+
+def trace(cam, dirs, P, tex):
     N = dirs.shape[0]
     x = cam.expand(N, 3).clone(); v = dirs.clone()
     h = torch.cross(x, v, dim=1); h2 = (h * h).sum(1, keepdim=True)
@@ -101,7 +115,8 @@ def trace(cam, dirs, P):
     L = -h[:, 1] / vinf                              # photon angular momentum about the disk axis (physical direction)
     alive = torch.ones(N, dtype=torch.bool, device=x.device)
     hit = torch.zeros_like(alive); esc = torch.zeros_like(alive)
-    rc = torch.zeros(N, device=x.device); phc = torch.zeros(N, device=x.device)
+    col = torch.zeros(N, 3, device=x.device)         # disk light gathered along the ray
+    trans = torch.ones(N, device=x.device)           # fraction of the ray not yet absorbed by the disk
 
     def acc(p):
         r2 = (p * p).sum(1, keepdim=True)
@@ -117,14 +132,19 @@ def trace(cam, dirs, P):
         xn = x + dt / 6 * (k1x + 2 * k2x + 2 * k3x + k4x)
         vn = v + dt / 6 * (k1v + 2 * k2v + 2 * k3v + k4v)
         y0, y1 = x[:, 1], xn[:, 1]
-        cross = alive & (y0 * y1 <= 0) & (y0 != y1)
+        cross = alive & (y0 * y1 <= 0) & (y0 != y1) & (y0 != 0)   # y0 == 0 was counted on the previous step
         t = (y0 / (y0 - y1 + 1e-30)).clamp(0, 1)
         p = x + t[:, None] * (xn - x)
         rr = torch.sqrt(p[:, 0] ** 2 + p[:, 2] ** 2)
         nh = cross & (rr >= P.rin) & (rr <= P.rout)
-        hit |= nh
-        rc = torch.where(nh, rr, rc); phc = torch.where(nh, torch.atan2(p[:, 2], p[:, 0]), phc)
-        alive &= ~nh
+        idx = nh.nonzero(as_tuple=True)[0]
+        if idx.numel():
+            a = opacity(rr[idx], P)
+            ph = torch.atan2(p[idx, 2], p[idx, 0])
+            col[idx] += (trans[idx] * a)[:, None] * emission(rr[idx], ph, L[idx], P, tex)
+            trans[idx] = trans[idx] * (1 - a)
+            hit[idx] = True
+            alive[idx] = trans[idx] > 1e-3
         rn = xn.norm(dim=1)
         alive &= ~(rn < 1.0)                           # crossed the horizon
         e = alive & (rn > P.resc) & ((xn * vn).sum(1) > 0)
@@ -133,10 +153,11 @@ def trace(cam, dirs, P):
         if step % 64 == 63 and not bool(alive.any()):
             break
     d = v / v.norm(dim=1, keepdim=True)
-    return hit, rc, phc, L, esc, d, step + 1
+    return col, trans, hit, esc, d, step + 1
 
 
-def shade(hit, rc, phc, L, P, tex):
+def emission(rc, phc, L, P, tex):
+    """Observed colour of the disk surface at radius rc, azimuth phc, for photons of angular momentum L."""
     rcs = rc.clamp(min=P.rin)
     Tn = (P.rin / rcs) ** 0.75 * (1 - torch.sqrt(P.rin / rcs)).clamp(min=0) ** 0.25
     rg = torch.linspace(P.rin, P.rout, 4000, device=rc.device)
@@ -148,8 +169,7 @@ def shade(hit, rc, phc, L, P, tex):
     turb = sample_tex(tex, s, (phc + P.shear * torch.log(rcs)) / (2 * math.pi))
     fade = ((P.rout - rcs) / (P.rout * 0.45)).clamp(0, 1) ** 1.5
     I = (g * Tn) ** 4 * (0.22 + 1.6 * turb ** 1.7) * fade
-    col = kelvin_rgb(g * Tn * P.tpeak) * I[:, None]
-    return torch.where(hit[:, None], col, torch.zeros_like(col)), g
+    return kelvin_rgb(g * Tn * P.tpeak) * I[:, None]
 
 
 def aces(x):
@@ -176,9 +196,14 @@ def main():
     ap.add_argument("--dtmax", type=float, default=0.5); ap.add_argument("--resc", type=float, default=50.0)
     ap.add_argument("--max_steps", type=int, default=6000)
     ap.add_argument("--chunk", type=int, default=4_000_000)
+    ap.add_argument("--taper", type=float, default=0.0,
+                    help="width (r_s) over which the disk's outer edge fades from opaque to transparent; 0 = hard edge")
     ap.add_argument("--seed", type=int, default=11)
+    ap.add_argument("--star_seed", type=int, default=None, help="star field seed (default seed + 1)")
     ap.add_argument("--out", default="viz/blackhole/out/blackhole_rt.png")
     P = ap.parse_args()
+    if P.star_seed is None:
+        P.star_seed = P.seed + 1
     dev = "cuda" if torch.cuda.is_available() else "cpu"
     t0 = time.time()
     W, H, ss = P.w * P.ss, P.h * P.ss, P.ss
@@ -193,7 +218,7 @@ def main():
     f /= f.norm(); right = torch.linalg.cross(upw, f); right /= right.norm(); up = torch.linalg.cross(f, right)
     tx = math.tan(math.radians(P.fov) / 2); ty = tx * H / W
     tex = disk_texture(dev, P.seed)
-    stars = star_field(dev, P.seed + 1)
+    stars = star_field(dev, P.star_seed)
     img = torch.zeros(H * W, 3, device=dev)
     skyimg = torch.zeros(H * W, 3, device=dev)        # display-referred sky, added after exposure
     nhit = 0; steps_max = 0
@@ -206,9 +231,8 @@ def main():
         u = (2 * X - 1) * tx; vv = (1 - 2 * Y) * ty
         d = f[None] + u.reshape(-1, 1) * right[None] + vv.reshape(-1, 1) * up[None]
         d = d / d.norm(dim=1, keepdim=True)
-        hit, rc, phc, L, esc, dout, nsteps = trace(cam, d, P)
-        col, g = shade(hit, rc, phc, L, P, tex)
-        sky = sample_stars(stars, dout) * esc[:, None]
+        col, trans, hit, esc, dout, nsteps = trace(cam, d, P, tex)
+        sky = sample_stars(stars, dout) * (esc * trans)[:, None]
         img[r0 * W:r1 * W] = col
         skyimg[r0 * W:r1 * W] = sky
         nhit += int(hit.sum()); steps_max = max(steps_max, nsteps)
