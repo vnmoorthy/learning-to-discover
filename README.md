@@ -35,12 +35,12 @@ replayed and audited.
 
 <table>
   <tr>
-    <td width="33%"><img src="docs/assets/event-horizon/blackhole.jpg" alt="Event Horizon: a black hole drawn from the measured Page curve"></td>
+    <td width="33%"><img src="docs/assets/event-horizon/blackhole.jpg" alt="A Schwarzschild black hole ray-traced through curved spacetime"></td>
     <td width="33%"><img src="docs/assets/threebody/candidates.png" alt="Three-body candidate orbits"></td>
     <td width="33%"><img src="docs/assets/hero.jpg" alt="No-three-in-line lattice"></td>
   </tr>
   <tr>
-    <td><sub><b>Black hole information.</b> Event Horizon, rendered from the measured data: each disk ring is one evaporation step of the N = 26 Page curve (artwork from data).</sub></td>
+    <td><sub><b>Black holes.</b> A Schwarzschild black hole ray-traced on an A100: 24 million light rays along exact null geodesics, with lensing, redshift and Doppler beaming.</sub></td>
     <td><sub><b>Celestial mechanics.</b> 17 verified periodic three-body orbits in 16 families absent from the 2,060 catalogued orbits we checked (candidates).</sub></td>
     <td><sub><b>Mathematics.</b> A live SAT model of no-three-in-line on the 75 x 75 grid; red threads are lines that still hold three points.</sub></td>
   </tr>
@@ -250,8 +250,8 @@ The loop only needs a problem and an exact checker, so the same lab runs two phy
 
 ### EVENT HORIZON (black hole information, quantum-information toy models)
 
-<p align="center"><img src="docs/assets/event-horizon/blackhole.jpg" alt="Event Horizon: a black hole drawn from the measured Page curve" width="100%"></p>
-<p align="center"><sub>Rendered in Blender from the measured N = 26 evaporation run: each accretion-disk ring is one evaporation step, its brightness the measured radiation entropy S(R), so the disk brightens and fades along the Page curve. Artwork from data, not an astrophysical image.</sub></p>
+<p align="center"><img src="docs/assets/event-horizon/blackhole.jpg" alt="A Schwarzschild black hole ray-traced through curved spacetime" width="100%"></p>
+<p align="center"><sub>A Schwarzschild black hole ray-traced on an A100: 24 million light rays integrated along exact null geodesics around a thin Keplerian accretion disk (ISCO to 13 r_s) with a Novikov-Thorne temperature profile, gravitational redshift and Doppler beaming. The far side of the disk is lensed over and under the shadow; the thin ring is the photon ring. A simulation, not a photograph; the gas texture is procedural. Source: <a href="viz/blackhole/raytrace.py"><code>viz/blackhole/raytrace.py</code></a> (renders in 11 s on one A100).</sub></p>
 
 A verified study of the Page curve, Page's theorem, sequential evaporation, a Bell-pair "Hawking" model, scrambling
 and Hayden-Preskill decoupling, run with exact state vectors on an A100 (up to 27 qubits). 109 tests pass; 9 key claims

@@ -152,7 +152,7 @@ function PhysicsFeature() {
   const tb = state?.problems.find((p) => p.slug === 'three-body-periodic-orbits')
   return (
     <Link to="/problems/event-horizon" className="group relative block overflow-hidden rounded-2xl border border-white/[0.07] bg-[#07080A]">
-      <img src={assetUrl('/gallery/blackhole.jpg')} alt="Event Horizon: a black hole drawn from the measured Page curve"
+      <img src={assetUrl('/gallery/blackhole.jpg')} alt="A Schwarzschild black hole ray-traced through curved spacetime"
         className="block h-[200px] w-full object-cover opacity-90 transition-opacity duration-300 group-hover:opacity-100 sm:absolute sm:inset-y-0 sm:right-0 sm:h-full sm:w-[72%]"
         loading="lazy" />
       <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#07080A] from-30% via-[#07080A]/60 via-40% to-transparent to-60% sm:block" />
@@ -166,7 +166,7 @@ function PhysicsFeature() {
         </p>
         <div className="text-[12px] font-medium text-cyan">Open the study &rarr;</div>
       </div>
-      <div className="relative px-6 pb-4 text-[10.5px] text-fg-dim sm:absolute sm:bottom-3 sm:right-4 sm:p-0">Disk rings = measured S(R) per evaporation step (N = 26). Artwork from data.</div>
+      <div className="relative px-6 pb-4 text-[10.5px] text-fg-dim sm:absolute sm:bottom-3 sm:right-4 sm:p-0">Ray-traced on an A100: 24M light rays through Schwarzschild spacetime. A simulation, not a photograph.</div>
     </Link>
   )
 }

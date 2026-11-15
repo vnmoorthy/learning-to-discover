@@ -113,9 +113,7 @@ def problem_detail(slug):
         out["artifact"] = ({"kind": "report", **eh, "paper": "problems/event-horizon/paper/event_horizon.md",
                             "notebook": "problems/event-horizon/notebooks/event_horizon.ipynb",
                             "hero": "/gallery/blackhole.jpg",
-                            "hero_caption": "Event Horizon, rendered in Blender from the measured data: each accretion-disk ring is one "
-                                            "evaporation step of the N = 26 Page curve, brightness = measured entropy S(R). "
-                                            "Artwork from data, not an astrophysical image."} if eh else None)
+                            "hero_caption": "A Schwarzschild black hole ray-traced on an A100: 24 million light rays integrated along exact null geodesics around a thin Keplerian accretion disk (ISCO to 13 r_s) with a Novikov-Thorne temperature profile, gravitational redshift and Doppler beaming. The far side of the disk is lensed over and under the shadow; the thin ring is the photon ring. A simulation, not a photograph; the gas texture is procedural. Source: viz/blackhole/raytrace.py."} if eh else None)
     out["templates"] = [{"name": n, "resource": t.get("resource", "cpu"), "params": strategies.public_params(t)}
                         for n, t in sorted(strategies.for_problem(slug).items())]
     return out
