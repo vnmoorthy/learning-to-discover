@@ -36,11 +36,12 @@ section to your timing, and place you as picture-in-picture over your own voice.
 > qubits on an A100, Hayden-Preskill recovery, and this afternoon entanglement spectra, recovery fidelity and
 > error-correcting codes. An independent verifier re-derives the key claims, and it caught one of ours that was wrong.
 
-## 5. STARFORGE (1:40-2:05) · screen: Problems, STARFORGE: mass-radius figure, then a rejected equation of state
+## 5. STARFORGE (1:40-2:05) · screen: Problems, STARFORGE: mass-radius and twin-star figures
 
 > STARFORGE asks what matter inside a neutron star is made of. It solves Einstein's stellar-structure equations for
-> candidate equations of state, throws out any that break causality or thermodynamics, and weighs the survivors
-> against NICER X-ray timing and the LIGO neutron-star merger, including quark-matter phase transitions and twin stars.
+> candidate equations of state, and a second, independent solver agrees to one part in a million. It finds twin stars:
+> two stable stars with the same mass but radii of twelve and nine kilometres. And when its Bayesian inference ran out of
+> time before converging, it refused to report a posterior. The lab says what it does not know.
 
 ## 6. Three-body (2:05-2:20) · screen: Physics, the interactive three-body orbits
 

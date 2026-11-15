@@ -247,7 +247,7 @@ Highest accuracy: **markdown** (100.0%). Smallest context per question: **past.d
 
 ## Physics domains
 
-The loop only needs a problem and an exact checker, so the same lab runs two physics problems next to the math records. Both sit at the top of the Problems list in the app.
+The loop only needs a problem and an exact checker, so the same lab runs three physics problems next to the math records: black hole information (EVENT HORIZON), the neutron-star equation of state (STARFORGE) and three-body periodic orbits. They sit at the top of the Problems list in the app.
 
 ### EVENT HORIZON (black hole information, quantum-information toy models)
 
@@ -256,7 +256,7 @@ The loop only needs a problem and an exact checker, so the same lab runs two phy
 <p align="center"><b><a href="https://vnmoorthy.github.io/phoenixastar/#/physics">Play with it live</a></b>: the site ray-traces the same black hole in your browser (WebGL, one light ray per pixel per frame). Drag to orbit, scroll or pinch to zoom in to the photon ring, and toggle lensing and Doppler beaming off to see what gravity does to the picture.</p>
 
 A verified study of the Page curve, Page's theorem, sequential evaporation, a Bell-pair "Hawking" model, scrambling
-and Hayden-Preskill decoupling, run with exact state vectors on an A100 (up to 27 qubits). 109 tests pass; 9 key claims
+and Hayden-Preskill decoupling, run with exact state vectors on an A100 (up to 27 qubits). 109 tests passed originally (204 after the upgrade below); 9 key claims
 were re-derived by an independent implementation, and the independent verifier caught and corrected one wrong claim
 (scrambled stabilizer states sit *below* the Page curve on average, by 0.088 +- 0.015 nats at N = 10). Paper:
 [`problems/event-horizon/paper/event_horizon.md`](problems/event-horizon/paper/event_horizon.md); notebook:
@@ -275,6 +275,29 @@ separate from these finite-dimensional models.
 | **Sequential Haar evaporation** up to N = 26 qubits on the A100: mean S(R) against Page's formula, per-step z-scores, distribution tests, runtime and memory scaling. | **Hayden-Preskill.** I(R : Bob's radiation) vs emitted qubits: for an old black hole the curves collapse for every size (recovery after about k + O(1) qubits); for a young one they shift by about n_B / 2. |
 | <img src="docs/assets/event-horizon/d_hawking_pairs.png" alt="Bell-pair model" width="100%"> | <img src="docs/assets/event-horizon/e1_trajectories.png" alt="Scrambling" width="100%"> |
 | **Bell-pair "Hawking" model vs unitary evaporation (N = 20):** S(R) = k log 2 keeps rising past the Page time and exceeds the black hole's capacity, which is impossible for a pure global state. | **Scramblers compared at N = 26 qubits (A100):** local Haar and random Clifford brickwork at depths 1-16 per emission converge to the global-Haar Page curve by depth 8; static Bell dimers and SWAP networks do not scramble. |
+
+### STARFORGE (neutron-star equation of state)
+
+<p align="center"><img src="problems/neutron-star-eos/figures/mr_reference.png" alt="Mass-radius curves" width="49%"> <img src="problems/neutron-star-eos/figures/twin_mr.png" alt="Twin stars" width="49%"></p>
+
+What is matter made of inside a neutron star? STARFORGE ([`problems/neutron-star-eos`](problems/neutron-star-eos)) builds
+thermodynamically consistent equations of state (Read et al. piecewise polytropes, a speed-of-sound parameterisation and
+constant-sound-speed hybrid stars with a Maxwell quark-matter transition), solves the Tolman-Oppenheimer-Volkoff equations
+and the relativistic tidal Love-number equation (including the jump condition at a density discontinuity), and rejects
+models that break causality or stability. Results, classified 1-3, no breakthroughs claimed:
+
+- **Validated core (level 1):** exact Schwarzschild interior, Lane-Emden and Love-number limits pass; SLy gives
+  M_max = 2.048 M_sun, R_1.4 = 11.70 km, Lambda_1.4 = 296. A second, independent solver (enthalpy formulation, own RK4,
+  own constants) agrees to 9e-7 in mass and 6e-6 in Lambda. **21/21 tests.**
+- **Sound speed (level 2):** if SLy holds up to 2 n_sat, supporting 2.0 M_sun needs a maximal c_s^2 of at least 0.37,
+  above the conformal value 1/3 (reproducing Bedaque-Steiner / Tews et al.).
+- **Phase transitions and twin stars (level 2-3):** over 220 Maxwell+CSS models the Seidov criterion predicts the
+  hybrid-branch topology in 214; twin stars appear in 58, e.g. two stable 1.12 M_sun stars with radii 11.8 and 9.4 km and
+  tidal deformabilities 1163 and 158 (robust to 2% parameter changes).
+- **Retracted:** the Bayesian inference against NICER and GW170817 (provenance in `data/observations.json`) ran out of time
+  before its MCMC chains converged, so **no posterior is reported**. 3 of 7 key claims are independently verified.
+
+Paper: [`problems/neutron-star-eos/paper/starforge.md`](problems/neutron-star-eos/paper/starforge.md).
 
 ### Three-body periodic orbits (celestial mechanics)
 

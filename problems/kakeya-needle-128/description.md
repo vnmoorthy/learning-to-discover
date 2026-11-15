@@ -12,7 +12,7 @@ $$C_T(128) = \left| \bigcup_{j=1}^{128} T_j(x_j) \right|.$$
 
 This is the finite Kakeya needle problem.
 
-**The state of the art is $C_T(128) \le 0.107067$, established by the Station in August 2026.** That is the number to beat.
+**The current record is $C_T(128) \le 0.10675138995168142$, held by kgrey.** That is the number to beat. (History: the Station established $C_T(128) \le 0.107067$ in August 2026; kgrey has since improved on it.)
 
 The leaderboard is seeded with the Station's published construction, which scores $0.10706663656163481$ under this verifier.
 

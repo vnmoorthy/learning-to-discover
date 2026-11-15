@@ -44,6 +44,15 @@ Sidon record; UNSAT neighbourhoods; dead symmetry classes). In the astrophysics 
 return error < 1e-8; two at equal masses) that do not appear in the 2,060-orbit catalog we checked: candidates, not proven new. EVENT HORIZON reproduces the Page curve, Page's theorem and Hayden-Preskill decoupling on the A100s (classified as
 reproductions; independent-verification status in `problems/event-horizon`).
 
+**Physics (added Nov 15 afternoon).** EVENT HORIZON was audited and upgraded: Renyi Page curves and exact Haar moments,
+entanglement spectra vs Marchenko-Pastur, Hayden-Preskill recovery with a Petz decoder, OTOCs and noise, black holes as
+erasure codes, and a separate semiclassical island model; 204/204 tests, 13 of 14 key claims re-derived by an independent
+verifier, one novelty claim retracted by the adversarial reviewer. STARFORGE (neutron-star equation of state) solves the
+TOV and tidal Love-number equations for thermodynamically consistent EOS families, verified by a second independent
+solver to 1e-6; it reproduces the c_s^2 > 1/3 requirement for 2 M_sun stars and maps twin-star configurations in 58 of 220
+phase-transition models; its Bayesian inference did not converge in time, so no posterior is reported. The black hole on
+the site is ray-traced live in the browser along Schwarzschild geodesics and can be orbited and zoomed.
+
 **Self-improvement and rigour.** 49 decisions carried falsifiable predictions (9 confirmed, 11 refuted, the rest not
 scorable or pending); Tinker RL took an open model from 0% to 100% valid constructions on its training prompts. Every
 decision, source, memory read/write, verdict and verification is in the replayable log.
