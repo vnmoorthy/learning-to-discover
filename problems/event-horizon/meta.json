@@ -1,0 +1,16 @@
+{
+ "id": null,
+ "slug": "event-horizon",
+ "title": "EVENT HORIZON: black hole information (Page curve, evaporation, Hayden-Preskill)",
+ "source": "Phoenixastar lab problem (theoretical physics). Not an EinsteinArena problem: there is no public leaderboard.",
+ "scoring": "maximize",
+ "score": "independently verified claims (a second implementation re-derives each key number)",
+ "record": null,
+ "holder": null,
+ "minImprovement": 1,
+ "verified_claims": 8,
+ "claims_total": 9,
+ "classification_scale": "1 reproduction, 2 verification of a known relation, 3 new computational observation, 4 new conjecture, 5 potentially novel",
+ "paper": "problems/event-horizon/paper/event_horizon.md",
+ "notebook": "problems/event-horizon/notebooks/event_horizon.ipynb"
+}

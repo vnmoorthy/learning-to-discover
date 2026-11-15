@@ -2,15 +2,15 @@
 https://modal.com/apps/vnarasingamoorthy/main/ap-ZJl5VXdYynyOROW2wumVdw
 ✓ Created objects.
 ├── 🔨 Created mount 
-│   domains/event-horizon/experiments/modal_ru
+│   problems/event-horizon/experiments/modal_ru
 │   n.py
 ├── 🔨 Created mount 
-│   domains/event-horizon/experiments
-├── 🔨 Created mount domains/event-horizon/eh
+│   problems/event-horizon/experiments
+├── 🔨 Created mount problems/event-horizon/eh
 └── 🔨 Created function run_chunk.
 Stopping app - uncaught exception raised locally: AttributeError("module 'e1_scrambling' has no attribute 'build_jobs'").
 ╭───────────────────── Traceback (most recent call last) ──────────────────────╮
-│ domains/event-horizon/experiments/modal_ru │
+│ problems/event-horizon/experiments/modal_ru │
 │ n.py:57 in main                                                              │
 │                                                                              │
 │   56 │   │   t0 = time.time()                                                │

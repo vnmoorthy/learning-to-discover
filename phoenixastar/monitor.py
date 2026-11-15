@@ -47,6 +47,8 @@ def _metric_of(family, li):
         m = re.search(r"best=(\d+)/(\d+)=([\d.]+)", li.get("last_line") or "")
         if m:
             return float(m.group(3))
+    if family == "threebody":     # count only families that are NEW relative to the catalog (not rediscoveries)
+        return vals.get("new", vals.get("best"))
     if family == "nothree_gpu":   # GPU min-conflicts: collinear triples left (0 = 150 points)
         return vals.get("best_triples")
     for k in ("best", "best_score", "score", "best_size", "size", "best_length", "count"):

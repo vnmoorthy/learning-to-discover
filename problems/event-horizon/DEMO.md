@@ -12,7 +12,7 @@ ssh -F $SSHC ltd
 cd ~/event-horizon; export CUDA_VISIBLE_DEVICES=0 OMP_NUM_THREADS=4; PY=.venv/bin/python
 ```
 
-Steps 1, 2, 5, 6, 7 also run on the Mac with plain `python3` from `domains/event-horizon` (they only read `results/`). Steps 3 and 4 need the box.
+Steps 1, 2, 5, 6, 7 also run on the Mac with plain `python3` from `problems/event-horizon` (they only read `results/`). Steps 3 and 4 need the box.
 
 Optional, start now so it finishes during the talk (about 70 s, CPU only, writes to `/tmp`):
 

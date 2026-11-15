@@ -2,11 +2,11 @@
 https://modal.com/apps/vnarasingamoorthy/main/ap-VrEPuf2LoGxLvtkwWFdkBw
 ✓ Created objects.
 ├── 🔨 Created mount 
-│   domains/event-horizon/experiments/c_modal.
+│   problems/event-horizon/experiments/c_modal.
 │   py
-├── 🔨 Created mount domains/event-horizon/eh
+├── 🔨 Created mount problems/event-horizon/eh
 └── 🔨 Created function traj.
-wrote domains/event-horizon/results/c_cache/N12_seeds20_modal.pkl cpu s/traj 48.2
+wrote problems/event-horizon/results/c_cache/N12_seeds20_modal.pkl cpu s/traj 48.2
 Stopping app - local entrypoint completed.
 ✓ App completed. View run at 
 https://modal.com/apps/vnarasingamoorthy/main/ap-VrEPuf2LoGxLvtkwWFdkBw

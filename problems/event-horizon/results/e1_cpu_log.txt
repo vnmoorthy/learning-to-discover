@@ -2,11 +2,11 @@
 https://modal.com/apps/vnarasingamoorthy/main/ap-lfhnJZ20mfDTYY5ZVGiakx
 ✓ Created objects.
 ├── 🔨 Created mount 
-│   domains/event-horizon/experiments/modal_ru
+│   problems/event-horizon/experiments/modal_ru
 │   n.py
-├── 🔨 Created mount domains/event-horizon/eh
+├── 🔨 Created mount problems/event-horizon/eh
 ├── 🔨 Created mount 
-│   domains/event-horizon/experiments
+│   problems/event-horizon/experiments
 └── 🔨 Created function run_chunk.
 done in 592.3s
 per-step 8 local_haar d*= 12 ['1.125', '0.725', '0.331', '0.229', '0.102', '0.050', '0.016', '0.005']

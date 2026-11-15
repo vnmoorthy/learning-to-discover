@@ -49,6 +49,19 @@ def problem_summary(slug, an=None):
            "active": P["active"]}
     if slug == "no-three-in-line-75":
         out["classes"] = sorted(an["classes"].values(), key=lambda c: c["sym"])
+    if slug == "three-body-periodic-orbits":   # candidates relative to the catalogs checked, never called records
+        b = ledger.get_best(slug)
+        if b and b.get("score") is not None:
+            out["metric"] = {"name": "candidate_new_families", "value": b["score"], "target": None, "lower_is_better": False}
+        out["status"] = "candidates"
+        out["beats_record"] = False
+    if slug == "event-horizon":   # a finished, verified study: its score is the number of independently verified claims
+        m = config.load_meta(slug)
+        out["metric"] = {"name": "verified_claims", "value": m.get("verified_claims"), "target": m.get("claims_total"),
+                         "lower_is_better": False}
+        out["status"] = "verified"
+        out["ours"] = {"score": m.get("verified_claims"), "verified": True, "at": None, "strategy_id": None}
+        out["beats_record"] = False
     if slug in planner.KNOWN_NEGATIVE:
         out["known_negative"] = planner.KNOWN_NEGATIVE[slug]
     if foreign:
@@ -77,7 +90,10 @@ def totals():
             "sandboxes_run": sandboxes,
             "facts": one("SELECT COUNT(*) c FROM facts"),
             "sources": one("SELECT COUNT(*) c FROM literature"),
-            "records": one("SELECT COUNT(*) c FROM bests WHERE beats_record=1 AND verified=1")}
+            # EinsteinArena records only: lab-defined physics problems report candidates / verified claims instead
+            "records": one("SELECT COUNT(*) c FROM bests WHERE beats_record=1 AND verified=1 AND problem NOT IN "
+                           "('three-body-periodic-orbits', 'event-horizon')"),
+            "candidate_orbit_families": int((ledger.get_best("three-body-periodic-orbits") or {}).get("score") or 0)}
 
 
 def problem_detail(slug):
@@ -92,6 +108,10 @@ def problem_detail(slug):
                           for i, r in enumerate(config.load_leaderboard(slug))]
     out["metric_history"] = ledger.metric_history(slug, config.PROBLEMS[slug]["metric"])
     out["artifact"] = ledger.get_artifact(slug)
+    if slug == "event-horizon":
+        eh = physics().get("event_horizon")
+        out["artifact"] = ({"kind": "report", **eh, "paper": "problems/event-horizon/paper/event_horizon.md",
+                            "notebook": "problems/event-horizon/notebooks/event_horizon.ipynb"} if eh else None)
     out["templates"] = [{"name": n, "resource": t.get("resource", "cpu"), "params": strategies.public_params(t)}
                         for n, t in sorted(strategies.for_problem(slug).items())]
     return out
@@ -166,7 +186,7 @@ def physics():
                         "not_checked": not_checked, "image": "/gallery/threebody_candidates.png",
                         "verification": meta.get("verification"), "novelty": meta.get("novelty"),
                         "caveats": meta.get("caveats")}
-    p = os.path.join(config.ROOT, "domains", "event-horizon", "results", "dashboard.json")
+    p = os.path.join(config.PROBLEMS_DIR, "event-horizon", "results", "dashboard.json")
     try:
         eh = json.load(open(p))
         for f in eh.get("figures") or []:

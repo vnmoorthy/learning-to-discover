@@ -97,7 +97,7 @@ function AgentGraph({ mem, selected, onSelect }: { mem: MemoryResponse; selected
           return (
             <g key={n.id} transform={`translate(${n.x},${n.y})`} className="cursor-pointer" onClick={() => onSelect(on ? null : n.id)} opacity={dim ? 0.3 : 1}>
               <circle r={r * 2.2} fill="url(#nodeglow)" />
-              <circle r={r} fill={c + '26'} stroke={c} strokeWidth={on ? 2.5 : 1.5} style={{ filter: `drop-shadow(0 0 6px ${c})` }} />
+              <circle r={r} fill={c + '26'} stroke={c} strokeWidth={on ? 2.5 : 1.5} />
               <text y={4} textAnchor="middle" fontSize="11" className="font-mono" fill={c} fontWeight={600}>
                 {n.written}
               </text>

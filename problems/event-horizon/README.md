@@ -41,7 +41,7 @@ Files named `*_cpu.py`, `c_modal.py`, `modal_run.py` and the `results/c_log_*`, 
 SSHC=<repo>/scripts/ssh_config
 # 1. push the source (the Mac copy is the source of truth)
 rsync -az --exclude .venv --exclude results --exclude figures --exclude logs --exclude __pycache__ \
-      -e "ssh -F $SSHC" domains/event-horizon/ gpubox:event-horizon/
+      -e "ssh -F $SSHC" problems/event-horizon/ gpubox:event-horizon/
 # 2. one-time venv on the box (system torch 2.7 + CUDA is reused; see requirements.txt for the numpy pin)
 ssh -F $SSHC ltd 'python3 -m venv --system-site-packages ~/event-horizon/.venv && \
   ~/event-horizon/.venv/bin/pip install -q -r ~/event-horizon/requirements.txt'
@@ -60,7 +60,7 @@ $PY experiments/c_evaporation.py plot                                    # figur
 $PY experiments/d_hawking_pairs.py                                       # after C (uses its trajectories)
 # 4. back on the Mac
 rsync -az -e "ssh -F $SSHC" gpubox:event-horizon/results gpubox:event-horizon/figures gpubox:event-horizon/logs \
-      domains/event-horizon/
+      problems/event-horizon/
 ```
 
 `EH_DEVICE=cpu` forces the CPU backend (the small-N runs of C were made that way, see `scripts/launch_c_cpu.sh`;

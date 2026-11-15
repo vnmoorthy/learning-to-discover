@@ -41,7 +41,7 @@ weighted search reached 227 words with one conflicting pair), first autocorrelat
 no-three-in-line 75x75 (best SAT model 107 violated lines). Proved negatives are logged too (no one-point extension of the
 Sidon record; UNSAT neighbourhoods; dead symmetry classes). In the astrophysics domain, 17 verified periodic orbits in 16 topological families (float64 DOP853,
 return error < 1e-8; two at equal masses) that do not appear in the 2,060-orbit catalog we checked: candidates, not proven new. EVENT HORIZON reproduces the Page curve, Page's theorem and Hayden-Preskill decoupling on the A100s (classified as
-reproductions; independent-verification status in `domains/event-horizon`).
+reproductions; independent-verification status in `problems/event-horizon`).
 
 **Self-improvement and rigour.** 49 decisions carried falsifiable predictions (9 confirmed, 11 refuted, the rest not
 scorable or pending); Tinker RL took an open model from 0% to 100% valid constructions on its training prompts. Every

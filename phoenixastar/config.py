@@ -64,10 +64,11 @@ _REG = [
     ("kissing-number-d12-842", "polish_k12", "best_penalty", True, None),
     ("kissing-number-d11-605", "polish_k11", "best_penalty", True, None),
     ("three-body-periodic-orbits", "threebody", "verified_families", False, None),
+    ("event-horizon", "eventhorizon", "verified_claims", False, "report"),
 ]
 # Problems the lab actively attacks (others are listed but idle unless a template exists for them).
 ACTIVE = ["no-three-in-line-75", "two-deletion-code-16", "first-autocorrelation-inequality", "kakeya-needle-128",
-          "kissing-number-d12-842", "kissing-number-d11-605", "three-body-periodic-orbits",
+          "kissing-number-d12-842", "kissing-number-d11-605", "three-body-periodic-orbits", "event-horizon",
           "spencer-discrepancy", "hadamard-det-51", "sidon-45-set"]
 
 

@@ -2,9 +2,9 @@
 https://modal.com/apps/vnarasingamoorthy/main/ap-EolZZbmbpYEJEG294XKo1d
 ✓ Created objects.
 ├── 🔨 Created mount 
-│   domains/event-horizon/experiments/modal_ru
+│   problems/event-horizon/experiments/modal_ru
 │   n.py
 ├── 🔨 Created mount 
-│   domains/event-horizon/experiments
-├── 🔨 Created mount domains/event-horizon/eh
+│   problems/event-horizon/experiments
+├── 🔨 Created mount problems/event-horizon/eh
 └── 🔨 Created function run_chunk.
