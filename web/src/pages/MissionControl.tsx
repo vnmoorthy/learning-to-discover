@@ -153,11 +153,12 @@ function PhysicsFeature() {
   return (
     <Link to="/problems/event-horizon" className="group relative block overflow-hidden rounded-2xl border border-white/[0.07] bg-[#07080A]">
       <img src={assetUrl('/gallery/blackhole.jpg')} alt="Event Horizon: a black hole drawn from the measured Page curve"
-        className="h-[260px] w-full object-cover object-center opacity-90 transition-opacity duration-300 group-hover:opacity-100 sm:h-[340px]" loading="lazy" />
-      <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#07080A] via-[#07080A]/70 to-transparent" />
-      <div className="absolute inset-y-0 left-0 flex max-w-xl flex-col justify-center gap-3 p-6 sm:p-8">
+        className="block h-[200px] w-full object-cover opacity-90 transition-opacity duration-300 group-hover:opacity-100 sm:absolute sm:inset-y-0 sm:right-0 sm:h-full sm:w-[72%]"
+        loading="lazy" />
+      <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#07080A] from-30% via-[#07080A]/60 via-40% to-transparent to-60% sm:block" />
+      <div className="relative flex flex-col gap-3 p-6 sm:min-h-[340px] sm:max-w-[48%] sm:justify-center sm:p-8">
         <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-cyan">Physics · Event Horizon</div>
-        <h2 className="text-[22px] font-semibold leading-tight tracking-[-0.02em] text-fg sm:text-[28px]">How does information survive a black hole&rsquo;s evaporation?</h2>
+        <h2 className="text-[22px] font-semibold leading-tight tracking-[-0.02em] text-fg sm:text-[26px]">How does information survive a black hole&rsquo;s evaporation?</h2>
         <p className="text-[13px] leading-6 text-fg-muted">
           Exact numerics on an A100: the Page curve to 24 qubits, evaporation to 27, Hayden-Preskill recovery, every key claim re-derived by an independent verifier
           {eh?.metric?.value != null ? ` (${eh.metric.value} of ${eh.metric.target ?? '?'} verified)` : ''}.
@@ -165,7 +166,7 @@ function PhysicsFeature() {
         </p>
         <div className="text-[12px] font-medium text-cyan">Open the study &rarr;</div>
       </div>
-      <div className="absolute bottom-3 right-4 text-[10.5px] text-fg-dim">Disk rings = measured S(R) per evaporation step (N = 26). Artwork from data.</div>
+      <div className="relative px-6 pb-4 text-[10.5px] text-fg-dim sm:absolute sm:bottom-3 sm:right-4 sm:p-0">Disk rings = measured S(R) per evaporation step (N = 26). Artwork from data.</div>
     </Link>
   )
 }
