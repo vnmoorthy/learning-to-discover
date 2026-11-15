@@ -14,6 +14,7 @@ Models
   ConstantDensityEOS           : incompressible test fluid (acausal; validation only).
 """
 import numpy as np
+from scipy.interpolate import CubicHermiteSpline
 from scipy.optimize import brentq
 
 from . import units as u
@@ -179,23 +180,26 @@ class SpeedOfSoundEOS(EOS):
         self.p_max = float(P[-1])
         self.kinks = tuple(low.kinks) + (self.p_m,)
         self._lp = np.log(P)
+        # cubic Hermite in ln P with exact slopes: dln eps/dln P = P/(eps c_s^2), dln n/dln P = P/((eps+P) c_s^2)
+        e = self.tab_e
+        self._le = CubicHermiteSpline(self._lp, np.log(e), P / (e * c))
+        self._ln = CubicHermiteSpline(self._lp, np.log(grid), P / ((e + P) * c))
 
-    def _hi(self, p, f_low, f_tab, log=True):
+    def _hi(self, p, f_low, f_tab):
         p = np.asarray(p, float)
         lo = p < self.p_m
-        ph = np.where(lo, self.p_m, p)
-        y = np.interp(np.log(ph), self._lp, np.log(f_tab) if log else f_tab)
-        y = np.exp(y) if log else y
+        x = np.log(np.where(lo, self.p_m, p))
+        y = np.exp(f_tab(x)) if callable(f_tab) else np.interp(x, self._lp, f_tab)
         return np.where(lo, f_low(np.where(lo, p, self.p_m)), y)
 
     def eps(self, p):
-        return self._hi(p, self.low.eps, self.tab_e)
+        return self._hi(p, self.low.eps, self._le)
 
     def cs2(self, p):
-        return self._hi(p, self.low.cs2, self.tab_c, log=False)
+        return self._hi(p, self.low.cs2, self.tab_c)
 
     def n(self, p):
-        return self._hi(p, self.low.n, self.tab_n)
+        return self._hi(p, self.low.n, self._ln)
 
 
 class CSSHybridEOS(EOS):

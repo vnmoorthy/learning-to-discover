@@ -88,3 +88,45 @@ def otoc_vs_depth(n: int, max_depth: int, rng, gate: str, pairs) -> np.ndarray:
         for j, (W, V) in enumerate(mats):
             out[layer, j] = otoc(U, W, V)
     return out
+
+
+def _apply_pauli_rows(M: np.ndarray, n: int, ops: dict) -> np.ndarray:
+    """P @ M for a Pauli string P (no dense P): act on the row qubit axes."""
+    cols = M.shape[1]
+    t = M.reshape((2,) * n + (cols,))
+    for q, lab in ops.items():
+        if lab == "I":
+            continue
+        t = np.moveaxis(np.tensordot(PAULI[lab], t, axes=([1], [q])), 0, q)
+    return t.reshape(M.shape)
+
+
+def otoc_fast(U: np.ndarray, n: int, w_ops: dict, v_ops_list) -> list:
+    """Same quantity as otoc(U, W, V) for several V, one dense matmul per W:
+    Wt = U^dag (W U);  F_V = 2^-N sum_ij (Wt V)_ij conj((V Wt)_ij)
+    (uses Tr[A B] = sum(A * B^T) and (Wt^dag V^dag)^T = conj(V Wt))."""
+    d = U.shape[0]
+    Wt = U.conj().T @ _apply_pauli_rows(U, n, w_ops)
+    out = []
+    for v in v_ops_list:
+        VW = _apply_pauli_rows(Wt, n, v)                      # V Wt
+        WV = _apply_pauli_rows(Wt.T, n, v).T                  # Wt V  (V^T = +-V, sign squares away below)
+        # Wt V = (V^T Wt^T)^T; for Y, V^T = -V, giving an overall sign (-1); fix it:
+        sgn = (-1) ** sum(1 for lab in v.values() if lab == "Y")
+        out.append(float(np.real(sgn * np.sum(WV * VW.conj()))) / d)
+    return out
+
+
+def otoc_vs_depth_fast(n: int, max_depth: int, rng, gate: str, w_list, v_list) -> np.ndarray:
+    """F_t for all (W in w_list) x (V in v_list), t = 0..max_depth, one circuit
+    (same draws as brickwork_unitary). Returns (max_depth+1, len(w_list), len(v_list))."""
+    d = 2 ** n
+    t = np.eye(d, dtype=complex).reshape((2,) * n + (d,))
+    out = np.zeros((max_depth + 1, len(w_list), len(v_list)))
+    for layer in range(max_depth + 1):
+        if layer > 0:
+            t = apply_brick_layer(t, n, layer - 1, rng, gate)
+        U = t.reshape(d, d)
+        for i, w in enumerate(w_list):
+            out[layer, i] = otoc_fast(U, n, w, v_list)
+    return out

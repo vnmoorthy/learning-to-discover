@@ -97,6 +97,10 @@ def aggregate(runs):
                 "distance_mean": float(d.mean()),
                 "a_kept_needed_I_ge_1.9bits": a_I, "a_kept_needed_half_patterns_perfect": a_half,
                 "rows": rows}
+            if fam == "haar":
+                out[f"{fam}_n{n}"]["distance_note"] = (
+                    "exact-erasure distance (tol 1e-8) is not meaningful for Haar isometries, which correct no "
+                    "erasure exactly; use the I(R:A) and F_petz curves (approximate recovery) instead")
     return out
 
 

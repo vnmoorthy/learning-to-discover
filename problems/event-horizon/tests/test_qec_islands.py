@@ -143,6 +143,39 @@ def test_island_generalized_entropy_has_single_minimum_and_limits():
     assert ext["S_island"] < lim
 
 
+def _kruskal_interval_entropy(p1, p2, beta, c, eps):
+    """Independent route: CFT vacuum in Kruskal w^{+-}; metric ds^2 = -Omega^2 dw+ dw-;
+    S = (c/6) log(|dw+ dw-| Omega_1 Omega_2 / eps^2).  p = (t, sigma, side); side=+1 right."""
+    k = 2 * np.pi / beta
+
+    def w_and_omega(t, s, side):
+        if side > 0:
+            wp, wm = np.exp(k * (t + s)), -np.exp(-k * (t - s))
+        else:  # left wedge, left clock running forward
+            wp, wm = -np.exp(-k * (t - s)), np.exp(k * (t + s))
+        om = (1 / k) / np.sqrt(abs(wp * wm))           # flat (t, sigma) metric in Kruskal coords
+        if s < 0:
+            om *= k / np.sinh(k * abs(s))               # AdS2 Weyl factor in the gravity region
+        return wp, wm, om
+
+    a1, b1, o1 = w_and_omega(*p1)
+    a2, b2, o2 = w_and_omega(*p2)
+    return (c / 6) * np.log(abs((a1 - a2) * (b1 - b2)) * o1 * o2 / eps ** 2)
+
+
+def test_closed_forms_match_independent_kruskal_route():
+    beta, c, eps = P1["beta"], P1["c"], P1["eps"]
+    for t in (0.0, 0.7, 3.0):
+        # no island: two bath points at sigma=b on opposite sides
+        S_k = _kruskal_interval_entropy((t, P1["b"], +1), (t, P1["b"], -1), beta, c, eps)
+        assert abs(S_k - isl.S_no_island(t, beta, c, eps)) < 1e-9
+        # island: single-side interval [-a, b], doubled; check vs matter part of S_gen
+        for a in (0.3, 2.0, 5.0):
+            S1 = _kruskal_interval_entropy((t, -a, +1), (t, P1["b"], +1), beta, c, eps)
+            matter = isl.S_gen_island(a, **P1) - 2 * isl.dilaton(a, beta, P1["phi0"], P1["phir"])
+            assert abs(2 * S1 - matter) < 1e-9
+
+
 def test_island_location_approaches_amm_asymptotic():
     errs = []
     for ratio in (10.0, 100.0, 1000.0):
