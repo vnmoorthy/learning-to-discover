@@ -7,6 +7,7 @@ export const LatticeViewer = lazy(() => import('./index').then((m) => ({ default
 export const CityViewer = lazy(() => import('./index').then((m) => ({ default: m.CityViewer })))
 export const SnakeViewer = lazy(() => import('./index').then((m) => ({ default: m.SnakeViewer })))
 export const OrbitsViewer = lazy(() => import('./index').then((m) => ({ default: m.OrbitsViewer })))
+export const NeutronStarViewer = lazy(() => import('./neutronstar').then((m) => ({ default: m.NeutronStarViewer })))
 export const BlackHoleViewer = lazy(() => import('./blackhole').then((m) => ({ default: m.BlackHoleViewer })))
 
 /** Positioned box that hosts a viewer (viewers fill their parent). */

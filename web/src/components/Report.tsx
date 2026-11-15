@@ -5,7 +5,7 @@ import { assetUrl } from '../mode'
 import type { EHCycle, EHFigure, ReportArtifact } from '../types'
 import { IconChevron, IconExternal } from './icons'
 import { cx } from '../lib/format'
-import { BlackHoleViewer, SafeLazy } from '../viz3d/lazy'
+import { BlackHoleViewer, NeutronStarViewer, SafeLazy } from '../viz3d/lazy'
 
 const REPO = 'https://github.com/vnmoorthy/phoenixastar/blob/main/'
 const CLASS_LABEL: Record<string, string> = {
@@ -151,11 +151,12 @@ function RepoLink({ path, children }: { path?: string; children: React.ReactNode
 }
 
 function ReportHero({ art }: { art: ReportArtifact }) {
-  const [mode, setMode] = useState<'live' | 'still'>(art.interactive === 'blackhole' ? 'live' : 'still')
+  const [mode, setMode] = useState<'live' | 'still'>(art.interactive ? 'live' : 'still')
+  const ns = art.interactive === 'neutronstar'
   const still = <img src={assetUrl(art.hero!)} alt={art.title ?? 'hero'} className="absolute inset-0 h-full w-full object-cover" />
   return (
     <figure className="overflow-hidden rounded-xl border border-white/[0.07] bg-[#050608]">
-      {art.interactive === 'blackhole' && (
+      {art.interactive && (
         <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-3 py-2">
           <div className="inline-flex rounded-lg border border-white/10 bg-white/[0.03] p-0.5" role="tablist" aria-label="Black hole view">
             {(['live', 'still'] as const).map((m) => (
@@ -168,27 +169,29 @@ function ReportHero({ art }: { art: ReportArtifact }) {
                 className={cx('h-7 whitespace-nowrap rounded-md px-3 text-[12px] font-medium transition-colors', mode === m ? 'bg-white/[0.09] text-fg' : 'text-fg-muted hover:text-fg')}
               >
                 {m === 'live' ? (
-                  <><span className="sm:hidden">Live</span><span className="hidden sm:inline">Interactive (live ray tracing)</span></>
+                  <><span className="sm:hidden">Live</span><span className="hidden sm:inline">{ns ? 'Interactive cutaway (TOV solution)' : 'Interactive (live ray tracing)'}</span></>
                 ) : (
-                  <><span className="sm:hidden">A100 still</span><span className="hidden sm:inline">A100 render (24M rays)</span></>
+                  <><span className="sm:hidden">{ns ? 'Figure' : 'A100 still'}</span><span className="hidden sm:inline">{ns ? 'Mass-radius figure' : 'A100 render (24M rays)'}</span></>
                 )}
               </button>
             ))}
           </div>
-          <span className="hidden text-[11px] text-fg-dim sm:inline">Same physics in both: Schwarzschild null geodesics</span>
+          <span className="hidden text-[11px] text-fg-dim sm:inline">{ns ? 'Density from the solved SLy star: n(r) / n_sat' : 'Same physics in both: Schwarzschild null geodesics'}</span>
         </div>
       )}
       {mode === 'live' ? (
         <div className="relative h-[360px] w-full sm:h-[520px]">
           <SafeLazy fallback={still}>
-            <BlackHoleViewer fallback={still} />
+            {ns ? <NeutronStarViewer fallback={still} /> : <BlackHoleViewer fallback={still} />}
           </SafeLazy>
         </div>
       ) : (
         <img src={assetUrl(art.hero!)} alt={art.title ?? 'hero'} className="w-full object-cover" />
       )}
       <figcaption className="px-4 py-2 text-[11.5px] leading-5 text-fg-dim">
-        {mode === 'live'
+        {mode === 'live' && ns
+          ? 'A neutron star cut open: the SLy equation of state integrated through the TOV equations by STARFORGE. Colour is the solved baryon density n(r)/n_sat; cyan rings mark 0.5, 1, 2 and 4 n_sat. Switch between the 1.40 M_sun star (R = 11.71 km) and the maximum-mass star (2.05 M_sun, R = 9.97 km, 7.5 n_sat at the centre). Drag to orbit; click, then scroll to zoom.'
+          : mode === 'live'
           ? 'Ray-traced live in your browser, one light ray per pixel per frame, with the same equations as the A100 render: drag to orbit (go below the disk too); click the view, then scroll to zoom in to the photon ring (or pinch on a touch screen or trackpad); tap to pause the gas. Toggle lensing off to see the disk as it would look in flat spacetime.'
           : art.hero_caption}
       </figcaption>

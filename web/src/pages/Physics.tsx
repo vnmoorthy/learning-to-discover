@@ -4,7 +4,7 @@ import { useApi } from '../hooks/useApi'
 import { assetUrl } from '../mode'
 import { Link } from 'react-router-dom'
 import { Cycle, FigureGrid, TestsBadge } from '../components/Report'
-import { BlackHoleViewer, OrbitsViewer, SafeLazy, ViewerFrame } from '../viz3d/lazy'
+import { BlackHoleViewer, NeutronStarViewer, OrbitsViewer, SafeLazy, ViewerFrame } from '../viz3d/lazy'
 
 export default function PhysicsPage() {
   const ph = useApi(() => api.physics(), [], 60000)
@@ -83,6 +83,17 @@ export default function PhysicsPage() {
               }
             >
               <div className="space-y-5">
+                <div>
+                  <ViewerFrame className="h-[380px] w-full bg-[#050608] sm:h-[480px]">
+                    <SafeLazy fallback={<img src={assetUrl('/gallery/neutron-star-eos/mr_reference.png')} alt="mass-radius curves" className="h-full w-full object-contain" />}>
+                      <NeutronStarViewer />
+                    </SafeLazy>
+                  </ViewerFrame>
+                  <p className="mt-2 text-[12px] text-fg-dim">
+                    A neutron star cut open, from STARFORGE's own TOV solution of the SLy equation of state: colour is the solved baryon
+                    density n(r)/n_sat. Compare the 1.40 M_sun star with the maximum-mass star. Drag to orbit; click, then scroll to zoom.
+                  </p>
+                </div>
                 {ns.summary && <p className="max-w-4xl text-sm text-fg-muted">{ns.summary}</p>}
                 {ns.hardware && <p className="font-mono text-[11px] text-fg-dim">hardware: {ns.hardware}</p>}
                 <FigureGrid figures={ns.figures ?? []} />

@@ -122,7 +122,7 @@ export interface CodeArtifact {
 export interface ReportArtifact {
   hero?: string
   hero_caption?: string
-  interactive?: 'blackhole'
+  interactive?: 'blackhole' | 'neutronstar'
   kind: 'report'
   title?: string
   question?: string

@@ -178,7 +178,10 @@ REPORTS = {
                       "notebook": "problems/event-horizon/notebooks/event_horizon.ipynb",
                       "hero": "/gallery/blackhole.jpg", "interactive": "blackhole",
                       "hero_caption": None},
-    "neutron-star-eos": {"paper": "problems/neutron-star-eos/paper/starforge.md"},
+    "neutron-star-eos": {"paper": "problems/neutron-star-eos/paper/starforge.md", "interactive": "neutronstar",
+                         "hero": "/gallery/neutron-star-eos/mr_reference.png",
+                         "hero_caption": "Mass-radius curves of the reference equations of state, solved with STARFORGE's TOV and "
+                                         "Love-number equations (solid: stable branches)."},
 }
 
 
