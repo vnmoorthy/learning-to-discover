@@ -2,7 +2,7 @@
  "id": null,
  "slug": "three-body-periodic-orbits",
  "title": "New periodic orbits of the planar Newtonian three-body problem",
- "source": "Learning to Discover lab problem (theoretical astrophysics). NOT an EinsteinArena problem: there is no public leaderboard.",
+ "source": "Phoenixastar lab problem (theoretical astrophysics). NOT an EinsteinArena problem: there is no public leaderboard.",
  "scoring": "maximize",
  "score": "number of distinct topological families (canonical reduced syzygy words = free-group conjugacy classes) of verified periodic orbits in the solution that are NOT in catalog.json",
  "record": 0,

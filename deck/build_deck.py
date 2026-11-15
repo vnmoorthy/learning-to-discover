@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Builds deck/Learning_to_Discover.pptx (10 slides, 16:9) and deck/storyboard.md from the live snapshot.
+"""Builds deck/Phoenixastar.pptx (10 slides, 16:9) and deck/storyboard.md from the live snapshot.
 
     python3 deck/build_deck.py            # build + validate
     python3 deck/build_deck.py --preview  # also render deck/build/preview/slide-NN.png (needs soffice + pdftoppm)
@@ -36,7 +36,7 @@ sys.path.insert(0, HERE)
 import deckdata as dd  # noqa: E402
 from deckdata import clip, fmt, pct, short  # noqa: E402
 
-OUT = os.path.join(HERE, "Learning_to_Discover.pptx")
+OUT = os.path.join(HERE, "Phoenixastar.pptx")
 BUILD = os.path.join(HERE, "build")
 W, H = 13.333, 7.5
 
@@ -527,7 +527,7 @@ def new_slide(prs, D, idx, total, kicker=None, title=None, black=False, title_w=
 def chrome(s, D):
     """Wordmark, snapshot time and progress bar. Drawn last so it sits above full-bleed media. '!!' names morph."""
     idx, total = s._ltd["idx"], s._ltd["total"]
-    text(s, 0.6, 0.28, 5, 0.25, [[("LEARNING TO DISCOVER", {"color": WHITE, "bold": True}), ("  ·  autonomous research lab", {"color": DIM})]],
+    text(s, 0.6, 0.28, 5, 0.25, [[("PHOENIXASTAR", {"color": WHITE, "bold": True}), ("  ·  autonomous research lab", {"color": DIM})]],
          size=9, font=MONO, name="!!wordmark")
     text(s, W - 5.6, 0.28, 5, 0.25, [[("● ", {"color": AMBER}), (f"{D['label']} · as of {D['asof']}", {"color": GREY})]],
          size=9, font=MONO, align="r", name="!!asof")
@@ -577,7 +577,7 @@ def build(D, team):
     picture(s, os.path.join(BUILD, "fade_title.png"), 0, 0, w=W, h=5.2, name="fade-top")
     picture(s, os.path.join(BUILD, "fade_bottom.png"), 0, H - 2.4, w=W, h=2.4, name="fade-bottom")
     k = text(s, 0.6, 0.95, 10, 0.3, "ITERATE AI RESEARCH HACKATHON · SF · TRACK 1: AUTORESEARCH", size=11, color=CYAN, font=MONO)
-    t1 = text(s, 0.6, 1.3, 12, 1.1, "Learning to Discover", size=66, bold=True, name="title")
+    t1 = text(s, 0.6, 1.3, 12, 1.1, "Phoenixastar", size=66, bold=True, name="title")
     t2 = text(s, 0.62, 2.55, 11, 0.6, "An AI lab that gets better at discovering mathematics by doing it.", size=24, color=WHITE)
     cap = gal.get("hero.jpg") or gal.get("lattice_orbit.mp4") or {}
     hero_title = (gal.get("hero.jpg") or {}).get("title") or "Live search snapshot"
@@ -588,7 +588,7 @@ def build(D, team):
     m.add(k, "fade", 200, 500); m.add(t1, "wipe-left", 350, 900); m.add(t2, "fade", 1000, 700); m.add(c1, "fade", 1700, 600)
     chrome(s, D)
     finish_slide(s, m)
-    notes.append("This is Learning to Discover. An AI lab that gets better at discovering mathematics by doing it. "
+    notes.append("This is Phoenixastar. An AI lab that gets better at discovering mathematics by doing it. "
                  f"What you see moving is not art. It is our live search on the no-three-in-line problem, rendered in Blender: {hero_title}.")
 
     # ---------- 2. The problem
@@ -1055,11 +1055,11 @@ def build(D, team):
     finish_slide(s, m)
     notes.append("Mathematics is where we start, because the verifier is exact. But the loop does not care about the domain. "
                  "Anything with an exact verifier works. Next is physics: periodic orbits of the three-body problem. "
-                 "The code, the log and a replay of this run are public. Learning to Discover. Thank you.")
+                 "The code, the log and a replay of this run are public. Phoenixastar. Thank you.")
 
     for sl, n in zip(prs.slides, notes):
         sl.notes_slide.notes_text_frame.text = n
-    prs.core_properties.title = "Learning to Discover"
+    prs.core_properties.title = "Phoenixastar"
     prs.core_properties.subject = f"Pitch deck, snapshot {D['asof']}"
     prs.core_properties.author = team
     prs.save(OUT)
@@ -1126,7 +1126,7 @@ def main():
     tfile = os.path.join(HERE, "team.txt")
     if not team and os.path.exists(tfile):
         team = open(tfile).read().strip()
-    team = team or "Team Learning to Discover"
+    team = team or "Team Phoenixastar"
     D = dd.load()
     notes = build(D, team)
     rep = validate(OUT)

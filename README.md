@@ -1,10 +1,10 @@
 <p align="center">
-  <a href="https://vnmoorthy.github.io/learning-to-discover/">
-    <img src="docs/assets/og-banner.png" alt="Learning to Discover: an AI lab that gets better at discovering mathematics by doing it" width="100%">
+  <a href="https://vnmoorthy.github.io/phoenixastar/">
+    <img src="docs/assets/og-banner.png" alt="Phoenixastar: an AI lab that gets better at discovering mathematics by doing it" width="100%">
   </a>
 </p>
 
-<h1 align="center">Learning to Discover</h1>
+<h1 align="center">Phoenixastar</h1>
 
 <p align="center"><b>An AI lab that gets better at discovering mathematics by doing it.</b></p>
 
@@ -12,11 +12,11 @@
   <a href="LICENSE"><img alt="License: MIT" src="https://img.shields.io/badge/license-MIT-3DF5FF?labelColor=07080B"></a>
   <img alt="Python 3.12" src="https://img.shields.io/badge/python-3.12-3DF5FF?labelColor=07080B&logo=python&logoColor=white">
   <img alt="Iterate AI Research Hackathon SF, Track 1" src="https://img.shields.io/badge/Iterate%20AI%20Research%20Hackathon%20SF-Track%201-FFB547?labelColor=07080B">
-  <a href="https://vnmoorthy.github.io/learning-to-discover/"><img alt="Live demo: replay" src="https://img.shields.io/badge/live%20demo-replay-3DF5FF?labelColor=07080B"></a>
+  <a href="https://vnmoorthy.github.io/phoenixastar/"><img alt="Live demo: replay" src="https://img.shields.io/badge/live%20demo-replay-3DF5FF?labelColor=07080B"></a>
 </p>
 
 <p align="center">
-  <a href="https://vnmoorthy.github.io/learning-to-discover/"><b>Replay demo</b></a> ·
+  <a href="https://vnmoorthy.github.io/phoenixastar/"><b>Replay demo</b></a> ·
   <a href="docs/ARCHITECTURE.md">Architecture</a> ·
   <a href="docs/RESULTS.md">Results</a> ·
   <a href="docs/REPRODUCE.md">Reproduce</a> ·
@@ -25,7 +25,7 @@
 
 ---
 
-Learning to Discover is an autonomous research lab that attacks open record problems in combinatorics, where
+Phoenixastar is an autonomous research lab that attacks open record problems in combinatorics, where
 every claim can be checked by an exact verifier. A loop of agents watches live searches on 8 GPUs and 124 CPU
 cores, reads its own memory and the literature, proposes the next experiment with a falsifiable prediction, and
 moves compute accordingly. Every decision, source, prediction and outcome is logged, so the whole run can be
@@ -166,7 +166,7 @@ snapshotted run), with the critic's verdict filled in ten minutes later:
 The same log shows the planner saying no. Decision #26 (cycle 1): `Planner rejected (part of) proposer decision
 #20: launched 0/10: no free CPU core (target 118 busy)`. The proposer's next attempt, #37, opens with that fact:
 "the previous launch was rejected, so no search-performance evidence exists". Browse all of it in the
-[replay demo](https://vnmoorthy.github.io/learning-to-discover/#/decisions).
+[replay demo](https://vnmoorthy.github.io/phoenixastar/#/decisions).
 
 ## Self-improvement
 
@@ -230,11 +230,11 @@ illustration, not data.
 | **The Lattice.** A live SAT snapshot of no-three-in-line: 150 points, red threads on lines that are still violated. | **Hadamard City.** The record 51 x 51 sign matrix (kgrey) as a city. | **Snake in the 13-cube.** The record 2950-edge snake (kgrey), projected to 3D. |
 
 Videos (`lattice_orbit.mp4`, `snake_turntable.mp4`) are on the Gallery page of the
-[replay demo](https://vnmoorthy.github.io/learning-to-discover/#/gallery).
+[replay demo](https://vnmoorthy.github.io/phoenixastar/#/gallery).
 
 ## Quickstart
 
-**Just look (no keys, no GPU):** open the [replay demo](https://vnmoorthy.github.io/learning-to-discover/), or
+**Just look (no keys, no GPU):** open the [replay demo](https://vnmoorthy.github.io/phoenixastar/), or
 build it locally:
 
 ```bash
@@ -298,7 +298,7 @@ printed, logged, or copied to the GPU box, the Modal containers or the sandboxes
 ## Repo layout
 
 ```text
-learning-to-discover/
+phoenixastar/
 ├── SPEC.md                 build spec: API contract, module list, design rules
 ├── ltd/                    the lab (Python package)
 │   ├── server.py           FastAPI: /api, SSE events, serves web/dist
@@ -388,11 +388,11 @@ search. Mathematics was the first fit, not the only one.
 ## Citation
 
 ```bibtex
-@software{learning_to_discover_2026,
-  title  = {Learning to Discover: An AI lab that gets better at discovering mathematics by doing it},
-  author = {{The Learning to Discover authors}},
+@software{phoenixastar_2026,
+  title  = {Phoenixastar: An AI lab that gets better at discovering mathematics by doing it},
+  author = {{The Phoenixastar authors}},
   year   = {2026},
-  url    = {https://github.com/vnmoorthy/learning-to-discover},
+  url    = {https://github.com/vnmoorthy/phoenixastar},
   note   = {Iterate AI Research Hackathon SF, Track 1}
 }
 ```
@@ -401,5 +401,5 @@ See also [`CITATION.cff`](CITATION.cff).
 
 ## License
 
-[MIT](LICENSE). Copyright 2026 the Learning to Discover authors. The files in `problems/` and `arena/` are public
+[MIT](LICENSE). Copyright 2026 the Phoenixastar authors. The files in `problems/` and `arena/` are public
 EinsteinArena material and remain subject to their source's terms.

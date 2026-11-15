@@ -31,8 +31,8 @@
   {
    "id": "s1_intro",
    "shot": "B-roll: web/public/gallery/lattice_orbit.mp4 (Blender render of the live no-three-in-line SAT snapshot), title card overlay.",
-   "caption": "Learning to Discover  |  an autonomous AI lab for open math problems",
-   "text": "This is Learning to Discover: an autonomous AI lab that hunts for records on open math problems, and improves by doing it.",
+   "caption": "Phoenixastar  |  an autonomous AI lab for open math problems",
+   "text": "This is Phoenixastar: an autonomous AI lab that hunts for records on open math problems, and improves by doing it.",
    "dur": 7.92,
    "tts_model": "gpt-4o-mini-tts",
    "adur": 6.449625,
@@ -119,8 +119,8 @@
   {
    "id": "s9_close",
    "shot": "B-roll: lattice_orbit.mp4 again, closing card with the replay URL.",
-   "caption": "No math record beaten yet; three-body orbits are candidates  |  replay: vnmoorthy.github.io/learning-to-discover",
-   "text": "No math record is beaten yet, and the three-body orbits are candidates, not discoveries. Every decision, source and prediction is logged and replayable. Learning to Discover.",
+   "caption": "No math record beaten yet; three-body orbits are candidates  |  replay: vnmoorthy.github.io/phoenixastar",
+   "text": "No math record is beaten yet, and the three-body orbits are candidates, not discoveries. Every decision, source and prediction is logged and replayable. Phoenixastar.",
    "dur": 10.248,
    "tts_model": "gpt-4o-mini-tts",
    "adur": 8.154979,

@@ -1,4 +1,4 @@
-"""Learning to Discover: an AI lab that gets better at discovering mathematics by doing it."""
+"""Phoenixastar: an AI lab that gets better at discovering mathematics by doing it."""
 import os as _os
 import sys as _sys
 

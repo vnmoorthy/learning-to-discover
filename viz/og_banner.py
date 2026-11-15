@@ -99,12 +99,12 @@ def main():
     d.text((x0 + 46, y0 - 56), "AUTONOMOUS RESEARCH", font=mono_f, fill=(61, 245, 255))
     # title with a soft glow
     glow = Image.new("L", (W, H), 0)
-    ImageDraw.Draw(glow).text((x0, y0), "Learning to Discover", font=title_f, fill=255)
+    ImageDraw.Draw(glow).text((x0, y0), "Phoenixastar", font=title_f, fill=255)
     glow = glow.filter(ImageFilter.GaussianBlur(14))
     img = Image.composite(Image.new("RGB", (W, H), (61, 245, 255)), img, glow.point(lambda v: int(v * 0.22)))
     d = ImageDraw.Draw(img)
-    d.text((x0, y0), "Learning to Discover", font=title_f, fill=(244, 247, 250))
-    tb = d.textbbox((x0, y0), "Learning to Discover", font=title_f)
+    d.text((x0, y0), "Phoenixastar", font=title_f, fill=(244, 247, 250))
+    tb = d.textbbox((x0, y0), "Phoenixastar", font=title_f)
     tag1 = "An AI lab that gets better at"
     tag2 = "discovering mathematics by doing it"
     d.text((x0 + 2, tb[3] + 26), tag1, font=tag_f, fill=(178, 186, 198))

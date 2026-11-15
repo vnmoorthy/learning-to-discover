@@ -1,4 +1,4 @@
-# Learning to Discover: build spec (single source of truth for every builder)
+# Phoenixastar: build spec (single source of truth for every builder)
 
 Hackathon: Iterate AI Research Hackathon, SF, Track 1 ("Build your own autoresearch framework: can your system
 beat a best-known result in mathematics on its own?"). Judged on how far past the record we get, how new the
@@ -226,8 +226,8 @@ Pages (all must work against the real API, and in STATIC mode, see 6):
 `python3 -m ltd.snapshot` writes `web/public/data/*.json` (state.json, problems/<slug>.json, decisions.json,
 memory.json, literature.json, learning.json, sandboxes.json, gallery.json) from the live DB. Building the web
 app with `VITE_STATIC=1` makes it read those files instead of `/api`, disables mutating buttons (shows "replay
-of a live run, <timestamp>"), and uses `HashRouter` so it works on GitHub Pages under `/learning-to-discover/`
-(`base: '/learning-to-discover/'` when static).
+of a live run, <timestamp>"), and uses `HashRouter` so it works on GitHub Pages under `/phoenixastar/`
+(`base: '/phoenixastar/'` when static).
 
 ## 7. Visuals (`ROOT/viz/`)
 

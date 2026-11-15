@@ -1,4 +1,4 @@
-"""Official verifier for 'three-body-periodic-orbits' (Learning to Discover lab problem, not an EinsteinArena problem).
+"""Official verifier for 'three-body-periodic-orbits' (Phoenixastar lab problem, not an EinsteinArena problem).
 
 solution = {"orbits": [{"vx": float, "vy": float, "T": float, "m3": float (optional, default 1)}, ...]}
 

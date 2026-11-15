@@ -94,7 +94,7 @@ See [integration status](ARCHITECTURE.md#integration-status).
 
 ## Originator
 
-Learning to Discover is entered in the Originator sponsor challenge. There is no Originator-specific code in
+Phoenixastar is entered in the Originator sponsor challenge. There is no Originator-specific code in
 this repository.
 
 ## Lambda

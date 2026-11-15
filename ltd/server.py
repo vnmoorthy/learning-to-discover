@@ -18,7 +18,7 @@ from sse_starlette.sse import EventSourceResponse
 
 from . import artifacts, box, config, events, ledger, loop as loopmod, memory, monitor, planner, strategies, views
 
-app = FastAPI(title="Learning to Discover", version="1.0")
+app = FastAPI(title="Phoenixastar", version="1.0")
 app.add_middleware(CORSMiddleware, allow_origins=["http://localhost:5173", "http://127.0.0.1:5173"],
                    allow_methods=["*"], allow_headers=["*"])
 _started = {"v": False}

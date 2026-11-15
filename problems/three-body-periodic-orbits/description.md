@@ -3,7 +3,7 @@
 **Domain:** theoretical astrophysics / celestial mechanics. **Status:** open. There is no classification of the
 periodic solutions of the three-body problem; new families keep being found numerically.
 
-This is a lab problem of Learning to Discover, not an EinsteinArena problem. There is no public leaderboard: the
+This is a lab problem of Phoenixastar, not an EinsteinArena problem. There is no public leaderboard: the
 "record" is the literature catalog in `catalog.json`, and the score counts verified orbits outside it.
 
 ## Background

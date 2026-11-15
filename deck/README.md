@@ -2,7 +2,7 @@
 
 | File | What it is |
 |---|---|
-| `Learning_to_Discover.pptx` | 10 slides, 16:9, dark mission-control design, speaker notes on every slide |
+| `Phoenixastar.pptx` | 10 slides, 16:9, dark mission-control design, speaker notes on every slide |
 | `storyboard.md` | Presenter script: 3-minute finals (pitch + live demo), 5-minute Round 1 (pitch + Q&A answers), 10-minute walkthrough |
 | `build_deck.py` | Builds and validates the deck, then writes `storyboard.md` |
 | `deckdata.py` | Reads the snapshot and derives every number shown |
@@ -25,7 +25,7 @@ No result is hard-coded. Every number is read at build time from `web/public/dat
 regenerated with the same numbers, so rebuild after the last snapshot and re-read the script once.
 
 Team line on the last slide: put it in `deck/team.txt` (one line) or pass `--team "A · B · C"`. Without it the
-slide says "Team Learning to Discover".
+slide says "Team Phoenixastar".
 
 ## Slides
 

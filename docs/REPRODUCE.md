@@ -22,7 +22,7 @@ npm run build:static
 VITE_STATIC=1 npx vite preview --outDir dist-static     # prints the URL
 ```
 
-Or open the hosted copy: <https://vnmoorthy.github.io/learning-to-discover/>.
+Or open the hosted copy: <https://vnmoorthy.github.io/phoenixastar/>.
 
 Every mutating button is disabled in replay mode and a banner states the snapshot time. To explore the UI with
 no data at all, `npm run dev:fixtures` runs an in-browser simulated backend (labelled as simulated).

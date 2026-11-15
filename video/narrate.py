@@ -26,8 +26,8 @@ devin = ("Devin writes new search programs, tested in Modal sandboxes; so far no
          if adopted == 0 else f"Devin writes new search programs, tested in Modal sandboxes: {adopted} adopted so far.")
 S = [
  dict(id="s1_intro", shot="B-roll: web/public/gallery/lattice_orbit.mp4 (Blender render of the live no-three-in-line SAT snapshot), title card overlay.",
-      caption="Learning to Discover  |  an autonomous AI lab for open math problems",
-      text="This is Learning to Discover: an autonomous AI lab that hunts for records on open math problems, and improves by doing it."),
+      caption="Phoenixastar  |  an autonomous AI lab for open math problems",
+      text="This is Phoenixastar: an autonomous AI lab that hunts for records on open math problems, and improves by doing it."),
  dict(id="s2_loop", shot="Mission Control /: hero and totals counters, then slow scroll so the Autonomous Loop phase stepper is centred; cursor sweeps the eight phases left to right.",
       caption=f"One loop every {N['interval']} min  |  {floor(N['cycles'],5)}+ cycles, {N['dec_floor']}+ logged decisions, all auditable",
       text=f"This is the live lab. Every {N['interval']} minutes, with no human in the loop, it reads telemetry, re-verifies every claim, recalls memory, searches papers with Exa, proposes experiments with GPT-6 Astra, has Claude Fable referee them, then executes. Over {floor(N['cycles'],5)} cycles and {N['dec_floor']} logged decisions so far."),
@@ -50,13 +50,13 @@ S = [
       caption="Three-body domain: known families rediscovered  |  candidate orbits not found in the catalogs we checked",
       text="The same loop now runs astrophysics: periodic three-body orbits. Our GPU search rediscovered the figure-eight and other known families, and reports candidate orbits not found in the catalogs we checked."),
  dict(id="s9_close", shot="B-roll: lattice_orbit.mp4 again, closing card with the replay URL.",
-      caption="No math record beaten yet; three-body orbits are candidates  |  replay: vnmoorthy.github.io/learning-to-discover",
-      text="No math record is beaten yet, and the three-body orbits are candidates, not discoveries. Every decision, source and prediction is logged and replayable. Learning to Discover."),
+      caption="No math record beaten yet; three-body orbits are candidates  |  replay: vnmoorthy.github.io/phoenixastar",
+      text="No math record is beaten yet, and the three-body orbits are candidates, not discoveries. Every decision, source and prediction is logged and replayable. Phoenixastar."),
 ]
 words = sum(len(x["text"].split()) for x in S); print("words", words)
 json.dump(dict(numbers=N, read_at=s["now"], sections=S), open(f"{HERE}/sections.json", "w"), indent=1)
 if "--no-tts" in sys.argv: sys.exit()
-sys.path.insert(0, '/Users/moorthy/Downloads/Projects/iterate/learning-to-discover'); import envload; envload.load()
+sys.path.insert(0, '/Users/moorthy/Downloads/Projects/iterate/phoenixastar'); import envload; envload.load()
 def tts(model, text, out, instr=None):
     body = dict(model=model, voice="onyx", input=text, response_format="mp3")
     if instr: body["instructions"] = instr

@@ -10,7 +10,7 @@ import time
 
 from . import config, ledger, strategies
 
-SYSTEM = """You are the PROPOSER of "Learning to Discover", an autonomous AI lab trying to beat best-known results in
+SYSTEM = """You are the PROPOSER of "Phoenixastar", an autonomous AI lab trying to beat best-known results in
 mathematics (EinsteinArena leaderboard records) on a GPU box with 8 A100s and 124 cores. Every ~5 minutes you get live
 telemetry and decide how to use the compute. A deterministic planner validates your output and executes it; an
 official-verifier critic scores your predictions later and you see your track record in `recent_decisions`.

@@ -41,7 +41,7 @@ function Brand() {
         <circle cx="22" cy="22.5" r="2.6" fill="#FFB547" />
       </svg>
       <div className="leading-tight">
-        <div className="whitespace-nowrap font-display text-[14px] font-semibold tracking-tight text-fg sm:text-[15px]">Learning to Discover</div>
+        <div className="whitespace-nowrap font-display text-[14px] font-semibold tracking-tight text-fg sm:text-[15px]">Phoenixastar</div>
         <div className="hidden text-[10.5px] text-fg-dim sm:block">autonomous math lab</div>
       </div>
     </NavLink>

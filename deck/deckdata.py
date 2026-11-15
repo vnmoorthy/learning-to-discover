@@ -17,7 +17,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 DATA = os.path.join(ROOT, "web", "public", "data")
 GALLERY = os.path.join(ROOT, "web", "public", "gallery")
-REPO_URL = "https://github.com/vnmoorthy/learning-to-discover"
+REPO_URL = "https://github.com/vnmoorthy/phoenixastar"
 
 SHORT = {
     "no-three-in-line-75": "No-three-in-line 75×75",

@@ -4,7 +4,7 @@
 
 ![Architecture diagram](architecture.svg)
 
-Learning to Discover is one Python process on a laptop (`python3 -m ltd.server`) that drives remote compute. It
+Phoenixastar is one Python process on a laptop (`python3 -m ltd.server`) that drives remote compute. It
 holds no search state itself: searches run on a GPU box and on Modal, write logs and `FOUND_*.json` files, and
 the lab reads them back. The source of truth for shapes and contracts is [`SPEC.md`](../SPEC.md).
 

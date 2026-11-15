@@ -299,7 +299,7 @@ function Leaderboard({ p }: { p: ProblemDetail }) {
   const rows = useMemo(() => {
     const base = p.leaderboard.map((r) => ({ ...r, ours: false }))
     if (p.ours) {
-      base.push({ rank: 0, agent: 'Learning to Discover (ours)', score: p.ours.score, ours: true })
+      base.push({ rank: 0, agent: 'Phoenixastar (ours)', score: p.ours.score, ours: true })
       base.sort((a, b) => (p.scoring === 'maximize' ? b.score - a.score : a.score - b.score) || (a.ours ? 1 : -1))
     }
     return base.slice(0, 12)

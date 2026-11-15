@@ -1,12 +1,12 @@
 cff-version: 1.2.0
 message: "If you use this software, please cite it as below."
 type: software
-title: "Learning to Discover"
+title: "Phoenixastar"
 abstract: "An AI lab that gets better at discovering mathematics by doing it: an autonomous loop that allocates compute across open record problems, verifies every claim with official exact verifiers, scores its own predictions and logs every decision."
 authors:
-  - name: "The Learning to Discover authors"
-repository-code: "https://github.com/vnmoorthy/learning-to-discover"
-url: "https://vnmoorthy.github.io/learning-to-discover/"
+  - name: "The Phoenixastar authors"
+repository-code: "https://github.com/vnmoorthy/phoenixastar"
+url: "https://vnmoorthy.github.io/phoenixastar/"
 license: MIT
 date-released: "2026-11-15"
 keywords:

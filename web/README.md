@@ -1,4 +1,4 @@
-# Learning to Discover: web UI
+# Phoenixastar: web UI
 
 React 18 + Vite + TypeScript + Tailwind, framer-motion, recharts, @react-three/fiber. Contract: `../SPEC.md` sections 4 to 6.
 
@@ -7,7 +7,7 @@ npm install
 npm run dev                 # :5173 (next free port if taken), proxies /api and /gallery/* to 127.0.0.1:8787
 npm run dev:fixtures        # VITE_FIXTURES=1: in-browser simulated backend, no server needed (purple banner)
 npm run build               # tsc + vite build -> dist/ (served by `python3 -m ltd.server` at /)
-npm run build:static        # static replay -> dist-static/ for GitHub Pages under /learning-to-discover/
+npm run build:static        # static replay -> dist-static/ for GitHub Pages under /phoenixastar/
 ```
 
 - `LTD_BACKEND=http://host:port npm run dev` points the proxy at another backend.

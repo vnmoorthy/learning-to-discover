@@ -27,8 +27,8 @@ def card(title, lines, out):
     for i, (t, col) in enumerate(lines): d.text((W / 2, 570 + i * 62), t, font=font(FR, 40), fill=col, anchor="mm")
     im.save(out)
 CY, AM, GR = (61, 245, 255, 255), (255, 181, 71, 255), (200, 206, 216, 255)
-card("Learning to Discover", [("An autonomous AI lab for open math problems", CY), ("Iterate AI Research Hackathon  |  Track 1  |  live run, Nov 15", GR)], f"{HERE}/build/card_s1.png")
-card("Learning to Discover", [("No math record beaten yet. Three-body orbits are candidates. Every decision is logged.", AM), ("vnmoorthy.github.io/learning-to-discover", CY)], f"{HERE}/build/card_s9.png")
+card("Phoenixastar", [("An autonomous AI lab for open math problems", CY), ("Iterate AI Research Hackathon  |  Track 1  |  live run, Nov 15", GR)], f"{HERE}/build/card_s1.png")
+card("Phoenixastar", [("No math record beaten yet. Three-body orbits are candidates. Every decision is logged.", AM), ("vnmoorthy.github.io/phoenixastar", CY)], f"{HERE}/build/card_s9.png")
 ENC = ["-c:v", "libx264", "-preset", "medium", "-crf", "17", "-pix_fmt", "yuv420p", "-r", "30"]
 segs = []
 for x in S:
@@ -46,7 +46,7 @@ for x in S:
          "-map", "[v]", "-map", "[a]", "-t", f"{vd}"] + ENC + ["-c:a", "aac", "-b:a", "192k", "-ar", "48000", out])
     segs.append(out); print("built", sid, vd, flush=True)
 open(f"{HERE}/build/all.txt", "w").write("".join(f"file '{p}'\n" for p in segs))
-final = f"{HERE}/learning_to_discover_demo.mp4"
+final = f"{HERE}/phoenixastar_demo.mp4"
 run(["-f", "concat", "-safe", "0", "-i", f"{HERE}/build/all.txt", "-vf", "fade=in:st=0:d=0.5,format=yuv420p", "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", "-r", "30",
      "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", final])
 run(["-ss", "2.5", "-i", final, "-frames:v", "1", "-vf", "scale=1280:720:flags=lanczos", f"{HERE}/poster.png"])

@@ -8,7 +8,7 @@ const BACKEND = process.env.LTD_BACKEND || 'http://127.0.0.1:8787'
 
 export default defineConfig({
   plugins: [react()],
-  base: STATIC ? '/learning-to-discover/' : '/',
+  base: STATIC ? '/phoenixastar/' : '/',
   server: {
     port: 5173,
     strictPort: false,

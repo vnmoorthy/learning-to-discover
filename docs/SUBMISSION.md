@@ -1,17 +1,17 @@
-# Submission: Learning to Discover
+# Submission: Phoenixastar
 
 Ready-to-paste text for the Iterate submission form. Numbers are from the live run on Nov 15 2026 (about 11:00 PT,
-loop cycle 38); the replay at https://vnmoorthy.github.io/learning-to-discover/ shows the snapshot they come from.
+loop cycle 38); the replay at https://vnmoorthy.github.io/phoenixastar/ shows the snapshot they come from.
 
-- **Project:** Learning to Discover
+- **Project:** Phoenixastar
 - **Track:** Track 1: Build your own autoresearch framework
 - **Challenges entered:** Exa (research agents that search), past.dev (multi-agent memory), Best use of Modal, Originator
-- **Repo:** https://github.com/vnmoorthy/learning-to-discover
-- **Live replay (public):** https://vnmoorthy.github.io/learning-to-discover/
+- **Repo:** https://github.com/vnmoorthy/phoenixastar
+- **Live replay (public):** https://vnmoorthy.github.io/phoenixastar/
 
 ## Short description (about 150 words)
 
-Learning to Discover is an autonomous AI research lab that attacks open mathematics problems on its own and proves every
+Phoenixastar is an autonomous AI research lab that attacks open mathematics problems on its own and proves every
 result with the official verifier. Every three minutes a loop reads live telemetry from an 8xA100 box and an elastic
 Modal fleet, re-verifies every claimed result, shares what each problem's agent learned through past.dev, searches the
 literature with Exa, and lets GPT-6 Astra propose the next experiments, each with a falsifiable prediction. Claude Fable
@@ -85,4 +85,4 @@ decision, source, memory read/write, verdict and verification is in the replayab
 Agent sessions from the build are uploaded with the submission.
 
 ## Demo video
-2-minute demo: `video/learning_to_discover_demo.mp4` in the repo (also attached to the GitHub release).
+2-minute demo: `video/phoenixastar_demo.mp4` in the repo (also attached to the GitHub release).

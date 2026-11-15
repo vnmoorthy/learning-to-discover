@@ -2,7 +2,7 @@
 
 # Brief: "The Snake" for the snake-in-the-box problem in dimension 13
 
-Project: "Learning to Discover", an AI lab that gets better at discovering mathematics by doing it. A
+Project: "Phoenixastar", an AI lab that gets better at discovering mathematics by doing it. A
 snake-in-the-box is a path along edges of the 13-dimensional hypercube that never comes back near itself (no
 chords). The record snake has 2950 edges. This image shows that exact snake, linearly projected from 13D to 3D,
 as a single glowing tube. It must look stunning, premium and clean.

@@ -2,7 +2,7 @@
 
 # Brief: "The Lattice" (hero still + seamless orbit loop) for the no-three-in-line problem
 
-Project: "Learning to Discover", an AI lab that gets better at discovering mathematics by doing it. Our agents
+Project: "Phoenixastar", an AI lab that gets better at discovering mathematics by doing it. Our agents
 search for 150 points on a 75x75 integer grid with no three on a common line (record: 148 points). This image is
 the hero of the project page and must look stunning: premium, cinematic, clean, like a product launch film.
 

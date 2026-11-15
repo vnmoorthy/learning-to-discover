@@ -1,6 +1,6 @@
 # Brief: "Hadamard City" for the maximal-determinant problem (order 51)
 
-Project: "Learning to Discover", an AI lab that gets better at discovering mathematics by doing it. The
+Project: "Phoenixastar", an AI lab that gets better at discovering mathematics by doing it. The
 current record for the largest determinant of a 51x51 matrix with entries +1/-1 has log10|det| = 43.3375.
 This image turns that exact record matrix into an extruded city / terrain at night. It must look stunning,
 premium and clean.
