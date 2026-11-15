@@ -112,14 +112,19 @@ SCRAMBLERS_G2 = ["haar", "haar:1", "haar:2", "haar:3", "haar:4", "haar:6", "haar
                  "clifford:2", "clifford:4", "clifford:10", "clifford:30"]
 
 
-def part_g2(which):
-    """n = 5 (k = 1, n_B = 4). which = 'D' (noise on new radiation, all scramblers)
-    or 'DR' (noise on all radiation Bob holds; Haar and deep brickwork only)."""
-    k, nB = 1, 4
+SCRAMBLERS_G2_N4 = ["haar", "haar:1", "haar:2", "haar:3", "haar:4", "haar:8",
+                    "clifford:2", "clifford:4", "clifford:8", "clifford:24"]
+
+
+def part_g2(which, nB=4, scr_list=None, outname=None):
+    """k = 1, n = 1 + n_B. which = 'D' (noise on new radiation, all scramblers)
+    or 'DR' (noise on all radiation Bob holds)."""
+    k = 1
     n = k + nB
     ps = [0.0, 0.03, 0.1, 0.3]
     S = 10
-    scr_list = SCRAMBLERS_G2 if which == "D" else ["haar", "haar:10", "clifford:30"]
+    if scr_list is None:
+        scr_list = SCRAMBLERS_G2 if which == "D" else ["haar", "haar:10", "clifford:30"]
     log(f"g2[{which}] n={n}: max dim rho_QX = {2 ** (k + n + nB)} (old), seeds {S}")
     out = {"k": k, "n_B": nB, "ps": ps, "noise_on": which, "results": []}
     for si, scr in enumerate(scr_list):
@@ -149,16 +154,17 @@ def part_g2(which):
                                  if not np.isnan(F[ip]).any() else None for ip in range(len(ps))]
             out["results"].append(res)
             log(f"  {scr} old={old} m*0.9 vs p: {res['m_star_0.9']}")
-    dump(f"g2_{which}.json", out)
+    out["scramblers"] = scr_list
+    dump(outname or f"g2_{which}.json", out)
 
 
 # ----------------------------------------------------------------------------
-def part_g3():
-    """(a) OTOC vs depth on N = 9 qubits, Haar and Clifford brickwork.
+def part_g3(fast=False):
+    """(a) OTOC vs depth on N = 9 (fast: 8) qubits, Haar and Clifford brickwork.
     (b) N = 7 (k = 1, n_B = 6) old hole: recovery vs depth together with OTOCs."""
     out = {}
-    N, T, S = 9, 16, 12
-    sites = [1, 4, 8]
+    N, T, S = (8, 14, 10) if fast else (9, 16, 12)
+    sites = [1, 4, N - 1]
     pairs = []
     for j in sites:
         for w in "XYZ":
@@ -168,8 +174,14 @@ def part_g3():
                 "haar_value": ot.haar_otoc(N), "convention": ot.__doc__.split("\n\n")[1], "gates": {}}
     for gi, gate in enumerate(("haar", "clifford")):
         seeds = [SEED + 3000 + 100 * gi + s for s in range(S)]
-        vals = np.stack([ot.otoc_vs_depth(N, T, np.random.default_rng(sd), gate, pairs) for sd in seeds])
-        vals = vals.reshape(S, T + 1, len(sites), 9).mean(axis=3)  # average the 9 Pauli pairs
+        if fast:
+            wl = [{j: w} for j in sites for w in "XYZ"]
+            vl = [{0: v} for v in "XYZ"]
+            vals = np.stack([ot.otoc_vs_depth_fast(N, T, np.random.default_rng(sd), gate, wl, vl) for sd in seeds])
+            vals = vals.reshape(S, T + 1, len(sites), 3, 3).mean(axis=(3, 4))
+        else:
+            vals = np.stack([ot.otoc_vs_depth(N, T, np.random.default_rng(sd), gate, pairs) for sd in seeds])
+            vals = vals.reshape(S, T + 1, len(sites), 9).mean(axis=3)  # average the 9 Pauli pairs
         out["a"]["gates"][gate] = {"seeds": seeds,
                                    "otoc": {str(j): [stats(vals[:, t, i]) for t in range(T + 1)]
                                             for i, j in enumerate(sites)}}
@@ -213,7 +225,7 @@ def part_g3():
         g["d_otoc"] = next((d for d, f in zip(depths, om) if f < 0.1), None)
         out["b"]["gates"][gate] = g
         log(f"g3b {gate}: d_rec={g['d_rec']} d_otoc={g['d_otoc']}")
-    dump("g3.json", out)
+    dump("g3_fast.json" if fast else "g3.json", out)
 
 
 # ----------------------------------------------------------------------------
@@ -222,9 +234,11 @@ def part_plot():
     import _style as st
     plt = st.setup()
     g1 = json.load(open(os.path.join(PARTS, "g1.json")))
-    g2 = json.load(open(os.path.join(PARTS, "g2_D.json")))
-    g2r = json.load(open(os.path.join(PARTS, "g2_DR.json"))) if os.path.exists(os.path.join(PARTS, "g2_DR.json")) else None
-    g3 = json.load(open(os.path.join(PARTS, "g3.json")))
+    g2 = json.load(open(os.path.join(PARTS, "g2_D_n4.json")))
+    g2r = json.load(open(os.path.join(PARTS, "g2_DR_n4.json")))
+    g3 = json.load(open(os.path.join(PARTS, "g3_fast.json")))
+    extra = {f: json.load(open(os.path.join(PARTS, f))) for f in ("g2_D.json", "g2_DR.json", "g3.json")
+             if os.path.exists(os.path.join(PARTS, f))}
     FIG = os.path.join(ROOT, "figures")
 
     # ---------------- g1
@@ -287,7 +301,7 @@ def part_plot():
     fig, ax = plt.subplots(1, 3, figsize=(15, 4.6))
     n = g2["k"] + g2["n_B"]
     ms = np.arange(n + 1)
-    cmap = {"haar": st.FG, "haar:1": "#9AD1FF", "haar:2": st.CYAN, "haar:3": st.GREEN, "haar:4": st.AMBER,
+    cmap = {"haar:8": st.MAGENTA, "clifford:8": "#B8A1FF", "clifford:24": "#d9c8ff", "haar": st.FG, "haar:1": "#9AD1FF", "haar:2": st.CYAN, "haar:3": st.GREEN, "haar:4": st.AMBER,
             "haar:6": "#FF8A5C", "haar:10": st.MAGENTA, "clifford:2": "#555c66", "clifford:4": st.GREY,
             "clifford:10": "#B8A1FF", "clifford:30": "#d9c8ff"}
     for r in g2["results"]:
@@ -318,7 +332,7 @@ def part_plot():
     ax[1].set_ylabel("F_Petz")
     ax[1].set_title("Depolarizing noise on radiation (Haar)")
     ax[1].legend(fontsize=6, ncol=2)
-    labels = [s for s in SCRAMBLERS_G2]
+    labels = list(g2["scramblers"])
     for oi, old in enumerate((True, False)):
         for ip, p in enumerate(g2["ps"]):
             ys = []
@@ -334,7 +348,7 @@ def part_plot():
     ax[2].set_xlabel("scrambler (missing marker: never reaches 0.9)")
     ax[2].set_title("Threshold shift")
     ax[2].legend(fontsize=6, ncol=2)
-    st.caption(fig, "n = 5 exact density-matrix simulation; single-qubit depolarizing x -> (1-p)x + p 1/2 on each "
+    st.caption(fig, f"n = {n} (k = 1, n_B = {n - 1}) exact density-matrix simulation; single-qubit depolarizing x -> (1-p)x + p 1/2 on each "
                     "radiation qubit before Petz decoding; 10 seeds per point. Toy circuit model, not gravity.")
     fig.tight_layout(rect=(0, 0.04, 1, 1))
     fig.savefig(os.path.join(FIG, "g2_noise_scrambling.png"), dpi=150)
@@ -388,7 +402,8 @@ def part_plot():
 
     merged = {"description": "Tracks C+D: explicit HP recovery (Petz decoder), scrambling quality, noise, OTOCs",
               "decoder": "Petz recovery map (transpose channel), sigma = 1/d_M; Yoshida-Kitaev P_EPR/F_EPR alongside",
-              "g1": g1, "g2_noise_D": g2, "g2_noise_DR": g2r, "g3": g3}
+              "g1": g1, "g2_noise_D": g2, "g2_noise_DR": g2r, "g3": g3,
+              "extra_larger_runs_if_finished": extra}
     with open(os.path.join(ROOT, "results", "g_recovery.json"), "w") as f:
         json.dump(merged, f, indent=1)
     log("wrote results/g_recovery.json and figures g1-g3")
@@ -398,5 +413,8 @@ if __name__ == "__main__":
     cmd = sys.argv[1]
     t0 = time.time()
     {"g1": part_g1, "g2": lambda: part_g2("D"), "g2r": lambda: part_g2("DR"),
-     "g3": part_g3, "plot": part_plot}[cmd]()
+     "g3": part_g3, "plot": part_plot,
+     "g2fast": lambda: (part_g2("D", 3, SCRAMBLERS_G2_N4, "g2_D_n4.json"),
+                        part_g2("DR", 3, ["haar", "haar:8", "clifford:24"], "g2_DR_n4.json")),
+     "g3fast": lambda: part_g3(True)}[cmd]()
     log(f"{cmd} done in {time.time() - t0:.1f}s")
