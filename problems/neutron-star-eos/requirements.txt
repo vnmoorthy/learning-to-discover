@@ -4,3 +4,4 @@ scipy==1.17.1
 matplotlib==3.10.8
 mpmath==1.3.0
 pytest==9.0.3
+emcee==3.1.6  # inherited from anaconda; imported with sys.modules['h5py']=None because anaconda's h5py is ABI-incompatible with numpy 2.5
