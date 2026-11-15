@@ -172,3 +172,66 @@ if __name__ == "__main__":
         record()
     if cmd in ("compose", "all"):
         compose()
+
+
+def voiceover():
+    """Fallback without a presenter take: OpenAI TTS reads docs/TALK_TRACK.md section by section; the pre-recorded
+    screen clips are retimed to each narration. Output: video/phoenixastar_demo_voiceover.mp4 (no picture-in-picture)."""
+    import re as _re
+    from openai import OpenAI
+    md = open(f"{ROOT}/docs/TALK_TRACK.md").read()
+    parts = _re.split(r"^## \d\. ", md, flags=_re.M)[1:9]
+    cli = OpenAI(api_key=_env_key())
+    os.makedirs(ME, exist_ok=True)
+    secs, t, wavs = [], 0.0, []
+    for (sid, _, title), part in zip(SECTIONS, parts):
+        text = " ".join(l[1:].strip() for l in part.splitlines() if l.startswith(">"))
+        mp3 = f"{ME}/vo_{sid}.mp3"
+        with cli.audio.speech.with_streaming_response.create(model="gpt-4o-mini-tts", voice="onyx", input=text,
+                instructions="Calm, confident, warm technical presenter. Measured pace. Clear diction.") as r:
+            r.stream_to_file(mp3)
+        wav = f"{ME}/vo_{sid}.wav"
+        sh("ffmpeg", "-y", "-v", "error", "-i", mp3, "-af", "apad=pad_dur=0.6", "-ar", "48000", "-ac", "2", wav)
+        d = probe_duration(wav); wavs.append(wav)
+        secs.append({"id": sid, "start": round(t, 3), "end": round(t + d, 3), "dur": round(d, 3), "title": title}); t += d
+        print(sid, round(d, 1), "s")
+    with open(f"{ME}/vo_list.txt", "w") as f:
+        for w in wavs: f.write(f"file '{w}'\n")
+    audio = f"{ME}/voiceover.wav"
+    sh("ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", f"{ME}/vo_list.txt", "-c", "copy", audio)
+    json.dump({"take": None, "duration": t, "sections": secs}, open(f"{ME}/sections_vo.json", "w"), indent=1)
+    lst = f"{ME}/concat_vo.txt"
+    with open(lst, "w") as f:
+        for s in secs:
+            clip = f"{HERE}/clips_talk/{s['id']}.mp4"; cd = probe_duration(clip); fit = f"{ME}/vofit_{s['id']}.mp4"
+            sh("ffmpeg", "-y", "-v", "error", "-i", clip, "-vf", f"setpts=PTS*{s['dur'] / cd:.5f},fps=30", "-t", f"{s['dur']:.3f}",
+               "-an", "-c:v", "libx264", "-preset", "veryfast", "-crf", "16", "-pix_fmt", "yuv420p", fit)
+            f.write(f"file '{fit}'\n")
+    screen = f"{ME}/screen_vo.mp4"
+    sh("ffmpeg", "-y", "-v", "error", "-f", "concat", "-safe", "0", "-i", lst, "-c", "copy", screen)
+    from PIL import Image, ImageDraw, ImageFont
+    font = ImageFont.truetype(FONT, 34); ins, fc, last = [], "[0:v]setpts=PTS-STARTPTS[t0];", "t0"
+    banner = f"{ROOT}/docs/assets/banner.png"
+    fc += "[2:v]scale=1920:-1,pad=1920:1080:0:(1080-ih)/2:color=0x0B0D10,format=rgba,fade=t=out:st=2.6:d=0.7:alpha=1[ban];[t0][ban]overlay=0:0:enable='lte(t,3.4)'[tb];"
+    last = "tb"
+    for k, s in enumerate(secs):
+        tw = int(font.getlength(s["title"])) + 44
+        im = Image.new("RGBA", (tw, 70), (0, 0, 0, 0)); d = ImageDraw.Draw(im)
+        d.rounded_rectangle((0, 0, tw - 1, 69), radius=10, fill=(11, 13, 16, 190)); d.rectangle((0, 14, 3, 55), fill=(79, 209, 224, 255))
+        d.text((22, 16), s["title"], font=font, fill=(231, 233, 236, 255))
+        fn = f"{ME}/title_{s['id']}.png"; im.save(fn); ins += ["-loop", "1", "-t", f"{t:.2f}", "-i", fn]
+        a, b = s["start"] + 0.4, s["start"] + 4.2
+        fc += (f"[{3 + k}:v]format=rgba,fade=t=in:st={a:.2f}:d=0.3:alpha=1,fade=t=out:st={b - 0.3:.2f}:d=0.3:alpha=1[ti{k}];"
+               f"[{last}][ti{k}]overlay=60:H-h-60:enable='between(t,{a:.2f},{b:.2f})'[u{k}];")
+        last = f"u{k}"
+    fc += f"[{last}]null[v]"
+    out = f"{HERE}/phoenixastar_demo_voiceover.mp4"
+    sh("ffmpeg", "-y", "-v", "error", "-i", screen, "-i", audio, "-loop", "1", "-t", "3.4", "-i", banner, *ins,
+       "-filter_complex", fc, "-map", "[v]", "-map", "1:a:0", "-af", "loudnorm=I=-16:TP=-1.5:LRA=11",
+       "-c:v", "libx264", "-preset", "medium", "-crf", "19", "-pix_fmt", "yuv420p", "-c:a", "aac", "-b:a", "192k",
+       "-movflags", "+faststart", "-t", f"{t:.2f}", out)
+    print("wrote", out, round(probe_duration(out), 1), "s")
+
+
+if __name__ == "__main__" and len(sys.argv) > 1 and sys.argv[1] == "voiceover":
+    voiceover()
