@@ -35,14 +35,14 @@ replayed and audited.
 
 <table>
   <tr>
-    <td width="33%"><img src="docs/assets/hero.jpg" alt="No-three-in-line lattice"></td>
+    <td width="33%"><img src="docs/assets/event-horizon/blackhole.jpg" alt="Event Horizon: a black hole drawn from the measured Page curve"></td>
     <td width="33%"><img src="docs/assets/threebody/candidates.png" alt="Three-body candidate orbits"></td>
-    <td width="33%"><img src="docs/assets/event-horizon/a_page_curve.png" alt="Page curve"></td>
+    <td width="33%"><img src="docs/assets/hero.jpg" alt="No-three-in-line lattice"></td>
   </tr>
   <tr>
-    <td><sub><b>Mathematics.</b> A live SAT model of no-three-in-line on the 75 x 75 grid; red threads are lines that still hold three points.</sub></td>
+    <td><sub><b>Black hole information.</b> Event Horizon, rendered from the measured data: each disk ring is one evaporation step of the N = 26 Page curve (artwork from data).</sub></td>
     <td><sub><b>Celestial mechanics.</b> 17 verified periodic three-body orbits in 16 families absent from the 2,060 catalogued orbits we checked (candidates).</sub></td>
-    <td><sub><b>Black hole information.</b> The Page curve from exact Haar-random states up to 24 qubits on an A100, against Page's formula.</sub></td>
+    <td><sub><b>Mathematics.</b> A live SAT model of no-three-in-line on the 75 x 75 grid; red threads are lines that still hold three points.</sub></td>
   </tr>
 </table>
 
@@ -246,7 +246,31 @@ Highest accuracy: **markdown** (100.0%). Smallest context per question: **past.d
 
 ## Physics domains
 
-The loop only needs a problem and an exact checker, so the same lab runs two physics domains next to the math records.
+The loop only needs a problem and an exact checker, so the same lab runs two physics problems next to the math records. Both sit at the top of the Problems list in the app.
+
+### EVENT HORIZON (black hole information, quantum-information toy models)
+
+<p align="center"><img src="docs/assets/event-horizon/blackhole.jpg" alt="Event Horizon: a black hole drawn from the measured Page curve" width="100%"></p>
+<p align="center"><sub>Rendered in Blender from the measured N = 26 evaporation run: each accretion-disk ring is one evaporation step, its brightness the measured radiation entropy S(R), so the disk brightens and fades along the Page curve. Artwork from data, not an astrophysical image.</sub></p>
+
+A verified study of the Page curve, Page's theorem, sequential evaporation, a Bell-pair "Hawking" model, scrambling
+and Hayden-Preskill decoupling, run with exact state vectors on an A100 (up to 27 qubits). 109 tests pass; 9 key claims
+were re-derived by an independent implementation, and the independent verifier caught and corrected one wrong claim
+(scrambled stabilizer states sit *below* the Page curve on average, by 0.088 +- 0.015 nats at N = 10). Paper:
+[`problems/event-horizon/paper/event_horizon.md`](problems/event-horizon/paper/event_horizon.md); notebook:
+[`problems/event-horizon/notebooks/event_horizon.ipynb`](problems/event-horizon/notebooks/event_horizon.ipynb). Every result is classified as a reproduction
+or a computational observation; nothing here claims to solve the information paradox, and the island formula is kept
+separate from these finite-dimensional models.
+
+<p align="center"><img src="docs/assets/event-horizon/a_page_curve.png" alt="Page curve" width="80%"></p>
+<p align="center"><sub>The Page curve from exact Haar-random states up to 24 qubits on an A100, against Page's formula.</sub></p>
+
+| | |
+|---|---|
+| <img src="docs/assets/event-horizon/c_evaporation.png" alt="Sequential evaporation" width="100%"> | <img src="docs/assets/event-horizon/e2_mutual_information.png" alt="Hayden-Preskill" width="100%"> |
+| **Sequential Haar evaporation** up to N = 26 qubits on the A100: mean S(R) against Page's formula, per-step z-scores, distribution tests, runtime and memory scaling. | **Hayden-Preskill.** I(R : Bob's radiation) vs emitted qubits: for an old black hole the curves collapse for every size (recovery after about k + O(1) qubits); for a young one they shift by about n_B / 2. |
+| <img src="docs/assets/event-horizon/d_hawking_pairs.png" alt="Bell-pair model" width="100%"> | <img src="docs/assets/event-horizon/e1_trajectories.png" alt="Scrambling" width="100%"> |
+| **Bell-pair "Hawking" model vs unitary evaporation (N = 20):** S(R) = k log 2 keeps rising past the Page time and exceeds the black hole's capacity, which is impossible for a pure global state. | **Scramblers compared at N = 26 qubits (A100):** local Haar and random Clifford brickwork at depths 1-16 per emission converge to the global-Haar Page curve by depth 8; static Bell dimers and SWAP networks do not scramble. |
 
 ### Three-body periodic orbits (celestial mechanics)
 
@@ -268,29 +292,10 @@ unstable orbits. Initial conditions: [`problems/three-body-periodic-orbits/candi
 | <img src="docs/assets/threebody/candidate_14.png" alt="candidate 14" width="100%"> | <img src="docs/assets/threebody/candidate_15.png" alt="candidate 15" width="100%"> | <img src="docs/assets/threebody/candidate_17.png" alt="candidate 17" width="100%"> |
 | Candidate 14, equal masses, T = 45.872 | Candidate 15, equal masses, T = 50.449 | Candidate 17, m3 = 2, T = 11.361 |
 
-### EVENT HORIZON (black hole information, quantum-information toy models)
-
-A verified study of the Page curve, Page's theorem, sequential evaporation, a Bell-pair "Hawking" model, scrambling
-and Hayden-Preskill decoupling, run with exact state vectors on an A100 (up to 27 qubits). 109 tests pass; 9 key claims
-were re-derived by an independent implementation, and the independent verifier caught and corrected one wrong claim
-(scrambled stabilizer states sit *below* the Page curve on average, by 0.088 +- 0.015 nats at N = 10). Paper:
-[`problems/event-horizon/paper/event_horizon.md`](problems/event-horizon/paper/event_horizon.md); notebook:
-[`problems/event-horizon/notebooks/event_horizon.ipynb`](problems/event-horizon/notebooks/event_horizon.ipynb). Every result is classified as a reproduction
-or a computational observation; nothing here claims to solve the information paradox, and the island formula is kept
-separate from these finite-dimensional models.
-
-| | |
-|---|---|
-| <img src="docs/assets/event-horizon/c_evaporation.png" alt="Sequential evaporation" width="100%"> | <img src="docs/assets/event-horizon/e2_mutual_information.png" alt="Hayden-Preskill" width="100%"> |
-| **Sequential Haar evaporation** up to N = 26 qubits on the A100: mean S(R) against Page's formula, per-step z-scores, distribution tests, runtime and memory scaling. | **Hayden-Preskill.** I(R : Bob's radiation) vs emitted qubits: for an old black hole the curves collapse for every size (recovery after about k + O(1) qubits); for a young one they shift by about n_B / 2. |
-| <img src="docs/assets/event-horizon/d_hawking_pairs.png" alt="Bell-pair model" width="100%"> | <img src="docs/assets/event-horizon/e1_trajectories.png" alt="Scrambling" width="100%"> |
-| **Bell-pair "Hawking" model vs unitary evaporation (N = 20):** S(R) = k log 2 keeps rising past the Page time and exceeds the black hole's capacity, which is impossible for a pure global state. | **Scramblers compared at N = 26 qubits (A100):** local Haar and random Clifford brickwork at depths 1-16 per emission converge to the global-Haar Page curve by depth 8; static Bell dimers and SWAP networks do not scramble. |
-
 ## Gallery
 
 Rendered in Blender from real artifacts of the run, by `bpy` scripts that GPT-6 Astra wrote and revised
-(`viz/scripts/`, every prompt and reply is kept). The banner backdrop is gpt-image-2 art and is labelled as
-illustration, not data.
+(`viz/scripts/`, every prompt and reply is kept). The banner is drawn from real run data.
 
 | | | |
 |---|---|---|
@@ -425,7 +430,7 @@ Built at the Iterate AI Research Hackathon in San Francisco (Track 1: build your
 
 | | Role in the lab |
 |---|---|
-| **OpenAI** GPT-6 Astra, gpt-image-2 | Proposer (Responses API, strict JSON), sandbox program writer, Blender script author; banner backdrop |
+| **OpenAI** GPT-6 Astra, gpt-image-2 | Proposer (Responses API, strict JSON), sandbox program writer, Blender script author |
 | **Tinker** | RL fine-tuning of an open model with the verifier as reward |
 | **Exa** | Literature search inside the main loop |
 | **past.dev** | Shared multi-agent memory, benchmarked against markdown and RAG |
