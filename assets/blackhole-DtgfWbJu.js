@@ -1,4 +1,4 @@
-import{r as n,j as t}from"./vendor-P-kBGxpi.js";import{u as S,V as E,M as A,f as N,a as B,g as p}from"./three-33aIcrB3.js";import{N as X,c as L}from"./index-BhS9ato5.js";import{S as I}from"./Stage-4g18Ey5Y.js";const _=`
+import{r as n,j as t}from"./vendor-P-kBGxpi.js";import{u as S,V as E,M as A,f as N,a as B,g as p}from"./three-33aIcrB3.js";import{N as X,c as L}from"./index-FT8b4J6x.js";import{S as I}from"./Stage-D8bZgtGz.js";const _=`
 varying vec2 vUv;
 void main() {
   vUv = uv;
