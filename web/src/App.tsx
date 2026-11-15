@@ -1,5 +1,5 @@
 import { AnimatePresence, motion } from 'framer-motion'
-import { lazy, Suspense } from 'react'
+import { lazy, Suspense, useEffect } from 'react'
 import { BrowserRouter, HashRouter, NavLink, Route, Routes, useLocation } from 'react-router-dom'
 import { ConnectionBadge, LoopPill } from './components/LoopStatus'
 import { IconBook, IconDecisions, IconGallery, IconLearn, IconMemory, IconMission } from './components/icons'
@@ -190,6 +190,9 @@ function PageFallback() {
 
 function AnimatedRoutes() {
   const location = useLocation()
+  useEffect(() => {
+    window.scrollTo(0, 0)
+  }, [location.pathname])
   return (
     <AnimatePresence mode="wait" initial={false}>
       <motion.div
