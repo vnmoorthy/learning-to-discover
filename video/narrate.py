@@ -56,7 +56,7 @@ S = [
 words = sum(len(x["text"].split()) for x in S); print("words", words)
 json.dump(dict(numbers=N, read_at=s["now"], sections=S), open(f"{HERE}/sections.json", "w"), indent=1)
 if "--no-tts" in sys.argv: sys.exit()
-sys.path.insert(0, '/Users/moorthy/Downloads/Projects/iterate/phoenixastar'); import envload; envload.load()
+sys.path.insert(0, os.path.dirname(HERE)); import envload; envload.load()
 def tts(model, text, out, instr=None):
     body = dict(model=model, voice="onyx", input=text, response_format="mp3")
     if instr: body["instructions"] = instr
