@@ -265,7 +265,7 @@ separate from these finite-dimensional models.
 | <img src="docs/assets/event-horizon/c_evaporation.png" alt="Sequential evaporation" width="100%"> | <img src="docs/assets/event-horizon/e2_mutual_information.png" alt="Hayden-Preskill" width="100%"> |
 | **Sequential Haar evaporation** up to N = 26 qubits on the A100: mean S(R) against Page's formula, per-step z-scores, distribution tests, runtime and memory scaling. | **Hayden-Preskill.** I(R : Bob's radiation) vs emitted qubits: for an old black hole the curves collapse for every size (recovery after about k + O(1) qubits); for a young one they shift by about n_B / 2. |
 | <img src="docs/assets/event-horizon/d_hawking_pairs.png" alt="Bell-pair model" width="100%"> | <img src="docs/assets/event-horizon/e1_trajectories.png" alt="Scrambling" width="100%"> |
-| **Bell-pair "Hawking" model vs unitary evaporation:** S(R) = k log 2 keeps rising past the Page time. | **Scramblers compared:** Haar, random Clifford, local random circuits by depth, and a non-scrambling control. |
+| **Bell-pair "Hawking" model vs unitary evaporation (N = 20):** S(R) = k log 2 keeps rising past the Page time and exceeds the black hole's capacity, which is impossible for a pure global state. | **Scramblers compared at N = 26 qubits (A100):** local Haar and random Clifford brickwork at depths 1-16 per emission converge to the global-Haar Page curve by depth 8; static Bell dimers and SWAP networks do not scramble. |
 
 ## Gallery
 
