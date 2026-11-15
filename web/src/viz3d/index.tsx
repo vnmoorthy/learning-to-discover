@@ -27,7 +27,7 @@ export function LatticeViewer({ art, hero, fallback, readout = true }: { art: Gr
   return (
     <ErrorBoundary fallback={fallback ?? <NoGL />}>
       <Stage
-        camera={hero ? [0, 5.4, 10.6] : [0, 6.2, 9.6]}
+        camera={hero ? [0, 4.9, 9.3] : [0, 5.2, 8.4]}
         target={[0, 0.1, 0]}
         focusZoom
         overlay={

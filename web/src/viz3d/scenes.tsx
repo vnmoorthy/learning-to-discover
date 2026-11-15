@@ -30,6 +30,7 @@ function Floor({ size = SIZE * 1.06, tint = C.cyan, glow = 0.16 }: { size?: numb
 export function LatticeScene({ art, selected, onSelect }: { art: GridArtifact | null; selected?: number | null; onSelect?: (i: number | null) => void }) {
   const n = art?.n ?? 75
   const s = SIZE / n
+  const haloTex = useMemo(() => radialTexture('rgba(255,255,255,0.9)', 'rgba(255,255,255,0.12)'), [])
   const pillars = useRef<THREE.InstancedMesh>(null)
   const caps = useRef<THREE.InstancedMesh>(null)
 
@@ -52,10 +53,18 @@ export function LatticeScene({ art, selected, onSelect }: { art: GridArtifact | 
     if (sk === 'mirror') axis.push(...W(h, -1.5, 0.01), ...W(h, n + 0.5, 0.01))
     if (sk === 'diag') axis.push(...W(-1.5, -1.5, 0.01), ...W(n + 0.5, n + 0.5, 0.01))
     if (sk === 'rot180') axis.push(...W(h, h, -0.2), ...W(h, h, 1.5))
-    return { W, points, vl, conf, lattice, beams: new Float32Array(beams), axis: new Float32Array(axis) }
+    const halo = new Float32Array(points.length * 3)
+    const haloCol = new Float32Array(points.length * 3)
+    const cc = new THREE.Color()
+    points.forEach(([x, y], i) => {
+      halo.set(W(x, y, 0.16 + Math.min(conf[i], 6) * 0.085 + 0.02), i * 3)
+      cc.set(conf[i] >= 4 ? C.amber : conf[i] > 0 ? C.red : C.cyan)
+      haloCol.set([cc.r, cc.g, cc.b], i * 3)
+    })
+    return { W, points, vl, conf, lattice, halo, haloCol, beams: new Float32Array(beams), axis: new Float32Array(axis) }
   }, [art, n, s])
 
-  const height = (c: number) => 0.1 + Math.min(c, 6) * 0.065
+  const height = (c: number) => 0.16 + Math.min(c, 6) * 0.085
 
   useLayoutEffect(() => {
     const m = new THREE.Matrix4()
@@ -104,7 +113,7 @@ export function LatticeScene({ art, selected, onSelect }: { art: GridArtifact | 
 
   return (
     <group>
-      <Floor />
+      <Floor glow={0.22} />
       <points>
         <bufferGeometry>
           <bufferAttribute attach="attributes-position" count={d.lattice.length / 3} array={d.lattice} itemSize={3} />
@@ -116,7 +125,7 @@ export function LatticeScene({ art, selected, onSelect }: { art: GridArtifact | 
           <bufferGeometry>
             <bufferAttribute attach="attributes-position" count={d.beams.length / 3} array={d.beams} itemSize={3} />
           </bufferGeometry>
-          <lineBasicMaterial color={C.red} transparent opacity={sel ? 0.04 : 0.1} depthWrite={false} blending={THREE.AdditiveBlending} />
+          <lineBasicMaterial color={C.red} transparent opacity={sel ? 0.05 : 0.14} depthWrite={false} blending={THREE.AdditiveBlending} />
         </lineSegments>
       )}
       {d.axis.length > 0 && (
@@ -138,6 +147,15 @@ export function LatticeScene({ art, selected, onSelect }: { art: GridArtifact | 
             <meshBasicMaterial toneMapped={false} />
           </instancedMesh>
         </group>
+      )}
+      {count > 0 && (
+        <points key={'h' + count}>
+          <bufferGeometry>
+            <bufferAttribute attach="attributes-position" count={count} array={d.halo} itemSize={3} />
+            <bufferAttribute attach="attributes-color" count={count} array={d.haloCol} itemSize={3} />
+          </bufferGeometry>
+          <pointsMaterial size={0.34} map={haloTex} vertexColors transparent opacity={0.5} depthWrite={false} blending={THREE.AdditiveBlending} sizeAttenuation toneMapped={false} />
+        </points>
       )}
       {sel && (
         <group>

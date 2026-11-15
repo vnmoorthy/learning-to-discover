@@ -29,6 +29,11 @@ const SHORT: Record<string, string> = {
   'snake-in-the-box-13': 'Snake-in-the-box 13',
   'ring-loading-15': 'Ring loading 15',
   'event-horizon': 'Event Horizon',
+  'first-autocorrelation-inequality': 'First autocorrelation',
+  'kakeya-needle-128': 'Kakeya needle 128',
+  'kissing-number-d12-842': 'Kissing number d12',
+  'kissing-number-d11-605': 'Kissing number d11',
+  'three-body-periodic-orbits': 'Three-body orbits',
 }
 export function shortName(slug: string | null | undefined): string {
   if (!slug) return 'global'

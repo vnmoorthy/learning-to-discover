@@ -26,7 +26,7 @@ function Totals() {
     { label: 'sources', value: t?.sources },
   ]
   return (
-    <div className="grid grid-cols-3 gap-x-6 gap-y-4 sm:grid-cols-4 2xl:grid-cols-7">
+    <div className="grid grid-cols-3 gap-x-6 gap-y-4 sm:grid-cols-4">
       {items.map((it) => (
         <div key={it.label} className="min-w-0">
           <div className="label truncate capitalize">{it.label}</div>
