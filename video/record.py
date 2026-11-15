@@ -2,7 +2,7 @@
 usage: python3 record.py [shot_name ...]"""
 import asyncio, base64, json, os, re, shutil, subprocess, sys, time, urllib.request
 from playwright.async_api import async_playwright
-HERE = os.path.dirname(os.path.abspath(__file__)); BASE = "http://127.0.0.1:8787"
+HERE = os.path.dirname(os.path.abspath(__file__)); BASE = os.environ.get("APP_URL", "http://127.0.0.1:8787")
 SEC = {x["id"]: x for x in json.load(open(f"{HERE}/sections.json"))["sections"]}
 W, H = 1920, 1080
 CURSOR_JS = """() => { if (window.__cur) return; const c = document.createElement('div'); window.__cur = c;
@@ -47,7 +47,8 @@ class Shot:
     async def page_y(self, pat, nth=0):
         b = await self.box(pat, nth); return b["y"] + await self.page.evaluate("window.scrollY")
     async def to(self, pat, dx=0.5, dy=0.5, ms=900, nth=0):
-        b = await self.box(pat, nth)
+        try: b = await self.box(pat, nth)
+        except Exception: b = None
         if b: await self.glide(b["x"] + b["width"] * dx, b["y"] + b["height"] * dy, ms)
     async def finish(self):
         await self.until(self.dur + 0.4); await self.cdp.send("Page.stopScreencast"); await asyncio.sleep(0.2)
@@ -98,7 +99,8 @@ def dec_shot(did, cues):
         y = (await el.bounding_box())["y"] + await s.page.evaluate("window.scrollY"); await s.page.evaluate(f"window.scrollTo(0,{max(0, y - 300)})"); await asyncio.sleep(1.0)
         await s.start()
         for pat, dx, dy, t in cues:
-            b = await el.get_by_text(re.compile(pat, re.I)).first.bounding_box()
+            try: b = await el.get_by_text(re.compile(pat, re.I)).first.bounding_box()
+            except Exception: b = None
             if b: await s.glide(b["x"] + b["width"] * dx, b["y"] + b["height"] * dy, 1000)
             await s.until(t)
     return f
@@ -149,7 +151,12 @@ async def main():
                     except Exception: pass
                     await asyncio.sleep(3.0); await page.evaluate(CURSOR_JS)
                     cdp = await ctx.new_cdp_session(page); s = Shot(page, cdp, name, dur)
-                    await asyncio.wait_for(fn(s), timeout=dur + 90); await s.finish(); await page.close(); break
+                    page.set_default_timeout(5000)
+                    try: await asyncio.wait_for(fn(s), timeout=dur + 90)
+                    except Exception as e:
+                        print("shot actions incomplete (UI changed?)", name, type(e).__name__, str(e)[:200], flush=True)
+                        if s.t0 is None: await s.start()   # still capture the page as a held/static shot
+                    await s.finish(); await page.close(); break
                 except Exception as e:
                     print("SHOT FAILED", name, attempt, type(e).__name__, str(e)[:300], flush=True)
                     try: await page.close()

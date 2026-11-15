@@ -47,7 +47,6 @@ for x in S:
     segs.append(out); print("built", sid, vd, flush=True)
 open(f"{HERE}/build/all.txt", "w").write("".join(f"file '{p}'\n" for p in segs))
 final = f"{HERE}/phoenixastar_demo.mp4"
-run(["-f", "concat", "-safe", "0", "-i", f"{HERE}/build/all.txt", "-vf", "fade=in:st=0:d=0.5,format=yuv420p", "-c:v", "libx264", "-preset", "medium", "-crf", "20", "-pix_fmt", "yuv420p", "-r", "30",
-     "-c:a", "aac", "-b:a", "192k", "-movflags", "+faststart", final])
+run(["-f", "concat", "-safe", "0", "-i", f"{HERE}/build/all.txt", "-c", "copy", "-movflags", "+faststart", final])   # sections share one encode profile
 run(["-ss", "2.5", "-i", final, "-frames:v", "1", "-vf", "scale=1280:720:flags=lanczos", f"{HERE}/poster.png"])
 print(subprocess.check_output(["ffprobe", "-v", "error", "-show_entries", "format=duration,size:stream=codec_name,width,height,pix_fmt,r_frame_rate", "-of", "default=nw=1", final]).decode())

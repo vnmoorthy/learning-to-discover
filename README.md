@@ -25,8 +25,9 @@
 
 ---
 
-Phoenixastar is an autonomous research lab that attacks open record problems in combinatorics, where
-every claim can be checked by an exact verifier. A loop of agents watches live searches on 8 GPUs and 124 CPU
+Phoenixastar is an autonomous research lab that attacks open record problems in mathematics (EinsteinArena) and
+open questions in theoretical physics (periodic orbits of the three-body problem; the black hole information problem),
+where every claim can be checked by an exact verifier. A loop of agents watches live searches on 8 GPUs and 124 CPU
 cores, reads its own memory and the literature, proposes the next experiment with a falsifiable prediction, and
 moves compute accordingly. Every decision, source, prediction and outcome is logged, so the whole run can be
 replayed and audited.
@@ -34,6 +35,19 @@ replayed and audited.
 > **Honest status.** This is a hackathon entry and a live run, not a paper. Whether a record has fallen is stated
 > in the generated block under [Problems and results](#problems-and-results); it is rebuilt from the run's data
 > files by [`docs/update_results.py`](docs/update_results.py) and never edited by hand.
+
+<table>
+  <tr>
+    <td width="33%"><img src="docs/assets/hero.jpg" alt="No-three-in-line lattice"></td>
+    <td width="33%"><img src="docs/assets/threebody/candidates.png" alt="Three-body candidate orbits"></td>
+    <td width="33%"><img src="docs/assets/event-horizon/a_page_curve.png" alt="Page curve"></td>
+  </tr>
+  <tr>
+    <td><sub><b>Mathematics.</b> A live SAT model of no-three-in-line on the 75 x 75 grid; red threads are lines that still hold three points.</sub></td>
+    <td><sub><b>Celestial mechanics.</b> 7 verified periodic three-body orbits whose families are absent from the 2,060 catalogued orbits we checked (candidates).</sub></td>
+    <td><sub><b>Black hole information.</b> The Page curve from exact Haar-random states up to 24 qubits on an A100, against Page's formula.</sub></td>
+  </tr>
+</table>
 
 ## What it does
 
@@ -218,6 +232,41 @@ _Generated from `data/memory_benchmark.json`: 31 auto-built questions over 26 fa
 Highest accuracy: **markdown** (100.0%). Smallest context per question: **past.dev** (514 tokens). Cost note from the benchmark: cost = answer-model tokens x list price (+ embedding tokens for RAG); past.dev credits at $0 (credits spent reported in setup); judge and QA-writer tokens are benchmark overhead.
 <!-- MEMORY:END -->
 
+## Physics domains
+
+The loop only needs a problem and an exact checker, so the same lab runs two physics domains next to the math records.
+
+### Three-body periodic orbits (celestial mechanics)
+
+<p align="center"><img src="docs/assets/threebody/candidates.png" alt="Seven candidate periodic orbits" width="100%"></p>
+
+`search/threebody_gpu.py` integrates hundreds of thousands of candidate initial conditions in parallel on the A100s,
+refines the near-returns with Newton steps, and the official checker (`problems/three-body-periodic-orbits/verifier.py`)
+re-integrates every orbit with float64 Dormand-Prince at two tolerances (return error < 1e-8, both runs agree) and
+reduces its topological word. **7 verified periodic orbits (m1 = m2 = 1, m3 = 0.5) have topological families that do not
+appear among the 2,060 catalogued orbits we checked** (Suvakov-Dmitrasinovic 2013, Li-Liao 2017, Li-Jing-Liao 2018).
+They are *candidates*: later catalogs were not checked and the literature uses multi-precision integration for long
+unstable orbits. Initial conditions: [`problems/three-body-periodic-orbits/candidates_verified.json`](problems/three-body-periodic-orbits/candidates_verified.json).
+
+| | | |
+|---|---|---|
+| <img src="docs/assets/threebody/candidate_2.png" alt="candidate 2" width="100%"> | <img src="docs/assets/threebody/candidate_6.png" alt="candidate 6" width="100%"> | <img src="docs/assets/threebody/candidate_7.png" alt="candidate 7" width="100%"> |
+| Candidate 2, T = 19.810 | Candidate 6, T = 15.221 | Candidate 7, T = 45.886 |
+
+### EVENT HORIZON (black hole information, quantum-information toy models)
+
+A verified study of the Page curve, Page's theorem, sequential evaporation, a Bell-pair "Hawking" model, scrambling
+and Hayden-Preskill decoupling, run with exact state vectors on an A100. Every result is classified as a reproduction
+or a computational observation; nothing here claims to solve the information paradox, and the island formula is kept
+separate from these finite-dimensional models.
+
+| | |
+|---|---|
+| <img src="docs/assets/event-horizon/c_evaporation.png" alt="Sequential evaporation" width="100%"> | <img src="docs/assets/event-horizon/e2_mutual_information.png" alt="Hayden-Preskill" width="100%"> |
+| **Sequential Haar evaporation** up to N = 26 qubits on the A100: mean S(R) against Page's formula, per-step z-scores, distribution tests, runtime and memory scaling. | **Hayden-Preskill.** I(R : Bob's radiation) vs emitted qubits: for an old black hole the curves collapse for every size (recovery after about k + O(1) qubits); for a young one they shift by about n_B / 2. |
+| <img src="docs/assets/event-horizon/d_hawking_pairs.png" alt="Bell-pair model" width="100%"> | <img src="docs/assets/event-horizon/e1_trajectories.png" alt="Scrambling" width="100%"> |
+| **Bell-pair "Hawking" model vs unitary evaporation:** S(R) = k log 2 keeps rising past the Page time. | **Scramblers compared:** Haar, random Clifford, local random circuits by depth, and a non-scrambling control. |
+
 ## Gallery
 
 Rendered in Blender from real artifacts of the run, by `bpy` scripts that GPT-6 Astra wrote and revised
@@ -229,8 +278,8 @@ illustration, not data.
 | <img src="docs/assets/hero.jpg" alt="The Lattice" width="100%"> | <img src="docs/assets/hadamard_city.jpg" alt="Hadamard City" width="100%"> | <img src="docs/assets/snake.jpg" alt="Snake in the 13-cube" width="100%"> |
 | **The Lattice.** A live SAT snapshot of no-three-in-line: 150 points, red threads on lines that are still violated. | **Hadamard City.** The record 51 x 51 sign matrix (kgrey) as a city. | **Snake in the 13-cube.** The record 2950-edge snake (kgrey), projected to 3D. |
 
-Videos (`lattice_orbit.mp4`, `snake_turntable.mp4`) are on the Gallery page of the
-[replay demo](https://vnmoorthy.github.io/phoenixastar/#/gallery).
+On the [live site](https://vnmoorthy.github.io/phoenixastar/#/gallery) the lattice, the city, the snake and the
+three-body orbits are interactive 3D scenes built from the same data (drag to rotate, pinch to zoom).
 
 ## Quickstart
 
