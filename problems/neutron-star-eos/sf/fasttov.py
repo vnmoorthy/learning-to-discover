@@ -2,7 +2,7 @@
 
 Units: G = c = 1, lengths in km, P and eps in km^-2, masses reported in M_sun (sf.units.M_SUN_KM).
 
-Method: independent variable x = ln P. For all central pressures at once (numpy vectorised over stars),
+Method: x = ln P, integrated in xi = sqrt(ln pc - ln P). For all central pressures at once (numpy vectorised over stars),
 fixed-step classical RK4 in the normalised coordinate s in [0, 1], x = x0 + s (ln p_surf - x0), for
     d(r^2)/dx = 2 r dr/dx,   dr/dx = -P r (r - 2m) / ((eps + P)(m + 4 pi r^3 P))
     dm/dx     = 4 pi r^2 eps dr/dx
@@ -42,55 +42,58 @@ class EOSTable:
         return np.interp(lnp, self.lp, self.c)
 
 
-def solve_many(tab, pc, nstep=600, p_surf=1e-16, delta=1e-5):
-    """Vectorised over central pressures pc (km^-2). Returns dict of arrays M [M_sun], R [km], Lambda, k2."""
+def solve_many(tab, pc, nstep=200, p_surf=1e-16, delta=1e-6):
+    """Vectorised over central pressures pc (km^-2). Returns dict of arrays M [M_sun], R [km], Lambda, k2.
+    Independent variable xi = sqrt(ln pc - ln P): near the centre r ~ xi and m ~ xi^3 are analytic in xi,
+    so fixed-step RK4 keeps its 4th-order convergence (a uniform ln P grid is only O(h) because m ~ (x_c-x)^1.5)."""
     pc = np.atleast_1d(np.asarray(pc, float))
-    lpc = np.log(pc)
-    ec = tab.eps(lpc)
-    p0 = pc * (1.0 - delta)
-    x0 = np.log(p0)
-    r2 = delta * pc / ((2 * math.pi / 3) * (ec + pc) * (ec + 3 * pc))
-    m = FOUR_PI / 3 * ec * r2 ** 1.5
+    xc = np.log(pc)
+    ec = tab.eps(xc)
+    r = np.sqrt(delta * pc / ((2 * math.pi / 3) * (ec + pc) * (ec + 3 * pc)))
+    m = FOUR_PI / 3 * ec * r ** 3
     y = np.full_like(pc, 2.0)
-    L = math.log(p_surf) - x0          # negative span in x
+    xi0 = math.sqrt(-math.log1p(-delta))
+    xi1 = np.sqrt(xc - math.log(p_surf))
+    span = xi1 - xi0
     h = 1.0 / nstep
 
-    def f(s, r2, m, y):
-        x = x0 + s * L
+    def f(s, r, m, y):
+        xi = xi0 + s * span
+        x = xc - xi * xi
         P = np.exp(x)
         e = tab.eps(x)
         c2 = tab.cs2(x)
-        r = np.sqrt(r2)
         A = m + FOUR_PI * r ** 3 * P
         g = 1.0 - 2.0 * m / r
         drdx = -P * r * r * g / ((e + P) * A)
-        dr2 = 2 * r * drdx * L
-        dm = FOUR_PI * r * r * e * drdx * L
+        J = -2.0 * xi * span            # dx/ds
+        dr = drdx * J
+        dm = FOUR_PI * r * r * e * dr
         F = (1.0 - FOUR_PI * r * r * (e - P)) / g
         Q = (FOUR_PI * r * r * (5 * e + 9 * P + (e + P) / c2) / g - 6.0 / g
              - 4.0 * A * A / (r * r * g * g))
-        dy = (-y * y - y * F - Q) * drdx / r * L
-        return dr2, dm, dy
+        dy = (-y * y - y * F - Q) * dr / r
+        return dr, dm, dy
 
     s = 0.0
     with np.errstate(all="ignore"):
         for _ in range(nstep):
-            k1 = f(s, r2, m, y)
-            k2 = f(s + h / 2, r2 + h / 2 * k1[0], m + h / 2 * k1[1], y + h / 2 * k1[2])
-            k3 = f(s + h / 2, r2 + h / 2 * k2[0], m + h / 2 * k2[1], y + h / 2 * k2[2])
-            k4 = f(s + h, r2 + h * k3[0], m + h * k3[1], y + h * k3[2])
-            r2 = r2 + h / 6 * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0])
+            k1 = f(s, r, m, y)
+            k2 = f(s + h / 2, r + h / 2 * k1[0], m + h / 2 * k1[1], y + h / 2 * k1[2])
+            k3 = f(s + h / 2, r + h / 2 * k2[0], m + h / 2 * k2[1], y + h / 2 * k2[2])
+            k4 = f(s + h, r + h * k3[0], m + h * k3[1], y + h * k3[2])
+            r = r + h / 6 * (k1[0] + 2 * k2[0] + 2 * k3[0] + k4[0])
             m = m + h / 6 * (k1[1] + 2 * k2[1] + 2 * k3[1] + k4[1])
             y = y + h / 6 * (k1[2] + 2 * k2[2] + 2 * k3[2] + k4[2])
             s += h
-    R = np.sqrt(r2)
+    R = r
     C = m / R
     k2 = np.array([love_k2(ci, yi) if np.isfinite(ci) and np.isfinite(yi) else np.nan for ci, yi in zip(C, y)])
     Lam = 2.0 / 3.0 * k2 / C ** 5
     return dict(pc=pc, eps_c=ec, M=u.km_to_msun(m), R=R, C=C, y_R=y, k2=k2, Lambda=Lam)
 
 
-def mr_curve(eos, pc_lo_mev=8.0, pc_hi_mev=3000.0, num=28, nstep=600):
+def mr_curve(eos, pc_lo_mev=8.0, pc_hi_mev=3000.0, num=24, nstep=200):
     """M-R-Lambda along the sequence up to the first maximum (stable branch, dM/dpc > 0).
     Returns dict with arrays on the stable branch, M_max (parabolic refinement in ln pc), pc_max, edge flag."""
     p_top = min(u.mevfm3_to_geo(pc_hi_mev), eos.p_max * 0.999) if np.isfinite(eos.p_max) else u.mevfm3_to_geo(pc_hi_mev)

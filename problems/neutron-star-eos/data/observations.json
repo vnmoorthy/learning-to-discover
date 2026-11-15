@@ -1,0 +1,62 @@
+{
+  "units": {"mass": "M_sun", "radius": "km (equatorial circumferential)", "Lambda": "dimensionless"},
+  "verification": "Every value below was checked on 2026-11-15 against the arXiv abstract (or for Lambda_1.4 the arXiv HTML full text, Sec. III) of the cited paper via WebFetch.",
+  "constraints": {
+    "J0740_mass": {
+      "source": {"authors": "E. Fonseca et al.", "journal": "ApJL 915, L12", "year": 2021, "arxiv": "2104.00880", "doi": "10.3847/2041-8213/ac03b8"},
+      "quantity": "pulsar gravitational mass from relativistic Shapiro delay",
+      "value": 2.08, "sigma": 0.07, "interval": "68.3% credibility, symmetric",
+      "statistical_interpretation": "Bayesian posterior, treated as Gaussian",
+      "model_dependence": "GR timing model; essentially EOS-independent",
+      "used_in_likelihood": false,
+      "why_not_used_separately": "Both NICER J0740 analyses used this radio mass as an informative prior, so it already enters through J0740_nicer; multiplying it again would double count.",
+      "approximation": "none (not used directly)"
+    },
+    "J0348_mass": {
+      "source": {"authors": "J. Antoniadis et al.", "journal": "Science 340, 6131 (1233232)", "year": 2013, "arxiv": "1304.6875"},
+      "quantity": "pulsar gravitational mass from white-dwarf spectroscopy + radio timing",
+      "value": 2.01, "sigma": 0.04, "interval": "quoted 1-sigma (68%)",
+      "statistical_interpretation": "Gaussian measurement",
+      "model_dependence": "depends on white-dwarf atmosphere/mass-radius models; EOS-independent",
+      "used_in_likelihood": true,
+      "approximation": "Gaussian; likelihood = Phi((M_max - 2.01)/0.04)"
+    },
+    "J0030_nicer": {
+      "quantity": "joint mass and equatorial radius from X-ray pulse-profile modelling (NICER)",
+      "statistical_interpretation": "Bayesian posterior; 16%/84% marginal quantiles",
+      "model_dependence": "hot-spot geometry model, atmosphere model, instrument response; the two teams differ in these choices",
+      "correlation_treatment": "Riley and Miller analysed the SAME NICER data: equal-weight mixture, never a product",
+      "approximation": "product of independent split-normals in M and R (M-R correlation ignored)",
+      "used_in_likelihood": true,
+      "analyses": [
+        {"source": {"authors": "T. E. Riley et al.", "journal": "ApJL 887, L21", "year": 2019, "arxiv": "1912.05702"},
+         "M": 1.34, "M_minus": 0.16, "M_plus": 0.15, "R": 12.71, "R_minus": 1.19, "R_plus": 1.14},
+        {"source": {"authors": "M. C. Miller et al.", "journal": "ApJL 887, L24", "year": 2019, "arxiv": "1912.05705"},
+         "M": 1.44, "M_minus": 0.14, "M_plus": 0.15, "R": 13.02, "R_minus": 1.06, "R_plus": 1.24}
+      ]
+    },
+    "J0740_nicer": {
+      "quantity": "joint mass and equatorial radius from NICER (+XMM-Newton) pulse-profile modelling with radio mass prior",
+      "statistical_interpretation": "Bayesian posterior; 68% central intervals (16%/84%)",
+      "model_dependence": "hot-spot model, atmosphere, cross-calibration with XMM-Newton; mass prior from Fonseca et al. 2021",
+      "correlation_treatment": "Riley and Miller analysed the SAME data: equal-weight mixture, never a product",
+      "approximation": "product of independent split-normals in M and R (M-R correlation ignored)",
+      "used_in_likelihood": true,
+      "analyses": [
+        {"source": {"authors": "T. E. Riley et al.", "journal": "ApJL 918, L27", "year": 2021, "arxiv": "2105.06980", "doi": "10.3847/2041-8213/ac0a81"},
+         "M": 2.072, "M_minus": 0.066, "M_plus": 0.067, "R": 12.39, "R_minus": 0.98, "R_plus": 1.30},
+        {"source": {"authors": "M. C. Miller et al.", "journal": "ApJL 918, L28", "year": 2021, "arxiv": "2105.06979", "doi": "10.3847/2041-8213/ac089b"},
+         "M": 2.08, "M_minus": 0.07, "M_plus": 0.07, "R": 13.7, "R_minus": 1.5, "R_plus": 2.6}
+      ]
+    },
+    "GW170817_Lambda14": {
+      "source": {"authors": "B. P. Abbott et al. (LIGO Scientific and Virgo Collaborations)", "journal": "PRL 121, 161101", "year": 2018, "arxiv": "1805.11581"},
+      "quantity": "tidal deformability of a 1.4 M_sun neutron star, Lambda_1.4",
+      "value": 190, "minus": 120, "plus": 390, "interval": "90% credible, common-EOS analysis (linear expansion of Lambda(m) m^5 about 1.4 M_sun)",
+      "statistical_interpretation": "Bayesian posterior (includes LVC priors)",
+      "model_dependence": "waveform model; common EOS for both stars; EOS-insensitive relations",
+      "used_in_likelihood": true,
+      "approximation": "split-normal in ln Lambda_1.4 with 90% bounds mapped to +-1.645 sigma; posterior used as likelihood"
+    }
+  }
+}

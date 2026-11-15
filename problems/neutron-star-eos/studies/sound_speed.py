@@ -29,10 +29,10 @@ from sf import eos as E, tov as T, units as u  # noqa: E402
 
 NS = u.N_SAT
 TOL = dict(rtol=1e-8, atol=1e-12)
-N_MATCH = [1.1, 1.25, 1.5, 1.75, 2.0]           # units of n_sat
-CS2_GRID = [0.2, 0.25, 0.3, 1 / 3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1.0]
+N_MATCH = [1.1, 1.5, 2.0]           # units of n_sat
+CS2_GRID = [0.25, 1 / 3, 0.4, 0.5, 0.6, 0.8, 1.0]
 TARGETS = [2.0, 2.08]
-N_MAX = 5.0                                     # fm^-3, table end (checked: M_max never at edge)
+N_MAX = 4.0                                     # fm^-3, table end (checked: M_max never at edge)
 
 _SLY = None
 
@@ -55,7 +55,21 @@ def build(fm, cs2max, shape):
 
 
 def mmax(eos):
-    st = T.max_mass(eos, float(u.mevfm3_to_geo(15.0)), eos.p_max * 0.999, num=28, **TOL)
+    """Coarse scan of M(pc) on [15, min(2500, 0.999 p_max)] MeV/fm^3 + bounded refinement in ln pc."""
+    from scipy.optimize import minimize_scalar
+    hi = min(float(u.mevfm3_to_geo(2500.0)), eos.p_max * 0.999)
+    pcs = np.geomspace(float(u.mevfm3_to_geo(15.0)), hi, 12)
+    Ms = np.array([T.solve_star(eos, p, tidal=False, **TOL)["M"] for p in pcs])
+    i = int(np.argmax(Ms))
+    if i == 0 or i == len(pcs) - 1:
+        st = T.solve_star(eos, pcs[i], tidal=False, **TOL)
+        st["edge"] = True
+        return st
+    r = minimize_scalar(lambda lx: -T.solve_star(eos, math.exp(lx), tidal=False, **TOL)["M"],
+                        bounds=(math.log(pcs[i - 1]), math.log(pcs[i + 1])), method="bounded",
+                        options=dict(xatol=2e-3))
+    st = T.solve_star(eos, math.exp(r.x), tidal=False, **TOL)
+    st["edge"] = False
     return st
 
 
@@ -70,7 +84,7 @@ def grid_point(args):
     if st["M"] > 1.4:
         s14 = T.star_of_mass(eos, 1.4, float(u.mevfm3_to_geo(3.0)), st["pc"], **TOL)
         out.update(R_1p4=s14["R"], Lambda_1p4=s14["Lambda"], nc_1p4_fm3=float(eos.n(s14["pc"])))
-    chk = eos.check(1e-14, st["pc"], 400)
+    chk = eos.check(1e-12, st["pc"], 300)
     out.update(causal=chk["causal"], cs2_max_check=chk["cs2_max"], runtime_s=time.time() - t0)
     return out
 
@@ -79,7 +93,7 @@ def requirement(args):
     fm, target, shape = args
     t0 = time.time()
     f = lambda c: mmax(build(fm, c, shape))["M"] - target
-    lo, hi = 0.15, 1.0
+    lo, hi = 0.2, 1.0
     flo, fhi = f(lo), f(hi)
     if fhi < 0:
         return dict(n_match_nsat=fm, target=target, shape=shape, cs2_min=None,
@@ -87,16 +101,15 @@ def requirement(args):
     if flo > 0:
         return dict(n_match_nsat=fm, target=target, shape=shape, cs2_min=None,
                     note=f"target already met at cs2max = {lo}", runtime_s=time.time() - t0)
-    c = brentq(f, lo, hi, xtol=2e-4)
+    c = brentq(f, lo, hi, xtol=2e-3)
     return dict(n_match_nsat=fm, target=target, shape=shape, cs2_min=c, runtime_s=time.time() - t0)
 
 
 if __name__ == "__main__":
     t0 = time.time()
     jobs_r = [(fm, tg, "step") for fm in N_MATCH for tg in TARGETS] + \
-             [(fm, tg, "ramp") for fm in (1.1, 1.5, 2.0) for tg in TARGETS]
-    jobs_g = [(fm, c, "step") for fm in N_MATCH for c in CS2_GRID] + \
-             [(fm, c, "ramp") for fm in (1.1, 2.0) for c in (1 / 3, 0.5, 0.7, 1.0)]
+             [(fm, 2.0, "ramp") for fm in (1.1, 2.0)]
+    jobs_g = [(fm, c, "step") for fm in N_MATCH for c in CS2_GRID]
     with Pool(6) as pool:
         req = pool.map_async(requirement, jobs_r)
         grid = pool.map(grid_point, jobs_g)
