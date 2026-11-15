@@ -253,6 +253,7 @@ The loop only needs a problem and an exact checker, so the same lab runs two phy
 
 <p align="center"><img src="docs/assets/event-horizon/blackhole.jpg" alt="A Schwarzschild black hole ray-traced through curved spacetime" width="100%"></p>
 <p align="center"><sub>A Schwarzschild black hole ray-traced on an A100: 24 million light rays integrated along exact null geodesics around a thin Keplerian accretion disk (ISCO to 13 r_s) with a Novikov-Thorne temperature profile, gravitational redshift and Doppler beaming. The far side of the disk is lensed over and under the shadow; the thin ring is the photon ring. A simulation, not a photograph; the gas texture is procedural. Source: <a href="viz/blackhole/raytrace.py"><code>viz/blackhole/raytrace.py</code></a> (renders in 11 s on one A100).</sub></p>
+<p align="center"><b><a href="https://vnmoorthy.github.io/phoenixastar/#/physics">Play with it live</a></b>: the site ray-traces the same black hole in your browser (WebGL, one light ray per pixel per frame). Drag to orbit, scroll or pinch to zoom in to the photon ring, and toggle lensing and Doppler beaming off to see what gravity does to the picture.</p>
 
 A verified study of the Page curve, Page's theorem, sequential evaporation, a Bell-pair "Hawking" model, scrambling
 and Hayden-Preskill decoupling, run with exact state vectors on an A100 (up to 27 qubits). 109 tests pass; 9 key claims

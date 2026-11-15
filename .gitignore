@@ -25,3 +25,6 @@ video/.venv/
 video/survey/
 video/build/
 video/*.wav
+
+# the presenter's own recording stays local
+video/me/
