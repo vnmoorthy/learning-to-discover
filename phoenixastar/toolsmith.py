@@ -136,19 +136,37 @@ def _extract(sess: dict) -> dict | None:
     return None
 
 
+_WRITE_FILES = "import json,sys\nfor k,v in json.load(sys.stdin).items():\n    open(k,'w').write(v)\n"
+
+
 def run_in_modal(code: str, args: list[str], files: dict[str, str], seconds: int) -> tuple[int, str, str]:
-    """Run untrusted (AI-written) code in a Modal sandbox: no network, no secrets, hard timeout."""
-    import base64
+    """Run untrusted (AI-written) code in a Modal sandbox: no network, no secrets, hard timeout.
+
+    The program and its input files go in through stdin, not the command line: a Devin strategy plus a seed solution
+    easily exceeds the 64 KB ARG_MAX limit on command arguments.
+    """
+    import shlex
     import modal
     app = modal.App.lookup("phoenixastar-sandboxes", create_if_missing=True)
-    image = modal.Image.debian_slim(python_version="3.11").pip_install("numpy", "numba")
-    setup = [f"echo {base64.b64encode(code.encode()).decode()} | base64 -d > /tmp/prog.py"]
-    for name, content in files.items():
-        setup.append(f"echo {base64.b64encode(content.encode()).decode()} | base64 -d > /tmp/{name}")
-    cmd = " && ".join(setup + ["mkdir -p /tmp/out", "cd /tmp && python /tmp/prog.py " + " ".join(args)])
-    sb = modal.Sandbox.create("bash", "-c", cmd, app=app, image=image, timeout=seconds + 120, block_network=True, cpu=2.0)
-    sb.wait(raise_on_termination=False)
-    return sb.returncode, sb.stdout.read(), sb.stderr.read()
+    image = modal.Image.debian_slim(python_version="3.11").pip_install("numpy", "numba", "scipy", "sympy")
+    sb = modal.Sandbox.create(app=app, image=image, timeout=seconds + 240, block_network=True, cpu=2.0)
+    try:
+        w = sb.exec("python", "-c", _WRITE_FILES)
+        w.stdin.write(json.dumps({"/tmp/prog.py": code, **{f"/tmp/{k}": v for k, v in files.items()}}).encode())
+        w.stdin.write_eof()
+        w.stdin.drain()
+        w.wait()
+        if w.returncode != 0:
+            return w.returncode, "", "could not write the program into the sandbox: " + (w.stderr.read() or "")[-400:]
+        cmd = f"mkdir -p /tmp/out && cd /tmp && timeout -s KILL {int(seconds) + 90} python /tmp/prog.py " + " ".join(shlex.quote(a) for a in args)
+        p = sb.exec("bash", "-c", cmd)
+        p.wait()
+        return p.returncode, p.stdout.read() or "", p.stderr.read() or ""
+    finally:
+        try:
+            sb.terminate()
+        except Exception:  # noqa: BLE001
+            pass
 
 
 def smoke_test(problem: str, path: str, seconds: int = 60) -> dict:

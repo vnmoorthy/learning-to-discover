@@ -337,7 +337,7 @@ def _modal_handles():
     import modal
     if "app" not in _modal_cache:
         _modal_cache["app"] = modal.App.lookup(APP_NAME, create_if_missing=True)
-        _modal_cache["image"] = modal.Image.debian_slim().pip_install("numpy", "numba")
+        _modal_cache["image"] = modal.Image.debian_slim().pip_install("numpy", "numba", "scipy", "sympy")
     return modal, _modal_cache["app"], _modal_cache["image"]
 
 
