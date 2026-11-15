@@ -1,10 +1,11 @@
 // A verified study rendered as a report: figures with captions and classification, expandable research cycles,
 // a tests badge and links to the paper and notebook. Used by the Physics page and by "report" problem artifacts.
-import { useState } from 'react'
+import { Suspense, useState } from 'react'
 import { assetUrl } from '../mode'
 import type { EHCycle, EHFigure, ReportArtifact } from '../types'
 import { IconChevron, IconExternal } from './icons'
 import { cx } from '../lib/format'
+import { BlackHoleViewer } from '../viz3d/lazy'
 
 const REPO = 'https://github.com/vnmoorthy/phoenixastar/blob/main/'
 const CLASS_LABEL: Record<string, string> = {
@@ -123,15 +124,52 @@ function RepoLink({ path, children }: { path?: string; children: React.ReactNode
   )
 }
 
+function ReportHero({ art }: { art: ReportArtifact }) {
+  const [mode, setMode] = useState<'live' | 'still'>(art.interactive === 'blackhole' ? 'live' : 'still')
+  const still = <img src={assetUrl(art.hero!)} alt={art.title ?? 'hero'} className="absolute inset-0 h-full w-full object-cover" />
+  return (
+    <figure className="overflow-hidden rounded-xl border border-white/[0.07] bg-[#050608]">
+      {art.interactive === 'blackhole' && (
+        <div className="flex items-center justify-between gap-3 border-b border-white/[0.06] px-3 py-2">
+          <div className="inline-flex rounded-lg border border-white/10 bg-white/[0.03] p-0.5" role="tablist" aria-label="Black hole view">
+            {(['live', 'still'] as const).map((m) => (
+              <button
+                key={m}
+                type="button"
+                role="tab"
+                aria-selected={mode === m}
+                onClick={() => setMode(m)}
+                className={cx('h-7 rounded-md px-3 text-[12px] font-medium transition-colors', mode === m ? 'bg-white/[0.09] text-fg' : 'text-fg-muted hover:text-fg')}
+              >
+                {m === 'live' ? 'Interactive (live ray tracing)' : 'A100 render (24M rays)'}
+              </button>
+            ))}
+          </div>
+          <span className="hidden text-[11px] text-fg-dim sm:inline">Same physics in both: Schwarzschild null geodesics</span>
+        </div>
+      )}
+      {mode === 'live' ? (
+        <div className="relative h-[360px] w-full sm:h-[520px]">
+          <Suspense fallback={still}>
+            <BlackHoleViewer fallback={still} />
+          </Suspense>
+        </div>
+      ) : (
+        <img src={assetUrl(art.hero!)} alt={art.title ?? 'hero'} className="w-full object-cover" />
+      )}
+      <figcaption className="px-4 py-2 text-[11.5px] leading-5 text-fg-dim">
+        {mode === 'live'
+          ? 'Ray-traced live in your browser, one light ray per pixel per frame, with the same equations as the A100 render: drag to orbit (go below the disk too), scroll or pinch to zoom in to the photon ring, tap to pause. Toggle lensing off to see the disk as it would look in flat spacetime.'
+          : art.hero_caption}
+      </figcaption>
+    </figure>
+  )
+}
+
 export function ReportView({ art }: { art: ReportArtifact }) {
   return (
     <div className="space-y-6">
-      {art.hero && (
-        <figure className="overflow-hidden rounded-xl border border-white/[0.07] bg-[#07080A]">
-          <img src={assetUrl(art.hero)} alt={art.title ?? 'hero'} className="w-full object-cover" />
-          {art.hero_caption && <figcaption className="px-4 py-2 text-[11.5px] text-fg-dim">{art.hero_caption}</figcaption>}
-        </figure>
-      )}
+      {art.hero && <ReportHero art={art} />}
       <div>
         {art.question && <p className="max-w-4xl text-[14px] font-medium leading-6 text-fg">{art.question}</p>}
         {art.summary && <p className="mt-2 max-w-4xl text-[13.5px] leading-6 text-fg-muted">{art.summary}</p>}

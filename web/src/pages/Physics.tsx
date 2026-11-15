@@ -4,7 +4,7 @@ import { useApi } from '../hooks/useApi'
 import { assetUrl } from '../mode'
 import { Link } from 'react-router-dom'
 import { Cycle, FigureGrid, TestsBadge } from '../components/Report'
-import { OrbitsViewer, ViewerFrame } from '../viz3d/lazy'
+import { BlackHoleViewer, OrbitsViewer, ViewerFrame } from '../viz3d/lazy'
 
 export default function PhysicsPage() {
   const ph = useApi(() => api.physics(), [], 60000)
@@ -25,6 +25,46 @@ export default function PhysicsPage() {
         <Skeleton className="h-96" />
       ) : (
         <>
+          <Panel
+            title="EVENT HORIZON · black hole information"
+            subtitle={eh?.question ?? 'Page curve, Page’s theorem, sequential evaporation, Bell-pair toy model, scrambling and Hayden-Preskill'}
+            right={
+              <span className="flex flex-wrap items-center gap-2">
+                <TestsBadge tests={eh?.tests} />
+                <Link to="/problems/event-horizon" className="inline-flex h-8 items-center rounded-lg border border-white/10 bg-white/[0.03] px-3 text-[12.5px] font-medium text-fg transition-colors hover:border-white/20 hover:bg-white/[0.06]">
+                  Open problem page
+                </Link>
+              </span>
+            }
+          >
+            {!eh ? (
+              <Empty>EVENT HORIZON results are still being produced on the A100 (GPU 0).</Empty>
+            ) : (
+              <div className="space-y-5">
+                <div>
+                  <ViewerFrame className="h-[380px] w-full bg-[#050608] sm:h-[540px]">
+                    <BlackHoleViewer fallback={<img src={assetUrl('/gallery/blackhole.jpg')} alt="ray-traced black hole" className="h-full w-full object-cover" />} />
+                  </ViewerFrame>
+                  <p className="mt-2 text-[12px] text-fg-dim">
+                    A Schwarzschild black hole ray-traced live in your browser: one light ray per pixel per frame along exact null geodesics,
+                    thin Keplerian disk from the ISCO, gravitational redshift and Doppler beaming, lensed star field. Drag to orbit (below the disk too),
+                    scroll or pinch to zoom in to the photon ring. Same equations as the{' '}
+                    <a href={assetUrl('/gallery/blackhole.jpg')} target="_blank" rel="noreferrer" className="text-fg-muted underline decoration-white/20 underline-offset-2 hover:text-fg">
+                      24M-ray A100 render
+                    </a>
+                    .
+                  </p>
+                </div>
+                {eh.summary && <p className="max-w-4xl text-sm text-fg-muted">{eh.summary}</p>}
+                {eh.hardware && <p className="font-mono text-[11px] text-fg-dim">hardware: {eh.hardware}</p>}
+                <FigureGrid figures={eh.figures ?? []} />
+                <div className="space-y-2">
+                  <div className="label">Research cycles</div>
+                  {(eh.cycles ?? []).map((c, i) => <Cycle key={i} c={c} i={i} />)}
+                </div>
+              </div>
+            )}
+          </Panel>
           <Panel
             title="Three-body periodic orbits · candidates"
             subtitle={tb ? `${tb.orbits.length} verified periodic orbits whose topological families are absent from the ${tb.catalog_entries.toLocaleString()} catalogued orbits checked` : 'no data'}
@@ -65,32 +105,6 @@ export default function PhysicsPage() {
                   {tb.verification && <p className="text-fg-muted"><span className="text-fg">Verification:</span> {tb.verification}</p>}
                   {tb.novelty && <p className="text-fg-muted"><span className="text-fg">What “candidate” means:</span> {tb.novelty}</p>}
                   {tb.caveats && <p className="text-fg-dim">{tb.caveats}</p>}
-                </div>
-              </div>
-            )}
-          </Panel>
-          <Panel
-            title="EVENT HORIZON · black hole information"
-            subtitle={eh?.question ?? 'Page curve, Page’s theorem, sequential evaporation, Bell-pair toy model, scrambling and Hayden-Preskill'}
-            right={
-              <span className="flex flex-wrap items-center gap-2">
-                <TestsBadge tests={eh?.tests} />
-                <Link to="/problems/event-horizon" className="inline-flex h-8 items-center rounded-lg border border-white/10 bg-white/[0.03] px-3 text-[12.5px] font-medium text-fg transition-colors hover:border-white/20 hover:bg-white/[0.06]">
-                  Open problem page
-                </Link>
-              </span>
-            }
-          >
-            {!eh ? (
-              <Empty>EVENT HORIZON results are still being produced on the A100 (GPU 0).</Empty>
-            ) : (
-              <div className="space-y-5">
-                {eh.summary && <p className="max-w-4xl text-sm text-fg-muted">{eh.summary}</p>}
-                {eh.hardware && <p className="font-mono text-[11px] text-fg-dim">hardware: {eh.hardware}</p>}
-                <FigureGrid figures={eh.figures ?? []} />
-                <div className="space-y-2">
-                  <div className="label">Research cycles</div>
-                  {(eh.cycles ?? []).map((c, i) => <Cycle key={i} c={c} i={i} />)}
                 </div>
               </div>
             )}

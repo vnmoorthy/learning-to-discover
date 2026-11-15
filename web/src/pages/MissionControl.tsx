@@ -9,7 +9,7 @@ import { Counter, Empty, ErrorNote, Panel, Skeleton } from '../components/ui'
 import { dateTime, fmtScore, timeAgo } from '../lib/format'
 import { useLive } from '../live'
 import { STATIC, assetUrl } from '../mode'
-import { LatticeViewer } from '../viz3d/lazy'
+import { BlackHoleViewer, LatticeViewer } from '../viz3d/lazy'
 import type { GridArtifact } from '../types'
 
 
@@ -150,13 +150,16 @@ function PhysicsFeature() {
   const { state } = useLive()
   const eh = state?.problems.find((p) => p.slug === 'event-horizon')
   const tb = state?.problems.find((p) => p.slug === 'three-body-periodic-orbits')
+  const still = <img src={assetUrl('/gallery/blackhole_1280.jpg')} alt="A Schwarzschild black hole ray-traced through curved spacetime" className="absolute inset-0 h-full w-full object-cover" />
   return (
-    <Link to="/problems/event-horizon" className="group relative block overflow-hidden rounded-2xl border border-white/[0.07] bg-[#07080A]">
-      <img src={assetUrl('/gallery/blackhole.jpg')} alt="A Schwarzschild black hole ray-traced through curved spacetime"
-        className="block h-[200px] w-full object-cover opacity-90 transition-opacity duration-300 group-hover:opacity-100 sm:absolute sm:inset-y-0 sm:right-0 sm:h-full sm:w-[72%]"
-        loading="lazy" />
-      <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#07080A] from-30% via-[#07080A]/60 via-40% to-transparent to-60% sm:block" />
-      <div className="relative flex flex-col gap-3 p-6 sm:min-h-[340px] sm:max-w-[48%] sm:justify-center sm:p-8">
+    <section className="relative overflow-hidden rounded-2xl border border-white/[0.07] bg-[#050608]" aria-label="Event Horizon: interactive black hole">
+      <div className="relative h-[300px] w-full sm:absolute sm:inset-y-0 sm:right-0 sm:h-auto sm:w-[70%]">
+        <Suspense fallback={still}>
+          <BlackHoleViewer compact fallback={still} />
+        </Suspense>
+      </div>
+      <div className="pointer-events-none absolute inset-0 hidden bg-gradient-to-r from-[#050608] from-30% via-[#050608]/70 via-38% to-transparent to-50% sm:block" />
+      <div className="pointer-events-none relative flex flex-col gap-3 p-6 sm:min-h-[380px] sm:max-w-[44%] sm:justify-center sm:p-8">
         <div className="text-[11px] font-medium uppercase tracking-[0.14em] text-cyan">Physics · Event Horizon</div>
         <h2 className="text-[22px] font-semibold leading-tight tracking-[-0.02em] text-fg sm:text-[26px]">How does information survive a black hole&rsquo;s evaporation?</h2>
         <p className="text-[13px] leading-6 text-fg-muted">
@@ -164,10 +167,20 @@ function PhysicsFeature() {
           {eh?.metric?.value != null ? ` (${eh.metric.value} of ${eh.metric.target ?? '?'} verified)` : ''}.
           {tb?.metric?.value != null ? ` Plus ${tb.metric.value} candidate new three-body orbit families.` : ''}
         </p>
-        <div className="text-[12px] font-medium text-cyan">Open the study &rarr;</div>
+        <div className="pointer-events-auto flex flex-wrap items-center gap-2">
+          <Link to="/problems/event-horizon" className="inline-flex h-8 items-center rounded-lg border border-cyan/30 bg-cyan/[0.10] px-3 text-[12.5px] font-medium text-fg transition-colors hover:border-cyan/50 hover:bg-cyan/[0.16]">
+            Open the study &rarr;
+          </Link>
+          <Link to="/physics" className="inline-flex h-8 items-center rounded-lg border border-white/10 bg-white/[0.03] px-3 text-[12.5px] font-medium text-fg-muted transition-colors hover:border-white/20 hover:text-fg">
+            Physics
+          </Link>
+        </div>
+        <p className="text-[11px] leading-5 text-fg-dim">
+          Ray-traced live in your browser: one light ray per pixel along Schwarzschild null geodesics. Drag to orbit, {' '}
+          <span className="hidden sm:inline">click then scroll</span><span className="sm:hidden">pinch</span> to zoom, tap to pause.
+        </p>
       </div>
-      <div className="relative px-6 pb-4 text-[10.5px] text-fg-dim sm:absolute sm:bottom-3 sm:right-4 sm:p-0">Ray-traced on an A100: 24M light rays through Schwarzschild spacetime. A simulation, not a photograph.</div>
-    </Link>
+    </section>
   )
 }
 

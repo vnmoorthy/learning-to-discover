@@ -122,6 +122,7 @@ export interface CodeArtifact {
 export interface ReportArtifact {
   hero?: string
   hero_caption?: string
+  interactive?: 'blackhole'
   kind: 'report'
   title?: string
   question?: string
