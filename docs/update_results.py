@@ -91,11 +91,15 @@ def gap_text(p):
     s = ours["score"]
     if rec is None:
         return "verified study (no numeric record)"
+    if p.get("status") == "candidates":
+        return f"{num(s)} candidate new families (not in the catalogs checked)"
     better = (s - rec) if p["scoring"] == "maximize" else (rec - s)
     if p.get("beats_record"):
         return f"**beats the record by {num(better)}**"
     if abs(better) < 1e-12:
         return "equals the record"
+    if not rec or not s:
+        return f"{num(-better)} short"
     ratio = (s / rec) if p["scoring"] == "maximize" else (rec / s)
     return f"{num(-better)} short ({pct(ratio)} of the record)"
 
@@ -137,7 +141,10 @@ def block_results(d):
             "|---|---|---|---|---|---|"]
     for p in probs:
         ours = p.get("ours")
-        out.append(f"| `{p['slug']}` | {num(p['record']['score'])} ({p['record']['holder']}) | "
+        rec_cell = ("n/a (open question)" if p["record"]["score"] is None else
+                    "known catalogs" if p.get("status") == "candidates" else
+                    f"{num(p['record']['score'])} ({p['record']['holder']})")
+        out.append(f"| `{p['slug']}` | {rec_cell} | "
                    f"{num(ours['score']) if ours and ours.get('score') is not None else 'none'} | {gap_text(p)} | "
                    f"{signal_text(p)} | {STATUS.get(p['status'], p['status'])} |")
     c = st.get("compute", {})
