@@ -1,10 +1,10 @@
 [
  {
-  "title": "Event Horizon: a black hole drawn from the measured Page curve",
+  "title": "Event Horizon: a black hole ray-traced through curved spacetime",
   "src": "/gallery/blackhole.jpg",
   "kind": "image",
-  "made_with": "Blender 5 (EEVEE) from problems/event-horizon results (N = 26 evaporation on the A100)",
-  "caption": "Artwork from data, not an astrophysical image. Each ring of the accretion disk is one evaporation step of the 26-qubit sequential-evaporation run; its glow is the measured mean radiation entropy S(R) at that step, so the disk brightens toward the Page time and fades as the hole evaporates."
+  "made_with": "GPU geodesic ray tracer (PyTorch, NVIDIA A100), Schwarzschild metric, 24M rays",
+  "caption": "A Schwarzschild black hole ray-traced on an A100: 24 million light rays integrated along exact null geodesics around a thin Keplerian accretion disk (ISCO to 13 r_s) with a Novikov-Thorne temperature profile, gravitational redshift and Doppler beaming. The far side of the disk is lensed over and under the shadow; the thin ring is the photon ring. A simulation, not a photograph; the gas texture is procedural. Source: viz/blackhole/raytrace.py."
  },
  {
   "title": "Three-body braid: an equal-mass candidate orbit through time",
