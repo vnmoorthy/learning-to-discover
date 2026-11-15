@@ -522,6 +522,14 @@ def plot():
                           ("max_dev_delta_vs_haar", "max_k |⟨S_2−S_∞⟩ − Haar|", GREEN),
                           ("max_dev_capacity_vs_haar", "max_k |⟨C_E⟩ − Haar|", "#B8A1FF")):
         ax[1, 1].semilogy(bd, [blk["brick"][str(d)][key] for d in bd], "o-", ms=3.5, color=col, label=lab)
+    Ep = os.path.join(PARTS, "E.json")
+    if os.path.exists(Ep):
+        Ee = json.load(open(Ep))
+        e12 = Ee["N12"]["brick"]
+        de = sorted(int(d) for d in e12)
+        for key, col in (("S_1", CYAN), ("S_2", AMBER), ("S_inf", MAGENTA), ("S2_minus_Sinf", GREEN), ("capacity", "#B8A1FF")):
+            ax[1, 1].semilogy(de, [e12[str(d)]["max_dev"][key]["max_dev"] for d in de], "^--", ms=4, lw=0.7,
+                              color=col, mfc="none", label="independent deeper run (part E)" if key == "S_1" else None)
     ax[1, 1].axhline(0.05, color=GREY, ls=":", lw=0.8, label="ε = 0.05 nats")
     ax[1, 1].set_xlabel("brickwork depth D (Haar 2-qubit gates)")
     ax[1, 1].set_ylabel("max deviation over cuts (nats)")
@@ -542,6 +550,7 @@ def plot():
     a5.set_xticklabels(labels, fontsize=7)
     a5.set_ylabel("(E_stab Tr ρ^k − E_Haar Tr ρ^k) / E_Haar")
     a5.set_title("Exact stabilizer ensemble: 3-design, not 4-design")
+    a5.text(0.02, 0.95, "k=2, 3: difference exactly 0 (exact rationals)", transform=a5.transAxes, fontsize=7, color=FG, va="top")
     a5.legend(fontsize=7)
     a6 = axs[1, 2]
     for name, key, col in (("Haar", None, CYAN), ("stabilizer (D=6N)", None, MAGENTA)):
@@ -566,7 +575,8 @@ def plot():
     merged = {"experiment": "f_spectra (upgrade tracks A, B, direction 6)",
               "time_utc": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
               "backend": "numpy (local CPU), complex128", "A_renyi": A, "B_rmt": B, "C_ensembles": Cc,
-              "D_stabilizer_exact": Dd}
+              "D_stabilizer_exact": Dd,
+              "E_brick_deep": json.load(open(os.path.join(PARTS, "E.json"))) if os.path.exists(os.path.join(PARTS, "E.json")) else None}
     json.dump(merged, open(os.path.join(RESULTS, "f_spectra.json"), "w"), indent=1, default=float)
     print("wrote results/f_spectra.json and figures f1-f3")
 
