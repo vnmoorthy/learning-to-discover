@@ -44,6 +44,7 @@ const SHORT: Record<string, string> = {
   'kissing-number-d12-842': 'Kissing number d12',
   'kissing-number-d11-605': 'Kissing number d11',
   'three-body-periodic-orbits': 'Three-body orbits',
+  'neutron-star-eos': 'STARFORGE neutron stars',
 }
 export function shortName(slug: string | null | undefined): string {
   if (!slug) return 'global'
