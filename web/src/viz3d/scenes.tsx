@@ -55,7 +55,7 @@ export function LatticeScene({ art, selected, onSelect }: { art: GridArtifact | 
     return { W, points, vl, conf, lattice, beams: new Float32Array(beams), axis: new Float32Array(axis) }
   }, [art, n, s])
 
-  const height = (c: number) => 0.14 + Math.min(c, 6) * 0.11
+  const height = (c: number) => 0.1 + Math.min(c, 6) * 0.065
 
   useLayoutEffect(() => {
     const m = new THREE.Matrix4()
@@ -69,10 +69,10 @@ export function LatticeScene({ art, selected, onSelect }: { art: GridArtifact | 
       m.makeScale(1, hgt, 1).setPosition(a, hgt / 2, c)
       pillars.current?.setMatrixAt(i, m)
       col.copy(d.conf[i] >= 4 ? hot : d.conf[i] > 0 ? bad : clean)
-      pillars.current?.setColorAt(i, col.clone().multiplyScalar(0.55))
+      pillars.current?.setColorAt(i, (d.conf[i] >= 4 ? hot : clean).clone().multiplyScalar(d.conf[i] >= 4 ? 0.6 : 0.42))
       m.makeScale(1, 1, 1).setPosition(a, hgt + 0.012, c)
       caps.current?.setMatrixAt(i, m)
-      caps.current?.setColorAt(i, col.clone().lerp(new THREE.Color('#ffffff'), 0.45))
+      caps.current?.setColorAt(i, d.conf[i] > 0 ? col.clone() : col.clone().lerp(new THREE.Color('#ffffff'), 0.6))
     })
     for (const ref of [pillars, caps]) {
       if (!ref.current) continue
@@ -116,7 +116,7 @@ export function LatticeScene({ art, selected, onSelect }: { art: GridArtifact | 
           <bufferGeometry>
             <bufferAttribute attach="attributes-position" count={d.beams.length / 3} array={d.beams} itemSize={3} />
           </bufferGeometry>
-          <lineBasicMaterial color={C.red} transparent opacity={sel ? 0.05 : 0.13} depthWrite={false} blending={THREE.AdditiveBlending} />
+          <lineBasicMaterial color={C.red} transparent opacity={sel ? 0.04 : 0.1} depthWrite={false} blending={THREE.AdditiveBlending} />
         </lineSegments>
       )}
       {d.axis.length > 0 && (
@@ -130,11 +130,11 @@ export function LatticeScene({ art, selected, onSelect }: { art: GridArtifact | 
       {count > 0 && (
         <group key={'p' + count}>
           <instancedMesh ref={pillars} args={[undefined, undefined, count]} onClick={pick}>
-            <boxGeometry args={[s * 0.62, 1, s * 0.62]} />
+            <boxGeometry args={[s * 0.46, 1, s * 0.46]} />
             <meshBasicMaterial toneMapped={false} />
           </instancedMesh>
           <instancedMesh ref={caps} args={[undefined, undefined, count]} onClick={pick}>
-            <boxGeometry args={[s * 0.78, 0.024, s * 0.78]} />
+            <boxGeometry args={[s * 0.66, 0.018, s * 0.66]} />
             <meshBasicMaterial toneMapped={false} />
           </instancedMesh>
         </group>

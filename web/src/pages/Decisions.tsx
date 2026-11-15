@@ -126,7 +126,7 @@ export default function DecisionsPage() {
             value={q}
             onChange={(e) => setQ(e.target.value)}
             placeholder="search rationale, action, params"
-            className="h-8 min-w-0 flex-1 rounded-lg border border-white/10 bg-ink-800 px-3 text-xs text-fg outline-none placeholder:text-fg-dim focus:border-cyan/50 sm:max-w-xs"
+            className="h-8 min-w-0 flex-1 rounded-lg border border-white/10 bg-ink-700 px-3 text-xs text-fg outline-none placeholder:text-fg-dim focus:border-cyan/50 sm:max-w-xs"
           />
           <div className="ml-auto flex gap-3 font-mono text-[11px] text-fg-muted">
             <span>

@@ -1,0 +1,5 @@
+N= 6 seeds=200    0.003 cpu-s/traj  max|z|=2.03 max|S_R-S_B|=1.3e-15 [local]
+N= 7 seeds=200    0.011 cpu-s/traj  max|z|=1.01 max|S_R-S_B|=1.3e-15 [local]
+N= 8 seeds=200    0.043 cpu-s/traj  max|z|=0.97 max|S_R-S_B|=1.9e-15 [local]
+N= 9 seeds=200    0.210 cpu-s/traj  max|z|=1.75 max|S_R-S_B|=2.9e-15 [local]
+N=10 seeds=100    1.709 cpu-s/traj  max|z|=1.10 max|S_R-S_B|=3.3e-15 [local]

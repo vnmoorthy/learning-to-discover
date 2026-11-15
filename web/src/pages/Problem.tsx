@@ -279,7 +279,7 @@ function LaunchForm({ slug, templates, onLaunched }: { slug: string; templates: 
                 value={vals[k] ?? ''}
                 onChange={(e) => setVals((v) => ({ ...v, [k]: e.target.value }))}
                 disabled={READ_ONLY}
-                className="h-9 w-full rounded-lg border border-white/10 bg-ink-800 px-2 font-mono text-[12px] text-fg outline-none focus:border-cyan/50 disabled:opacity-50"
+                className="h-9 w-full rounded-lg border border-white/10 bg-ink-700 px-2 font-mono text-[12px] text-fg outline-none focus:border-cyan/50 disabled:opacity-50"
               >
                 {spec.values?.map((o) => (
                   <option key={String(o)} value={String(o)}>
@@ -297,7 +297,7 @@ function LaunchForm({ slug, templates, onLaunched }: { slug: string; templates: 
                 value={vals[k] ?? ''}
                 disabled={READ_ONLY}
                 onChange={(e) => setVals((v) => ({ ...v, [k]: e.target.value }))}
-                className={cx('h-9 w-full rounded-lg border bg-ink-800 px-2 font-mono text-[12px] text-fg outline-none focus:border-cyan/50 disabled:opacity-50', errors[k] ? 'border-bad/50' : 'border-white/10')}
+                className={cx('h-9 w-full rounded-lg border bg-ink-700 px-2 font-mono text-[12px] text-fg outline-none focus:border-cyan/50 disabled:opacity-50', errors[k] ? 'border-bad/50' : 'border-white/10')}
               />
             )}
             {errors[k] && <div className="mt-0.5 text-[10.5px] text-bad">{errors[k]}</div>}
@@ -381,8 +381,7 @@ export default function ProblemPage() {
   return (
     <div className="space-y-5">
       <BackLink />
-      <section className={cx('panel relative overflow-hidden rounded-xl p-5 sm:p-6', p.beats_record && '!border-amber/60 shadow-amber')}>
-        <div className="absolute inset-x-0 top-0 h-[2px]" style={{ background: `linear-gradient(90deg, ${color}, transparent 70%)` }} />
+      <section className={cx('panel relative overflow-hidden rounded-xl p-5 sm:p-6', p.beats_record && '!border-amber/30')}>
         <div className="flex flex-wrap items-start justify-between gap-5">
           <div className="min-w-0">
             <div className="flex flex-wrap items-center gap-2">
@@ -392,16 +391,16 @@ export default function ProblemPage() {
               <StatusBadge status={p.beats_record ? 'record' : p.status} />
               <span className="font-mono text-[10.5px] uppercase text-fg-dim">{p.scoring}</span>
             </div>
-            <h1 className="mt-1.5 font-display text-2xl font-semibold tracking-tight sm:text-[28px]">{p.title}</h1>
+            <h1 className="mt-2 text-[22px] font-semibold leading-7 tracking-[-0.02em] sm:text-[26px] sm:leading-8">{p.title}</h1>
             <div className="mt-4 flex flex-wrap gap-x-8 gap-y-3">
               <div>
                 <div className="label">Record</div>
-                <div className="font-mono text-xl font-semibold text-amber">{fmtScore(p.record.score)}</div>
+                <div className="mt-0.5 font-mono text-[19px] font-medium tracking-tight text-fg-muted">{fmtScore(p.record.score)}</div>
                 <div className="text-[11px] text-fg-dim">{p.record.holder}</div>
               </div>
               <div>
                 <div className="label">Ours</div>
-                <div className={cx('font-mono text-xl font-semibold', p.beats_record ? 'text-amber glow-amber' : 'text-fg')}>{p.ours ? fmtScore(p.ours.score) : '--'}</div>
+                <div className={cx('mt-0.5 font-mono text-[19px] font-medium tracking-tight', p.beats_record ? 'text-amber' : 'text-fg')}>{p.ours ? fmtScore(p.ours.score) : '--'}</div>
                 <div className="text-[11px] text-fg-dim">
                   {p.ours ? `${p.ours.verified ? 'verified' : 'unverified'} ${dateTime(p.ours.at)}` : 'no valid solution yet'}
                   {gap != null && gap !== 0 && <span className={gap > 0 ? ' text-amber' : ''}> | gap {gap > 0 ? '+' : ''}{fmtScore(gap, Math.abs(gap) < 1 ? 8 : 0)}</span>}
@@ -409,7 +408,7 @@ export default function ProblemPage() {
               </div>
               <div>
                 <div className="label">{p.metric.name}</div>
-                <div className="font-mono text-xl font-semibold" style={{ color }}>
+                <div className="mt-0.5 font-mono text-[19px] font-medium tracking-tight text-fg">
                   {fmtScore(p.metric.value)}
                 </div>
                 <div className="text-[11px] text-fg-dim">
@@ -418,7 +417,7 @@ export default function ProblemPage() {
               </div>
               <div>
                 <div className="label">Compute</div>
-                <div className="font-mono text-xl font-semibold text-fg">
+                <div className="font-mono text-[19px] font-medium tracking-tight text-fg">
                   {p.compute.gpus} <span className="text-sm text-fg-dim">GPU</span> {p.compute.cpu_procs} <span className="text-sm text-fg-dim">cores</span>
                 </div>
                 <div className="text-[11px] text-fg-dim">{(p.compute.share * 100).toFixed(1)}% of the lab</div>

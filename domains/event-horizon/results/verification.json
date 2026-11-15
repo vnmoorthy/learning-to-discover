@@ -1,0 +1,628 @@
+[
+ {
+  "claim": "Page's formula <S_{m,n}> = sum_{j=n+1}^{mn} 1/j - (m-1)/(2n) matches Monte Carlo over Haar states (Problems A, B)",
+  "classification": 2,
+  "method_builder": "torch complex128 on A100, QR-of-Ginibre Haar states, eigvalsh/SVD spectra; digamma or float harmonic sums; 124 (m,n) pairs + 213 (N,k) cells",
+  "method_verifier": "CPU numpy, scipy.stats.unitary_group first column (Gaussian vector for D>512), Philox RNG, SVD Schmidt coefficients cross-checked against explicit-loop partial trace + eigvalsh of rho_R and rho_B; Page value from exact Fractions; additionally recomputed every builder z from the stored means/stderrs with independently computed Page values",
+  "numbers": {
+   "points": [
+    {
+     "m": 2,
+     "n": 2,
+     "samples": 4000,
+     "page_exact_nats": 0.3333333333333333,
+     "page_exact_bits": 0.4808983469629878,
+     "mc_mean_nats": 0.3335626610838826,
+     "mc_stderr": 0.002856864115724093,
+     "z": 0.08
+    },
+    {
+     "m": 2,
+     "n": 8,
+     "samples": 4000,
+     "page_exact_nats": 0.6003718503718504,
+     "page_exact_bits": 0.8661534912207993,
+     "mc_mean_nats": 0.5996925596204724,
+     "mc_stderr": 0.0010858482417056682,
+     "z": -0.626
+    },
+    {
+     "m": 3,
+     "n": 5,
+     "samples": 4000,
+     "page_exact_nats": 0.83489565989566,
+     "page_exact_bits": 1.2044998281911872,
+     "mc_mean_nats": 0.8362424764935535,
+     "mc_stderr": 0.001670648288190131,
+     "z": 0.806
+    },
+    {
+     "m": 4,
+     "n": 4,
+     "samples": 4000,
+     "page_exact_nats": 0.9223956598956599,
+     "page_exact_bits": 1.3307356442689715,
+     "mc_mean_nats": 0.9246315027180967,
+     "mc_stderr": 0.0018160422079955881,
+     "z": 1.231
+    },
+    {
+     "m": 8,
+     "n": 16,
+     "samples": 4000,
+     "page_exact_nats": 1.833668099360179,
+     "page_exact_bits": 2.6454238735832214,
+     "mc_mean_nats": 1.834259841180788,
+     "mc_stderr": 0.0006045369729818141,
+     "z": 0.979
+    },
+    {
+     "m": 16,
+     "n": 16,
+     "samples": 4000,
+     "page_exact_nats": 2.274865969588287,
+     "page_exact_bits": 3.2819378530120855,
+     "mc_mean_nats": 2.2748503836865863,
+     "mc_stderr": 0.0004906630832749672,
+     "z": -0.032
+    },
+    {
+     "m": 32,
+     "n": 64,
+     "samples": 1500,
+     "page_exact_nats": 3.216000368111948,
+     "page_exact_bits": 4.639707782572188,
+     "mc_mean_nats": 3.2160126037857735,
+     "mc_stderr": 0.00024245442840353475,
+     "z": 0.05
+    }
+   ],
+   "max_abs_z": 1.231,
+   "max_SVD_vs_loop_ptrace_diff": 1.3322676295501878e-15,
+   "recomputed_from_builder_json": {
+    "A_cells": 213,
+    "A_max_abs_z": 3.378,
+    "A_rms_z": 1.046,
+    "A_frac_gt2": 0.0657,
+    "B_rows": 124,
+    "B_max_abs_z": 2.694,
+    "B_rms_z": 0.997,
+    "B_frac_gt2": 0.0403,
+    "max_abs_page_value_difference": 4.4e-16
+   }
+  },
+  "agree": true,
+  "tolerance": "|z| < 4 standard errors per point (7 points; max |z| = 1.23); builder summary statistics reproduced to all quoted digits",
+  "notes": "Units nats (bits = nats/ln 2 also checked in A JSON). The A max |z| = 3.38 is at N = 24 with 8 states only; B rows at m*n = 2^24 have 16 samples. Pooled z statistics are over correlated cells (A)."
+ },
+ {
+  "claim": "Sequential Haar evaporation at N = 8 reproduces Page's mean at every step (Problem C)",
+  "classification": 2,
+  "method_builder": "torch (CPU for N=8) full 2^(N-t) Haar unitaries per step ('full', 200 seeds) and Haar-isometry sampler ('isometry', 200 seeds); eigvalsh of Gram matrices",
+  "method_verifier": "literal protocol with scipy.stats.unitary_group at every step, 400 trajectories, opposite qubit-ordering convention, S(R) and S(B) from separate eigvalsh of rho_R and rho_B",
+  "numbers": {
+   "t": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+   ],
+   "page_exact_nats": [
+    0.0,
+    0.687292,
+    1.357017,
+    1.956475,
+    2.274866,
+    1.956475,
+    1.357017,
+    0.687292,
+    0.0
+   ],
+   "verifier_mean": [
+    0.0,
+    0.68699,
+    1.35647,
+    1.95678,
+    2.27424,
+    1.95768,
+    1.35687,
+    0.68709,
+    0.0
+   ],
+   "verifier_stderr": [
+    0.0,
+    0.00024,
+    0.00053,
+    0.00099,
+    0.00158,
+    0.00096,
+    0.00054,
+    0.00026,
+    0.0
+   ],
+   "z_vs_page": [
+    0.0,
+    -1.22,
+    -1.03,
+    0.31,
+    -0.4,
+    1.26,
+    -0.28,
+    -0.77,
+    0.0
+   ],
+   "builder_full_mean": [
+    0.68726,
+    1.3578,
+    1.95857,
+    2.27363,
+    1.95826,
+    1.35814,
+    0.68706,
+    0.0
+   ],
+   "z_vs_builder_full": [
+    -0.66,
+    -1.52,
+    -1.02,
+    0.23,
+    -0.34,
+    -1.47,
+    0.07
+   ],
+   "builder_isometry_mean": [
+    0.68687,
+    1.35644,
+    1.9541,
+    2.27394,
+    1.95681,
+    1.35698,
+    0.6875,
+    0.0
+   ],
+   "z_vs_builder_isometry": [
+    0.3,
+    0.04,
+    1.47,
+    0.11,
+    0.52,
+    -0.12,
+    -1.03
+   ],
+   "max_abs_SR_minus_SB": 2.220446049250313e-15,
+   "corr_consecutive_steps": [
+    0.45,
+    0.44,
+    0.46,
+    0.45,
+    0.54,
+    0.38
+   ]
+  },
+  "agree": true,
+  "tolerance": "|z| < 3 (combined standard error) at each of 7 steps; observed max |z| = 1.52 vs builder, 1.26 vs exact Page",
+  "notes": "Consecutive-step correlation 0.38-0.54 (400 traj.) agrees with the builder's 0.43-0.52. The 'sequential state is exactly Haar' argument in notes/C_analysis.md was checked by hand and is correct: U_1 acts on the full space of a pure state, later unitaries are independent of the state and act as 1_R x U_B, so each |psi_k> is Haar and the whole S(R_k) trajectory is a function of the final Haar state's nested cuts."
+ },
+ {
+  "claim": "Bell-pair 'Hawking' toy model: S(R) = k ln 2 exactly (k bits), flat spectrum (Problem D)",
+  "classification": 1,
+  "method_builder": "Kronecker-product construction, density-matrix route (k<=12) and state-vector route (k<=10)",
+  "method_verifier": "state vector written amplitude by amplitude (no kron), explicit-loop partial trace over partner qubits, eigvalsh; k = 0..6",
+  "numbers": {
+   "k": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+   ],
+   "S_R_nats": [
+    -0.0,
+    0.6931471805599452,
+    1.3862943611198906,
+    2.079441541679836,
+    2.772588722239781,
+    3.4657359027997274,
+    4.1588830833596715
+   ],
+   "abs_err": [
+    0.0,
+    1.1102230246251565e-16,
+    0.0,
+    4.440892098500626e-16,
+    0.0,
+    8.881784197001252e-16,
+    0.0
+   ],
+   "max_abs_err": 8.881784197001252e-16,
+   "max_dev_from_flat": 1.1102230246251565e-16
+  },
+  "agree": true,
+  "tolerance": "1e-12 nats (observed 8.9e-16)",
+  "notes": "Exceeding (N-k) ln 2 for k > N/2 is arithmetic. The identification of (N-k) ln 2 with a Bekenstein-Hawking-like capacity is a modelling assumption of the toy, stated as such in notes/D_derivation.md."
+ },
+ {
+  "claim": "Hayden-Preskill, old black hole, Haar scrambler, k = 1 (n_B = 4): I(R:ED), I(R:B'), trace distance to product, Yoshida-Kitaev F_EPR/P_EPR versus number m of emitted qubits; thresholds m_I90 = 2, m_I99 = 4, m_T10 = 3",
+  "classification": 2,
+  "method_builder": "torch complex128, Choi-state tensor U/sqrt(d), Gram-matrix eigvalsh, YK decoder via closed-form amplitude (200 seeds)",
+  "method_verifier": "scipy unitary_group (400 seeds); all reduced density matrices by explicit index contraction + eigvalsh; I(R:ED) from S(R)+S(ED)-S(B') (global purity); YK decoder simulated literally (apply U* to Bob's half, project D D' on Bell pair, measure overlap with Bell_RR')",
+  "numbers": {
+   "m": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "two_k_ln2": 1.3862943611198906,
+   "I_R_ED": {
+    "verifier": [
+     0.0,
+     0.9763,
+     1.2914,
+     1.3646,
+     1.3821,
+     1.3863
+    ],
+    "stderr": [
+     0.0,
+     0.00075,
+     0.00047,
+     0.00022,
+     0.0001,
+     0.0
+    ],
+    "builder": [
+     -0.0,
+     0.9769,
+     1.2923,
+     1.3644,
+     1.3821,
+     1.3863
+    ],
+    "z": [
+     -0.45,
+     -1.17,
+     0.31,
+     0.21
+    ]
+   },
+   "I_R_Bp": {
+    "verifier": [
+     1.3863,
+     0.41,
+     0.0949,
+     0.0217,
+     0.0042,
+     0.0
+    ],
+    "builder": [
+     1.3863,
+     0.4094,
+     0.094,
+     0.0219,
+     0.0042,
+     -0.0
+    ],
+    "z": [
+     0.45,
+     1.17,
+     -0.31,
+     -0.21
+    ]
+   },
+   "T": {
+    "verifier": [
+     0.75,
+     0.3734,
+     0.1838,
+     0.0882,
+     0.0389,
+     0.0
+    ],
+    "stderr": [
+     0.0,
+     0.00042,
+     0.00048,
+     0.00047,
+     0.0005,
+     0.0
+    ],
+    "builder": [
+     0.75,
+     0.3729,
+     0.1828,
+     0.0884,
+     0.0386,
+     0.0
+    ],
+    "z": [
+     0.76,
+     1.3,
+     -0.31,
+     0.36
+    ]
+   },
+   "F_EPR": {
+    "verifier": [
+     0.25,
+     0.5719,
+     0.8435,
+     0.9586,
+     0.9917,
+     1.0
+    ],
+    "builder": [
+     0.25,
+     0.5723,
+     0.8447,
+     0.9584,
+     0.9916,
+     1.0
+    ],
+    "z": [
+     -0.47,
+     -1.08,
+     0.32,
+     0.23
+    ]
+   },
+   "P_EPR": {
+    "verifier": [
+     1.0,
+     0.4373,
+     0.2965,
+     0.2608,
+     0.2521,
+     0.25
+    ],
+    "builder": [
+     1.0,
+     0.4369,
+     0.296,
+     0.2609,
+     0.2521,
+     0.25
+    ],
+    "z": [
+     0.47,
+     1.11,
+     -0.32,
+     -0.23
+    ]
+   },
+   "F_uhl": {
+    "verifier": [
+     0.25,
+     0.7612,
+     0.9514,
+     0.9891,
+     0.9979,
+     1.0
+    ],
+    "builder": [
+     0.25,
+     0.7614,
+     0.9519,
+     0.989,
+     0.9979,
+     1.0
+    ],
+    "z": [
+     -0.2,
+     -1.17,
+     0.31,
+     0.19
+    ]
+   },
+   "thresholds_builder": {
+    "m_I90": 2,
+    "m_I99": 4,
+    "m_T10": 3,
+    "m_F90": 2
+   },
+   "thresholds_verifier": {
+    "m_I90": 2,
+    "m_I99": 4,
+    "m_T10": 3
+   },
+   "I_sum_identity_max_err": 1.9984014443252818e-15
+  },
+  "agree": true,
+  "tolerance": "|z| < 3 (combined standard error) for m = 1..4; exact values at m = 0 and m = n to 1e-12; observed max |z| = 1.30",
+  "notes": "m = 0 and m = 5 are deterministic (I = 0 / 2 ln 2, T = 3/4 / 0). F_uhl at m = 0 differs by 1.2e-8 (0.25000001 vs 0.25): square-root of round-off in the verifier's fidelity routine, not a discrepancy. Thresholds are integers read off seed-mean curves, no error bars."
+ },
+ {
+  "claim": "Decoupling bound: E T <= 1/2 sqrt((d_R^2-1)(d_D^-2 - d^-2)/(1-d^-2)) <= 1/2 * 2^(k-m); decoder fidelity F >= (1-T)^2",
+  "classification": 2,
+  "method_builder": "Weingarten second-moment formula for E tr rho_RB'^2, Cauchy-Schwarz + Jensen; compared to measured T",
+  "method_verifier": "re-derived by hand (rho_R x rho_B' = 1/D exactly because the scrambler input is maximally mixed; ||X||_1 <= sqrt(D)||X||_2); closed form compared with 1/2 sqrt(D * MC-purity - 1) from independent samples; Fuchs-van de Graaf inequality checked on every sample",
+  "numbers": {
+   "m": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5
+   ],
+   "T_mean": [
+    0.75,
+    0.3734,
+    0.1838,
+    0.0882,
+    0.0389,
+    0.0
+   ],
+   "bound_closed_form": [
+    0.866,
+    0.4324,
+    0.2149,
+    0.1049,
+    0.0469,
+    0.0
+   ],
+   "bound_from_MC_purity": [
+    0.866,
+    0.4328,
+    0.2155,
+    0.104,
+    0.0458,
+    0.0
+   ],
+   "bound_asymptotic": [
+    1.0,
+    0.5,
+    0.25,
+    0.125,
+    0.0625,
+    0.03125
+   ],
+   "ratio_T_over_bound": [
+    0.866,
+    0.864,
+    0.855,
+    0.841,
+    0.829
+   ],
+   "bound_holds": true,
+   "fuchs_van_de_graaf_holds_all_samples": true
+  },
+  "agree": true,
+  "tolerance": "bound must hold for the mean within 3 stderr; closed form vs MC purity within MC error",
+  "notes": "The bound is on the Haar AVERAGE of T (not per-instance) and is ~15-17% loose at m >= 1, as the builder reports. 'm >= k + log2(1/eps)' is a SUFFICIENT condition for average error <= eps (from E[1-F] <= 2 E[T] <= 2^(k-m)), not a necessary one; the true requirement is smaller by about one qubit (measured thresholds)."
+ },
+ {
+  "claim": "Local-Haar brickwork evaporation (depth 2 per emission, N = 8) falls below the Page curve by max 0.725 nats (Extension 1)",
+  "classification": 3,
+  "method_builder": "torch batch state vectors on A100, numpy-sampled Haar 4x4 gates, Gram eigvalsh, 256 seeds",
+  "method_verifier": "independent numpy tensor code, scipy unitary_group gates, SVD spectra, 400 seeds, same circuit geometry (open chain, alternating layers continuing across emissions, last remaining qubit emitted)",
+  "numbers": {
+   "verifier_S_mean": [
+    0.0,
+    0.3208,
+    0.8256,
+    1.243,
+    1.6617,
+    1.6856,
+    1.2824,
+    0.6716,
+    0.0
+   ],
+   "verifier_stderr": [
+    0.0,
+    0.0093,
+    0.0084,
+    0.0078,
+    0.007,
+    0.0046,
+    0.0021,
+    0.001,
+    0.0
+   ],
+   "builder_S_mean": [
+    0.0,
+    0.3347,
+    0.8253,
+    1.2313,
+    1.6501,
+    1.6876,
+    1.2873,
+    0.6734,
+    0.0
+   ],
+   "z_vs_builder": [
+    -0.94,
+    0.02,
+    0.9,
+    1.03,
+    -0.28,
+    -1.54,
+    -1.33
+   ],
+   "verifier_max_dev": 0.7135,
+   "builder_max_dev": 0.7252
+  },
+  "agree": true,
+  "tolerance": "|z| < 3 per step (observed max 1.54); max deviation 0.713 vs 0.725 (difference 0.012, stderr at that cut ~0.011)",
+  "notes": "Only one (N, depth) point of Extension 1 was independently reproduced. d* / D* are read from seed-mean curves on a coarse depth grid and depend on the arbitrary eps = 0.05 nats and on the edge-emission geometry."
+ },
+ {
+  "claim": "Clifford (stabilizer) states have flat entanglement spectra (vN = Renyi-2 = integer bits); builder report adds that a fully scrambled Clifford state 'sits ABOVE Page by up to ~0.19 nats at the half cut'",
+  "classification": 3,
+  "method_builder": "uniform 2-qubit Clifford gates (11520-element group by BFS), brickwork, Gram eigvalsh",
+  "method_verifier": "independent Clifford gates as random 12-letter words in {H, S, CNOT} on each bond, 60 brickwork layers, N = 10, 800 states, SVD at every cut; 2-design check E[tr rho^2] vs (m+n)/(mn+1); comparison with the corank law of a random 5x5 GF(2) matrix (heuristic reference, not a cited theorem)",
+  "numbers": {
+   "max_abs_vN_minus_Renyi2": 8.455458555545192e-13,
+   "max_distance_from_integer_bits": 6.732392421326949e-13,
+   "half_cut_mean_nats": 2.8783,
+   "half_cut_stderr": 0.0154,
+   "page_half_nats": 2.9663,
+   "stabilizer_minus_page_nats": -0.088,
+   "gf2_reference_minus_page_nats": -0.0765,
+   "half_cut_bits_histogram": {
+    "2": 5,
+    "3": 91,
+    "4": 481,
+    "5": 223
+   },
+   "gf2_reference_probs_by_deficit_bits": {
+    "0": 0.298,
+    "1": 0.5774,
+    "2": 0.1203,
+    "3": 0.0043,
+    "4": 0.0,
+    "5": 0.0
+   },
+   "mean_purity": 0.06207,
+   "haar_mean_purity_exact": 0.06244,
+   "builder_one_shot_clifford_plateau_minus_page_nats": {
+    "8": -0.101,
+    "10": -0.183,
+    "12": -0.191,
+    "14": -0.144,
+    "16": -0.161,
+    "18": -0.193,
+    "20": -0.096,
+    "22": -0.107,
+    "24": 0.024
+   }
+  },
+  "agree": false,
+  "tolerance": "flatness to 1e-9 (agrees: 8.5e-13); sign of the mean offset from Page (disagrees)",
+  "notes": "Flat spectra / integer-bit entropies: CONFIRMED. The sign statement in the builder's report is WRONG: the MEAN half-cut entropy of scrambled stabilizer states is BELOW Page, by 0.088 +- 0.015 nats here (N = 10), and the builder's own one-shot Clifford plateaus are below Page at 8 of 9 sizes. Individual stabilizer states with zero deficit sit 0.5 nat above Page and those with a 1-bit deficit 0.193 nat below; the mean is below. Consequence: Clifford circuits never come within eps = 0.05 nats of Page at the half cut at any depth, so 'd* undefined' for Clifford is a property of the stabilizer ensemble (it reproduces the Haar mean purity, checked here, but not the Haar entropy distribution), not evidence of slower scrambling. The statement appears only in the builder's hand-off report, not in the repo files; the repo figure caption ('Clifford mean above Page' for individual negative sample means) is harmless."
+ },
+ {
+  "claim": "Full test suite passes on the GPU box",
+  "classification": 2,
+  "method_builder": "pytest tests/test_core.py tests/test_evaporation.py (54 passed), tests/test_ext.py (55 passed)",
+  "method_verifier": "CUDA_VISIBLE_DEVICES=0 OMP_NUM_THREADS=4 .venv/bin/python -m pytest -q tests (all three files together)",
+  "numbers": {
+   "passed": 109,
+   "failed": 0,
+   "seconds": 21.32,
+   "log": "logs/pytest_verifier.log"
+  },
+  "agree": true,
+  "tolerance": "all pass",
+  "notes": "49 + 5 + 55 = 109."
+ },
+ {
+  "claim": "References exist as cited",
+  "classification": 1,
+  "method_builder": "web search for Foong-Kanno, Sanchez-Ruiz, Lubkin, Mezzadri; Sen journal reference from memory",
+  "method_verifier": "web search for Sen: arXiv:hep-th/9601132 is S. Sen, 'Average Entropy of a Subsystem'; a secondary source cites the published version as Phys. Rev. Lett. 77, 1 (1996)",
+  "numbers": {},
+  "agree": true,
+  "tolerance": "n/a",
+  "notes": "PRL page itself was not opened; the journal reference is confirmed only through the arXiv record plus a secondary citation. Other references were not re-checked by the verifier."
+ }
+]

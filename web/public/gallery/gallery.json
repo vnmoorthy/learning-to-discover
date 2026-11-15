@@ -1,5 +1,12 @@
 [
  {
+  "title": "Three-body braid: an equal-mass candidate orbit through time",
+  "src": "/gallery/orbit_braid.jpg",
+  "kind": "image",
+  "made_with": "Blender 5 (EEVEE), real trajectory re-integrated with DOP853",
+  "caption": "Candidate 14 (m1 = m2 = m3 = 1, T = 45.872): the three bodies' paths over one full period, with time running left to right. A verified periodic orbit whose topological family is absent from the 2,060 catalogued orbits checked (candidate, not proven new)."
+ },
+ {
   "title": "Three-body: 16 candidate periodic-orbit families",
   "src": "/gallery/threebody_candidates.png",
   "kind": "image",

@@ -1,0 +1,8 @@
+✓ Initialized. View run at 
+https://modal.com/apps/vnarasingamoorthy/main/ap-acRzPyNYkEFtRnEiCPawmE
+✓ Created objects.
+├── 🔨 Created mount 
+│   domains/event-horizon/experiments/c_modal.
+│   py
+├── 🔨 Created mount domains/event-horizon/eh
+└── 🔨 Created function traj.

@@ -1,0 +1,386 @@
+{
+ "project": "Event Horizon",
+ "generated": "2026-11-15",
+ "disclaimer": "Finite-dimensional qubit toy models without gravity. Nothing here solves or claims to solve the information paradox; the island formula is not derived or tested.",
+ "classification_scale": {
+  "1": "reproduction",
+  "2": "verification of a known relation",
+  "3": "new computational observation within an existing model",
+  "4": "new conjecture",
+  "5": "potentially novel result needing investigation"
+ },
+ "highest_class_claimed": 3,
+ "sources": "Built only from files in this repository: README.md, notes/*.md, results/*.json, logs/, verify/independent.py output.",
+ "cycles": [
+  {
+   "id": "A",
+   "question": "Does the entanglement entropy of k qubits of a Haar-random N-qubit pure state follow Page's curve, and how close is the mean to Page's exact formula?",
+   "hypothesis": "Mean S(R_k) equals Page's formula H_{mn} - H_n - (m-1)/(2n) with m = 2^min(k,N-k), n = 2^max(k,N-k); S(R) = S(B) for every state.",
+   "derivation_summary": "Schmidt decomposition gives equal non-zero spectra of rho_R and rho_B, so S(R) = S(B) <= ln min(m,n). Lubkin's mean purity (m+n)/(mn+1) with Jensen gives E S >= ln m - m/n. Page's exact mean (proved by Foong-Kanno, Sanchez-Ruiz, Sen) expands to ln m - m/(2n) + 1/(2mn) + ... (notes/A_derivation.md).",
+   "prediction": "S rises one bit per qubit, deficit 1/2 nat at k = N/2 for even N (1/4 nat at k = (N+-1)/2 for odd N), falls symmetrically to 0; |z| of Monte Carlo means of order 1.",
+   "experiment": {
+    "script": "experiments/a_page_curve.py",
+    "params": {
+     "N": "8..20, 22, 24",
+     "cuts": "every k = 0..N",
+     "states_per_N": "400 (N<=14), 200 (15,16), 100 (17,18), 50 (19,20), 16 (22), 8 (24)",
+     "dtype": "complex128",
+     "clip": 1e-15,
+     "units": "nats (bits also stored)"
+    },
+    "seeds": "torch.Generator(cuda).manual_seed(1000 + N)",
+    "hardware": "Lambda A100 40GB (GPU 0)"
+   },
+   "result": {
+    "cells": 213,
+    "max_abs_z": 3.378,
+    "max_abs_z_N_le_20": 2.66,
+    "rms_z": 1.046,
+    "frac_abs_z_gt_2": 0.0657,
+    "max_abs_dev_nats": "1.6e-3 (N=8) falling to 2.6e-5 (N=24)",
+    "max_abs_SR_minus_SB_nats": 5.3e-15,
+    "data": "results/a_page_curve.json",
+    "figure": "figures/a_page_curve.png"
+   },
+   "verification": "verify/independent.py V1: 7 (m,n) pairs against exact rational Page values, max |z| = 1.23; SVD vs explicit-loop partial trace differ by <= 1.3e-15; builder summary statistics recomputed from stored means to all quoted digits. Notebook: N = 10, 300 states, max |z| = 2.01.",
+   "critic_objections": [
+    "Pooled z statistics are over correlated cells (nested cuts of the same states): descriptive only.",
+    "The z = 3.38 cell (N = 24, 8 states) was not followed up; the standard error from 8 states is unreliable.",
+    "S(R) = S(B) is an independent check only when the larger side has dimension <= 2048."
+   ],
+   "revised_hypothesis": "Unchanged.",
+   "conclusion": "Page curve reproduced for N = 8..24 within Monte Carlo error.",
+   "classification": "1 (reproduction) / 2 (verification of Page's formula)"
+  },
+  {
+   "id": "B",
+   "question": "How accurately does Monte Carlo over Haar states reproduce Page's formula across many (m, n), and how good are the asymptotic forms?",
+   "hypothesis": "Monte Carlo means agree with the exact formula at every (m, n); the error of ln m - m/(2n) is about -1/(2mn) at large dimension.",
+   "derivation_summary": "Euler-Maclaurin expansion of the harmonic numbers in Page's exact formula: <S> = ln m - m/(2n) + 1/(2mn) + (1 - m^-2)/(12 n^2) - ... ; checked symbolically with SymPy and against exact rational arithmetic (eh/page.py).",
+   "prediction": "z-scores distributed like a unit normal (rms about 1, about 5% above 2); Monte Carlo error falls like samples^-1/2; asymptotic error -> -1/(2mn).",
+   "experiment": {
+    "script": "experiments/b_page_theorem.py",
+    "params": {
+     "pairs": 124,
+     "max_mn": 16777216,
+     "includes": "m = n up to 4096",
+     "samples_at_mn_2^24": 16,
+     "convergence_point": "(m,n) = (8,16), 262144 samples",
+     "dtype": "complex128",
+     "clip": 1e-15
+    },
+    "seeds": "torch.Generator(cuda).manual_seed(2000 + row index)",
+    "hardware": "Lambda A100 40GB (GPU 0)",
+    "wall_s": 406
+   },
+   "result": {
+    "max_abs_z": 2.694,
+    "rms_z": 0.997,
+    "frac_abs_z_gt_2": 0.0403,
+    "frac_abs_z_gt_3": 0.0,
+    "mc_error_slope": -0.476,
+    "asym0_err_at_(2,2)_nats": -0.14,
+    "asym0_err_at_mn_2^24_nats": -3e-08,
+    "asym1_err_at_(2,2)_nats": -0.015,
+    "asym1_err_at_(2048,2048)_nats": -2e-08,
+    "data": "results/b_page_theorem.json, results/b_page_theorem_table.md",
+    "figure": "figures/b_page_theorem.png"
+   },
+   "verification": "Verifier recomputed all 124 z-scores from the stored means with independently computed Page values (differences <= 4.4e-16): max |z| 2.694, rms 0.997. Notebook: 7 pairs, max |z| = 2.21.",
+   "critic_objections": [
+    "Rows at m*n = 2^24 rest on 16 samples each.",
+    "The -0.476 slope is a fit at a single (m, n)."
+   ],
+   "revised_hypothesis": "Unchanged.",
+   "conclusion": "Page's formula verified at 124 dimension pairs up to m*n = 2^24; the first correction to Page's asymptotic form is +1/(2mn).",
+   "classification": "2 (verification of a known relation)"
+  },
+  {
+   "id": "C",
+   "question": "Does sequential evaporation (a fresh Haar unitary on the remaining hole before every emitted qubit) differ from a single Haar-random state, in the mean or in the distribution of the entropy trajectory?",
+   "hypothesis": "It does not: every intermediate state is exactly Haar and the whole trajectory has the law of the nested cuts of one Haar state.",
+   "derivation_summary": "U_1 acts on all N qubits so psi_1 is Haar; 1_R x U_{t+1} independent of psi_t preserves the Haar law (left-invariance); later unitaries act only on the hole and cannot change rho_{R_t}. So the trajectory is a function of the final Haar state's nested cuts (notes/C_analysis.md).",
+   "prediction": "Mean S(R_t) = Page exactly at every step; consecutive-step correlations equal those of nested cuts of one Haar state (about 0.45), not 0; controls that break the assumptions (emit before scrambling; hole pre-entangled with early radiation) deviate.",
+   "experiment": {
+    "script": "experiments/c_evaporation.py (run / ks / variants / plot), experiments/c_recheck_full13.py",
+    "params": {
+     "full_mode_N": "6..14 (seeds 200,200,200,200,100,40,20,40,20)",
+     "isometry_mode_N": "6..16, 18, 20, 22, 24, 26, 27 (seeds 200 ... 100, 100, 16, 1)",
+     "ks": "N = 10: 1000 isometry / 200 full / 1000 direct Haar; N = 8: 4000 / 1000 / 4000",
+     "variants": "N = 6, 2000 samples",
+     "recheck": "full N = 13, 1000 trajectories",
+     "dtype": "complex128",
+     "clip": 1e-15
+    },
+    "seeds": "manual_seed(3000 + 100 N + s) (full), + 50000 (isometry)",
+    "hardware": "Lambda A100 40GB (GPU 0); N <= 9 full and N <= 20 isometry on CPU (device recorded per JSON)"
+   },
+   "result": {
+    "full_max_abs_z_by_N": {
+     "6": 0.82,
+     "7": 1.24,
+     "8": 1.65,
+     "9": 1.11,
+     "10": 2.84,
+     "11": 2.73,
+     "12": 1.96,
+     "13": 4.19,
+     "14": 1.94
+    },
+    "isometry_max_abs_z_N22_24_26": [
+     2.31,
+     2.42,
+     3.65
+    ],
+    "pooled_cells": 296,
+    "pooled_rms_z": 1.106,
+    "pooled_frac_gt_2": 0.061,
+    "ks_N10": "53 tests, smallest p = 0.055 (Bonferroni 1.0)",
+    "ks_N8": "41 tests, smallest p = 0.024 (Bonferroni 0.98)",
+    "step_correlation_sequential": "0.43-0.52",
+    "step_correlation_nested_cuts": "0.44-0.51",
+    "controls": "V1 matches the (N-1)-qubit Page curve shifted by one step; V2 lies above Page by 67, 31, 16, 7.6, 3.6 standard errors at steps 1-5",
+    "largest_full": "N = 14: 12.3 GiB peak, 4.3 s per trajectory",
+    "largest_isometry": "N = 26: 7.0 GiB, 12.7 s per trajectory; N = 27 once: 8.1 GiB, 28 s",
+    "runtime_growth_per_qubit": {
+     "full": 2.7,
+     "isometry": 2.2
+    },
+    "data": "results/c_evap_*.json, results/c_ks_N8.json, results/c_ks_N10.json, results/c_variants_N6.json, results/c_recheck_full_N13.json, results/c_summary.json",
+    "figure": "figures/c_evaporation.png"
+   },
+   "verification": "verify/independent.py V2: literal protocol with scipy unitary_group, opposite qubit ordering, N = 8, 400 trajectories: max |z| = 1.26 vs Page, 1.52 vs builder full, 1.47 vs builder isometry; |S(R) - S(B)| <= 2.2e-15; step correlation 0.38-0.54. The Haar-invariance argument was checked by hand. Notebook: N = 8, 150 trajectories, max |z| = 1.37.",
+   "critic_objections": [
+    "One cell had z = 4.19 (full, N = 13, step 2, 40 seeds).",
+    "Because the state is exactly Haar, the sequential simulation is redundant with Problem A; the N = 22-27 isometry runs are reference Page curves, and only N <= 14 exercises the literal protocol.",
+    "The z = 3.65 cell at N = 26 (16 seeds) was not followed up.",
+    "Small-N runs were on CPU, so 'on the A100' applies to N >= 10 for the literal protocol.",
+    "Memory for full N = 15 (about 49 GiB) and isometry N = 28 is estimated, not measured."
+   ],
+   "revised_hypothesis": "The z = 4.19 cell is a small-sample fluctuation: with 1000 trajectories under the same seed rule z = 1.36 at that step and max |z| = 1.64 overall. For dim R << dim B the distribution of S(R) is skewed and a 20-40 sample standard error is too small.",
+   "conclusion": "Sequential Haar evaporation reproduces Page's mean at every step and no statistically significant difference from the nested-cut law was found; the proof is the invariance argument, not the non-rejection.",
+   "classification": "2 (mean) / 3 (trajectory-level and distribution tests inside a known model)"
+  },
+  {
+   "id": "D",
+   "question": "What does the independent Bell-pair model of Hawking emission give for S(R), and exactly where and why does it part from the unitary model?",
+   "hypothesis": "S(R) = k ln 2 exactly and monotone; it exceeds the remaining hole's assumed capacity (N - k) ln 2 for k > N/2.",
+   "derivation_summary": "The state is a product of Bell pairs, Tr_p |Phi+><Phi+| = I/2, so rho_R = (I/2)^{tensor k}: flat spectrum, S = k ln 2, purity 2^-k, I(r_i:r_j) = 0 (notes/D_derivation.md).",
+   "prediction": "|S - k ln 2| at round-off; first violation of the capacity at k = floor(N/2) + 1; the unitary model returns to 0.",
+   "experiment": {
+    "script": "experiments/d_hawking_pairs.py",
+    "params": {
+     "k": "0..12 (density-matrix route), <= 10 (state-vector route)",
+     "N_tables": "6..16, 18, 20, 22, 24, 26 (uses Problem C trajectories)",
+     "clip": 1e-15
+    },
+    "seeds": "none (deterministic states)",
+    "hardware": "CPU on the GPU box (device recorded as cpu)"
+   },
+   "result": {
+    "max_abs_err_S_R_nats": 4.4e-15,
+    "max_abs_err_statevector_route_nats": 8.9e-15,
+    "monotone": true,
+    "first_k_exceeding_capacity": "floor(N/2) + 1 for every N tabulated",
+    "data": "results/d_hawking_pairs.json",
+    "figure": "figures/d_hawking_pairs.png"
+   },
+   "verification": "verify/independent.py V3: state vector written amplitude by amplitude, explicit-loop partial trace, k = 0..6: error <= 8.9e-16, flat spectrum. Notebook: error <= 2.7e-15.",
+   "critic_objections": [
+    "Identifying (N - k) ln 2 with a Bekenstein-Hawking-like capacity is an assumption of the toy (A4); the 'violation' is a statement about that assumption set, not about gravity."
+   ],
+   "revised_hypothesis": "Unchanged; the conflict is stated as conditional on assumptions A1-A4.",
+   "conclusion": "The pair model and the unitary model differ for k > N/2 because of independent pair creation, no correlations among quanta, partners that never leave, and a shrinking capacity.",
+   "classification": "1 (reproduction) / 2 (exact relation verified)"
+  },
+  {
+   "id": "E1",
+   "question": "How much local scrambling per emitted qubit is needed for the radiation entropy to follow the Page curve, and do Clifford circuits get there?",
+   "hypothesis": "Local Haar brickwork approaches Page as depth per emission grows; one-shot scrambling depth grows linearly with N on a 1D chain. Initial (builder) reading: Clifford circuits fail to reach Page because scrambled stabilizer states sit above Page.",
+   "derivation_summary": "No closed form was derived. Reference values: Page curve; exact Haar mean purity (2-design property) for the Renyi-2 gap; stabilizer states have flat spectra, so S_vN = S_2 = ln rank and entropies are integer bits.",
+   "prediction": "max_t (Page - <S>) decreases with depth; a depth d* with deviation < 0.05 nats exists for Haar gates; D* (one-shot, half cut) roughly proportional to N.",
+   "experiment": {
+    "script": "experiments/e1_scrambling.py",
+    "params": {
+     "N": "8..16, 18, 20, 22, 24, 26",
+     "families": "local_haar, clifford, identity, swap, h_cnot, haar (N <= 14), haar_shortcut",
+     "depths_per_emission": [
+      1,
+      2,
+      4,
+      8,
+      16
+     ],
+     "seeds_per_N": "256 (N<=12), 128 (13,14), 64 (15,16), 32 (18), 24 (20), 12 (22), 8 (24), 4 (26)",
+     "one_shot": "N = 8..24 even, 64 to 8 seeds, depth up to 3N",
+     "eps_nats": 0.05,
+     "gram_clip": 1e-13
+    },
+    "seeds": "SeedSequence([20261115, N, family_id, depth, batch_index])",
+    "hardware": "Lambda A100 40GB (GPU 0); peak 10.8 GB at N = 26"
+   },
+   "result": {
+    "local_haar_max_dev_nats_N8": {
+     "1": 1.096,
+     "2": 0.725,
+     "4": 0.247,
+     "8": 0.056,
+     "16": 0.0029
+    },
+    "local_haar_max_dev_nats_N26_4seeds": {
+     "1": 5.084,
+     "2": 2.627,
+     "4": 0.436,
+     "8": 0.043,
+     "16": 0.0022
+    },
+    "depth8_range_all_N": "0.04-0.08 nats",
+    "depth16_all_N": "< 0.01 nats",
+    "one_shot_haar_D_star": [
+     [
+      8,
+      16
+     ],
+     [
+      10,
+      21
+     ],
+     [
+      12,
+      24
+     ],
+     [
+      14,
+      29
+     ],
+     [
+      16,
+      32
+     ],
+     [
+      18,
+      35
+     ],
+     [
+      20,
+      40
+     ],
+     [
+      22,
+      43
+     ],
+     [
+      24,
+      46
+     ]
+    ],
+    "one_shot_fit": "D* = 1.87 N + 1.9 layers, max residual 0.96",
+    "clifford_plateau_below_page_nats": "0.06-0.20 at all nine one-shot sizes (stored page_minus_plateau values)",
+    "clifford_flatness": "|S_vN - S_2| <= 6.1e-14 in every run",
+    "data": "results/e1_scrambling.json",
+    "figures": [
+     "figures/e1_trajectories.png",
+     "figures/e1_deviation_scrambling_depth.png",
+     "figures/e1_size_scaling.png",
+     "figures/e1_spectrum.png"
+    ]
+   },
+   "verification": "verify/independent.py V5: local-Haar brickwork, N = 8, depth 2, 400 seeds: max deviation 0.713 vs builder 0.725, max |z| = 1.54. V6: 800 deep-circuit stabilizer states at N = 10: flat spectra (<= 8.5e-13), half-cut mean 2.878 +- 0.015 vs Page 2.966. Notebook: N = 8 deviations 1.075, 0.742, 0.213, 0.040, 0.005; stabilizer half cut -0.137 +- 0.032 nats relative to Page.",
+   "critic_objections": [
+    "The builder's hand-off report said scrambled Clifford states sit ABOVE Page by about 0.19 nats; the mean is BELOW Page by 0.088 +- 0.015 nats (N = 10).",
+    "'Max over t' is biased upward with few seeds and floored at 0; Clifford results at N >= 22 (4-12 seeds) carry no usable information.",
+    "d* and D* have no error bars, sit on a coarse grid and depend on the arbitrary eps = 0.05 nats.",
+    "Linear-in-N depth is expected for a 1D chain; only the coefficient is new, and it is specific to this gate set, geometry and eps.",
+    "No notes file exists for the extensions."
+   ],
+   "revised_hypothesis": "Scrambled stabilizer states lie on average below Page at the half cut, so 'within 0.05 nats of Page' is unreachable for Clifford circuits at any depth; an undefined d* for Clifford is a property of the stabilizer ensemble, not evidence of slower scrambling.",
+   "conclusion": "About 8 brickwork layers of local Haar gates per emission keep the radiation within roughly 0.05 nats of Page for N = 8..26, and 16 layers within 0.01 nats; one-shot Haar brickwork needs about 1.87 N layers for N = 8..24.",
+   "classification": "3 (computational observation within an existing model)"
+  },
+  {
+   "id": "E2",
+   "question": "After how many emitted qubits m can a k-qubit diary be recovered from an old (maximally entangled) or young black hole, and does the decoupling bound hold quantitatively?",
+   "hypothesis": "Old hole: recovery when m is about k + log2(1/eps), independent of the hole size n_B. Young hole: about n_B/2 more.",
+   "derivation_summary": "Weingarten second moment gives E tr rho_RB'^2 = [d_B' d_R + d_D d_E - (d_B' d_E + d_D d_R)/d]/(d^2 - 1); rho_R x rho_B' = 1/D exactly; Cauchy-Schwarz and Jensen give E T <= 1/2 sqrt((d_R^2 - 1)(d_D^-2 - d^-2)/(1 - d^-2)) <= 1/2 * 2^(k-m); Uhlmann + Fuchs-van de Graaf give F >= (1 - T)^2. Young hole: E T_mm <~ 1/2 * 2^(k + n_B/2 - m).",
+   "prediction": "T below the bound at every m; I(R:ED) + I(R:B') = 2k ln 2; thresholds independent of n_B for the old hole and shifted by n_B/2 for the young hole.",
+   "experiment": {
+    "script": "experiments/e2_hayden_preskill.py (--part old / young / local / big, --plot)",
+    "params": {
+     "old": "k = 1 with n_B = 3..12, k = 2 and 3 with n_B = 3..10; 200 seeds (n <= 7) down to 4 (n = 13, 26-qubit global state)",
+     "young": "k = 1..3, n_B = 4..20; 100 seeds down to 6",
+     "local": "10 scrambler qubits, local Haar and local Clifford brickwork, depths 1..32, near/far geometry, 32 seeds",
+     "hp_clip": 1e-13
+    },
+    "seeds": "SeedSequence([20261115, 2, variant_id, k, n_B, extra, seed_index])",
+    "hardware": "Lambda A100 40GB (GPU 0); peak 8.6 GB (old, 26 qubits), 9.7 GB (young, 26 qubits)"
+   },
+   "result": {
+    "old_k1_nB4_I_R_ED_nats": [
+     0.0,
+     0.9769,
+     1.2923,
+     1.3644,
+     1.3821,
+     1.3863
+    ],
+    "two_k_ln2": 1.3863,
+    "old_k1_thresholds": {
+     "m_I90": 2,
+     "m_I99": 4,
+     "m_T10": 3,
+     "m_F90": 2
+    },
+    "old_k2_thresholds_typical": {
+     "m_I90": 3,
+     "m_I99": 5,
+     "m_T10": 5
+    },
+    "old_k3_thresholds_typical": {
+     "m_I90": 4,
+     "m_I99": 5,
+     "m_T10": 6
+    },
+    "young_k1_m_I90_by_nB": {
+     "4": 4,
+     "6": 5,
+     "8": 6,
+     "10": 7,
+     "12": 8,
+     "14": 9,
+     "16": 10,
+     "18": 11,
+     "20": 12
+    },
+    "local_far_k1_m_I90_by_depth": {
+     "1": 10,
+     "2": 10,
+     "10": 6,
+     "12": 6,
+     "16": 4,
+     "24": 2,
+     "32": 2
+    },
+    "data": "results/e2_hayden_preskill.json",
+    "figures": [
+     "figures/e2_mutual_information.png",
+     "figures/e2_decoupling.png",
+     "figures/e2_fidelity.png",
+     "figures/e2_thresholds.png",
+     "figures/e2_local_scrambler.png"
+    ]
+   },
+   "verification": "verify/independent.py V4: k = 1, n_B = 4, 400 seeds, all reduced states by explicit index contraction, Yoshida-Kitaev decoder simulated literally: max |z| = 1.30 vs builder over I(R:ED), I(R:B'), T, F_EPR, P_EPR, F_uhl; thresholds identical (2, 4, 3). Bound re-derived by hand; holds on the mean and on every sample; T/bound = 0.83-0.87 for m = 1..4. Notebook: same thresholds, bound holds.",
+   "critic_objections": [
+    "The bound is on the Haar average, not each instance; m >= k + log2(1/eps) is sufficient, not necessary, and about one qubit loose.",
+    "'Thresholds independent of n_B over 3..12' is slightly too strong: some are one lower at n_B = 3, 4.",
+    "Thresholds are integers read from seed-mean curves with no error bars; 26-qubit records have 4 seeds.",
+    "Young-hole m_F90 = None means 'not computed', not 'not reached'.",
+    "Local-scrambler Hayden-Preskill was run at one size only; no scaling claim.",
+    "The F_EPR prediction inserts the mean purity; agreement to 4 digits reflects concentration, not an exact identity."
+   ],
+   "revised_hypothesis": "Old-hole thresholds are essentially independent of n_B (identical for n_B >= 5; up to one lower at n_B = 3, 4).",
+   "conclusion": "The decoupling bound holds and is about 15% above the measured mean T; an old hole returns a k-qubit diary after m about k + 1 to k + 3 qubits regardless of size, a young hole needs about n_B/2 more.",
+   "classification": "2 (Haar scrambler: verification of a known relation) / 3 (local scramblers)"
+  }
+ ]
+}

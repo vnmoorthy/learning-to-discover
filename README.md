@@ -235,7 +235,10 @@ The loop only needs a problem and an exact checker, so the same lab runs two phy
 
 ### Three-body periodic orbits (celestial mechanics)
 
-<p align="center"><img src="docs/assets/threebody/candidates.png" alt="Seven candidate periodic orbits" width="100%"></p>
+<p align="center"><img src="docs/assets/threebody/orbit_braid.jpg" alt="An equal-mass candidate orbit braided through time" width="100%"></p>
+<p align="center"><sub>Candidate 14 at equal masses (T = 45.872): the three bodies' paths over one full period, time running left to right. Rendered in Blender from the re-integrated trajectory.</sub></p>
+
+<p align="center"><img src="docs/assets/threebody/candidates.png" alt="All candidate periodic orbits" width="100%"></p>
 
 `search/threebody_gpu.py` integrates hundreds of thousands of candidate initial conditions in parallel on the A100s,
 refines the near-returns with Newton steps, and the official checker (`problems/three-body-periodic-orbits/verifier.py`)
@@ -253,7 +256,11 @@ unstable orbits. Initial conditions: [`problems/three-body-periodic-orbits/candi
 ### EVENT HORIZON (black hole information, quantum-information toy models)
 
 A verified study of the Page curve, Page's theorem, sequential evaporation, a Bell-pair "Hawking" model, scrambling
-and Hayden-Preskill decoupling, run with exact state vectors on an A100. Every result is classified as a reproduction
+and Hayden-Preskill decoupling, run with exact state vectors on an A100 (up to 27 qubits). 109 tests pass; 9 key claims
+were re-derived by an independent implementation, and the independent verifier caught and corrected one wrong claim
+(scrambled stabilizer states sit *below* the Page curve on average, by 0.088 +- 0.015 nats at N = 10). Paper:
+[`domains/event-horizon/paper/event_horizon.md`](domains/event-horizon/paper/event_horizon.md); notebook:
+[`domains/event-horizon/notebooks/event_horizon.ipynb`](domains/event-horizon/notebooks/event_horizon.ipynb). Every result is classified as a reproduction
 or a computational observation; nothing here claims to solve the information paradox, and the island formula is kept
 separate from these finite-dimensional models.
 

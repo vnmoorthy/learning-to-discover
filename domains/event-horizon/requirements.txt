@@ -1,0 +1,12 @@
+# Tested on the GPU box inside ~/event-horizon/.venv (python 3.10, --system-site-packages).
+# torch 2.7.0 (CUDA) comes from the system site-packages; it was built against NumPy 1.x,
+# so the venv pins numpy<2 (numpy 1.26.4) to keep the torch<->numpy bridge working.
+numpy<2
+scipy>=1.14
+matplotlib
+sympy
+pytest
+nbformat
+nbclient
+ipykernel
+# torch>=2.1 (CUDA build) -- provided by the system on the box; optional on a laptop (numpy fallback in eh/, tests skip GPU parts)

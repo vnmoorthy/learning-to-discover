@@ -78,7 +78,7 @@ function Interactive({ items }: { items: GalleryItem[] }) {
         {scenes.map((s) => (
           <div key={s.id} className="panel overflow-hidden rounded-xl" data-scene={s.id}>
             <div className="relative aspect-[4/3] sm:aspect-[16/10]">
-              {full === s.id ? <div className="absolute inset-0 flex items-center justify-center bg-ink-850 text-xs text-fg-dim">Open in full view</div> : <ViewerFrame className="absolute inset-0 !rounded-none !border-0">{s.node}</ViewerFrame>}
+              {full === s.id ? <div className="absolute inset-0 flex items-center justify-center bg-ink-850 text-xs text-fg-dim">Open in full view</div> : <ViewerFrame className="h-full w-full !rounded-none !border-0">{s.node}</ViewerFrame>}
             </div>
             <div className="flex items-start justify-between gap-3 border-t border-white/[0.07] p-4">
               <div className="min-w-0">

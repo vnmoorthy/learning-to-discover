@@ -1,0 +1,6 @@
+N= 8 seeds=400 max|z|=0.87 max|mean-Page|=5.93e-04 nats deficit@N/2=0.4971 (Page 0.4977) S(R)=S(B) err 8.9e-16  2.9s
+N= 9 seeds=400 max|z|=2.73 max|mean-Page|=1.77e-03 nats deficit@N/2=0.2504 (Page 0.2489) S(R)=S(B) err 8.9e-16  4.3s
+N=10 seeds=400 max|z|=1.66 max|mean-Page|=7.47e-04 nats deficit@N/2=0.5002 (Page 0.4994) S(R)=S(B) err 8.9e-16  10.8s
+N=11 seeds=300 max|z|=2.03 max|mean-Page|=4.17e-04 nats deficit@N/2=0.2500 (Page 0.2497) S(R)=S(B) err 8.9e-16  43.8s
+N=12 seeds=200 max|z|=1.66 max|mean-Page|=9.30e-04 nats deficit@N/2=0.4989 (Page 0.4999) S(R)=S(B) err 2.2e-15  174.7s
+N=13 seeds=150 max|z|=1.86 max|mean-Page|=5.07e-04 nats deficit@N/2=0.2504 (Page 0.2499) S(R)=S(B) err 1.3e-15  450.7s

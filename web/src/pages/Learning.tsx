@@ -89,7 +89,7 @@ function Training() {
                 value={steps}
                 disabled={READ_ONLY}
                 onChange={(e) => setSteps(e.target.value)}
-                className={cx('h-8 w-20 rounded-lg border bg-ink-800 px-2 font-mono text-xs text-fg outline-none focus:border-cyan/50 disabled:opacity-50', stepsValid ? 'border-white/10' : 'border-bad/50')}
+                className={cx('h-8 w-20 rounded-lg border bg-ink-700 px-2 font-mono text-xs text-fg outline-none focus:border-cyan/50 disabled:opacity-50', stepsValid ? 'border-white/10' : 'border-bad/50')}
               />
             </label>
             <ActionButton variant="primary" onClick={go} status={start.status} error={start.error} disabled={!stepsValid || L.status === 'running'} title={L.status === 'running' ? 'A run is in progress' : undefined} successLabel="Started">
@@ -311,7 +311,7 @@ function Sandboxes() {
               value={n}
               disabled={READ_ONLY}
               onChange={(e) => setN(e.target.value)}
-              className={cx('h-8 w-16 rounded-lg border bg-ink-800 px-2 font-mono text-xs text-fg outline-none focus:border-cyan/50 disabled:opacity-50', nValid ? 'border-white/10' : 'border-bad/50')}
+              className={cx('h-8 w-16 rounded-lg border bg-ink-700 px-2 font-mono text-xs text-fg outline-none focus:border-cyan/50 disabled:opacity-50', nValid ? 'border-white/10' : 'border-bad/50')}
             />
           </label>
           <ActionButton variant="primary" onClick={go} status={watching ? 'loading' : run.status} error={run.error} disabled={!nValid} successLabel="Started">

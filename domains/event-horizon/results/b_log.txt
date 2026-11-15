@@ -1,0 +1,27 @@
+m=   2 n=   2 N= 20000 MC=0.334053±1.3e-03 Page=0.333333 z=0.57 |MC-asym1|=1.41e-01 |Page-asym1|=1.40e-01
+m=   2 n=   3 N= 20000 MC=0.449155±1.0e-03 Page=0.450000 z=0.82 |MC-asym1|=8.93e-02 |Page-asym1|=9.02e-02
+m=   2 n=   4 N= 20000 MC=0.509834±8.5e-04 Page=0.509524 z=0.37 |MC-asym1|=6.67e-02 |Page-asym1|=6.64e-02
+m=   2 n=  16 N= 20000 MC=0.646418±2.6e-04 Page=0.646516 z=0.39 |MC-asym1|=1.58e-02 |Page-asym1|=1.59e-02
+m=   2 n= 256 N= 20000 MC=0.690236±1.7e-05 Page=0.690218 z=1.02 |MC-asym1|=9.95e-04 |Page-asym1|=9.78e-04
+m=   3 n=   3 N= 20000 MC=0.663329±1.0e-03 Page=0.662302 z=1.01 |MC-asym1|=6.47e-02 |Page-asym1|=6.37e-02
+m=   3 n=   5 N= 20000 MC=0.834031±7.6e-04 Page=0.834896 z=1.14 |MC-asym1|=3.54e-02 |Page-asym1|=3.63e-02
+m=   3 n=  27 N= 20000 MC=1.048998±1.7e-04 Page=1.049331 z=1.97 |MC-asym1|=5.94e-03 |Page-asym1|=6.27e-03
+m=   4 n=   4 N= 20000 MC=0.922513±8.1e-04 Page=0.922396 z=0.15 |MC-asym1|=3.62e-02 |Page-asym1|=3.61e-02
+m=   4 n=   8 N= 20000 MC=1.152327±5.1e-04 Page=1.153138 z=1.60 |MC-asym1|=1.60e-02 |Page-asym1|=1.68e-02
+m=   4 n=  64 N= 20000 MC=1.356942±7.4e-05 Page=1.357017 z=1.01 |MC-asym1|=1.90e-03 |Page-asym1|=1.97e-03
+m=   5 n=   5 N= 20000 MC=1.133644±6.7e-04 Page=1.132625 z=1.53 |MC-asym1|=2.42e-02 |Page-asym1|=2.32e-02
+m=   6 n=  10 N= 20000 MC=1.500916±4.0e-04 Page=1.500902 z=0.04 |MC-asym1|=9.16e-03 |Page-asym1|=9.14e-03
+m=   8 n=   8 N= 20000 MC=1.588129±4.3e-04 Page=1.588534 z=0.94 |MC-asym1|=8.69e-03 |Page-asym1|=9.09e-03
+m=   8 n=  16 N= 20000 MC=1.833468±2.7e-04 Page=1.833668 z=0.75 |MC-asym1|=4.03e-03 |Page-asym1|=4.23e-03
+m=   8 n= 128 N= 20000 MC=2.048720±3.8e-05 Page=2.048685 z=0.91 |MC-asym1|=5.28e-04 |Page-asym1|=4.93e-04
+m=  16 n=  16 N= 20000 MC=2.274919±2.2e-04 Page=2.274866 z=0.24 |MC-asym1|=2.33e-03 |Page-asym1|=2.28e-03
+m=  16 n=  64 N= 20000 MC=2.648114±7.3e-05 Page=2.648097 z=0.23 |MC-asym1|=5.26e-04 |Page-asym1|=5.09e-04
+m=  16 n= 512 N=  5000 MC=2.757016±1.9e-05 Page=2.757025 z=0.47 |MC-asym1|=5.22e-05 |Page-asym1|=6.14e-05
+m=  32 n=  32 N= 20000 MC=2.966323±1.1e-04 Page=2.966305 z=0.16 |MC-asym1|=5.87e-04 |Page-asym1|=5.70e-04
+m=  32 n= 256 N=  5000 MC=3.403353±3.8e-05 Page=3.403298 z=1.44 |MC-asym1|=1.17e-04 |Page-asym1|=6.23e-05
+m=  64 n=  64 N= 20000 MC=3.659034±5.5e-05 Page=3.659025 z=0.15 |MC-asym1|=1.51e-04 |Page-asym1|=1.42e-04
+m=  64 n= 512 N=  1000 MC=4.096364±4.4e-05 Page=4.096399 z=0.78 |MC-asym1|=1.86e-05 |Page-asym1|=1.56e-05
+m= 128 n= 128 N=  5000 MC=4.352151±5.5e-05 Page=4.352066 z=1.56 |MC-asym1|=1.21e-04 |Page-asym1|=3.56e-05
+m= 256 n= 256 N=  1000 MC=5.045244±6.1e-05 Page=5.045186 z=0.95 |MC-asym1|=6.66e-05 |Page-asym1|=8.90e-06
+summary: {'n_pairs': 25, 'max_z': 1.9663376004004192, 'mean_z': 0.8075408997716856, 'fraction_z_below_2': 1.0, 'fraction_z_below_3': 1.0, 'chi2': 23.139617852819903, 'chi2_dof': 25, 'note': 'independent seeds per (m,n): under the null, z^2 summed ~ chi2 with n_pairs dof', 'chi2_p_value': 0.5694107857771802}
+convergence slope: -0.5422999934287326

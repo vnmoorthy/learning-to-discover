@@ -1,0 +1,34 @@
+✓ Initialized. View run at 
+https://modal.com/apps/vnarasingamoorthy/main/ap-lfhnJZ20mfDTYY5ZVGiakx
+✓ Created objects.
+├── 🔨 Created mount 
+│   domains/event-horizon/experiments/modal_ru
+│   n.py
+├── 🔨 Created mount domains/event-horizon/eh
+├── 🔨 Created mount 
+│   domains/event-horizon/experiments
+└── 🔨 Created function run_chunk.
+done in 592.3s
+per-step 8 local_haar d*= 12 ['1.125', '0.725', '0.331', '0.229', '0.102', '0.050', '0.016', '0.005']
+per-step 8 clifford d*= None ['1.288', '0.815', '0.422', '0.344', '0.179', '0.152', '0.105', '0.098']
+per-step 9 local_haar d*= 8 ['1.611', '0.822', '0.499', '0.248', '0.106', '0.042', '0.013', '0.004']
+per-step 9 clifford d*= None ['1.800', '0.969', '0.650', '0.370', '0.252', '0.142', '0.102', '0.095']
+per-step 10 local_haar d*= 12 ['1.545', '0.927', '0.431', '0.290', '0.123', '0.058', '0.017', '0.005']
+per-step 10 clifford d*= None ['1.751', '1.065', '0.532', '0.414', '0.164', '0.155', '0.078', '0.129']
+per-step 11 local_haar d*= 12 ['2.036', '1.018', '0.623', '0.300', '0.115', '0.054', '0.013', '0.006']
+per-step 11 clifford d*= None ['2.195', '1.155', '0.707', '0.337', '0.249', '0.125', '0.092', '0.097']
+per-step 12 local_haar d*= 12 ['1.966', '1.178', '0.531', '0.333', '0.144', '0.062', '0.019', '0.006']
+per-step 12 clifford d*= None ['2.129', '1.414', '0.739', '0.444', '0.245', '0.143', '0.105', '0.064']
+one-shot 8 haar D*= 16
+one-shot 8 clifford D*= None
+one-shot 9 haar D*= 17
+one-shot 9 clifford D*= 27
+one-shot 10 haar D*= 21
+one-shot 10 clifford D*= None
+one-shot 11 haar D*= 22
+one-shot 11 clifford D*= 27
+one-shot 12 haar D*= 24
+one-shot 12 clifford D*= None
+Stopping app - local entrypoint completed.
+✓ App completed. View run at 
+https://modal.com/apps/vnarasingamoorthy/main/ap-lfhnJZ20mfDTYY5ZVGiakx

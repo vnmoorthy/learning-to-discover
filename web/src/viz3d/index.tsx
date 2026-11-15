@@ -27,7 +27,7 @@ export function LatticeViewer({ art, hero, fallback, readout = true }: { art: Gr
   return (
     <ErrorBoundary fallback={fallback ?? <NoGL />}>
       <Stage
-        camera={hero ? [0, 4.6, 8.4] : [0, 5.4, 8.2]}
+        camera={hero ? [0, 5.4, 10.6] : [0, 6.2, 9.6]}
         target={[0, 0.1, 0]}
         focusZoom
         overlay={
@@ -60,7 +60,7 @@ export function CityViewer({ art, fallback }: { art: SignMatrixArtifact | null; 
   return (
     <ErrorBoundary fallback={fallback ?? <NoGL />}>
       <Stage
-        camera={[5.2, 5.4, 6.6]}
+        camera={[6.2, 6.2, 7.8]}
         target={[0, 0.2, 0]}
         focusZoom
         overlay={
@@ -182,7 +182,7 @@ export function OrbitsViewer({ orbits, fallback, className }: { orbits: Orbit[];
     setShown(0)
   }, [idx])
   if (!o || !traj) return <NoGL>No orbits to show</NoGL>
-  const dist = Math.max(4.5, traj.extent * 3.1)
+  const dist = Math.max(4, traj.extent * 2.3)
   const onTick = (t: number) => {
     const now = performance.now()
     if (now - lastUi.current > 80) {
