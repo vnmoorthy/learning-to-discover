@@ -290,7 +290,7 @@ def part_plot():
     ax[2].set_xlabel("black-hole qubits n_B")
     ax[2].set_ylabel("1 - F_Petz (finite-size infidelity)")
     ax[2].set_title("Finite-size corrections at fixed m - k (old hole)")
-    ax[2].legend(fontsize=6.5)
+    ax[2].legend(fontsize=6.5, loc="center right")
     st.caption(fig, "Exact dense simulation, Haar U on M+B, Petz (transpose-channel) decoder with sigma = 1/d_M; "
                     "mean +- s.e.m. over 24 (12 for n = 8) seeds. Finite-dimensional circuit model, no gravity.")
     fig.tight_layout(rect=(0, 0.04, 1, 1))
