@@ -37,7 +37,7 @@ ax[1].set_xlabel(r"matching density $n_m$  [$n_{sat}$ = 0.16 fm$^{-3}$]")
 ax[1].set_ylabel(r"minimum $c_{s,\max}^2$  [$c^2$]")
 ax[1].set_title("required stiffness vs matching density", color=FG, fontsize=10); ax[1].legend(fontsize=8, frameon=False)
 ax[2].set_xlabel(r"$c_{s,\max}^2$ above $n_m$  [$c^2$]"); ax[2].set_ylabel(r"$R_{1.4}$  [km]")
-ax[2].set_title("radius of a 1.4 $M_\odot$ star", color=FG, fontsize=10); ax[2].legend(fontsize=8, frameon=False)
+ax[2].set_title(r"radius of a 1.4 $M_\odot$ star", color=FG, fontsize=10); ax[2].legend(fontsize=8, frameon=False)
 fig.suptitle("Sound-speed requirement for 2 M_sun (SLy fixed below n_m; novelty level 2: verification of known relation)",
              color=FG, fontsize=11)
 fig.tight_layout()
