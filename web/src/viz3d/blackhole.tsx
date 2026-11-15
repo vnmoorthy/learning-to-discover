@@ -41,7 +41,7 @@ uniform float uRout;
 uniform float uTpeak;
 uniform float uTmaxNorm;
 
-const int MAX_STEPS = 420;
+const int MAX_STEPS = 320;
 const float PI = 3.14159265358979;
 const vec3 LUMA = vec3(0.2126, 0.7152, 0.0722);
 
@@ -139,12 +139,14 @@ void main() {
   float r0 = length(x);
   float vinf = sqrt(max(1.0 - h2 / (r0 * r0 * r0), 1e-6));
   float L = -hv.y / vinf;                       // photon angular momentum about the disk axis (physical direction)
-  float rEsc = max(50.0, r0 * 1.25);
+  // An outward-moving photon outside the photon sphere (r > 1.5) never turns back, so once it is beyond the disk
+  // it can only escape: stop there and use its current direction (the remaining weak-field bend is tiny).
+  float rEsc = uRout + 2.0;
   int state = 0;                                 // 0 running, 1 disk, 2 captured, 3 escaped
   float rc = 0.0, phc = 0.0;
   for (int i = 0; i < MAX_STEPS; i++) {
     float r = length(x);
-    float dt = clamp(0.03 * r * r, 0.004, 0.05 * r + 0.25);
+    float dt = clamp(0.03 * r * r, 0.004, 0.08 * r + 0.2);
     vec3 k1x = v;                   vec3 k1v = acc(x, h2);
     vec3 k2x = v + 0.5 * dt * k1v;  vec3 k2v = acc(x + 0.5 * dt * k1x, h2);
     vec3 k3x = v + 0.5 * dt * k2v;  vec3 k3v = acc(x + 0.5 * dt * k2x, h2);
